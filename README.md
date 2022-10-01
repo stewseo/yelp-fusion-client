@@ -1,4 +1,4 @@
-## yelp -fusion-clien       t
+## Yelp-Fusion Java Api Client
 
 ### Goals:
 - Provide features based on the Elasticsearch Java Api Client: 
