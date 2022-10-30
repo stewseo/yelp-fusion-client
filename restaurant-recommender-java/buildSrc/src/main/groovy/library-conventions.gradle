@@ -15,8 +15,8 @@ dependencies {
     api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 
-
 }
+
 
 tasks.register('printProps') {
     doLast {

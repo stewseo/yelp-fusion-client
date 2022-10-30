@@ -31,8 +31,9 @@ public class RestaurantCategoriesTest extends AbstractRequestTestCase {
 
     static StringBuilder requestSb;
 
+
     @BeforeAll
-    static void setup() throws IOException {
+    static <T> void setup() throws IOException {
         String pathToCategoriesJson = Objects.requireNonNull(RestaurantCategoriesTest.class.getResource("map-of-restaurant-categories.json")).getPath();
 
         JsonNode jsonNode = mapper
@@ -51,13 +52,15 @@ public class RestaurantCategoriesTest extends AbstractRequestTestCase {
 
         if (jsonNode.isObject()) {
             ObjectNode objectNode = (ObjectNode) jsonNode;
+
             PrintUtils.green("object " + objectNode.get(0));
         }
 
         if (jsonNode.isArray()) {
             ArrayNode arrayNode = (ArrayNode) jsonNode;
-            PrintUtils.green("array " + jsonNode.get(0));
-
+            
+//            PrintUtils.green("array " + jsonNode.get(0));
+            
             for (int i = 0; i < jsonNode.size(); i++) {
                 JsonNode sourceNode = jsonNode.get(i).get("_source");
 
@@ -76,13 +79,14 @@ public class RestaurantCategoriesTest extends AbstractRequestTestCase {
             }
         }
 
-        mapOfCategoriesToRestaurants.forEach((category, list) -> {
+//        mapOfCategoriesToRestaurants.forEach((category, list) -> {
+//
+//            PrintUtils.cyan(String.format("Category: %s has %d restaurants ",
+//                    category,
+//                    mapOfCategoriesToRestaurants.get(category).size()
+//            ));
+//        });
 
-            PrintUtils.cyan(String.format("Category: %s has %d restaurants ",
-                    category,
-                    mapOfCategoriesToRestaurants.get(category).size()
-            ));
-        });
         int yelpRestaurantsSfTotal = 4410;
 
         int yelpSubCatsOfRestaurants = 244; // remove "restaurants" category
@@ -127,7 +131,7 @@ public class RestaurantCategoriesTest extends AbstractRequestTestCase {
         int limit = 50;
         String sort_by = "review_count";
         String term = "restaurants";
-        String location = "San+Francisco";
+        String location = "SF";
 
         // reset offset, total hits, and max offset
         for (String category : mapOfCategoriesToRestaurants.keySet()) {
@@ -146,11 +150,11 @@ public class RestaurantCategoriesTest extends AbstractRequestTestCase {
 
                 BusinessSearchResponse<Business> businessSearchResponse = yelpClient.search(s -> s
                                 .location(location)
-                                .sort_by(sort_by)
                                 .categories(category)
+                                .terms(term)
                                 .limit(limit)
                                 .offset(testOffset)
-                                .terms(term)
+                                .sort_by(sort_by)
                         ,
                         Business.class
                 );

@@ -1,4 +1,4 @@
-rootProject.name = 'my-org-conventions'
+rootProject.name = 'build-conventions'
 
 dependencyResolutionManagement {
     versionCatalogs {
