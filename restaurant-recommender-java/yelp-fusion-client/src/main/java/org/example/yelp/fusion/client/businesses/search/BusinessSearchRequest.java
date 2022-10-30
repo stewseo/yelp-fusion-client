@@ -420,6 +420,13 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
                 return parameters;
 
+<<<<<<< HEAD
             }, SimpleEndpoint.emptyMap(), true, BusinessSearchResponse._DESERIALIZER);
+=======
+            },
+            SimpleEndpoint.emptyMap(),
+            false,
+            BusinessSearchResponse._DESERIALIZER);
+>>>>>>> python
 }
 

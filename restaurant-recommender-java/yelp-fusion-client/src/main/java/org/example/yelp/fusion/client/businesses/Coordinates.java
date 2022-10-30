@@ -6,12 +6,7 @@ public class Coordinates {
 
     public Double longitude;
 
-<<<<<<< HEAD:yelp-fusion-client/src/main/java/org/example/yelp/fusion/client/businesses/Coordinates.java
-    public Coordinates(double v, double v1) {
-    }
 
-
-=======
     public Coordinates() {
 
     }
@@ -19,7 +14,6 @@ public class Coordinates {
         this.latitude = latitude;
         this.longitude = longitude;
     }
->>>>>>> 80cbb9dac9c2996f7c50576fe9668568597878af:src/main/java/com/example/client/yelp_fusion/businesses/Coordinates.java
     public Double getLatitude() {
         return latitude;
     }

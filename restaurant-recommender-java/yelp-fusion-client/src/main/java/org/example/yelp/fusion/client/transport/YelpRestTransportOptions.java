@@ -14,18 +14,7 @@ import java.util.stream.*;
 
 public class YelpRestTransportOptions implements TransportOptions {
 
-    static{
-        PrintUtils.green("YelpRestTransportOptions");
-    }
     private final RequestOptions options; // gets shared between multiple requests in an application
-
-    private static final String CLIENT_META_HEADER = "X-Elastic-Client-Meta";
-    private static final String USER_AGENT_HEADER = "User-Agent";
-
-    @VisibleForTesting
-    static final String CLIENT_META_VALUE = getClientMeta();
-    @VisibleForTesting
-    static final String USER_AGENT_VALUE = getUserAgent();
 
     static YelpRestTransportOptions of(TransportOptions options) {
         // if options have been set, return Transport Options
@@ -84,7 +73,6 @@ public class YelpRestTransportOptions implements TransportOptions {
     // class TestYelpRestOptions.Builder implements com.example.client.transport.TransportOptions.Builder
     public static class Builder implements TransportOptions.Builder {
 
-        // The portion of an HTTP request to Elasticsearch that can be manipulated without changing Elasticsearch's behavior.
         private RequestOptions.Builder builder; //  RequestOptions
 
         // initializes RequestOptions.Builder
@@ -99,16 +87,6 @@ public class YelpRestTransportOptions implements TransportOptions {
         // add headers to RequestOptions.Builder
         @Override
         public Builder addHeader(String name, String value) {
-            if (name.equalsIgnoreCase(CLIENT_META_HEADER)) {
-                PrintUtils.green("Add Header CLIENT_META_HEADER YelpRestTransportOptions");
-                // Not overridable
-                return this;
-            }
-            if (name.equalsIgnoreCase(USER_AGENT_HEADER)) {
-                PrintUtils.green("Add Header USER_AGENT_HEADER YelpRestTransportOptions");
-                // We must remove our own user-agent from the options, or we'll end up with multiple values for the header
-                builder.removeHeader(USER_AGENT_HEADER);
-            }
             builder.addHeader(name, value);
             return this;
         }
@@ -148,43 +126,10 @@ public class YelpRestTransportOptions implements TransportOptions {
     }
 
     private static RequestOptions.Builder addBuiltinHeaders(RequestOptions.Builder builder) {
-        builder.removeHeader(CLIENT_META_HEADER);
-        builder.addHeader(CLIENT_META_HEADER, CLIENT_META_VALUE);
-        if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase(USER_AGENT_HEADER))) {
-            builder.addHeader(USER_AGENT_HEADER, USER_AGENT_VALUE);
-        }
         if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase("Accept"))) {
             builder.addHeader("Accept", String.valueOf(YelpRestTransport.JsonContentType));
         }
         return builder;
     }
 
-    private static String getUserAgent() {
-        return String.format(
-                Locale.ROOT,
-                "elastic-java/ (Java/%s)",
-                System.getProperty("java.version")
-        );
-    }
-
-    private static String getClientMeta() {
-        VersionInfo httpClientVersion = null;
-        try {
-            httpClientVersion = VersionInfo.loadVersionInfo(
-                    "org.apache.http.nio.client",
-                    HttpAsyncClientBuilder.class.getClassLoader()
-            );
-        } catch (Exception e) {
-            // Keep unknown
-        }
-
-        // service, language, transport, followed by additional information
-        return "es="
-                + ",jv="
-                + System.getProperty("java.specification.version")
-                + ",hl=2"
-                + ",t="
-                + ",hc="
-                + (httpClientVersion == null ? "" : httpClientVersion.getRelease());
-    }
 }

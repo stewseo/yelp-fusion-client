@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch.indices.*;
 import co.elastic.clients.transport.*;
 import com.fasterxml.jackson.databind.node.*;
 import jakarta.json.*;
+
 import jakarta.json.spi.*;
 import jakarta.json.stream.*;
 import org.apache.http.*;
@@ -14,7 +15,9 @@ import org.example.elasticsearch.client.json.jackson.*;
 import org.example.elasticsearch.client.json.jsonb.*;
 import org.example.elasticsearch.client.util.*;
 import org.example.lowlevel.restclient.*;
+
 import org.example.yelp.fusion.client.businesses.*;
+
 import org.example.yelp.fusion.client.category.*;
 import org.example.yelp.fusion.client.transport.*;
 import org.junit.jupiter.api.*;
@@ -36,12 +39,21 @@ public abstract class AbstractRequestTestCase extends Assertions {
         setOfValidBusinessIds = new HashSet<>();
         mapOfCategoriesToRestaurants = new HashMap<>();
         mapper = new JacksonJsonpMapper();
-        setOfNewBusinessIds = new HashSet<>();
 
         initElasticsearchClient();
 
+//        initElasticsearchClient();
         initYelpFusionClient();
 
+    }
+
+
+    private static final RequestOptions COMMON_OPTIONS;
+
+    static {
+        RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
+        builder.addHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"));
+        COMMON_OPTIONS = builder.build();
     }
 
     static String scheme = "https";
@@ -58,8 +70,7 @@ public abstract class AbstractRequestTestCase extends Assertions {
         String bearerAndToken = String.format("Bearer %s", System.getenv("YELP_API_KEY"));
 
         // create rest client
-        RestClientBuilder restClientBuilder =
-                createRestClientBuilder(yelpFusionHost, port, scheme, requestHeader, bearerAndToken);
+        RestClientBuilder restClientBuilder = restClientBuilder(yelpFusionHost, port, scheme, requestHeader, bearerAndToken);
 
         try (RestClient restClient = restClientBuilder.build()) {
 
@@ -106,11 +117,11 @@ public abstract class AbstractRequestTestCase extends Assertions {
     }
 
 
-    private static RestClientBuilder createRestClientBuilder(String host, int port, String scheme) {
-        return createRestClientBuilder(host, port, scheme, null, null);
+    private static RestClientBuilder restClientBuilder(String host, int port, String scheme) {
+        return restClientBuilder(host, port, scheme, null, null);
     }
 
-    private static RestClientBuilder createRestClientBuilder(String host, int port, String scheme, String requestHeader, String value) {
+    private static RestClientBuilder restClientBuilder(String host, int port, String scheme, String requestHeader, String value) {
 
         // set the base URL: scheme, hostname and port.
         RestClientBuilder restBuilder = RestClient.builder(

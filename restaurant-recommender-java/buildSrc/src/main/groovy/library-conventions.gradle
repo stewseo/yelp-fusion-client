@@ -15,14 +15,12 @@ dependencies {
     api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 
-
-}
-
-tasks.register('printProps') {
-    doLast {
-        println commandLineProjectProp
-        println gradlePropertiesProp
-        println systemProjectProp
-        println System.properties['system']
+    tasks.register('printProps') {
+        doLast {
+            println commandLineProjectProp
+            println gradlePropertiesProp
+            println systemProjectProp
+            println System.properties['system']
+        }
     }
 }

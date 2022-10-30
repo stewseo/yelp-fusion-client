@@ -17,16 +17,10 @@ public class Location {
 
     String address1, address2, address3, city, county, zip_code, cross_streets, state, country;
 
-<<<<<<< HEAD
-    Object[] display_address;
-<<<<<<< HEAD:yelp-fusion-client/src/main/java/org/example/yelp/fusion/client/businesses/Location.java
-=======
-
     public Location(){}
->>>>>>> 80cbb9dac9c2996f7c50576fe9668568597878af:src/main/java/com/example/client/yelp_fusion/businesses/Location.java
-=======
+
     List<String> display_address;
->>>>>>> newtemp
+
 
 
     private final String address1() {
