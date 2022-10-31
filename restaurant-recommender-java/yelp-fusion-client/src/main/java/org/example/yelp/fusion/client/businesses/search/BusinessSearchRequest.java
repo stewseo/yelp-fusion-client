@@ -1,7 +1,7 @@
 package org.example.yelp.fusion.client.businesses.search;
 
 import jakarta.json.stream.*;
-import org.example.elasticsearch.client._types.RequestBase;
+import org.example.elasticsearch.client._types.*;
 import org.example.elasticsearch.client.json.JsonData;
 import org.example.elasticsearch.client.json.JsonpDeserializer;
 import org.example.elasticsearch.client.json.JsonpMapper;
@@ -9,6 +9,7 @@ import org.example.elasticsearch.client.json.JsonpSerializable;
 import org.example.elasticsearch.client.json.JsonpUtils;
 import org.example.elasticsearch.client.json.ObjectBuilderDeserializer;
 import org.example.elasticsearch.client.json.ObjectDeserializer;
+import org.example.elasticsearch.client.transport.*;
 import org.example.elasticsearch.client.transport.endpoints.*;
 import org.example.elasticsearch.client.util.*;
 
@@ -121,45 +122,49 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
-
         if (this.longitude != null) {
             generator.writeKey("_source");
 
         }
+
         if (this.latitude != null) {
             generator.writeKey("latitude");
+            generator.write(this.latitude);
         }
 
         if (this.radius != null) {
             generator.writeKey("radius");
-
+            generator.write(this.radius);
         }
 
         if (this.sort_by != null) {
             generator.writeKey("sort_by");
+            generator.write(this.sort_by);
         }
 
         if (this.limit != null) {
             generator.writeKey("limit");
+            generator.write(this.limit);
         }
 
         if (this.open_at != null) {
             generator.writeKey("open_at");
-
+            generator.write(this.open_at);
         }
 
         if (this.price != null) {
             generator.writeKey("price");
-
+            generator.write(this.price);
         }
 
         if (this.offset != null) {
             generator.writeKey("offset");
-
+            generator.write(this.offset);
         }
 
         if (this.price != null) {
             generator.writeKey("price");
+            generator.write(this.price);
         }
 
         if (ApiTypeHelper.isDefined(this.location)) {
@@ -212,13 +217,10 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         private String id;
         private List<String> location;
 
-        
         private List<String> categories;
 
-        
         private List<String> attributes;
 
-        
         private List<String> terms;
 
         private Double latitude;
@@ -420,13 +422,13 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
                 return parameters;
 
-<<<<<<< HEAD
-            }, SimpleEndpoint.emptyMap(), true, BusinessSearchResponse._DESERIALIZER);
-=======
-            },
-            SimpleEndpoint.emptyMap(),
+            }, SimpleEndpoint.emptyMap(),
             false,
             BusinessSearchResponse._DESERIALIZER);
->>>>>>> python
-}
 
+    public static <TDocument> Endpoint<BusinessSearchRequest, BusinessSearchResponse<TDocument>, ErrorResponse> createSearchEndpoint(
+            JsonpDeserializer<TDocument> tDocumentDeserializer) {
+        return _ENDPOINT
+                .withResponseDeserializer(BusinessSearchResponse.createSearchResponseDeserializer(tDocumentDeserializer));
+    }
+}

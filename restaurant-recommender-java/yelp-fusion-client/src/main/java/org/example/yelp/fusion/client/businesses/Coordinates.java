@@ -6,6 +6,7 @@ public class Coordinates {
 
     public Double longitude;
 
+    public GeoLocation geoLocation;
 
     public Coordinates() {
 
@@ -14,19 +15,58 @@ public class Coordinates {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    public Double getLatitude() {
+
+
+    public Coordinates setLatitude(Double latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+
+    public Coordinates setLongitude(Double longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public Double latitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
 
-    public Double getLongitude() {
+    public Double longitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public GeoLocation geoLocation() {
+        return geoLocation;
+    }
+
+    public Coordinates setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+        return this;
+    }
+
+    public static class GeoLocation{
+        public Double latitude;
+        public Double longitude;
+
+        public GeoLocation(){}
+
+        public Double latitude() {
+            return latitude;
+        }
+
+        public GeoLocation setLatitude(Double latitude) {
+            this.latitude = latitude;
+            return this;
+        }
+
+        public Double longitude() {
+            return longitude;
+        }
+
+        public GeoLocation setLongitude(Double longitude) {
+            this.longitude = longitude;
+            return this;
+        }
     }
 }

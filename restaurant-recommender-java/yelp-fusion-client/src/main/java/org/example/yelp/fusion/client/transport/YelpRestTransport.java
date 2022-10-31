@@ -125,7 +125,7 @@ public class YelpRestTransport implements YelpFusionTransport {
         if (options != null) {
             for (Header header : options.getHeaders())
                 if (header.getName().contains("Authorization")) {
-                    currentHeader = String.format("-H \"%s: %s\" ",header.getName(),header.getValue());
+                    currentHeader = String.format("-H \"%s: %s\" ", header.getName(), header.getValue());
                 }
         }
         sb.append(currentHeader); //curl -H Authorization: Bearer $YELP_API_KEY

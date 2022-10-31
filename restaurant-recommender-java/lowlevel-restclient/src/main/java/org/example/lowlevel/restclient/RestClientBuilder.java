@@ -211,13 +211,13 @@ public final class RestClientBuilder {
                 compressionEnabled,
                 metaHeaderEnabled
         );
-        logger.info("{}Building RestClient with fields:{}%s httpClient = {}" +
-                "defaultHeaders = {}" +
-                "nodes = {}" +
-                "pathPrefix = {}" +
-                "failureListener = {}" +
-                "nodeSelector = {}{}",
-                PrintUtils.GREEN, PrintUtils.CYAN, httpClient, defaultHeaders, nodes, pathPrefix, failureListener, nodeSelector, PrintUtils.RESET);
+
+               PrintUtils.cyan(String.format("http client = %s%n default headers = %s%n nodes = %s%n pathPrefix = %s%n",
+                       httpClient,
+                       Arrays.toString(defaultHeaders),
+                       nodes,
+                       pathPrefix));
+
         httpClient.start();
         return restClient;
     }
