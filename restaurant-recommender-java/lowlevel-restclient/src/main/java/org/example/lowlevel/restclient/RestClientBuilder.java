@@ -1,12 +1,6 @@
 package org.example.lowlevel.restclient;
 
 
-import org.apache.http.*;
-import org.apache.http.client.config.*;
-import org.apache.http.impl.nio.client.*;
-import org.apache.http.util.*;
-import org.slf4j.*;
-
 import javax.net.ssl.*;
 import java.io.*;
 import java.security.*;
