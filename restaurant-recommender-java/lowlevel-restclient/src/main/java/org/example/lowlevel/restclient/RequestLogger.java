@@ -9,6 +9,7 @@ import org.apache.http.util.*;
 import java.io.*;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class RequestLogger {
     private static final Log tracer = LogFactory.getLog("tracer");
@@ -54,6 +55,9 @@ public class RequestLogger {
         }
     }
 
+    /**
+     * Logs a request that failed
+     */
     static void logFailedRequest(Log logger, HttpUriRequest request, Node node, Exception e) {
         if (logger.isDebugEnabled()) {
             logger.debug("request [" + request.getMethod() + " " + node.getHost() + getUri(request.getRequestLine()) + "] failed", e);
@@ -97,7 +101,7 @@ public class RequestLogger {
             if (enclosingRequest.getEntity() != null) {
                 requestLine += " -d '";
                 HttpEntity entity = enclosingRequest.getEntity();
-                if (entity.isRepeatable() == false) {
+                if (!entity.isRepeatable()) {
                     entity = new BufferedHttpEntity(enclosingRequest.getEntity());
                     enclosingRequest.setEntity(entity);
                 }
@@ -107,6 +111,9 @@ public class RequestLogger {
         return requestLine;
     }
 
+    /**
+     * Creates curl output for given response
+     */
     static String buildTraceResponse(HttpResponse httpResponse) throws IOException {
         StringBuilder responseLine = new StringBuilder();
         responseLine.append("# ").append(httpResponse.getStatusLine());
@@ -116,7 +123,7 @@ public class RequestLogger {
         responseLine.append("\n#");
         HttpEntity entity = httpResponse.getEntity();
         if (entity != null) {
-            if (entity.isRepeatable() == false) {
+            if (!entity.isRepeatable()) {
                 entity = new BufferedHttpEntity(entity);
             }
             httpResponse.setEntity(entity);
@@ -142,31 +149,47 @@ public class RequestLogger {
         return requestLine.getUri();
     }
 
-    public static void logResponse(Log logger, String pathPrefix, String path, Map<String, String> params) {
+    public static void logFailedRequest(Log logger, java.net.http.HttpRequest request, Node node, Exception e) {
         if (logger.isDebugEnabled()) {
-            PrintUtils.green("isDebugEnabled");
-
+            logger.debug("request [" + request.method() + " " + node.getHost() + request.uri() + "] failed", e);
         }
-        if (logger.isTraceEnabled()) {
-            PrintUtils.green("isTraceEnabled");
+        if (tracer.isTraceEnabled()) {
+            String traceRequest;
+            traceRequest = buildTraceRequestFromJdkHttpRequest(request, node.getHost());
+            tracer.trace(traceRequest);
+        }
+    }
 
+    public static void logFailedRequest(Log logger, Exception e) {
+        if(logger.isWarnEnabled()){
+            logger.warn("warn ");
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("debug " + e);
+        }
+
+        if (tracer.isTraceEnabled()) {
+            String traceRequest;
+            tracer.trace("tracer.isTraceEnabled " + e);
+        }
+    }
+
+    private static String buildTraceRequestFromJdkHttpRequest(java.net.http.HttpRequest request, HttpHost host) {
+        // yelp fusion only accepts query params on path
+        return "curl -iX " + request.method() + " '" + host + request.uri() + "'";
+    }
+
+    public static void logResponse(Log logger, java.net.http.HttpRequest jdkHttpRequest, HttpHost host, java.net.http.HttpResponse<String> httpResponse) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("debug");
         }
         if (logger.isWarnEnabled()) {
-            PrintUtils.green("isWarnEnabled");
+            logger.warn("warn");
 
         }
-        if (logger.isInfoEnabled()) {
-            PrintUtils.green("isInfoEnabled");
-
+        if (tracer.isTraceEnabled()) {
+            logger.trace("trace");
         }
-//        StringBuilder uri = new StringBuilder(pathPrefix);
-//        uri.append(path);
-//
-//        params.forEach((k,v)->
-//                uri.append(v)
-//                        .append("=")
-//                        .append(v));
-//        tracer.trace(uri);
     }
 
 }

@@ -2,7 +2,6 @@ package org.example.lowlevel.restclient;
 
 import org.apache.commons.logging.*;
 import org.apache.http.*;
-import org.apache.http.auth.*;
 import org.apache.http.client.*;
 import org.apache.http.client.config.*;
 import org.apache.http.client.entity.*;
@@ -19,10 +18,14 @@ import org.apache.http.nio.client.methods.*;
 import org.apache.http.nio.protocol.*;
 import org.apache.http.protocol.*;
 
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
-import java.nio.charset.*;
+import java.nio.*;
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
@@ -33,11 +36,12 @@ import java.util.zip.*;
 import static java.nio.charset.StandardCharsets.*;
 import static java.util.Collections.*;
 
+@SuppressWarnings({"ClassCanBeRecord"})
 public class RestClient implements Closeable {
     private static final Log logger = LogFactory.getLog(RestClient.class);
-
-    public static RequestOptions COMMON_OPTIONS;
     private final CloseableHttpAsyncClient client;
+    private final HttpClientInterface httpClientInterface;
+    private HttpClient jdkHttpClient;
     // We don't rely on default headers supported by HttpAsyncClient as those cannot be replaced.
 // These are package private for tests.
     final List<Header> defaultHeaders;
@@ -53,6 +57,8 @@ public class RestClient implements Closeable {
 
     RestClient(
             CloseableHttpAsyncClient client,
+            java.net.http.HttpClient jdkHttpClient,
+            HttpClientInterface httpClientInterface,
             Header[] defaultHeaders,
             List<Node> nodes,
             String pathPrefix,
@@ -63,6 +69,8 @@ public class RestClient implements Closeable {
             boolean metaHeaderEnabled
     ) {
         this.client = client;
+        this.jdkHttpClient = jdkHttpClient;
+        this.httpClientInterface = httpClientInterface;
         this.defaultHeaders = Collections.unmodifiableList(Arrays.asList(defaultHeaders));
         this.failureListener = failureListener;
         this.pathPrefix = pathPrefix;
@@ -113,7 +121,6 @@ public class RestClient implements Closeable {
         return new RestClientBuilder(nodes == null ? null : Arrays.asList(nodes));
     }
 
-
     public static RestClientBuilder builder(HttpHost... hosts) {
         if (hosts == null || hosts.length == 0) {
             throw new IllegalArgumentException("hosts must not be null nor empty");
@@ -121,14 +128,23 @@ public class RestClient implements Closeable {
         List<Node> nodes = Arrays.stream(hosts) // stream all input parameter hosts
                 .map(Node::new) //Returns a stream consisting of the results of applying the given function to the elements of this stream.
                 .collect(Collectors.toList());   // Performs a mutable reduction operation on the elements of this stream using a Collector.
-                                                // A Collector encapsulates the functions used as arguments to collect(Supplier, BiConsumer, BiConsumer),
-                                               // allowing for reuse of collection strategies and composition of collect operations such as multiple-level grouping or partitioning.
+        // A Collector encapsulates the functions used as arguments to collect(Supplier, BiConsumer, BiConsumer),
+        // allowing for reuse of collection strategies and composition of collect operations such as multiple-level grouping or partitioning.
 
         return new RestClientBuilder(nodes);
     }
 
+
     public HttpAsyncClient getHttpClient() {
         return this.client;
+    }
+
+    public java.net.http.HttpClient getJdkHttpClient() {
+        return this.jdkHttpClient;
+    }
+
+    public HttpClientInterface getHttpClientInterface() {
+        return this.httpClientInterface;
     }
 
     public synchronized void setNodes(Collection<Node> nodes) {
@@ -144,69 +160,36 @@ public class RestClient implements Closeable {
             nodesByHost.put(node.getHost(), node);
             authCache.put(node.getHost(), new BasicScheme());
         }
-        this.nodeTuple = new NodeTuple<>(Collections.unmodifiableList(new ArrayList<>(nodesByHost.values())), authCache);
+        this.nodeTuple = new NodeTuple<>(List.copyOf(nodesByHost.values()), authCache);
         this.blacklist.clear();
     }
 
     public List<Node> getNodes() {
         return nodeTuple.nodes;
     }
-    
+
     public boolean isRunning() {
         return client.isRunning();
     }
+
 
     public String add(String string, Function<String, String> fn) {
         return fn.apply(string);
     }
 
     public Response performRequest(Request request) throws IOException {
-        PrintUtils.green(String.format("performRequest %s", request));
-        InternalRequest internalRequest = new InternalRequest(request);
 
-        if(internalRequest.httpRequest.getAllHeaders().length == 0) {
-            PrintUtils.green("httpRequest getAllHeaders == 0");
-        }
+        InternalRequest internalRequest = new InternalRequest(request);
+        
         return performRequest(nextNodes(), internalRequest, null);
     }
 
-
     private Response performRequest(final NodeTuple<Iterator<Node>> tuple, final InternalRequest request, Exception previousException)
             throws IOException {
-
         RequestContext context = request.createContextForNextAttempt(tuple.nodes.next(), tuple.authCache);
-
-        PrintUtils.red(String.format("context.requestProducer = %s%n context.asyncResponseConsumer %s%n context.node = %s"+
-                context.requestProducer.toString() + " " +
-                context.asyncResponseConsumer.toString()  + " " +
-                context.node.getName()));
-
-        HttpResponse httpResponse;
-
-
+        org.apache.http.HttpResponse httpResponse;
         try {
             httpResponse = client.execute(context.requestProducer, context.asyncResponseConsumer, context.context, null).get();
-            PrintUtils.red(String.format("httpResponse.statusLine = %s%n headers = %s",
-                    httpResponse.getStatusLine(),
-                    Arrays.toString(httpResponse.getAllHeaders())
-            ));
-
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            PrintUtils.cyan(String.format("context.requestProduce = %s%n context.asyncResponseConsumer = %s%n context = %s",
-                    context.requestProducer,
-                    context.asyncResponseConsumer,
-                    context.context ));
-            
-            httpResponse = client.execute(context.requestProducer, context.asyncResponseConsumer, context.context, null).get();
-            PrintUtils.red(String.format("httpResponse.statusLine = %s%n headers = %s",
-                    httpResponse.getStatusLine(),
-                    Arrays.toString(httpResponse.getAllHeaders())
-                   ));
-
         } catch (Exception e) {
             RequestLogger.logFailedRequest(logger, request.httpRequest, context.node, e);
             onFailure(context.node);
@@ -216,21 +199,16 @@ public class RestClient implements Closeable {
                 return performRequest(tuple, request, cause);
             }
             if (cause instanceof IOException) {
-                PrintUtils.green("IO Exception: " );
                 throw (IOException) cause;
             }
             if (cause instanceof RuntimeException) {
-                PrintUtils.green("RuntimeException: ");
                 throw (RuntimeException) cause;
             }
             throw new IllegalStateException("unexpected exception type: must be either RuntimeException or IOException", cause);
         }
+
         ResponseOrResponseException responseOrResponseException = convertResponse(request, context.node, httpResponse);
         if (responseOrResponseException.responseException == null) {
-            PrintUtils.red(String.format("httpResponse.statusLine = %s%n headers = %s",
-                    httpResponse.getStatusLine(),
-                    Arrays.toString(httpResponse.getAllHeaders())
-            ));
             return responseOrResponseException.response;
         }
         addSuppressedException(previousException, responseOrResponseException.responseException);
@@ -240,7 +218,93 @@ public class RestClient implements Closeable {
         throw responseOrResponseException.responseException;
     }
 
-    private ResponseOrResponseException convertResponse(InternalRequest request, Node node, HttpResponse httpResponse) throws IOException {
+
+    public Response performRequestWithJdkHttpClient(Request request) throws IOException {
+
+        InternalRequest internalRequest = new InternalRequest(request, true);
+
+        Node host = nextNodes().nodes.next();
+
+        RequestContext context = internalRequest.createContextWithJdkClient(host, nextNodes().authCache);
+
+        HttpResponse.BodyHandler<String> bodyHandler = HttpResponse.BodyHandlers.fromSubscriber(
+                new StringSubscriber(), StringSubscriber::getBody
+        );
+
+        HttpResponse<String> httpResponse;
+
+        try {
+            httpResponse = jdkHttpClient.sendAsync(internalRequest.jdkHttpRequest, HttpResponse.BodyHandlers.ofString()).get();
+//            jdkHttpClient.sendAsync(internalRequest.jdkHttpRequest, bodyHandler)
+//                    .whenComplete((r, t) -> System.out.println("status code: " + r.statusCode()))
+//                    .thenApply(HttpResponse::body);
+
+
+        } catch (Exception e) {
+            RequestLogger.logFailedRequest(logger, internalRequest.jdkHttpRequest, context.node, e);
+            onFailure(context.node);
+            Exception cause = extractAndWrapCause(e);
+            if (cause instanceof IOException) {
+                throw (IOException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            }
+            throw new IllegalStateException("unexpected exception type: must be either RuntimeException or IOException", cause);
+        }
+        
+        ResponseOrResponseException responseOrResponseException = convertJdkHttpResponse(internalRequest, context.node, httpResponse);
+
+        if (responseOrResponseException.responseException == null) {
+            return responseOrResponseException.response;
+        }
+        throw responseOrResponseException.responseException;
+    }
+
+    static class StringSubscriber implements Flow.Subscriber<List<ByteBuffer>> {
+        final CompletableFuture<String> bodyCF = new CompletableFuture<>();
+        Flow.Subscription subscription;
+        List<ByteBuffer> responseData = new ArrayList<>();
+        
+        @Override
+        public void onSubscribe(Flow.Subscription subscription) {
+            this.subscription = subscription;
+            subscription.request(1);
+            logger.info(PrintUtils.red("subscription: " + subscription));
+        }
+
+        @Override
+        public void onNext(List<ByteBuffer> buffers) {
+            responseData.addAll(buffers);
+            subscription.request(1);   // Adds the given number n of items to the current unfulfilled demand for this subscription.
+            logger.info( PrintUtils.red("onNext. responseData.addAll(" + buffers +")"));
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            bodyCF.completeExceptionally(throwable);
+            logger.info(PrintUtils.red("completeExceptionally throwable: " + throwable));
+        }
+
+        private String body;
+
+        public String getBody(){return this.body;}
+
+        @Override
+        public void onComplete() {
+            int size = responseData.stream().mapToInt(ByteBuffer::remaining).sum();
+            byte[] ba = new byte[size];
+            int offset = 0;
+            for(ByteBuffer buffer: responseData) {
+                int remaining = buffer.remaining();
+                buffer.get(ba, offset, remaining);
+                offset += remaining;
+            }
+            String s = new String(ba);
+        }
+    }
+
+    private ResponseOrResponseException convertResponse(InternalRequest request, Node node, org.apache.http.HttpResponse httpResponse) throws IOException {
         RequestLogger.logResponse(logger, request.httpRequest, node.getHost(), httpResponse);
         int statusCode = httpResponse.getStatusLine().getStatusCode();
 
@@ -274,6 +338,105 @@ public class RestClient implements Closeable {
         throw responseException;
     }
 
+    private ResponseOrResponseException convertJdkHttpResponse(InternalRequest request, Node node, HttpResponse<String> httpResponse) throws IOException {
+        RequestLogger.logResponse(logger, request.jdkHttpRequest, node.getHost(), httpResponse);
+
+        final Integer statusCode = httpResponse.statusCode();
+
+        Response response = new Response(node.getHost(), httpResponse);
+
+        if (isSuccessfulResponse(statusCode)) {
+
+            onResponse(node);
+
+            if (request.warningsHandler.warningsShouldFailRequest(response.getWarnings())) {
+                throw new WarningFailureException(response);
+            }
+            return new ResponseOrResponseException(response);
+        }
+
+        ResponseException responseException = new ResponseException(response);
+
+        if (isRetryStatus(statusCode)) {
+            // mark host dead and retry against next one
+            onFailure(node);
+            return new ResponseOrResponseException(responseException);
+        }
+        onResponse(node);
+        throw responseException;
+    }
+
+
+    private void performRequestAsyncWithJdkHttpClient(
+            final NodeTuple<Iterator<Node>> tuple,
+            final InternalRequest request,
+            final FailureTrackingResponseListener listener
+    ) {
+        request.cancellable.runIfNotCancelled(() -> {
+
+            final RequestContext context = request.createContextWithJdkClient(tuple.nodes.next(), tuple.authCache);
+
+            client.execute(
+                    context.requestProducer,
+                    context.asyncResponseConsumer,
+                    context.context,
+                    new FutureCallback<>() { // A callback interface that gets invoked upon completion of a java.util.concurrent.Future.
+
+                        @Override
+                        public void completed(org.apache.http.HttpResponse httpResponse) {
+                            try {
+                                ResponseOrResponseException responseOrResponseException = convertResponse(request, context.node, httpResponse);
+                                if (responseOrResponseException.responseException == null) {
+                                    listener.onSuccess(responseOrResponseException.response);
+                                } else {
+                                    if (tuple.nodes.hasNext()) {
+                                        listener.trackFailure(responseOrResponseException.responseException);
+                                        performRequestAsync(tuple, request, listener);
+                                    } else {
+                                        listener.onDefinitiveFailure(responseOrResponseException.responseException);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                listener.onDefinitiveFailure(e);
+                            }
+                        }
+
+                        @Override
+                        public void failed(Exception failure) {
+                            try {
+                                RequestLogger.logFailedRequest(logger, request.httpRequest, context.node, failure);
+                                onFailure(context.node);
+                                if (isRetryableException(failure) && tuple.nodes.hasNext()) {
+                                    listener.trackFailure(failure);
+                                    performRequestAsync(tuple, request, listener);
+                                } else {
+                                    listener.onDefinitiveFailure(failure);
+                                }
+                            } catch (Exception e) {
+                                listener.onDefinitiveFailure(e);
+                            }
+                        }
+
+                        @Override
+                        public void cancelled() {
+                            listener.onDefinitiveFailure(Cancellable.newCancellationException());
+                        }
+                    });
+        });
+    }
+
+    public Cancellable performRequestAsyncWithJdkHttpClient(Request request, ResponseListener responseListener) {
+        try {
+            FailureTrackingResponseListener failureTrackingResponseListener = new FailureTrackingResponseListener(responseListener);
+            InternalRequest internalRequest = new InternalRequest(request);
+            performRequestAsync(nextNodes(), internalRequest, failureTrackingResponseListener);
+            return internalRequest.cancellable;
+        } catch (Exception e) {
+            responseListener.onFailure(e);
+            return Cancellable.NO_OP;
+        }
+    }
+
 
     public Cancellable performRequestAsync(Request request, ResponseListener responseListener) {
         try {
@@ -294,56 +457,55 @@ public class RestClient implements Closeable {
     ) {
         request.cancellable.runIfNotCancelled(() -> {
             final RequestContext context = request.createContextForNextAttempt(tuple.nodes.next(), tuple.authCache);
-            PrintUtils.green(String.format("       request.createContextForNextAttempt(tuple.nodes.next() = %s    tuple.authCache = %s ) ", tuple.nodes.next(), tuple.authCache));
-            PrintUtils.cyan(String.format("        client.execute request producer, async response consumer, context, FutureCallBack<HttpResponse> requestProducer = %s", context.requestProducer));
+
             client.execute(
                     context.requestProducer,
                     context.asyncResponseConsumer,
                     context.context,
-                    new FutureCallback<HttpResponse>() { // A callback interface that gets invoked upon completion of a java.util.concurrent.Future.
+                    new FutureCallback<>() { // A callback interface that gets invoked upon completion of a java.util.concurrent.Future.
 
-                @Override
-                public void completed(HttpResponse httpResponse) {
-                    try {
-                        ResponseOrResponseException responseOrResponseException = convertResponse(request, context.node, httpResponse);
-                        if (responseOrResponseException.responseException == null) {
-                            listener.onSuccess(responseOrResponseException.response);
-                        } else {
-                            if (tuple.nodes.hasNext()) {
-                                listener.trackFailure(responseOrResponseException.responseException);
-                                performRequestAsync(tuple, request, listener);
-                            } else {
-                                listener.onDefinitiveFailure(responseOrResponseException.responseException);
+                        @Override
+                        public void completed(org.apache.http.HttpResponse httpResponse) {
+                            try {
+                                ResponseOrResponseException responseOrResponseException = convertResponse(request, context.node, httpResponse);
+                                if (responseOrResponseException.responseException == null) {
+                                    listener.onSuccess(responseOrResponseException.response);
+                                } else {
+                                    if (tuple.nodes.hasNext()) {
+                                        listener.trackFailure(responseOrResponseException.responseException);
+                                        performRequestAsync(tuple, request, listener);
+                                    } else {
+                                        listener.onDefinitiveFailure(responseOrResponseException.responseException);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                listener.onDefinitiveFailure(e);
                             }
                         }
-                    } catch (Exception e) {
-                        listener.onDefinitiveFailure(e);
-                    }
-                }
 
-                @Override
-                public void failed(Exception failure) {
-                    try {
-                        RequestLogger.logFailedRequest(logger, request.httpRequest, context.node, failure);
-                        onFailure(context.node);
-                        if (isRetryableException(failure) && tuple.nodes.hasNext()) {
-                            listener.trackFailure(failure);
-                            performRequestAsync(tuple, request, listener);
-                        } else {
-                            listener.onDefinitiveFailure(failure);
+                        @Override
+                        public void failed(Exception failure) {
+                            try {
+                                RequestLogger.logFailedRequest(logger, request.httpRequest, context.node, failure);
+                                onFailure(context.node);
+                                if (isRetryableException(failure) && tuple.nodes.hasNext()) {
+                                    listener.trackFailure(failure);
+                                    performRequestAsync(tuple, request, listener);
+                                } else {
+                                    listener.onDefinitiveFailure(failure);
+                                }
+                            } catch (Exception e) {
+                                listener.onDefinitiveFailure(e);
+                            }
                         }
-                    } catch (Exception e) {
-                        listener.onDefinitiveFailure(e);
-                    }
-                }
-                @Override
-                public void cancelled() {
-                    listener.onDefinitiveFailure(Cancellable.newCancellationException());
-                }
-            });
+
+                        @Override
+                        public void cancelled() {
+                            listener.onDefinitiveFailure(Cancellable.newCancellationException());
+                        }
+                    });
         });
     }
-
 
     private NodeTuple<Iterator<Node>> nextNodes() throws IOException {
         NodeTuple<List<Node>> tuple = this.nodeTuple;
@@ -420,10 +582,6 @@ public class RestClient implements Closeable {
         }
     }
 
-    /**
-     * Called after each failed attempt.
-     * Receives as an argument the host that was used for the failed attempt.
-     */
     private void onFailure(Node node) {
         while (true) {
             DeadHostState previousDeadHostState = blacklist.putIfAbsent(
@@ -455,9 +613,6 @@ public class RestClient implements Closeable {
         return statusCode < 300;
     }
 
-    /**
-     * Should an exception cause retrying the request?
-     */
     private static boolean isRetryableException(Throwable e) {
         if (e instanceof ExecutionException) {
             e = e.getCause();
@@ -525,25 +680,22 @@ public class RestClient implements Closeable {
 
     static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
         Objects.requireNonNull(path, "path must not be null");
-        RequestLogger.logResponse(logger, pathPrefix, path, params);
 
-        PrintUtils.green(String.format("URI buildUri(String pathPrefix %s%n, String path %s%n, Map<String, String> params %s%n", pathPrefix, path,params ));
         try {
             String fullPath;
             if (pathPrefix != null && !pathPrefix.isEmpty()) {
                 if (pathPrefix.endsWith("/") && path.startsWith("/")) {
-                    PrintUtils.green(String.format("pathPrefix.endsWith(\"/\") && path.startsWith(\"/\"): %s%s ", pathPrefix, path));
+
                     fullPath = pathPrefix.substring(0, pathPrefix.length() - 1) + path; // remove additional "/"
                 } else if (pathPrefix.endsWith("/") || path.startsWith("/")) {
                     fullPath = pathPrefix + path;
-                    PrintUtils.green(String.format("(pathPrefix.endsWith(\"/\") || path.startsWith(\"/\"): %s ", fullPath));
+
                 } else {
                     fullPath = pathPrefix + "/" + path;
-                    PrintUtils.green(String.format("pathPrefix + \"/\" + path %s ", fullPath));
+
                 }
             } else {
                 fullPath = path;
-                PrintUtils.green(String.format("fullPath = path: %s ", fullPath));
             }
 
             URIBuilder uriBuilder = new URIBuilder(fullPath);
@@ -589,7 +741,6 @@ public class RestClient implements Closeable {
         }
     }
 
-
     public static class FailureListener {
         /**
          * Notifies that the node provided as argument has just failed
@@ -597,7 +748,6 @@ public class RestClient implements Closeable {
         public void onFailure(Node node) {
         }
     }
-
 
     static class NodeTuple<T> {
         final T nodes;
@@ -670,47 +820,39 @@ public class RestClient implements Closeable {
             this.ignoreErrorCodes = getIgnoreErrorCodes(ignoreString, request.getMethod());
 
             URI uri = buildUri(pathPrefix, request.getEndpoint(), params);
-            PrintUtils.green(String.format("uri =  %s", uri));
 
             this.httpRequest = createHttpRequest(request.getMethod(), uri, request.getEntity(), compressionEnabled);
-            PrintUtils.green(String.format("httpRequest = %s", httpRequest));
 
             this.cancellable = Cancellable.fromRequest(httpRequest);
-            PrintUtils.red(String.format("this.cancellable = Cancellable.fromRequest(httpRequest) %s", cancellable));
 
             setHeaders(httpRequest, request.getOptions().getHeaders());
-            PrintUtils.green(String.format("setHeaders(httpRequest, request.getOptions().getHeaders()); %s", httpRequest));
 
             setRequestConfig(httpRequest, request.getOptions().getRequestConfig());
-            PrintUtils.cyan(String.format(" setRequestConfig(httpRequest, request.getOptions().getRequestConfig()) = %s", request.getOptions().getRequestConfig()));
 
             this.warningsHandler = request.getOptions().getWarningsHandler() == null
                     ? RestClient.this.warningsHandler
                     : request.getOptions().getWarningsHandler();
         }
-
-        private void setHeaders(HttpRequest req, Collection<Header> requestHeaders) {
+        private void setHeaders(org.apache.http.HttpRequest req, Collection<Header> requestHeaders) {
             // request headers override default headers, so we don't add default headers if they exist as request headers
             final Set<String> requestNames = new HashSet<>(requestHeaders.size());
+
             for (Header requestHeader : requestHeaders) {
                 req.addHeader(requestHeader);
                 requestNames.add(requestHeader.getName());
-                PrintUtils.red(String.format("HttpRequest addHeader: %s%n requestNames .add: %s", requestHeader, requestHeader.getName()));
             }
+
             for (Header defaultHeader : defaultHeaders) {
                 if (!requestNames.contains(defaultHeader.getName())) {
                     req.addHeader(defaultHeader);
-                    PrintUtils.red(String.format("HttpRequest adding defaultHeader: %s%n ", defaultHeader));
                 }
             }
             if (compressionEnabled) {
                 req.addHeader("Accept-Encoding", "gzip");
-                PrintUtils.red("compressionEnabled addHeader : %s%n, AcceptEncoding gzip");
             }
             if (metaHeaderEnabled) {
                 if (!req.containsHeader(RestClientBuilder.META_HEADER_NAME)) {
                     req.setHeader(RestClientBuilder.META_HEADER_NAME, RestClientBuilder.META_HEADER_VALUE);
-                    PrintUtils.red("metaHeaderEnabled addHeader : RestClientBuilder.META_HEADER_NAME");
                 }
             } else {
                 req.removeHeaders(RestClientBuilder.META_HEADER_NAME);
@@ -725,41 +867,93 @@ public class RestClient implements Closeable {
 
         RestClient.RequestContext createContextForNextAttempt(Node node, AuthCache authCache) {
             this.httpRequest.reset();
-            try {
-                return new RequestContext(this, node, authCache);
-            } catch (HttpException e) {
-                throw new RuntimeException(e);
+            return new RequestContext(this, node, authCache);
+        }
+
+        private HttpRequest jdkHttpRequest;
+        InternalRequest(Request request, boolean temp) {
+
+            jdkHttpClient = HttpClient.newBuilder()
+                    .version(HttpClient.Version.HTTP_2)
+                    .connectTimeout(Duration.ofSeconds(10))
+                    .followRedirects(HttpClient.Redirect.ALWAYS)
+                    .build();
+
+            this.request = request;
+            Map<String, String> params = new HashMap<>(request.getParameters());
+            params.putAll(request.getOptions().getParameters());
+
+            String ignoreString = params.remove("ignore");
+            this.ignoreErrorCodes = getIgnoreErrorCodes(ignoreString, request.getMethod());
+
+            URI uri = buildUri(pathPrefix, request.getEndpoint(), params);
+
+            this.httpRequest = createHttpRequest(request.getMethod(), uri, request.getEntity(), compressionEnabled);
+
+            String host = nodeTuple.nodes.get(0).toString();
+
+            if(host.startsWith("[")) {
+                host = host.substring(6, host.length()-1);
+            }
+            URI u = URI.create(host +  uri);
+
+            this.jdkHttpRequest = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(u) // uri
+                    .setHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))
+                    .build();
+
+            this.cancellable = Cancellable.fromRequest(httpRequest);
+
+            setHeaders(jdkHttpRequest, request.getOptions().getHeaders());
+
+            setRequestConfig(jdkHttpRequest, request.getOptions().getRequestConfig());
+
+            this.warningsHandler = request.getOptions().getWarningsHandler() == null
+                    ? RestClient.this.warningsHandler
+                    : request.getOptions().getWarningsHandler();
+
+        }
+
+        private void setRequestConfig(HttpRequest jdkHttpRequest, RequestConfig requestConfig) {
+            if (requestConfig != null) {
+                //redirects, auth enabled, compression
             }
         }
+
+        private void setHeaders(HttpRequest jdkHttpRequest, List<Header> headers) {
+            final Set<String> requestNames = new HashSet<>(headers.size());
+
+            for (Header requestHeader : headers) {
+                requestNames.add(requestHeader.getName());
+            }
+        }
+        public RequestContext createContextWithJdkClient(Node node, AuthCache authCache)  {
+            return new RequestContext(this, node, authCache);
+        }
+
     }
 
     private static class RequestContext {
         private final Node node;
         private final HttpAsyncRequestProducer requestProducer;
-        private final HttpAsyncResponseConsumer<HttpResponse> asyncResponseConsumer;
+        private final HttpAsyncResponseConsumer<org.apache.http.HttpResponse> asyncResponseConsumer;
 
         // Adaptor class that provides convenience type safe setters and getters for common HttpContext attributes used in the course of HTTP request execution.
         private final HttpClientContext context;
 
-        RequestContext(RestClient.InternalRequest request, Node node, AuthCache authCache) throws HttpException {
+        RequestContext(RestClient.InternalRequest request, Node node, AuthCache authCache) {
             this.node = node;
-            PrintUtils.red(String.format("node = %s", node));
+
             // we stream the request body if the entity allows for it
             this.requestProducer = HttpAsyncMethods.create(node.getHost(), request.httpRequest);
-            PrintUtils.red(String.format("requestProducer = HttpAsyncMethods.create(node.getHost = %s%n request.httpRquest = %s", node.getHost(), request.httpRequest));
+
             this.asyncResponseConsumer = request.request.getOptions()
                     .getHttpAsyncResponseConsumerFactory()
                     .createHttpAsyncResponseConsumer();
-            PrintUtils.red(String.format("requestProducer = HttpAsyncMethods.create(node.getHost = %s%n request.httpRquest = %s", node.getHost(), request.httpRequest));
 
-            PrintUtils.green(String.format("       asyncResponseConsumer = request.request.getOptions().getHttpAsyncResponseConsumerFactory().createHttpAsyncResponseConsumer() %n%s, request.httpRequest = %s) ", node.getHost(), request.httpRequest));
             this.context = HttpClientContext.create();
 
-            try {
-                PrintUtils.red(String.format("this.requestProducer.generateRequest().getRequestLine = %s", this.requestProducer.generateRequest().getRequestLine()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             context.setAuthCache(authCache);
         }
     }

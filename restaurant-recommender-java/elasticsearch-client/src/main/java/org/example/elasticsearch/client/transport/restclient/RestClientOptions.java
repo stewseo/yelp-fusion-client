@@ -12,15 +12,7 @@ import java.util.stream.*;
 
 public class RestClientOptions implements TransportOptions {
 
-
-    static{
-        PrintUtils.green("YelpRestTransportOptions");
-    }
     private final RequestOptions options;
-    private static final String CLIENT_META_HEADER = "X-Elastic-Client-Meta";
-    private static final String USER_AGENT_HEADER = "User-Agent";
-//    static final String CLIENT_META_VALUE = getClientMeta();
-    static final String USER_AGENT_VALUE = getUserAgent();
 
     public static RestClientOptions of(TransportOptions options) {
         if (options instanceof RestClientOptions) {
@@ -33,16 +25,6 @@ public class RestClientOptions implements TransportOptions {
             builder.onWarnings(options.onWarnings());
             return builder.build();
         }
-    }
-
-    private static String getBase64EncodedApiKey(String id, String secret) {
-        String utf16EsAuthentication = id + ":" + secret;
-        return
-                Base64.getEncoder() // The encoder maps the input to a set of characters in the A-Za-z0-9+/ character set
-                        .encodeToString((utf16EsAuthentication) // Encodes the specified byte array into a String using the Base64 encoding scheme.
-                                .getBytes(StandardCharsets.UTF_8));
-
-
     }
 
     public RestClientOptions(RequestOptions options) {
@@ -111,7 +93,7 @@ public class RestClientOptions implements TransportOptions {
 
         @Override
         public RestClientOptions build() {
-            return new RestClientOptions(addBuiltInHeaders(builder).build());
+            return new RestClientOptions(builder.build());
         }
 
     }
@@ -123,20 +105,11 @@ public class RestClientOptions implements TransportOptions {
 
     private static RequestOptions.Builder addBuiltInHeaders(RequestOptions.Builder builder) {
 
-        builder.removeHeader(CLIENT_META_HEADER);
-//        builder.addHeader(CLIENT_META_HEADER, CLIENT_META_VALUE);
-        if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase(USER_AGENT_HEADER))) {
-            builder.addHeader(USER_AGENT_HEADER, USER_AGENT_VALUE);
-        }
+//        builder.removeHeader(CLIENT_META_HEADER);
+
         if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase("Accept"))) {
             builder.addHeader("Accept", RestClientTransport.JsonContentType.toString());
         }
-
-
-//        if (builder.getHeaders().get("Accept") == null) {
-//            System.out.println("\n"+USER_AGENT_HEADER + "\n" + RestClientTransport.jsonContentType.toString());
-//            builder.addHeader("Accept", RestClientTransport.jsonContentType.toString());
-//        }
 
         return builder;
     }

@@ -4,27 +4,15 @@ import org.example.elasticsearch.client._types.*;
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.transport.*;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.example.lowlevel.restclient.*;
 
 
 import java.util.*;
 import java.util.function.*;
 
 
-public class SimpleEndpoint<RequestT, ResponseT> implements JsonEndpoint<RequestT, ResponseT, ErrorResponse> {
-
-    private static final Function<?, Map<String, String>> EMPTY_MAP = x -> Collections.emptyMap();
-
-    @SuppressWarnings("unchecked")
-    public static <T> Function<T, Map<String, String>> emptyMap() {
-        return (Function<T, Map<String, String>>) EMPTY_MAP;
-    }
-
-    private final String id;
-    private final Function<RequestT, String> method;
-    private final Function<RequestT, String> requestUrl;
-    private final Function<RequestT, Map<String, String>> queryParameters;
-    private final Function<RequestT, Map<String, String>> headers;
-    private final boolean hasRequestBody;
+public class SimpleEndpoint<RequestT, ResponseT> extends EndpointBase<RequestT, ResponseT>
+        implements JsonEndpoint<RequestT, ResponseT, ErrorResponse> {
     private final JsonpDeserializer<ResponseT> responseParser;
 
     public SimpleEndpoint(
@@ -36,49 +24,8 @@ public class SimpleEndpoint<RequestT, ResponseT> implements JsonEndpoint<Request
             boolean hasRequestBody,
             JsonpDeserializer<ResponseT> responseParser
     ) {
-        this.id = id;
-        this.method = method;
-        this.requestUrl = requestUrl;
-        this.queryParameters = queryParameters;
-        this.headers = headers;
-        this.hasRequestBody = hasRequestBody;
+        super(id, method, requestUrl, queryParameters, headers, hasRequestBody);
         this.responseParser = responseParser;
-    }
-
-
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    @Override
-    public String method(RequestT request) { // an instance of GetPipelineRequest's toString method prints it's pipeline-id class field
-
-        return this.method.apply(request); // returns GET, POST, PUT, DELETE
-    }
-
-    @Override
-    public String requestUrl(RequestT request) {
-
-        return this.requestUrl.apply(request); // returns /_ingest/pipeline
-    }
-
-    @Override
-    public Map<String, String> queryParameters(RequestT request) {
-
-        return this.queryParameters.apply(request); // returns a Map<String, String> of query parameters, initialized to empty
-    }
-
-    @Override
-    public Map<String, String> headers(RequestT request) {
-        Map<String, String> headers = this.headers.apply(request);
-
-        return headers; // returns a Collections.Map.Entry<String, String>> of query parameters, initialized to empty
-    }
-
-    @Override
-    public boolean hasRequestBody() {
-        return this.hasRequestBody;
     }
 
     @Override
@@ -86,17 +33,10 @@ public class SimpleEndpoint<RequestT, ResponseT> implements JsonEndpoint<Request
         return this.responseParser;
     }
 
-    // ES-specific
-    @Override
-    public boolean isError(int statusCode) {
-        return statusCode >= 400;
-    }
-
     @Override
     public JsonpDeserializer<ErrorResponse> errorDeserializer(int statusCode) {
-        return null;
+        return ErrorResponse._DESERIALIZER;
     }
-
 
     public <NewResponseT> SimpleEndpoint<RequestT, NewResponseT> withResponseDeserializer(
             JsonpDeserializer<NewResponseT> newResponseParser
@@ -118,7 +58,7 @@ public class SimpleEndpoint<RequestT, ResponseT> implements JsonEndpoint<Request
     }
 
     public static void pathEncode(String src, StringBuilder dest) {
-        URLEncodedUtils URLEncodedUtils = null;
+        // TODO: avoid dependency on HttpClient here (and use something more efficient)
         dest.append(URLEncodedUtils.formatSegments(src).substring(1));
     }
 }

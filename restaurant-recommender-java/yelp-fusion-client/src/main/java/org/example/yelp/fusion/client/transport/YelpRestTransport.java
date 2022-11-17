@@ -1,5 +1,6 @@
 package org.example.yelp.fusion.client.transport;
 
+import com.fasterxml.jackson.databind.*;
 import jakarta.json.stream.*;
 import org.apache.http.*;
 import org.apache.http.entity.*;
@@ -9,6 +10,8 @@ import org.apache.http.util.*;
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.json.jackson.*;
 import org.example.elasticsearch.client.transport.*;
+import org.example.elasticsearch.client.transport.MissingRequiredPropertyException;
+import org.example.elasticsearch.client.transport.endpoints.*;
 import org.example.elasticsearch.client.transport.restclient.*;
 import org.example.elasticsearch.client.util.*;
 import org.example.lowlevel.restclient.*;
@@ -25,8 +28,6 @@ import java.util.stream.*;
 public class YelpRestTransport implements YelpFusionTransport {
 
     static final ContentType JsonContentType;
-
-    static CloseableHttpAsyncClient client;
 
     static {
 
@@ -55,9 +56,7 @@ public class YelpRestTransport implements YelpFusionTransport {
             if (cancelled && cancellable != null) {
                 cancellable.cancel();
             }
-
             return cancelled;
-
         }
     }
 
@@ -75,106 +74,40 @@ public class YelpRestTransport implements YelpFusionTransport {
             transportOptions = YelpRestTransportOptions.of(options);
         }
 
-        PrintUtils.green(String.format("Initializing YelpRestTransport with: RestClient = %s%n JsonpMapper = %s%n %s", restClient, mapper, optionsString));
     }
 
     public YelpRestTransport(RestClient restClient, JsonpMapper mapper) throws IOException {
         this(restClient, mapper, null);
     }
 
-
     public RestClient restClient() {
         return restClient;
     }
 
-    
+
     public <RequestT, ResponseT, ErrorT> ResponseT performRequest(
             RequestT request,
             Endpoint<RequestT, ResponseT, ErrorT> endpoint,
-            TransportOptions transportOptions) throws IOException, URISyntaxException {
+            TransportOptions transportOptions) throws IOException, HttpException {
 
         Request clientRequest = prepareLowLevelRequest(request, endpoint, transportOptions);
-        
-        Response clientResponse = restClient.performRequest(clientRequest);
+        PrintUtils.green("\n\nRequest clientRequest from prepareLowLevelRequest output:\nendpoint= " + clientRequest.getEndpoint() + " method= " + clientRequest.getMethod() + " params= " + clientRequest.getParameters());
 
-        if(clientResponse.getStatusLine().getStatusCode() != 200) {
-            clientResponse = executeRequestUsingCurl(clientRequest);
-        }
+        Response clientResponse = restClient.performRequestWithJdkHttpClient(clientRequest);
+        PrintUtils.green("\n\nResponse clientResponse from restClient.performRequestWithJdkHttpClient output:\njdkHttpResponse.request = " + clientResponse.jdkHttpResponse().request());
 
-        return getHighLevelResponse(clientResponse, endpoint);
+        ResponseT responseT = getHighLevelResponse(clientResponse, endpoint);
+        PrintUtils.green("\n\nResponseT responseT from getJdkHighLevelResponse output:\nresponseT = ");
+
+        return responseT;
     }
+
 
     @Override
     public <RequestT, ResponseT, ErrorT> CompletableFuture<ResponseT> performRequestAsync(RequestT request, Endpoint<RequestT, ResponseT, ErrorT> endpoint, TransportOptions options) {
         return null;
     }
 
-
-    // TODO: use Apache HttpComponents: HttpClient, HttpResponse and  return ResponseT
-    public Response executeRequestUsingCurl(Request request) throws IOException {
-        RequestOptions options = request.getOptions();
-
-        StringBuilder sb = new StringBuilder("curl ");
-        String currentHeader = null;
-
-        if (options != null) {
-            for (Header header : options.getHeaders())
-                if (header.getName().contains("Authorization")) {
-                    currentHeader = String.format("-H \"%s: %s\" ", header.getName(), header.getValue());
-                }
-        }
-        sb.append(currentHeader); //curl -H Authorization: Bearer $YELP_API_KEY
-
-        HttpHost httpHost = restClient.getNodes().get(0).getHost();
-        String hostName = httpHost.getHostName();
-        String schemeName = httpHost.getSchemeName();
-
-        sb.append(schemeName)
-                .append("://")
-                .append(hostName); //curl -H Authorization: Bearer $YELP_API_KEY https://api.yelp.com
-
-        String method = request.getMethod();
-
-        String path = request.getEndpoint();
-        sb.append(path); //curl -H Authorization: Bearer $YELP_API_KEY https://api.yelp.com/v3/<fusion endpoint>
-
-        RequestOptions requestOptions = request.getOptions();
-
-        Map<String, String> params = request.getParameters();
-
-        String delim = "?";
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            sb.append(delim);
-            delim = "&";
-            String key = param.getKey();
-            String value = param.getValue();
-
-            if (value.startsWith("[")) {
-                String formatted = value.replaceAll("[^a-zA-Z0-9]", "");
-            }
-            sb.append(key).append("=").append(value);
-        }
-
-        Process process = Runtime.getRuntime().exec(sb.toString());
-
-        InputStream inputStream = process.getInputStream();
-
-        String response = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
-
-        Response clientResponse = new JacksonJsonpMapper().objectMapper().readValue(response, Response.class);
-
-        RequestLine requestLine = clientResponse.getRequestLine();
-        HttpHost host = clientResponse.getHost();
-        int statusCode = clientResponse.getStatusLine().getStatusCode();
-        Header[] headers = clientResponse.getHeaders();
-        String responseBody = EntityUtils.toString(clientResponse.getEntity());
-
-        return clientResponse;
-    }
-    
     private <RequestT, ResponseT, ErrorT> Request prepareLowLevelRequest(
             RequestT request, 
             Endpoint<RequestT,ResponseT,ErrorT> endpoint, 
@@ -185,15 +118,12 @@ public class YelpRestTransport implements YelpFusionTransport {
 
         Request clientReq = new Request(method, path);
 
-        PrintUtils.green("Request initialized with " + clientReq.getMethod() + " " + clientReq.getEndpoint());
-
         if(options != null) {
             RequestOptions restOptions = RestClientOptions.of(options).restClientRequestOptions();
 
             if (restOptions != null) {
                 clientReq.setOptions(restOptions);
             }
-
         }
         
         clientReq.addParameters(params);
@@ -217,49 +147,56 @@ public class YelpRestTransport implements YelpFusionTransport {
         // Request parameter intercepted by LLRC
         clientReq.addParameter("ignore", "400,401,403,404,405");
         return clientReq;
-        
     }
+
 
     private <ResponseT, ErrorT> ResponseT getHighLevelResponse(
             Response clientResp,
-            Endpoint<?, ResponseT, ?> endpoint
+            Endpoint<?, ResponseT, ErrorT> endpoint
     ) throws IOException {
-        ResponseT response;
-        try {
 
-            int statusCode = clientResp.getStatusLine().getStatusCode();
+        java.net.http.HttpResponse<String> jdkHttpResponse = clientResp.jdkHttpResponse();
 
-            HttpEntity entity = clientResp.getEntity();
-            if (entity == null) {
-                throw new TransportException(
-                        "Expecting a response body, but none was sent",
-                        endpoint.id(), new ResponseException(clientResp)
-                );
-            }
-
-            JsonEndpoint<?, ResponseT, ?> jsonEndpoint =
-                    (JsonEndpoint<?, ResponseT, ?>) endpoint;
-
-            JsonEndpoint<?, ResponseT, ?> jsonEndpoint_ =
-                    (JsonEndpoint<?, ResponseT, ?>) endpoint; // parameter endpoint
-
-            entity = new BufferedHttpEntity(entity);
-
-            InputStream content = entity.getContent(); // Returns a content stream of the entity.
-
-            JsonpDeserializer<ResponseT> responseParser = jsonEndpoint.responseDeserializer(); // The entity parser for the response body.
-
-            try (JsonParser parser = mapper.jsonProvider().createParser(content)) { // use JSON-P provider to create json parser. parse the stream of the entity. Repeatable entities are expected to create a new instance of
-                response = responseParser.deserialize(parser, mapper); // Deserialize a value. The value starts at the next state in the JSON stream.
-            }
-
-        } catch (IOException | UnsupportedOperationException e) {
-            throw new RuntimeException(e);
-        }
-        EntityUtils.consume(clientResp.getEntity()); // Ensures that the entity content is fully consumed and the content stream, if exists, is closed.
-
-        return response;
+        return decodeResponse(jdkHttpResponse.statusCode(), jdkHttpResponse.body(), clientResp, endpoint);
     }
+
+    private <ResponseT, ErrorT> ResponseT decodeResponse(int statusCode, String body, Response clientResp, Endpoint<?,ResponseT,ErrorT> endpoint) throws IOException {
+        if (endpoint instanceof BooleanEndpoint) {
+            PrintUtils.cyan("org.example.yelp.fusion.client.transport.YelpRestTransport.decodeJdkResponse()  endpoint instanceof BooleanEndpoint");
+            BooleanEndpoint<?> bep = (BooleanEndpoint<?>) endpoint;
+            @SuppressWarnings("unchecked")
+            ResponseT response = (ResponseT) new BooleanResponse(bep.getResult(statusCode));
+            return response;
+        }
+
+        else if (endpoint instanceof JsonEndpoint){
+            @SuppressWarnings("unchecked")
+            JsonEndpoint<?, ResponseT, ?> jsonEndpoint = (JsonEndpoint<?, ResponseT, ?>)endpoint;
+            // Successful response
+            ResponseT response = null;
+            JsonpDeserializer<ResponseT> responseParser = jsonEndpoint.responseDeserializer();
+            if (responseParser != null) {
+                // Expecting a body
+                if (body == null) {
+                    throw new TransportException(
+                            "Expecting a response body, but none was sent",
+                            endpoint.id(), new ResponseException(clientResp)
+                    );
+                }
+                InputStream content = new ByteArrayInputStream(body.getBytes());
+                try (JsonParser parser = mapper.jsonProvider().createParser(content)) {
+                    response = responseParser.deserialize(parser, mapper);
+                };
+            }
+            return response;
+        }
+
+        else {
+            throw new TransportException("Unhandled endpoint type: '" + endpoint.getClass().getName() + "'", endpoint.id());
+        }
+
+    }
+
 
     private void writeNdJson(NdJsonpSerializable value, ByteArrayOutputStream baos) {
         Iterator<?> values = value._serializables();

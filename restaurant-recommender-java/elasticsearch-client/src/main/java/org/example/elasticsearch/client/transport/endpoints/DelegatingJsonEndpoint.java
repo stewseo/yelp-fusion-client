@@ -3,6 +3,7 @@ package org.example.elasticsearch.client.transport.endpoints;
 
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.transport.*;
+import org.example.lowlevel.restclient.*;
 
 
 import java.util.*;

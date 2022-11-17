@@ -65,8 +65,7 @@ public class YelpRestTransportOptions implements TransportOptions {
 
     @Override
     public Builder toBuilder() {
-
-        return PrintUtils.println("Yelp Rest Transport Options: " , new Builder(options.toBuilder()));
+        return new Builder(options.toBuilder());
     }
 
 

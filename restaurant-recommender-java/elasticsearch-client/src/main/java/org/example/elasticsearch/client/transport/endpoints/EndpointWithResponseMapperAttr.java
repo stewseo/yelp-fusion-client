@@ -3,6 +3,7 @@ package org.example.elasticsearch.client.transport.endpoints;
 import jakarta.json.stream.*;
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.transport.*;
+import org.example.lowlevel.restclient.*;
 
 
 public class EndpointWithResponseMapperAttr<Req, Res, Err> extends DelegatingJsonEndpoint<Req, Res, Err> {

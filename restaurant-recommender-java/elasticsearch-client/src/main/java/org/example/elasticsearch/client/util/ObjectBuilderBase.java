@@ -8,7 +8,6 @@ public class ObjectBuilderBase {
     private boolean _used = false;
 
     protected void _checkSingleUse() {
-        PrintUtils.cyan("_checkSingleUse ");
         if (this._used) {
             throw new IllegalStateException("Object builders can only be used once");
         }
@@ -27,7 +26,6 @@ public class ObjectBuilderBase {
     };
 
     private static <T> List<T> _mutableList(List<T> list) {
-        PrintUtils.cyan("_mutableList ");
 
         if (list == null) {
             return new InternalList<>();
@@ -41,7 +39,6 @@ public class ObjectBuilderBase {
 
     @SafeVarargs
     protected static <T> List<T> _listAdd(List<T> list, T value, T... values) {
-        PrintUtils.cyan("_listAdd ");
 
         list = _mutableList(list);
         list.add(value);
@@ -75,7 +72,6 @@ public class ObjectBuilderBase {
     }
 
     private static <K, V> Map<K, V> _mutableMap(Map<K, V> map) {
-        PrintUtils.cyan("_mutableMap ");
 
         if (map == null) {
             return new InternalMap<>();
@@ -88,8 +84,6 @@ public class ObjectBuilderBase {
     }
 
     protected static <K, V> Map<K, V> _mapPut(Map<K, V> map, K key, V value) {
-        PrintUtils.cyan("_mapPut ");
-
         map = _mutableMap(map);
         map.put(key, value);
         return map;

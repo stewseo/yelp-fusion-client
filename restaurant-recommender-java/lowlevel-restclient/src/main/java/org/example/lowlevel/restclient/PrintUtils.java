@@ -26,6 +26,20 @@ public class PrintUtils {
         println("-".repeat(("" + title).length()));
         return title;
     }
+    public static  <T> T  blue(T title) {
+        final String RED = "\u001B[31m";
+        println("");
+        println(RED + title + RESET);
+        println("-".repeat(("" + title).length()));
+        return title;
+    }
+    public static  <T> T  orange(T title) {
+        final String RED = "\u001B[31m";
+        println("");
+        println(RED + title + RESET);
+        println("-".repeat(("" + title).length()));
+        return title;
+    }
 
     public static  <T> T  cyan(T title) {
         println("");

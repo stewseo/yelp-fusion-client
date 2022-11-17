@@ -10,7 +10,6 @@ public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase imp
 
     @Override
     public B withJson(JsonParser parser, JsonpMapper mapper) {
-        PrintUtils.cyan("WithJsonObjectBuilderBase.withJson ");
         JsonpDeserializer<?> classDeser = JsonpMapperBase.findDeserializer(this.getClass().getEnclosingClass());
         if (classDeser == null) {
             throw new IllegalArgumentException("Class " + this.getClass().getEnclosingClass() + " cannot be read from JSON");
@@ -31,7 +30,6 @@ public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase imp
 
         @Override
         public <T> T attribute(String name) {
-            PrintUtils.cyan("attribute " + name);
             T attr = mapper.attribute(name);
             if (attr == null && name.startsWith("co.elastic.clients:Deserializer")) {
                 @SuppressWarnings("unchecked")

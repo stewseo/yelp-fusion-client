@@ -4,19 +4,22 @@ package org.example.yelp.fusion.client.category;
 import jakarta.json.stream.*;
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.util.*;
+import org.example.lowlevel.restclient.*;
 
 import java.io.*;
 import java.util.*;
 import java.util.function.*;
+
+import static org.example.elasticsearch.client.json.JsonpDeserializer.stringDeserializer;
+
 @JsonpDeserializable
 public class Categories implements JsonpSerializable {
 
-    private final String alias, title;
+    private final String title;
 
+    private final List<String> alias;
     private final List<String> parents;
-
     private final List<String> country_whitelist;
-
     private final List<String> country_blacklist;
 
 
@@ -27,7 +30,7 @@ public class Categories implements JsonpSerializable {
         this.country_blacklist = builder.country_blacklist;
         this.country_whitelist = builder.country_whitelist;
     }
-    public String alias() {
+    public  List<String> alias() {
         return alias;
     }
 
@@ -60,26 +63,30 @@ public class Categories implements JsonpSerializable {
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if (this.alias != null) {
             generator.writeKey("alias");
-            generator.write(this.alias);
+            generator.writeStartArray();
+            for (String item0 : this.alias) {
+                generator.write(item0);
+            }
+            generator.writeEnd();
         }
 
         if (this.title != null) {
             generator.writeKey("title");
             generator.write(this.title);
         }
+
         if (this.parents != null) {
             generator.writeKey("parents");
             generator.writeStartArray();
             for (String item0 : this.parents) {
                 generator.write(item0);
-
             }
             generator.writeEnd();
         }
     }
     public static class Builder extends ObjectBuilderBase implements ObjectBuilder<Categories> {
-        private String alias, title;
-
+        private  List<String> alias;
+        private String title;
         private List<String> parents;
 
         private List<String> country_whitelist;
@@ -88,8 +95,13 @@ public class Categories implements JsonpSerializable {
         public Builder(){}
 
 
-        public final Builder alias(String id) {
-            this.alias = id;
+        public final Builder alias(List<String> value) {
+            this.alias = value;
+            return this;
+        }
+
+        public final Builder alias(String value, String... values) {
+            this.alias = _listAdd(this.alias, value, values);
             return this;
         }
         public final Builder title(String title) {
@@ -126,21 +138,10 @@ public class Categories implements JsonpSerializable {
             return this;
         }
 
-
         public Categories build() {
             _checkSingleUse();
             return new Categories(this);
         }
-
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "alias='" + alias + '\'' +
-                ", title='" + title + '\'' +
-                ", parents=" + parents +
-                '}';
     }
 
     public static final JsonpDeserializer<Categories> _DESERIALIZER =
@@ -149,9 +150,9 @@ public class Categories implements JsonpSerializable {
 
     protected static void setupCategoriesDeserializer(ObjectDeserializer<Categories.Builder> op) {
 
-        op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
-        op.add(Builder::title, JsonpDeserializer.stringDeserializer(), "title");
-        op.add(Builder::parents, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "parents");
+        op.add(Builder::alias, JsonpDeserializer.arrayDeserializer(stringDeserializer()), "alias");
+        op.add(Builder::title, stringDeserializer(), "title");
+        op.add(Builder::parents, JsonpDeserializer.arrayDeserializer(stringDeserializer()), "parents");
 
     }
 }

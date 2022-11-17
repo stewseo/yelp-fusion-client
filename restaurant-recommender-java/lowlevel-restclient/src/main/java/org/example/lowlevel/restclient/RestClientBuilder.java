@@ -1,15 +1,22 @@
 package org.example.lowlevel.restclient;
 
+import org.apache.commons.logging.*;
+import org.apache.http.*;
+import org.apache.http.client.config.*;
+import org.apache.http.impl.nio.client.*;
+import org.apache.http.util.*;
 
 import javax.net.ssl.*;
 import java.io.*;
+import java.net.http.*;
 import java.security.*;
+import java.time.*;
 import java.util.*;
 
 
 public final class RestClientBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
+    private static final Log logger = LogFactory.getLog(RestClientBuilder.class);
     public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 1000;
     public static final int DEFAULT_SOCKET_TIMEOUT_MILLIS = 30000;
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
@@ -32,6 +39,7 @@ public final class RestClientBuilder {
     private boolean strictDeprecationMode = false;
     private boolean compressionEnabled = false;
     private boolean metaHeaderEnabled = true;
+    private HttpClientInterface httpClientInterface;
 
     static {
 
@@ -101,8 +109,6 @@ public final class RestClientBuilder {
                 throw new IllegalArgumentException("node cannot be null");
             }
         }
-
-        logger.info("{}Initializing RestClientBuilder with field: List<Node> node = {}{}{}", PrintUtils.GREEN, PrintUtils.CYAN, nodes, PrintUtils.RESET);
         this.nodes = nodes;
     }
 
@@ -149,7 +155,7 @@ public final class RestClientBuilder {
         }
 
         String cleanPathPrefix = pathPrefix;
-        if (cleanPathPrefix.startsWith("/") == false) {
+        if (!cleanPathPrefix.startsWith("/")) {
             cleanPathPrefix = "/" + cleanPathPrefix;
         }
 
@@ -185,6 +191,11 @@ public final class RestClientBuilder {
         return this;
     }
 
+    public RestClientBuilder setHttpClient(HttpClientInterface httpClientInterface) {
+        this.httpClientInterface = httpClientInterface;
+        return this;
+    }
+
     @SuppressWarnings("removal")
     public RestClient build() {
 
@@ -194,8 +205,11 @@ public final class RestClientBuilder {
         CloseableHttpAsyncClient httpClient = AccessController.doPrivileged(
                 (PrivilegedAction<CloseableHttpAsyncClient>) this::createHttpClient
         );
+        HttpClient jdkHttpClient = createJdkHttpClient();
         RestClient restClient = new RestClient(
                 httpClient,
+                jdkHttpClient,
+                httpClientInterface,
                 defaultHeaders,
                 nodes,
                 pathPrefix,
@@ -216,6 +230,17 @@ public final class RestClientBuilder {
         return restClient;
     }
 
+    private HttpClient createJdkHttpClient() {
+        return HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .connectTimeout(Duration.ofSeconds(10))
+                .build();
+        // default ssl context =
+        // default max con total =
+        // default max con per route =
+        // .setTargetAuthenticationStrategy(new PersistentCredentialsAuthenticationStrategy
+    }
+
     @SuppressWarnings("removal")
     private CloseableHttpAsyncClient createHttpClient() {
         // default timeouts are all infinite
@@ -233,8 +258,8 @@ public final class RestClientBuilder {
                     .setMaxConnPerRoute(DEFAULT_MAX_CONN_PER_ROUTE)
                     .setMaxConnTotal(DEFAULT_MAX_CONN_TOTAL)
                     .setSSLContext(SSLContext.getDefault())
-                    .setUserAgent(USER_AGENT_HEADER_VALUE);
-//                    .setTargetAuthenticationStrategy(new PersistentCredentialsAuthenticationStrategy());
+                    .setUserAgent(USER_AGENT_HEADER_VALUE)
+                    .setTargetAuthenticationStrategy(new PersistentCredentialsAuthenticationStrategy());
             if (httpClientConfigCallback != null) {
                 httpClientBuilder = httpClientConfigCallback.customizeHttpClient(httpClientBuilder);
             }
@@ -245,7 +270,6 @@ public final class RestClientBuilder {
             throw new IllegalStateException("could not create the default ssl context", e);
         }
     }
-
 
     public interface RequestConfigCallback {
         RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder);

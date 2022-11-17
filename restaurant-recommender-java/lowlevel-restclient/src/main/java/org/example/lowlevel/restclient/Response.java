@@ -1,8 +1,12 @@
 package org.example.lowlevel.restclient;
 
 import org.apache.http.*;
+import org.apache.http.client.methods.*;
+import org.apache.http.message.*;
 
+import java.net.*;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.regex.*;
 
 public class Response {
@@ -10,6 +14,14 @@ public class Response {
     private final RequestLine requestLine;
     private final HttpHost host;
     private final HttpResponse response;
+
+    java.net.http.HttpRequest jdkRequest;
+
+    public java.net.http.HttpResponse<String> jdkHttpResponse() {
+        return jdkHttpResponse;
+    }
+
+    private java.net.http.HttpResponse<String> jdkHttpResponse;
 
     public Response(RequestLine requestLine, HttpHost host, HttpResponse response) {
         Objects.requireNonNull(requestLine, "requestLine cannot be null");
@@ -19,43 +31,37 @@ public class Response {
         this.host = host;
         this.response = response;
     }
-    public Response(HttpHost host) {
-        this(null, host, null);
+
+    public Response(HttpHost host, java.net.http.HttpResponse<String> jdkHttpResponse) {
+        Objects.requireNonNull(host, "host cannot be null");
+        Objects.requireNonNull(jdkHttpResponse, "jdkHttpResponse cannot be null");
+        this.host = host;
+        this.jdkHttpResponse = jdkHttpResponse;
+        String reqLine = jdkHttpResponse.request().method() + jdkHttpResponse.request().uri().toString();
+        HttpGet apacheReq = new HttpGet(reqLine);
+        this.requestLine = apacheReq.getRequestLine();
+
+        this.response = null;
     }
 
-    /**
-     * Returns the request line that generated this response
-     */
     public RequestLine getRequestLine() {
         return requestLine;
     }
 
-    /**
-     * Returns the node that returned this response
-     */
+
     public HttpHost getHost() {
         return host;
     }
 
-    /**
-     * Returns the status line of the current response
-     */
     public StatusLine getStatusLine() {
         return response.getStatusLine();
     }
 
-    /**
-     * Returns all the response headers
-     */
     public Header[] getHeaders() {
         return response.getAllHeaders();
     }
 
-    /**
-     * Returns the value of the first header with a specified name of this message.
-     * If there is more than one matching header in the message the first element is returned.
-     * If there is no matching header in the message <code>null</code> is returned.
-     */
+
     public String getHeader(String name) {
         Header header = response.getFirstHeader(name);
         if (header == null) {
@@ -146,16 +152,33 @@ public class Response {
      * Returns a list of all warning headers returned in the response.
      */
     public List<String> getWarnings() {
-        List<String> warnings = new ArrayList<>();
-        for (Header header : response.getHeaders("Warning")) {
-            String warning = header.getValue();
-            if (matchWarningHeaderPatternByPrefix(warning)) {
-                warnings.add(extractWarningValueFromWarningHeader(warning));
-            } else {
-                warnings.add(warning);
+
+        if (jdkHttpResponse != null) {
+            List<String> warnings = jdkHttpResponse.headers().map().get("Warning");
+            if (warnings != null) {
+                warnings.forEach(warning -> {
+                    if (matchWarningHeaderPatternByPrefix(warning)) {
+                        warnings.add(extractWarningValueFromWarningHeader(warning));
+                    } else {
+                        warnings.add(warning);
+                    }
+                });
+
             }
+            return warnings;
         }
-        return warnings;
+        else {
+            List<String> warnings = new ArrayList<>();
+            for (Header header : response.getHeaders("Warning")) {
+                String warning = header.getValue();
+                if (matchWarningHeaderPatternByPrefix(warning)) {
+                    warnings.add(extractWarningValueFromWarningHeader(warning));
+                } else {
+                    warnings.add(warning);
+                }
+            }
+            return warnings;
+        }
     }
 
     /**
@@ -163,17 +186,23 @@ public class Response {
      * response.
      */
     public boolean hasWarnings() {
-        Header[] warnings = response.getHeaders("Warning");
-        return warnings != null && warnings.length > 0;
+        if(jdkHttpResponse != null) {
+            java.net.http.HttpHeaders headers = jdkHttpResponse.headers();
+            List<String> warning = headers.map().get("Warning");
+            return warning != null && warning.size() > 0;
+        }else {
+            Header[] warnings = response.getHeaders("Warning");
+            return warnings != null && warnings.length > 0;
+        }
     }
 
     public HttpResponse getHttpResponse() {
         return response;
     }
 
-    @Override
-    public String toString() {
-        return "Response{" + "requestLine=" + requestLine + ", host=" + host + ", response=" + response.getStatusLine() + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Response{" + "requestLine=" + requestLine + ", host=" + host + ", response=" + response.getStatusLine() + '}';
+//    }
 }
 
