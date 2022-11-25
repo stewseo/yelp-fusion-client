@@ -1,0 +1,39 @@
+
+plugins {
+    id 'java-conventions'
+    id 'java-library'
+}
+
+ext {
+    
+    commonscodecVersion = '1.11'
+    commonsioVersion = '2.2'
+    commonsloggingVersion = '1.2'
+
+    httpasyncclientVersion = '4.1.5'
+    httpcoreVersion = '4.4.12'
+    httpclientVersion = '4.5.10'
+
+    slf4jVersion = '1.8.0-beta2'
+}
+
+dependencies {
+
+    api("org.slf4j:slf4j-api:${slf4jVersion}")
+    api('ch.qos.logback:logback-classic:1.4.1')
+    api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+
+    api "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    api "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
+    api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
+    api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
+    api "commons-codec:commons-codec:${commonscodecVersion}"
+    
+    configurations.all {
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+//    api "commons-logging:commons-logging:${commonsloggingVersion}"
+
+}
+
+

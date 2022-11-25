@@ -1,0 +1,25 @@
+// Java conventions 
+plugins {
+    id 'java'
+}
+
+
+
+ext {
+    jacksonVersion = "2.12.3"
+
+}
+
+// All projects will use maven Central for external dependencies
+repositories {
+    mavenCentral()
+}
+
+// Enable deprecation messages when compiling Java code
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
+test {
+    useJUnitPlatform()
+}
