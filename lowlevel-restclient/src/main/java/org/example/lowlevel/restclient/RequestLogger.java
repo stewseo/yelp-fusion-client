@@ -1,8 +1,10 @@
 package org.example.lowlevel.restclient;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.*;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.ContentType;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.http.HttpClient;
 import java.nio.charset.Charset;
@@ -22,56 +25,177 @@ public class RequestLogger {
     private RequestLogger() {
     }
 
-    static void  logResponse(Log logger, HttpClient request, java.net.http.HttpResponse<String> httpResponse) {
-        if (logger.isInfoEnabled()) {
-            logger.info(
-                    "request ["
-                            + httpResponse.request()
-                            + " "
-                            + "] returned ["
-                            + httpResponse.statusCode()
-                            + "]"
-            );
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(
-                    "request ["
-                            + httpResponse.request()
-                            + " "
-                            + "] returned ["
-                            + httpResponse.statusCode()
-                            + "]"
-            );
-        }
-        if (tracer.isTraceEnabled()) {
-            String requestLine;
-            requestLine = "";
-            String responseLine = "";
-
-            tracer.trace(requestLine + '\n' + responseLine);
-        }
-    }
-
     /**
      * Logs a request that failed
      */
     static void logFailedRequest(Log logger, HttpUriRequest request, Node node, Exception e) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("request [" + request.getMethod() + " " + node.getHost() + getUri(request.getRequestLine()) + "] failed", e);
+
+        if(tracer.isTraceEnabled()) {
+            tracer.trace(PrintUtils.tracer("Logging Failed Request: " + request.getRequestLine()));
         }
-        if (tracer.isTraceEnabled()) {
-            String traceRequest;
-            try {
-                traceRequest = buildTraceRequest(request, node.getHost());
-            } catch (IOException e1) {
-                tracer.trace("error while reading request for trace purposes", e);
-                traceRequest = "";
-            }
-            tracer.trace(traceRequest);
+
+        if(logger.isDebugEnabled()) {
+            logger.debug(PrintUtils.debug("request [" + request.getMethod() + " " + node.getHost() + getUri(request.getRequestLine()) + "] failed"), e);
+
+            String traceReq;
+
+//            try {
+//                traceReq = buildTraceRequest(request, node.getHost());
+//                tracer.trace(PrintUtils.tracer("Executing command in separate process: " + traceReq));
+//                Process process = Runtime.getRuntime().exec(traceReq);
+//
+//                tracer.trace(PrintUtils.tracer("Information about the process: " + process.info()));
+//
+//                tracer.trace(PrintUtils.tracer("Direct children of the process: " + process.children()));
+//
+//
+//                try(BufferedReader errorReader = process.errorReader())
+//                {
+//                    if(errorReader.ready()) {
+//                        tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
+//                    }
+//                }
+//
+//                InputStream inputStream = process.getInputStream();
+//                if(inputStream.available() != 0) {
+//                    String response = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+//                    tracer.trace(PrintUtils.tracer("cURL response: " + response));
+//                }
+//
+//                inputStream.close();
+//                process.destroy();
+//
+//            } catch (IOException e1) {
+//                tracer.trace(PrintUtils.red("error while reading request for trace purposes"), e);
+//                traceReq = "";
+//            }
         }
+
     }
 
+    static void logFailedRequest(Logger logger, HttpUriRequest request, Node node, Exception e) {
+
+        if(tracer.isTraceEnabled()) {
+            tracer.trace(PrintUtils.tracer("Logging Failed Request: " + request.getRequestLine()));
+        }
+
+        if(logger.isDebugEnabled()) {
+            logger.debug(PrintUtils.debug("request [" + request.getMethod() + " " + node.getHost() + getUri(request.getRequestLine()) + "] failed"), e.getCause());
+
+            String traceReq;
+
+//            try {
+//                traceReq = buildTraceRequest(request, node.getHost());
+//                tracer.trace(PrintUtils.tracer("Executing command in separate process: " + traceReq));
+//                Process process = Runtime.getRuntime().exec(traceReq);
+//
+//                tracer.trace(PrintUtils.tracer("Information about the process: " + process.info()));
+//
+//                tracer.trace(PrintUtils.tracer("Direct children of the process: " + process.children()));
+//
+//
+//                try(BufferedReader errorReader = process.errorReader())
+//                {
+//                    if(errorReader.ready()) {
+//                        tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
+//                    }
+//                }
+//
+//                InputStream inputStream = process.getInputStream();
+//                if(inputStream.available() != 0) {
+//                    String response = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+//                    tracer.trace(PrintUtils.tracer("cURL response: " + response));
+//                }
+//
+//                inputStream.close();
+//                process.destroy();
+//
+//            } catch (IOException e1) {
+//                tracer.trace(PrintUtils.red("error while reading request for trace purposes"), e);
+//                traceReq = "";
+//            }
+        }
+
+    }
+
+    static void logResponse(Log logger, HttpUriRequest request, HttpHost host, HttpResponse httpResponse) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                    "request ["
+                            + request.getMethod()
+                            + " "
+                            + host
+                            + getUri(request.getRequestLine())
+                            + "] returned ["
+                            + httpResponse.getStatusLine()
+                            + "]"
+            );
+        }
+
+        if (logger.isWarnEnabled()) {
+            Header[] warnings = httpResponse.getHeaders("Warning");
+            if (warnings != null && warnings.length > 0) {
+                logger.warn(buildWarningMessage(request, host, warnings));
+            }
+        }
+
+        if (tracer.isTraceEnabled()) {
+            String requestLine;
+            try {
+                requestLine = buildTraceRequest(request, host);
+            } catch (IOException e) {
+                requestLine = "";
+                tracer.trace("error while reading request for trace purposes", e);
+            }
+            String responseLine;
+            try {
+                responseLine = buildTraceResponse(httpResponse);
+            } catch (IOException e) {
+                responseLine = "";
+                tracer.trace("error while reading response for trace purposes", e);
+            }
+            tracer.trace(requestLine + '\n' + responseLine);
+        }
+    }
+    static void logResponse(Logger logger, HttpUriRequest request, HttpHost host, HttpResponse httpResponse) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                    "request ["
+                            + request.getMethod()
+                            + " "
+                            + host
+                            + getUri(request.getRequestLine())
+                            + "] returned ["
+                            + httpResponse.getStatusLine()
+                            + "]"
+            );
+        }
+
+        if (logger.isWarnEnabled()) {
+            Header[] warnings = httpResponse.getHeaders("Warning");
+            if (warnings != null && warnings.length > 0) {
+                logger.warn(buildWarningMessage(request, host, warnings));
+            }
+        }
+
+        if (tracer.isTraceEnabled()) {
+            String requestLine;
+            try {
+                requestLine = buildTraceRequest(request, host);
+            } catch (IOException e) {
+                requestLine = "";
+                tracer.trace("error while reading request for trace purposes", e);
+            }
+            String responseLine;
+            try {
+                responseLine = buildTraceResponse(httpResponse);
+            } catch (IOException e) {
+                responseLine = "";
+                tracer.trace("error while reading response for trace purposes", e);
+            }
+            tracer.trace(requestLine + '\n' + responseLine);
+        }
+    }
     static String buildWarningMessage(HttpUriRequest request, HttpHost host, Header[] warnings) {
         StringBuilder message = new StringBuilder("request [").append(request.getMethod())
                 .append(" ")
@@ -94,6 +218,7 @@ public class RequestLogger {
      */
     static String buildTraceRequest(HttpUriRequest request, HttpHost host) throws IOException {
         String requestLine = "curl -iX " + request.getMethod() + " '" + host + getUri(request.getRequestLine()) + "'";
+
         if (request instanceof HttpEntityEnclosingRequest enclosingRequest) {
             if (enclosingRequest.getEntity() != null) {
                 requestLine += " -d '";
@@ -147,40 +272,9 @@ public class RequestLogger {
         return requestLine.getUri();
     }
 
-
-    public static void logFailedRequest(Log logger, java.net.http.HttpRequest request, Node node, Exception e) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("request [" + request.method() + " " + node.getHost() + request.uri() + "] failed", e);
-        }
-        if (tracer.isTraceEnabled()) {
-            String traceRequest;
-            traceRequest = buildTraceRequestFromJdkHttpRequest(request, node.getHost());
-            tracer.trace(traceRequest);
-        }
+    public static void logResponse(Logger logger, HttpRequestBase httpRequest, HttpResponse httpResponse, Exception e) {
+        logger.debug("status code: " + httpResponse.getStatusLine());
     }
-
-    public static void logFailedRequest(Logger logger, Exception e) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Failed Request when performing a http request " + e);
-        }
-
-        if (tracer.isTraceEnabled()) {
-            String traceRequest;
-            tracer.trace("Failed Request when performing a http request " + e);
-        }
-    }
-
-    private static String buildTraceRequestFromJdkHttpRequest(java.net.http.HttpRequest request, HttpHost host) {
-        // yelp fusion only accepts query params on path
-        return "curl -iX " + request.method() + " '" + host + request.uri() + "'";
-    }
-
-    public static<T> void logFailedRequest(Log logger, java.net.http.HttpRequest jdkHttpRequest, Node node, java.net.http.HttpResponse<T> httpResponse, Exception e) {
-    }
-
-    public static void logResponse(Log logger, java.net.http.HttpRequest jdkHttpRequest, HttpHost host, HttpResponse httpResponse) {
-    }
-
 }
 
 

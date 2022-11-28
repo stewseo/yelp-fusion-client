@@ -11,8 +11,8 @@ import org.example.elasticsearch.client.util.ApiTypeHelper;
 import org.example.elasticsearch.client.util.ObjectBuilder;
 import org.example.elasticsearch.client.util.WithJsonObjectBuilderBase;
 import org.example.lowlevel.restclient.PrintUtils;
-import org.example.yelp.fusion.client.business.search.Coordinates;
-import org.example.yelp.fusion.client.business.search.Categories;
+import org.example.yelp.fusion.client.business.model.Coordinates;
+import org.example.yelp.fusion.client.business.model.Categories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -142,7 +142,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
         if(this.coordinate != null) {
             generator.writeKey("coordinate");
-            generator.writeKey("coordinate");
+            this.coordinate.serialize(generator, mapper);
         }
 
 
@@ -337,7 +337,6 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
     }
 
     protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
-        logger.info(PrintUtils.cyan("setup search request deserializer"));
 
         op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
         op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
@@ -352,14 +351,14 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
         op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
     }
-    public static final SimpleEndpoint<BusinessSearchRequest, ?> _ENDPOINT = new SimpleEndpoint<>("businesses/search",
-            request -> {
-                return "GET";
-            },
+    public static final SimpleEndpoint<BusinessSearchRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/search",
+            // Request method
+            request -> "GET",
+
             // Request path
             request -> {
                 StringBuilder buf = new StringBuilder();
-                buf.append("/businesses/search");
+                buf.append("v3/businesses/search");
                 return buf.toString();
             },
             // Request parameters

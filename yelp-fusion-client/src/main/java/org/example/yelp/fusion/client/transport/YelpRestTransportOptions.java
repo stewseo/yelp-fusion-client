@@ -24,9 +24,10 @@ public class YelpRestTransportOptions implements TransportOptions {
         } else {
             final Builder builder = new Builder(RequestOptions.DEFAULT.toBuilder());
             options.headers().forEach(h -> builder.addHeader(h.getKey(), h.getValue()));
+
             options.queryParameters().forEach(builder::setParameter);
             builder.onWarnings(options.onWarnings());
-            return builder.build(); // return TestYelpRestClientOptions with headers, query parameters, warnings
+            return builder.build();
         }
     }
 
@@ -69,7 +70,6 @@ public class YelpRestTransportOptions implements TransportOptions {
     }
 
 
-    // class TestYelpRestOptions.Builder implements com.example.client.transport.TransportOptions.Builder
     public static class Builder implements TransportOptions.Builder {
 
         private final RequestOptions.Builder builder; //  RequestOptions
@@ -123,7 +123,9 @@ public class YelpRestTransportOptions implements TransportOptions {
 
     private static RequestOptions.Builder addBuiltinHeaders(RequestOptions.Builder builder) {
         if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase("Accept"))) {
-            builder.addHeader("Accept", String.valueOf(YelpRestTransport.JsonContentType));
+
+//            builder.addHeader("Accept", "Accept-Ranges: bytes");
+
         }
         return builder;
     }

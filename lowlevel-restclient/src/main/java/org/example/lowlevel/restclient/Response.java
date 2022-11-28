@@ -5,6 +5,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicRequestLine;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,10 @@ public class Response {
     @SuppressWarnings("ParameterCanBeLocal")
     public Response(java.net.http.HttpResponse<InputStream> httpResponse, HttpHost host) {
         host = new HttpHost("api.yelp.com", 443, "http");
+    }
+
+    public Response(java.net.http.HttpRequest jdkHttpRequest, URI requestLine) {
+
     }
 
 
@@ -83,9 +88,6 @@ public class Response {
     }
 
     public StatusLine getStatusLine() {
-        if(jdkRequest == null) {
-            return null;
-        }
         return response.getStatusLine();
     }
 

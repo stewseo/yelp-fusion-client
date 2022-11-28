@@ -40,27 +40,22 @@ public abstract class AbstractRequestTestCase extends Assertions {
     private static void initYelpFusionClient() throws IOException {
 
         mapper = new JacksonJsonpMapper();
-        String yelpFusionHost = "api.yelp.com";
-        int port = 443;
 
-        // create rest client
-        RestClientBuilder restBuilder = RestClient.builder(new HttpHost("api.yelp.com/v3"))
-                .setMetaHeaderEnabled(false)
-                .setHttpClient(new HttpClientImpl(
-                        HttpClient.newBuilder()
-                                .followRedirects(HttpClient.Redirect.NORMAL)
-                                .connectTimeout(Duration.ofSeconds(10))
-                                .version(HttpClient.Version.HTTP_2)
-                                .build()
-                        )
-                );
+        String hostName = "api.yelp.com";
+        int port = 80;
+        String scheme = "http";
+        HttpHost host = new HttpHost(hostName, 80, scheme);
 
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
-        restBuilder.setDefaultHeaders(defaultHeaders);
+        RestClientBuilder restBuilder = RestClient.builder(
+                        host)
+                .setMetaHeaderEnabled(false)
+                .setUserAgentEnable(false)
+                .setDefaultHeaders(defaultHeaders);
+
 
         YelpRestTransport yelpTransport;
-
         try (RestClient restClient = restBuilder.build()) {
 
             yelpTransport = new YelpRestTransport(restClient, mapper);
@@ -68,6 +63,7 @@ public abstract class AbstractRequestTestCase extends Assertions {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         yelpClient = new YelpFusionClient(yelpTransport);
     }
 

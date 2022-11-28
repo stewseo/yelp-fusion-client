@@ -24,27 +24,15 @@ import java.util.function.*;
 @JsonpDeserializable
 public class Hit<TDocument> implements Serializable {
 
-    Logger logger = LoggerFactory.getLogger(Hit.class);
+    private static final Logger logger = LoggerFactory.getLogger(Hit.class);
 
     @Nullable
-    private final String index;
-
-    @Nullable
-    private final String id;
-
     private final TDocument source;
-
 
     private Hit(Hit.Builder<TDocument> builder) {
 
-        this.index = ApiTypeHelper.requireNonNull(builder.index, this, "index");
-
-        this.id = ApiTypeHelper.requireNonNull(builder.id, this, "id");
-
         this.source = builder.source;
-
         this.tDocumentSerializer = builder.tDocumentSerializer;
-
     }
 
     public static <TDocument> Hit<TDocument> of(Function<Hit.Builder<TDocument>, ObjectBuilder<Hit<TDocument>>> fn) {
@@ -53,18 +41,7 @@ public class Hit<TDocument> implements Serializable {
 
     private final JsonpSerializer<TDocument> tDocumentSerializer;
 
-    public final String index() {
-        return this.index;
-    }
-
-
-    public final String id() {
-        return this.id;
-    }
-
-
     public final TDocument source() {
-        logger.info(PrintUtils.cyan("source(): " + source().getClass().getName()));
 
         return this.source;
     }
@@ -80,17 +57,15 @@ public class Hit<TDocument> implements Serializable {
 
         private String id;
 
+        @Nullable
         private TDocument source;
 
-
         private JsonpSerializer<TDocument> tDocumentSerializer;
-
 
         public final Hit.Builder<TDocument> index(String value) {
             this.index = value;
             return this;
         }
-
 
         public final Hit.Builder<TDocument> id(String value) {
             this.id = value;
@@ -98,12 +73,10 @@ public class Hit<TDocument> implements Serializable {
         }
 
 
-
-        public final Hit.Builder<TDocument> source(TDocument value) {
+        public final Builder<TDocument> source(TDocument value) {
             this.source = value;
             return this;
         }
-
 
         public final Hit.Builder<TDocument> tDocumentSerializer(JsonpSerializer<TDocument> value) {
             this.tDocumentSerializer = value;
@@ -114,7 +87,6 @@ public class Hit<TDocument> implements Serializable {
         protected Hit.Builder<TDocument> self() {
             return this;
         }
-
 
         public Hit<TDocument> build() {
             _checkSingleUse();
@@ -134,19 +106,10 @@ public class Hit<TDocument> implements Serializable {
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
-        generator.writeKey("index");
-        generator.write(this.index);
-
-        generator.writeKey("id");
-        generator.write(this.id);
-
-
         if (this.source != null) {
-            generator.writeKey("business");
+            generator.writeKey("businesses");
             JsonpUtils.serialize(this.source, generator, tDocumentSerializer, mapper);
-
         }
-
     }
 
     @Override
@@ -167,10 +130,8 @@ public class Hit<TDocument> implements Serializable {
 
     protected static <TDocument> void setupHitDeserializer(ObjectDeserializer<Hit.Builder<TDocument>> op,
                                                            JsonpDeserializer<TDocument> tDocumentDeserializer) {
-
-        op.add(Hit.Builder::index, JsonpDeserializer.stringDeserializer(), "index");
-        op.add(Hit.Builder::id, JsonpDeserializer.stringDeserializer(), "id");
-        op.add(Hit.Builder::source, tDocumentDeserializer, "businesses");
+        logger.debug("Setting up HitDeserializer");
+        op.add(Builder::source, tDocumentDeserializer, "businesses");
 
     }
 

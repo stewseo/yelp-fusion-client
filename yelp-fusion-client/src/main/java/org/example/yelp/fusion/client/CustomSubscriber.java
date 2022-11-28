@@ -37,14 +37,20 @@ public class CustomSubscriber {
     public static void main(String[] args) {
         CustomSubscriber jdes = new CustomSubscriber();
 
-        CompletableFuture<Object> ent = jdes.get(reqLine);
+        Object ent = null;
+        try {
+            ent = jdes.get(reqLine).get();
 
-        System.out.println("body: " + ent.join().toString().getBytes(StandardCharsets.UTF_8).length);
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("body: " + ent.toString().getBytes(StandardCharsets.UTF_8).length);
     }
 
     public CompletableFuture<Object> get(String uri) {
         HttpClient client = HttpClient.newBuilder()
-                .followRedirects(HttpClient.Redirect.ALWAYS)
+                .followRedirects(HttpClient.Redirect.NORMAL)
                 .connectTimeout(Duration.ofMinutes(1))
                 .build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -71,11 +77,12 @@ public class CustomSubscriber {
         public void onSubscribe(Flow.Subscription subscription) {
             this.subscription = subscription;
             subscription.request(1);
+            logger.info("subscription :");
         }
 
         @Override
         public void onNext(List<ByteBuffer> buffers) {
-            System.out.println("onNext with:" + buffers);
+            logger.info("onNext with:" + buffers);
             responseData.addAll(buffers);
             subscription.request(1);
         }
@@ -102,6 +109,7 @@ public class CustomSubscriber {
                 offset += remaining;
             }
             body = new String(ba);
+            logger.info("complete. body length: " + body.length());
         }
     }
 }

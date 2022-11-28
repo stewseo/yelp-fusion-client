@@ -2,10 +2,13 @@ package org.example.yelp.fusion.client.business.search;
 
 import co.elastic.clients.util.ApiTypeHelper;
 import jakarta.json.stream.JsonGenerator;
-import org.example.elasticsearch.client.elasticsearch.core.Hit;
+
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.util.ObjectBuilder;
 import org.example.elasticsearch.client.util.WithJsonObjectBuilderBase;
+import org.example.yelp.fusion.client.business.model.Region;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.Serializable;
@@ -16,6 +19,7 @@ import java.util.function.Supplier;
 @JsonpDeserializable
 public class HitsMeta<T> implements Serializable {
 
+    private static final Logger logger = LoggerFactory.getLogger(HitsMeta.class);
     private final List<Hit<T>> hits;
     @Nullable
     private final Region region;
@@ -128,7 +132,6 @@ public class HitsMeta<T> implements Serializable {
             return this;
         }
 
-
         public HitsMeta<T> build() {
             _checkSingleUse();
 
@@ -149,11 +152,10 @@ public class HitsMeta<T> implements Serializable {
 
     protected static <T> void setupHitsMetaDeserializer(ObjectDeserializer<Builder<T>> op,
                                                                 JsonpDeserializer<T> tDeserializer) {
-
+        logger.debug("Setting up HitsMeta Deserializer JsonpDeserializer.arrayDeserializer(Hit.createHitDeserializer(tDeserializer)");
         op.add(HitsMeta.Builder::hits, JsonpDeserializer.arrayDeserializer(Hit.createHitDeserializer(tDeserializer)), "businesses");
         op.add(HitsMeta.Builder::total, JsonpDeserializer.integerDeserializer(), "total");
         op.add(HitsMeta.Builder::region, Region._DESERIALIZER, "region");
-
 
     }
 

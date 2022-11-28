@@ -32,7 +32,6 @@ public interface JsonpDeserializer<V> {
         JsonParser.Event event = parser.next();
         // JSON null: return null unless the deserializer can handle it
         if (event == JsonParser.Event.VALUE_NULL && !accepts(JsonParser.Event.VALUE_NULL)) {
-            logger.info("event == JsonParser.Event.VALUE_NULL && !accepts(JsonParser.Event.VALUE_NULL). returning null ");
             return null;
         }
         logger.info("parser = " + parser + " mapper = " + mapper);
@@ -163,7 +162,6 @@ public interface JsonpDeserializer<V> {
     }
 
 
-
     static JsonpDeserializer<Void> voidDeserializer() {
         return JsonpDeserializerBase.VOID;
     }
@@ -174,7 +172,7 @@ public interface JsonpDeserializer<V> {
     }
 
     static <T> JsonpDeserializer<Map<String, T>> stringMapDeserializer(JsonpDeserializer<T> itemDeserializer) {
-        return new JsonpDeserializerBase.StringMapDeserializer<T>(itemDeserializer);
+        return new JsonpDeserializerBase.StringMapDeserializer<>(itemDeserializer);
     }
 
     static <K extends JsonEnum, V> JsonpDeserializer<Map<K, V>> enumMapDeserializer(

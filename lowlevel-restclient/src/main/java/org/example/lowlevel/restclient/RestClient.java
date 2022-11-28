@@ -1,5 +1,6 @@
 package org.example.lowlevel.restclient;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.*;
@@ -12,6 +13,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -20,6 +22,8 @@ import org.apache.http.nio.client.methods.HttpAsyncMethods;
 import org.apache.http.nio.protocol.HttpAsyncRequestProducer;
 import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
 import org.apache.http.protocol.HTTP;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLHandshakeException;
 import java.io.*;
@@ -27,9 +31,6 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
@@ -43,10 +44,10 @@ import static java.util.Collections.singletonList;
 
 @SuppressWarnings({"ClassCanBeRecord"})
 public class RestClient implements Closeable {
-    private static final Log logger = LogFactory.getLog(RestClient.class);
+//    private static final Log logger = LogFactory.getLog(RestClient.class);
+     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
     private final CloseableHttpAsyncClient client;
-    private final HttpClientInterface httpClientInterface;
-    private HttpClient jdkHttpClient;
+
     // We don't rely on default headers supported by HttpAsyncClient as those cannot be replaced.
 // These are package private for tests.
     final List<Header> defaultHeaders;
@@ -62,8 +63,6 @@ public class RestClient implements Closeable {
 
     RestClient(
             CloseableHttpAsyncClient client,
-            HttpClient jdkHttpClient,
-            HttpClientInterface httpClientInterface,
             Header[] defaultHeaders,
             List<Node> nodes,
             String pathPrefix,
@@ -74,8 +73,6 @@ public class RestClient implements Closeable {
             boolean metaHeaderEnabled
     ) {
         this.client = client;
-        this.jdkHttpClient = jdkHttpClient;
-        this.httpClientInterface = httpClientInterface;
         this.defaultHeaders = Collections.unmodifiableList(Arrays.asList(defaultHeaders));
         this.failureListener = failureListener;
         this.pathPrefix = pathPrefix;
@@ -143,13 +140,6 @@ public class RestClient implements Closeable {
         return this.client;
     }
 
-    public HttpClient getJdkHttpClient() {
-        return this.jdkHttpClient;
-    }
-
-    public HttpClientInterface getHttpClientInterface() {
-        return this.httpClientInterface;
-    }
 
     public synchronized void setNodes(Collection<Node> nodes) {
         if (nodes == null || nodes.isEmpty()) {
@@ -180,17 +170,25 @@ public class RestClient implements Closeable {
         return fn.apply(string);
     }
 
+
     public Response performRequest(Request request) throws IOException {
         InternalRequest internalRequest = new InternalRequest(request);
+        logger.debug(PrintUtils.debug("httpRequestBase.getRequestLine: " + internalRequest.httpRequest.getRequestLine()));
+        logger.debug(PrintUtils.debug("httpRequestBase.getURI: " + internalRequest.httpRequest.getURI()));
+
         return performRequest(nextNodes(), internalRequest, null);
     }
 
     private Response performRequest(final NodeTuple<Iterator<Node>> tuple, final InternalRequest request, Exception previousException)
             throws IOException {
+
         RequestContext context = request.createContextForNextAttempt(tuple.nodes.next(), tuple.authCache);
-        org.apache.http.HttpResponse httpResponse;
+
+        org.apache.http.HttpResponse httpResponse = null;
         try {
+
             httpResponse = client.execute(context.requestProducer, context.asyncResponseConsumer, context.context, null).get();
+
         } catch (Exception e) {
             RequestLogger.logFailedRequest(logger, request.httpRequest, context.node, e);
             onFailure(context.node);
@@ -223,72 +221,10 @@ public class RestClient implements Closeable {
         throw responseOrResponseException.responseException;
     }
 
-    public Response performRequestWithJdkHttpClient(Request request) throws IOException {
-
-        InternalRequest internalRequest = new InternalRequest(request, true);
-        logger.info("InternalRequest http request line: " + internalRequest.jdkHttpRequest);
-
-        Node host = nextNodes().nodes.next();
-
-        RequestContext context = internalRequest.createContextWithJdkClient(host, nextNodes().authCache);
-
-        HttpResponse<String> httpResponse = null;
-
-        try {
-            httpResponse = (HttpResponse<String>) get(internalRequest.jdkHttpRequest.uri().toString());
-
-        } catch (Exception e) {
-            RequestLogger.logFailedRequest(logger, internalRequest.jdkHttpRequest, context.node, httpResponse, e);
-            onFailure(context.node);
-            Exception cause = extractAndWrapCause(e);
-            if (cause instanceof IOException) {
-                throw (IOException) cause;
-            }
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            }
-            throw new IllegalStateException("unexpected exception type: must be either RuntimeException or IOException", cause);
-        }
-
-        logger.debug("HttpResponse<String> status code: " + httpResponse.statusCode() + " req: " + httpResponse.request());
-
-        ResponseOrResponseException responseOrResponseException = convertJdkHttpResponse(internalRequest, context.node, httpResponse);
-
-        if (responseOrResponseException.responseException == null) {
-            if(responseOrResponseException.response != null) {
-                logger.debug("ResponseException: " + responseOrResponseException.response);
-            }
-            HttpEntity entity;
-
-//            InputStream stream = new ByteArrayInputStream(httpResponse.body().getBytes(StandardCharsets.UTF_8));
-//
-//            final char[] buffer = new char[8192];
-
-            return responseOrResponseException.response;
-        }
-
-        throw responseOrResponseException.responseException;
-    }
-
-    public CompletableFuture<Void> get(String uri) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(uri))
-                .version(HttpClient.Version.HTTP_2)
-                .timeout(Duration.ofSeconds(10))
-                .headers("Authorization", "Bearer: " + System.getenv("YELP_API_KEY"))
-                .build();
-
-        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .whenComplete((r, t) -> System.out.println(("status code: " + r.statusCode())))
-                .thenAccept(HttpResponse::body);
-
-    }
-
 
     private ResponseOrResponseException convertResponse(InternalRequest request, Node node, org.apache.http.HttpResponse httpResponse) throws IOException {
-        RequestLogger.logResponse(logger, request.jdkHttpRequest, node.getHost(), httpResponse);
+        RequestLogger.logResponse(logger, request.httpRequest, node.getHost(), httpResponse);
+
         int statusCode = httpResponse.getStatusLine().getStatusCode();
 
         HttpEntity entity = httpResponse.getEntity();
@@ -322,35 +258,6 @@ public class RestClient implements Closeable {
     }
 
 
-    private ResponseOrResponseException convertJdkHttpResponse(InternalRequest request, Node node, HttpResponse<String> httpResponse) throws IOException {
-        RequestLogger.logResponse(logger, jdkHttpClient, httpResponse);
-        final Integer statusCode = httpResponse.statusCode();
-        logger.info("status code: " + statusCode);
-
-        Response response = new Response(node.getHost(), httpResponse);
-        logger.info("response: " + response.jdkHttpResponse().statusCode() + " http response: " + response.getJdkHttpResponse().request());
-
-        if (isSuccessfulResponse(statusCode)) {
-            onResponse(node);
-            if (request.warningsHandler.warningsShouldFailRequest(response.getWarnings())) {
-                throw new WarningFailureException(response);
-            }
-            return new ResponseOrResponseException(response);
-        }
-
-        ResponseException responseException = new ResponseException(response);
-
-        if (isRetryStatus(statusCode)) {
-            // mark host dead and retry against next one
-            onFailure(node);
-            return new ResponseOrResponseException(responseException);
-        }
-
-        onResponse(node);
-
-        throw responseException;
-    }
-
     public Cancellable performRequestAsync(Request request, ResponseListener responseListener) {
         try {
             FailureTrackingResponseListener failureTrackingResponseListener = new FailureTrackingResponseListener(responseListener);
@@ -362,6 +269,7 @@ public class RestClient implements Closeable {
             return Cancellable.NO_OP;
         }
     }
+
 
     private void performRequestAsync(
             final NodeTuple<Iterator<Node>> tuple,
@@ -522,6 +430,7 @@ public class RestClient implements Closeable {
         client.close();
     }
 
+
     private static boolean isSuccessfulResponse(int statusCode) {
         return statusCode < 300;
     }
@@ -552,7 +461,156 @@ public class RestClient implements Closeable {
         }
     }
 
-    private static HttpRequestBase createHttpRequest(String method, URI uri, HttpEntity entity, boolean compressionEnabled) {
+
+    public static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
+        Objects.requireNonNull(path, "path must not be null");
+
+        try {
+            String fullPath;
+            if (pathPrefix != null && !pathPrefix.isEmpty()) {
+                if (pathPrefix.endsWith("/") && path.startsWith("/")) {
+
+                    fullPath = pathPrefix.substring(0, pathPrefix.length() - 1) + path; // remove additional "/"
+                } else if (pathPrefix.endsWith("/") || path.startsWith("/")) {
+                    fullPath = pathPrefix + path;
+
+                } else {
+                    fullPath = pathPrefix + "/" + path;
+                }
+            } else {
+                fullPath = path;
+            }
+
+            URIBuilder uriBuilder;
+            if (fullPath.endsWith("/businesses")) {
+                uriBuilder = new URIBuilder(fullPath + "/" + params.get("id"));
+            }
+            else {
+
+                uriBuilder = new URIBuilder(fullPath);
+                for (Map.Entry<String, String> param : params.entrySet()) {
+                    uriBuilder.addParameter(param.getKey(), param.getValue());
+                }
+            }
+            return uriBuilder.build();
+
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+
+    public class InternalRequest {
+        private final Request request;
+        private final Set<Integer> ignoreErrorCodes;
+        private final HttpRequestBase httpRequest;
+        private Cancellable cancellable;
+        private final WarningsHandler warningsHandler;
+        private HttpRequest jdkHttpRequest;
+
+
+        InternalRequest(Request request) {
+            this.request = request;
+            Map<String, String> params = new HashMap<>(request.getParameters());
+            params.putAll(request.getOptions().getParameters());
+            // ignore is a special parameter supported by the clients, shouldn't be sent to es
+            String ignoreString = params.remove("ignore");
+            this.ignoreErrorCodes = getIgnoreErrorCodes(ignoreString, request.getMethod());
+            String host = "http://api.yelp.com/";
+            URI uri = buildUri(pathPrefix, host + request.getEndpoint(), params);
+
+            this.httpRequest = createHttpRequest(request.getMethod(), uri, request.getEntity(), compressionEnabled);
+
+            this.cancellable = Cancellable.fromRequest(httpRequest);
+
+            setHeaders(httpRequest, request.getOptions().getHeaders());
+
+            setRequestConfig(httpRequest, request.getOptions().getRequestConfig());
+
+            this.warningsHandler = request.getOptions().getWarningsHandler() == null
+                    ? RestClient.this.warningsHandler
+                    : request.getOptions().getWarningsHandler();
+        }
+
+        private void setHeaders(org.apache.http.HttpRequest req, Collection<Header> requestHeaders) {
+            // request headers override default headers, so we don't add default headers if they exist as request headers
+            final Set<String> requestNames = new HashSet<>(requestHeaders.size());
+
+            for (Header requestHeader : requestHeaders) {
+                req.addHeader(requestHeader);
+                requestNames.add(requestHeader.getName());
+            }
+
+            for (Header defaultHeader : defaultHeaders) {
+                if (!requestNames.contains(defaultHeader.getName())) {
+                    req.setHeader(defaultHeader);
+                }
+            }
+            if (compressionEnabled) {
+                req.addHeader("Accept-Encoding", "gzip");
+            }
+            if (metaHeaderEnabled) {
+
+                if (!req.containsHeader(RestClientBuilder.META_HEADER_NAME)) {
+                    req.setHeader(RestClientBuilder.META_HEADER_NAME, RestClientBuilder.META_HEADER_VALUE);
+                }
+            } else {
+                req.removeHeaders(RestClientBuilder.META_HEADER_NAME);
+            }
+            if (RestClientBuilder.userAgentEnable) {
+                logger.debug(PrintUtils.cyan("userAgentEnable: " + RestClientBuilder.userAgentEnable));
+            }
+
+            Header[] header = req.getHeaders("Accept");
+            if(header.length > 0) {
+                logger.debug(PrintUtils.cyan("all header: " + Arrays.stream(req.getAllHeaders()).map(Header::getName).toList()));
+                req.removeHeader(Arrays.stream(req.getHeaders("Accept")).toList().get(0));
+            }
+
+
+        }
+
+        private void setRequestConfig(HttpRequestBase requestBase, RequestConfig requestConfig) {
+            if (requestConfig != null) {
+                requestBase.setConfig(requestConfig);
+            }
+        }
+
+        RequestContext createContextForNextAttempt(Node node, AuthCache authCache) {
+            this.httpRequest.reset();
+            return new RequestContext(this, node, authCache);
+        }
+
+
+    }
+
+    public static class RequestContext {
+        private final Node node;
+        private final HttpAsyncRequestProducer requestProducer;
+        private final HttpAsyncResponseConsumer<org.apache.http.HttpResponse> asyncResponseConsumer;
+
+        // Adaptor class that provides convenience type safe setters and getters for common HttpContext attributes used in the course of HTTP request execution.
+        private final HttpClientContext context;
+
+        RequestContext(InternalRequest request, Node node, AuthCache authCache) {
+            this.node = node;
+
+            // we stream the request body if the entity allows for it
+            this.requestProducer = HttpAsyncMethods.create(node.getHost(), request.httpRequest);
+            logger.info(PrintUtils.green("" +
+                    "this.requestProducer = HttpAsyncMethods.create(HttpHost, HttpRequestBase). HttpHost: " + node.getHost() + ", HttpRequestBase: " + request.httpRequest));
+
+            this.asyncResponseConsumer = request.request.getOptions()
+                    .getHttpAsyncResponseConsumerFactory()
+                    .createHttpAsyncResponseConsumer();
+
+            this.context = HttpClientContext.create();
+            context.setAuthCache(authCache);
+        }
+    }
+
+
+    public static HttpRequestBase createHttpRequest(String method, URI uri, HttpEntity entity, boolean compressionEnabled) {
         switch (method.toUpperCase(Locale.ROOT)) {
             case HttpDeleteWithEntity.METHOD_NAME:
                 return addRequestBody(new HttpDeleteWithEntity(uri), entity, compressionEnabled);
@@ -589,43 +647,6 @@ public class RestClient implements Closeable {
             }
         }
         return httpRequest;
-    }
-
-    static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
-        Objects.requireNonNull(path, "path must not be null");
-
-        try {
-            String fullPath;
-            if (pathPrefix != null && !pathPrefix.isEmpty()) {
-                if (pathPrefix.endsWith("/") && path.startsWith("/")) {
-
-                    fullPath = pathPrefix.substring(0, pathPrefix.length() - 1) + path; // remove additional "/"
-                } else if (pathPrefix.endsWith("/") || path.startsWith("/")) {
-                    fullPath = pathPrefix + path;
-
-                } else {
-                    fullPath = pathPrefix + "/" + path;
-                }
-            } else {
-                fullPath = path;
-            }
-
-            URIBuilder uriBuilder;
-            if (fullPath.endsWith("/businesses")) {
-                uriBuilder = new URIBuilder(fullPath + "/" + params.get("id"));
-            }
-            else {
-
-                uriBuilder = new URIBuilder(fullPath);
-                for (Map.Entry<String, String> param : params.entrySet()) {
-                    uriBuilder.addParameter(param.getKey(), param.getValue());
-                }
-            }
-            return uriBuilder.build();
-
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
-        }
     }
 
 
@@ -678,8 +699,6 @@ public class RestClient implements Closeable {
             this.authCache = authCache;
         }
     }
-
-
     private static class DeadNode implements Comparable<DeadNode> {
         final Node node;
         final DeadHostState deadness;
@@ -699,7 +718,6 @@ public class RestClient implements Closeable {
             return deadness.compareTo(rhs.deadness);
         }
     }
-
 
     private static class DeadNodeIteratorAdapter implements Iterator<Node> {
         private final Iterator<DeadNode> itr;
@@ -721,158 +739,6 @@ public class RestClient implements Closeable {
         @Override
         public void remove() {
             itr.remove();
-        }
-    }
-
-    private class InternalRequest {
-        private final Request request;
-        private final Set<Integer> ignoreErrorCodes;
-        private final HttpRequestBase httpRequest;
-        private final Cancellable cancellable;
-        private final WarningsHandler warningsHandler;
-
-        private HttpRequest jdkHttpRequest;
-
-
-        InternalRequest(Request request) {
-            this.request = request;
-            Map<String, String> params = new HashMap<>(request.getParameters());
-            params.putAll(request.getOptions().getParameters());
-            // ignore is a special parameter supported by the clients, shouldn't be sent to es
-            String ignoreString = params.remove("ignore");
-            this.ignoreErrorCodes = getIgnoreErrorCodes(ignoreString, request.getMethod());
-
-            URI uri = buildUri(pathPrefix, request.getEndpoint(), params);
-
-            this.httpRequest = createHttpRequest(request.getMethod(), uri, request.getEntity(), compressionEnabled);
-
-            this.cancellable = Cancellable.fromRequest(httpRequest);
-
-            setHeaders(httpRequest, request.getOptions().getHeaders());
-
-            setRequestConfig(httpRequest, request.getOptions().getRequestConfig());
-
-            this.warningsHandler = request.getOptions().getWarningsHandler() == null
-                    ? RestClient.this.warningsHandler
-                    : request.getOptions().getWarningsHandler();
-        }
-        private void setHeaders(org.apache.http.HttpRequest req, Collection<Header> requestHeaders) {
-            // request headers override default headers, so we don't add default headers if they exist as request headers
-            final Set<String> requestNames = new HashSet<>(requestHeaders.size());
-
-            for (Header requestHeader : requestHeaders) {
-                req.addHeader(requestHeader);
-                requestNames.add(requestHeader.getName());
-            }
-
-            for (Header defaultHeader : defaultHeaders) {
-                if (!requestNames.contains(defaultHeader.getName())) {
-                    req.addHeader(defaultHeader);
-                }
-            }
-            if (compressionEnabled) {
-                req.addHeader("Accept-Encoding", "gzip");
-            }
-            if (metaHeaderEnabled) {
-                if (!req.containsHeader(RestClientBuilder.META_HEADER_NAME)) {
-                    req.setHeader(RestClientBuilder.META_HEADER_NAME, RestClientBuilder.META_HEADER_VALUE);
-                }
-            } else {
-                req.removeHeaders(RestClientBuilder.META_HEADER_NAME);
-            }
-        }
-
-        private void setRequestConfig(HttpRequestBase requestBase, RequestConfig requestConfig) {
-            if (requestConfig != null) {
-                requestBase.setConfig(requestConfig);
-            }
-        }
-
-        RequestContext createContextForNextAttempt(Node node, AuthCache authCache) {
-            this.httpRequest.reset();
-            return new RequestContext(this, node, authCache);
-        }
-
-        InternalRequest(Request request, boolean temp) {
-
-            this.request = request;
-            Map<String, String> params = new HashMap<>(request.getParameters());
-            params.putAll(request.getOptions().getParameters());
-
-            String ignoreString = params.remove("ignore");
-            this.ignoreErrorCodes = getIgnoreErrorCodes(ignoreString, request.getMethod());
-
-            // method /endpoint
-            URI uri = buildUri(pathPrefix, request.getEndpoint(), params);
-
-
-            this.httpRequest = createHttpRequest(request.getMethod(), uri, request.getEntity(), compressionEnabled);
-
-            logger.info(PrintUtils.cyan("uri: " + uri));
-
-            String host = nodeTuple.nodes.get(0).toString();
-
-            if(host.startsWith("[")) {
-                host = host.substring(6, host.length()-1);
-            }
-            URI u = URI.create(host +  uri);
-
-            List<Header> headers = request.getOptions().getHeaders().stream().toList();
-
-
-            logger.info(PrintUtils.cyan("request = ") + jdkHttpRequest);
-            this.cancellable = Cancellable.fromRequest(httpRequest);
-
-            setHeaders(jdkHttpRequest, request.getOptions().getHeaders());
-
-            setRequestConfig(jdkHttpRequest, request.getOptions().getRequestConfig());
-
-            Response response = new Response(jdkHttpRequest, jdkHttpClient);
-
-            this.warningsHandler = request.getOptions().getWarningsHandler() == null
-                    ? RestClient.this.warningsHandler
-                    : request.getOptions().getWarningsHandler();
-
-        }
-
-        private void setRequestConfig(HttpRequest jdkHttpRequest, RequestConfig requestConfig) {
-
-        }
-
-        private void setHeaders(HttpRequest jdkHttpRequest, List<Header> headers) {
-
-            final Set<String> requestNames = new HashSet<>(headers.size());
-
-            for (Header requestHeader : headers) {
-                requestNames.add(requestHeader.getName());
-            }
-        }
-        public RequestContext createContextWithJdkClient(Node node, AuthCache authCache)  {
-            return new RequestContext(this, node, authCache);
-        }
-    }
-
-    private static class RequestContext {
-        private final Node node;
-        private final HttpAsyncRequestProducer requestProducer;
-        private final HttpAsyncResponseConsumer<org.apache.http.HttpResponse> asyncResponseConsumer;
-
-        // Adaptor class that provides convenience type safe setters and getters for common HttpContext attributes used in the course of HTTP request execution.
-        private final HttpClientContext context;
-
-        RequestContext(InternalRequest request, Node node, AuthCache authCache) {
-            this.node = node;
-
-            // we stream the request body if the entity allows for it
-            this.requestProducer = HttpAsyncMethods.create(node.getHost(), request.httpRequest);
-
-            this.asyncResponseConsumer = request.request.getOptions()
-                    .getHttpAsyncResponseConsumerFactory()
-                    .createHttpAsyncResponseConsumer();
-
-            this.context = HttpClientContext.create();
-
-            context.setAuthCache(authCache);
         }
     }
 
@@ -911,7 +777,6 @@ public class RestClient implements Closeable {
             this.response = Objects.requireNonNull(response);
             this.responseException = null;
         }
-
 
         ResponseOrResponseException(ResponseException responseException) {
             this.responseException = Objects.requireNonNull(responseException);
@@ -980,7 +845,6 @@ public class RestClient implements Closeable {
             return out.asInput();
         }
     }
-
 
     private static class ByteArrayInputOutputStream extends ByteArrayOutputStream {
         ByteArrayInputOutputStream(int size) {

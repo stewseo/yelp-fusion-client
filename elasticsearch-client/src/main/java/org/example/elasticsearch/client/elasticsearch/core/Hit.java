@@ -24,7 +24,7 @@ import java.util.function.*;
 @JsonpDeserializable
 public class Hit<TDocument> implements Serializable {
 
-    Logger logger = LoggerFactory.getLogger(Hit.class);
+    private static final Logger logger = LoggerFactory.getLogger(Hit.class);
 
     @Nullable
     private final String index;
@@ -566,6 +566,8 @@ public class Hit<TDocument> implements Serializable {
 
     public static <TDocument> JsonpDeserializer<Hit<TDocument>> createHitDeserializer(
             JsonpDeserializer<TDocument> tDocumentDeserializer) {
+        logger.debug(PrintUtils.debug("Creating Hit Deserializer with JsonpDeserializer<TDocument> "));
+
         return ObjectBuilderDeserializer.createForObject((Supplier<Hit.Builder<TDocument>>) Hit.Builder::new,
                 op -> Hit.setupHitDeserializer(op, tDocumentDeserializer));
     };

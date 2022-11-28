@@ -2,7 +2,6 @@ package org.example.yelp.fusion.client.business;
 
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.util.ObjectBuilder;
-import org.example.yelp.fusion.client.business.search.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

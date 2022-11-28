@@ -241,9 +241,8 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
                 new FieldObjectDeserializer<>(setter, deserializer, name);
 
         logger.info(PrintUtils.green(" FieldObjectDeserializer<ObjectType, FieldType> = " +
-                "BiConsumer<ObjectType, FieldType>: " + deserializer + "\n" +
-                "JsonpDeserializer<FieldType> deserializer: " + setter + "\n" +
-                "being mapped in Map<String, FieldDeserializer<ObjectType>> fieldDeserializers. key = " + name )
+                "BiConsumer<ObjectType, FieldType>, JsonpDeserializer<FieldType> deserializer, name " +
+                "putting key = " + name + " value = " + fieldDeserializer)
         );
         this.fieldDeserializers.put(name, fieldDeserializer);
     }

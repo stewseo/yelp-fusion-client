@@ -5,6 +5,8 @@ import org.apache.http.*;
 import org.apache.http.client.config.*;
 import org.apache.http.impl.nio.client.*;
 import org.apache.http.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -16,7 +18,7 @@ import java.util.*;
 
 public final class RestClientBuilder {
 
-    private static final Log logger = LogFactory.getLog(RestClientBuilder.class);
+    Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
     public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 1000;
     public static final int DEFAULT_SOCKET_TIMEOUT_MILLIS = 30000;
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
@@ -39,7 +41,9 @@ public final class RestClientBuilder {
     private boolean strictDeprecationMode = false;
     private boolean compressionEnabled = false;
     private boolean metaHeaderEnabled = true;
-    private HttpClientInterface httpClientInterface;
+
+    public static boolean userAgentEnable = true;
+
 
     static {
 
@@ -191,8 +195,8 @@ public final class RestClientBuilder {
         return this;
     }
 
-    public RestClientBuilder setHttpClient(HttpClientInterface httpClientInterface) {
-        this.httpClientInterface = httpClientInterface;
+    public RestClientBuilder setUserAgentEnable(boolean userAgentEnable) {
+        this.userAgentEnable = userAgentEnable;
         return this;
     }
 
@@ -205,11 +209,8 @@ public final class RestClientBuilder {
         CloseableHttpAsyncClient httpClient = AccessController.doPrivileged(
                 (PrivilegedAction<CloseableHttpAsyncClient>) this::createHttpClient
         );
-        HttpClient jdkHttpClient = createJdkHttpClient();
         RestClient restClient = new RestClient(
                 httpClient,
-                jdkHttpClient,
-                httpClientInterface,
                 defaultHeaders,
                 nodes,
                 pathPrefix,
@@ -220,29 +221,14 @@ public final class RestClientBuilder {
                 metaHeaderEnabled
         );
 
-               PrintUtils.cyan(String.format("http client = %s%n default headers = %s%n nodes = %s%n pathPrefix = %s%n",
-                       httpClient,
-                       Arrays.toString(defaultHeaders),
-                       nodes,
-                       pathPrefix));
-
         httpClient.start();
         return restClient;
     }
 
-    private HttpClient createJdkHttpClient() {
-        return HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_2)
-                .connectTimeout(Duration.ofSeconds(10))
-                .build();
-        // default ssl context =
-        // default max con total =
-        // default max con per route =
-        // .setTargetAuthenticationStrategy(new PersistentCredentialsAuthenticationStrategy
-    }
 
     @SuppressWarnings("removal")
     private CloseableHttpAsyncClient createHttpClient() {
+
         // default timeouts are all infinite
         RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
                 .setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS)
@@ -258,8 +244,12 @@ public final class RestClientBuilder {
                     .setMaxConnPerRoute(DEFAULT_MAX_CONN_PER_ROUTE)
                     .setMaxConnTotal(DEFAULT_MAX_CONN_TOTAL)
                     .setSSLContext(SSLContext.getDefault())
-                    .setUserAgent(USER_AGENT_HEADER_VALUE)
                     .setTargetAuthenticationStrategy(new PersistentCredentialsAuthenticationStrategy());
+
+            if(userAgentEnable) {
+                httpClientBuilder.setUserAgent(USER_AGENT_HEADER_VALUE);
+                logger.debug("userAgentEnable" + userAgentEnable);
+            }
             if (httpClientConfigCallback != null) {
                 httpClientBuilder = httpClientConfigCallback.customizeHttpClient(httpClientBuilder);
             }

@@ -17,6 +17,7 @@ import org.example.lowlevel.restclient.PrintUtils;
 import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
 import org.example.yelp.fusion.client.business.BusinessSearchResponse;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,13 +26,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class YelpRequestLogger {
-    private static final Log tracer = LogFactory.getLog("tracer");
+    private static final Logger tracer = LoggerFactory.getLogger("tracer");
 
     private YelpRequestLogger() {
     }
 
 
-    public static <ResponseT> void logEmptyResponseBody(Log logger, BusinessSearchResponse<ResponseT> businessSearchResponse) {
+    public static <ResponseT> void logEmptyResponseBody(Logger logger, BusinessSearchResponse<ResponseT> businessSearchResponse) {
         logger.info(PrintUtils.red("void logEmptyResponseBody buildTraceRequest, buildWarnMessage"));
 
         if (logger.isDebugEnabled()) {
@@ -148,7 +149,7 @@ public class YelpRequestLogger {
     }
 
 
-    public static<ResponseT> void logFailedElasticsearchRequest(Log logger, ResponseT responseT) {
+    public static<ResponseT> void logFailedElasticsearchRequest(Logger logger, ResponseT responseT) {
         logger.info(PrintUtils.red("logging Failed Elasticsearch Request."));
 
         if(responseT instanceof BusinessSearchResponse<?> business) {
@@ -165,7 +166,7 @@ public class YelpRequestLogger {
     }
 
 
-    public static void logResponseError(Log logger, Object error) {
+    public static void logResponseError(Logger logger, Object error) {
         try {
             JsonNode node = new JacksonJsonpMapper().objectMapper().readValue(error.toString(), JsonNode.class);
 
@@ -183,18 +184,10 @@ public class YelpRequestLogger {
         if(response instanceof BusinessDetailsResponse<?>) {
             BusinessDetailsResponse<?> resp = (BusinessDetailsResponse<?>) response;
 
-            if (resp.total() != null) {
-                logger.info("total = " + resp.total());
-            }
-
             if (resp.hits() != null) {
                 if (resp.hits() != null) {
                     logger.info("businesses = " + resp.hits().size());
                 }
-            }
-
-            if(resp.total() != null) {
-                logger.info("BusinessDetailsResponse. Fields: total = " + resp.total());
             }
 
             if (logger.isDebugEnabled()) {

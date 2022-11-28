@@ -118,6 +118,7 @@ public class RestClientTransport implements ElasticsearchTransport {
 
         Request clientReq = new Request(method, path);
 
+
         clientReq.addParameters(params);
 
         if (endpoint.hasRequestBody()) {
@@ -292,4 +293,4 @@ public class RestClientTransport implements ElasticsearchTransport {
             );
         }
     }
-    }
+}
