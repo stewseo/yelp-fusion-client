@@ -4,21 +4,19 @@
 # Ignore Gradle build output directory
 build
 build/build
+*/build/
+
+gradle/
+gradlew*
+*.gradlew
+*.jar
+*.bat
 
 
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
 .classpath
 .project
 .settings/
+
 *-cs-cleanup.xml
 *-cs-formatter.xml
 .checkstyle
@@ -26,9 +24,9 @@ buildNumber.properties
 *.iml
 *.ipr
 *.iws
-forbidden-apis-txt
-/forbidedden-apis-txt
+
 images/*
-restaurant-recommender-java/build/
-restaurant-recommender-java/yelp-fusion-client/src/test/resources/*
+build-conventions/*
+build-tools/*
+# yelp-fusion-client/*/test/*/*/*/yelp/fusion/client/business/model/*
 

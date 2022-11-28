@@ -1,35 +1,15 @@
-### restaurant-recommender-java provides a java-client to
-- Build yelp fusion request objects
-- Handle http transport using the java 11 http client
-- Parse json results from the response body
-- Map json data to objects
-- Create and store documents in Elasticsearch
+### restaurant-recommender-python
+- Build API objects for Yelp Fusion Endpoints.
+- Handle synchronus and asynchronus requests using Apache Http Components.
+- Automatically deserialize the parsed input stream to an application class.
 
 
-#### Build a request, parsing the response, and mapping to a Business object
-
-```
-int docsCount = yelpClient.getDocsCount(index);
-
-Map<String, Set<String>> categoriesMap = elasticSearch.getCategoriesMap(indexNyc, maxResults, timestamp);
-
-for(String category: categoriesMap.values()
-        .stream()
-        .flatMap(Set::stream).collect(Collectors.toSet())) {
-
-BusinessSearchResponse<Business> businessSearchResponse = yelpClient.search(s -> s
-                .location("nyc")
-                .term("restaurants")
-                .categories(c -> c
-                        .alias(category))
-                .sort_by(sort_by)
-                .offset(aOffset)
-                .limit(limit)
-        , Business.class);
+![Screenshot_20221128_010905](https://user-images.githubusercontent.com/54422342/204383844-239e5de1-e518-4ffb-8897-d8020b896f03.png)
 
 
-if (businessSearchResponse != null && businessSearchResponse.error() == null) {
-```
+### elasticsearch module
+- Create, index and search documents through Elasticsearch
 
 
 ### restaurant-recommender-python
+
