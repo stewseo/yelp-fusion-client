@@ -25,8 +25,8 @@ public abstract class ModelTestCase extends Assertions {
 
     private JsonpMapper setupMapper(int rand) {
         // Randomly choose json-b or jackson
-        switch(rand % 3) {
-            case 0:
+        switch (rand % 3) {
+            case 0 -> {
                 System.out.println("Using a JsonB mapper (rand = " + rand + ").");
                 return new JsonbJsonpMapper() {
                     @Override
@@ -34,8 +34,8 @@ public abstract class ModelTestCase extends Assertions {
                         return false;
                     }
                 };
-
-            case 1:
+            }
+            case 1 -> {
                 System.out.println("Using a Jackson mapper (rand = " + rand + ").");
                 return new JacksonJsonpMapper() {
                     @Override
@@ -43,10 +43,11 @@ public abstract class ModelTestCase extends Assertions {
                         return false;
                     }
                 };
-
-            default:
+            }
+            default -> {
                 System.out.println("Using a simple mapper (rand = " + rand + ").");
                 return SimpleJsonpMapper.INSTANCE_REJECT_UNKNOWN_FIELDS;
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package org.example.yelp.fusion.client.transport;
+package org.example.yelp.fusion.client.end_to_end;
 
 
 import org.apache.http.Header;
@@ -14,12 +14,14 @@ import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
 import org.example.yelp.fusion.client.business.BusinessSearchResponse;
 import org.example.yelp.fusion.client.business.model.Business;
 import org.example.yelp.fusion.client.model.ModelTestCase;
+import org.example.yelp.fusion.client.transport.YelpRestTransport;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,7 +63,7 @@ public class TransportTest extends ModelTestCase {
 
 
     @Test
-    void yelpTransportTest() throws Exception {
+    void businessDetailsTest() throws Exception {
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
@@ -100,10 +102,9 @@ public class TransportTest extends ModelTestCase {
         int maxResultsPerPage = 50;
         assertThat(response.hits().size()).isEqualTo(maxResultsPerPage);
 
-        response.hits().stream().map(Business::id).forEach(System.out::println);
+        List<String> businessIds = response.hits().stream().map(Business::id).distinct().toList();
 
-        Business business = response.hits().get(0);
-        logger.debug("business: " + business);
+        assertThat(businessIds.size()).isEqualTo(maxResultsPerPage);
 
     }
 

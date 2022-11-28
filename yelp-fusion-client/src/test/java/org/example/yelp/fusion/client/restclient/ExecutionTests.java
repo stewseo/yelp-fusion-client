@@ -37,9 +37,9 @@ import java.util.concurrent.Future;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
-public class RequestExecutionTests {
+public class ExecutionTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestExecutionTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExecutionTests.class);
     String uri = "http://api.yelp.com/v3/businesses/search?location=sf";
 
     @Test
@@ -61,6 +61,43 @@ public class RequestExecutionTests {
 
     static  Node node = new Node(new HttpHost("api.yelp.com"));
     static  Request request = new Request("Get", "v3/businesses/search");
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void endpointTest() {
+        BusinessDetailsRequest businessSearchRequest = BusinessDetailsRequest.of(s -> s
+                .id("wu3w6IlUct9OvYmYXDMGJA"));
+
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint = (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) businessSearchRequest._ENDPOINT;
+
+        assertThat(jsonEndpoint.id()).isEqualTo("v3/businesses");
+
+        assertThat(jsonEndpoint.method(businessSearchRequest)).isEqualTo("GET");
+        assertThat(jsonEndpoint.requestUrl(businessSearchRequest)).isEqualTo("v3/businesses/wu3w6IlUct9OvYmYXDMGJA");
+        assertThat(jsonEndpoint.responseDeserializer()).isEqualTo("GET");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void requestProducerTest() throws Exception {
+        HttpEntity entity = sendRequestAsync();
+
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint =
+                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) BusinessDetailsRequest._ENDPOINT;
+
+
+        JsonpDeserializer<BusinessDetailsResponse_> responseParser = jsonEndpoint.responseDeserializer();
+
+        JacksonJsonpMapper mapper = new JacksonJsonpMapper();
+
+        InputStream content = entity.getContent();
+
+        JsonParser parser = mapper.jsonProvider().createParser(content);
+
+        BusinessDetailsResponse_ response = responseParser.deserialize(parser, mapper);
+        logger.debug(PrintUtils.debug("response " + response.result()));
+
+    }
 
     private HttpEntity sendRequestAsync() throws Exception {
         CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
@@ -91,58 +128,6 @@ public class RequestExecutionTests {
         HttpResponse httpResponse = future.get();
         client.close();
         return httpResponse.getEntity();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    void endpointTest() {
-        BusinessDetailsRequest businessSearchRequest = BusinessDetailsRequest.of(s -> s
-                .id("wu3w6IlUct9OvYmYXDMGJA"));
-
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint = (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) businessSearchRequest._ENDPOINT;
-
-        assertThat(jsonEndpoint.id()).isEqualTo("v3/businesses");
-
-        assertThat(jsonEndpoint.method(businessSearchRequest)).isEqualTo("GET");
-        assertThat(jsonEndpoint.requestUrl(businessSearchRequest)).isEqualTo("v3/businesses/wu3w6IlUct9OvYmYXDMGJA");
-        assertThat(jsonEndpoint.responseDeserializer()).isEqualTo("GET");
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void requestProducerTest() throws Exception {
-        HttpEntity entity = sendRequestAsync();
-
-//        BusinessDetailsRequest businessDetailsRequest = BusinessDetailsRequest.of(s -> s
-//                .id("wu3w6IlUct9OvYmYXDMGJA"));
-
-
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint =
-                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) BusinessDetailsRequest._ENDPOINT;
-
-
-        JsonpDeserializer<BusinessDetailsResponse_> responseParser = jsonEndpoint.responseDeserializer();
-//
-        JacksonJsonpMapper mapper = new JacksonJsonpMapper();
-
-        InputStream content = entity.getContent();
-
-        JsonParser parser = mapper.jsonProvider().createParser(content);
-
-
-//        if(parser.hasNext()) {
-//            JsonParser.Event event = parser.next();
-//            switch (event) {
-//                case START_ARRAY, END_ARRAY, START_OBJECT, END_OBJECT, VALUE_FALSE, VALUE_NULL, VALUE_TRUE -> logger.info(event.toString());
-//                case KEY_NAME -> logger.info(event.toString() + " " + parser.getString() + " - ");
-//                case VALUE_STRING, VALUE_NUMBER -> logger.info(event.toString() + " " + parser.getString());
-//            }
-//
-//        }
-
-        BusinessDetailsResponse_ response = responseParser.deserialize(parser, mapper);
-        logger.debug(PrintUtils.debug("response " + response.result()));
-
     }
 
 }

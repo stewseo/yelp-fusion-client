@@ -1,4 +1,4 @@
-package org.example.yelp.fusion.client.json.json;
+package org.example.yelp.fusion.client.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

@@ -34,8 +34,6 @@ public interface JsonpDeserializer<V> {
         if (event == JsonParser.Event.VALUE_NULL && !accepts(JsonParser.Event.VALUE_NULL)) {
             return null;
         }
-        logger.info("parser = " + parser + " mapper = " + mapper);
-
         JsonpUtils.ensureAccepts(this, parser, event);
         return deserialize(parser, mapper, event);
     }

@@ -1,8 +1,9 @@
-package org.example.yelp.fusion.client.json.json;
+package org.example.yelp.fusion.client.json;
 
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.example.elasticsearch.client.json.JsonpDeserializer;
+import org.example.elasticsearch.client.json.ObjectDeserializer;
 import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.elasticsearch.client.transport.JsonEndpoint;
 import org.example.lowlevel.restclient.PrintUtils;
@@ -53,6 +54,7 @@ public class ResponseDeserializerTest {
         BusinessDetailsResponse_ response = responseParser.deserialize(parser, mapper);
 
         Business business = response.result().get(0);
+
 
         logger.debug(PrintUtils.debug("id: " + business.id() +
                 " name: " + business.name() +

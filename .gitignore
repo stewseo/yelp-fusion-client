@@ -4,18 +4,15 @@
 # Ignore Gradle build output directory
 build
 build/build
+*/build/
+
+gradle/
+gradlew*
+*.gradlew
+*.jar
+*.bat
 
 
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
 .classpath
 .project
 .settings/
@@ -28,17 +25,10 @@ buildNumber.properties
 *.ipr
 *.iws
 
-images/*
-build/
-*/build/
+.gitignore
 
+images/*
 build-conventions/*
 build-tools/*
+# yelp-fusion-client/*/test/*/*/*/yelp/fusion/client/business/model/*
 
-gradle/
-gradlew*
-*.gradlew
-*.jar
-*.bat
-
-yelp-fusion-client/*/test/*/*/*/yelp/fusion/client/business/model/*

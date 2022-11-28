@@ -1,4 +1,4 @@
-package org.example.yelp.fusion.client.json.json.jackson;
+package org.example.yelp.fusion.client.json.jackson;
 
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;

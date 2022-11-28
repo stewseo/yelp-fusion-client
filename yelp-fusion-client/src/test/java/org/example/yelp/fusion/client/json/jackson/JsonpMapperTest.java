@@ -1,4 +1,4 @@
-package org.example.yelp.fusion.client.json.json.jackson;
+package org.example.yelp.fusion.client.json.jackson;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;

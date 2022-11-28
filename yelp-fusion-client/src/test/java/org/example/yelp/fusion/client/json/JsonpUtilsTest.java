@@ -1,4 +1,4 @@
-package org.example.yelp.fusion.client.search;
+package org.example.yelp.fusion.client.json;
 
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.util.*;

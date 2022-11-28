@@ -1,4 +1,4 @@
-package org.example.yelp.fusion.client.json.json.jackson;
+package org.example.yelp.fusion.client.json.jackson;
 
 import jakarta.json.stream.JsonParser;
 import org.apache.http.entity.HttpEntityWrapper;
