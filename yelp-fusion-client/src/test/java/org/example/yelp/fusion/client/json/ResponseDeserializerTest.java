@@ -3,6 +3,7 @@ package org.example.yelp.fusion.client.json;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.example.elasticsearch.client.json.JsonpDeserializer;
+import org.example.elasticsearch.client.json.ObjectDeserializer;
 import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.elasticsearch.client.transport.JsonEndpoint;
 import org.example.lowlevel.restclient.PrintUtils;
