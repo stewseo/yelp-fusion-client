@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 // Build a BusinessSearchRequest for the business search endpoint
 public class BusinessSearchRequest extends RequestBase implements JsonpSerializable {
+
     private static final Logger logger = LoggerFactory.getLogger(BusinessSearchRequest.class);
     private final List<String> term;
     private final List<String> location;
@@ -32,7 +33,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
     private final Integer limit;
     private final Integer offset;
 
-    private final Coordinates coordinate;
+    private final Coordinates coordinates;
     
     private final String sort_by;
     private final String price;
@@ -45,7 +46,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
         this.term = builder.term;
         this.location = builder.location;
-        this.coordinate = builder.coordinate;
+        this.coordinates = builder.coordinates;
         this.radius = builder.radius;
         this.categories = builder.categories;
         this.locale = builder.locale;
@@ -75,6 +76,9 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
     public Categories categories() {
         return this.categories;
+    }
+    public Coordinates coordinates() {
+        return this.coordinates;
     }
 
     public String locale() {
@@ -140,11 +144,10 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
             this.categories.serialize(generator, mapper);
         }
 
-        if(this.coordinate != null) {
-            generator.writeKey("coordinate");
-            this.coordinate.serialize(generator, mapper);
+        if(this.coordinates != null) {
+            generator.writeKey("coordinates");
+            this.coordinates.serialize(generator, mapper);
         }
-
 
         if (this.radius != 0) {
             generator.writeKey("radius");
@@ -197,13 +200,13 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         private List<String> term;
         private List<String> location;
 
-        private Coordinates coordinate;
+        private Coordinates coordinates;
 
         private Double latitude;
+
         private Double longitude;
         private int radius;
         private Categories categories;
-
 
         private String locale;
         private Integer limit;
@@ -236,13 +239,13 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         public final Builder categories(Function<Categories.Builder, ObjectBuilder<Categories>> fn) {
             return this.categories(fn.apply(new Categories.Builder()).build());
         }
-        public final Builder coordinate(Coordinates value) {
-            this.coordinate = value;
+        public final Builder coordinates(Coordinates value) {
+            this.coordinates = value;
             return this;
         }
 
-        public final Builder coordinate(Function<Coordinates.Builder, ObjectBuilder<Coordinates>> fn) {
-            return this.coordinate(fn.apply(new Coordinates.Builder()).build());
+        public final Builder coordinates(Function<Coordinates.Builder, ObjectBuilder<Coordinates>> fn) {
+            return this.coordinates(fn.apply(new Coordinates.Builder()).build());
         }
 
         public final Builder location(List<String> list) {
@@ -251,16 +254,6 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         }
         public final Builder location(String value, String... values) {
             this.location = _listAdd(this.location, value, values);
-            return this;
-        }
-
-        public final Builder latitude(Double latitude) {
-            this.latitude = latitude;
-            return this;
-        }
-
-        public final Builder longitude(Double longitude) {
-            this.longitude = longitude;
             return this;
         }
 
@@ -332,7 +325,6 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
     @Override
     public String toString() {
-
         return JsonpUtils.toString(this);
     }
 
@@ -340,7 +332,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
 
         op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
         op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
-        op.add(Builder::coordinate, Coordinates._DESERIALIZER, "coordinate");
+        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
         op.add(Builder::categories, Categories._DESERIALIZER, "categories");
         op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "attributes");
@@ -373,6 +365,15 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
                 if (request.categories() != null) {
                     request.categories.alias().forEach(alias -> parameters.put("categories", alias));
                 }
+                Double latitude = request.coordinates().geo_coordinates().latitude();
+                if (latitude != null) {
+                    parameters.put("latitude", String.valueOf(latitude));
+                }
+                Double longitude = request.coordinates().geo_coordinates().longitude();
+                if (latitude != null) {
+                    parameters.put("longitude", String.valueOf(longitude));
+                }
+
                 if (request.radius != 0) {
                     parameters.put("radius", String.valueOf(request.radius));
                 }

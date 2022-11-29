@@ -1,29 +1,43 @@
 plugins {
     id 'library-conventions'
-    id 'java'
+    id 'java-library'
     id "com.dorongold.task-tree" version "2.1.0"
+    id 'maven-publish'
 }
 
+jar {
+    baseName = 'yelp-fusion-client'
+    version = '1.0.0'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '7.5.1'
+}
 
 dependencies {
     implementation project (":elasticsearch-client")
     implementation project (":lowlevel-restclient")
 
     implementation 'gg.jte:jte:2.2.3'
-    implementation 'co.elastic.clients:elasticsearch-java:8.5.2'
+    api 'co.elastic.clients:elasticsearch-java:8.5.2'
 
-    implementation("jakarta.json:jakarta.json-api:'2.0.1'")
-    implementation("jakarta.json.bind:jakarta.json.bind-api:'2.0.0'")
+    api "jakarta.json:jakarta.json-api:'2.0.1'"
+    api "jakarta.json.bind:jakarta.json.bind-api:'2.0.0'"
 
-    implementation "org.eclipse.parsson:parsson:1.0.0"
+    api "org.eclipse.parsson:parsson:1.0.0"
 
     testImplementation("org.eclipse:yasson:2.0.4") {
         // Exclude Glassfish as we use Parsson (basically Glassfish renamed in the Jakarta namespace).
         exclude(group: "org.glassfish", module: "jakarta.json")
     }
-//    configurations.all {
-//
-//    }
 
     testImplementation("io.github.classgraph:classgraph:4.8.147")
 
@@ -38,8 +52,4 @@ tasks.named('taskTree').configure {
     withOutputs = true // prints task inputs in red just below the task in the tree. Equivalent to the --with-outputs CLI task option.
     repeat = true  // allows printing a sub-tree in the task-tree more than once. Equivalent to the --repeat CLI task option
     impliesSubProjects = true  // disables printing task-tree for child projects in a multi-project
-}
-
-task wrapper(type: Wrapper){
-    gradleVersion = '7.5.1'
 }

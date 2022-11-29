@@ -25,7 +25,6 @@ public abstract class AbstractRequestTestCase extends Assertions {
 
     @BeforeAll
     static void beforeAll() throws IOException {
-        initYelpFusionClient();
         initElasticsearchClient();
     }
 
@@ -34,17 +33,14 @@ public abstract class AbstractRequestTestCase extends Assertions {
     public static String timestampPipeline = "timestamp-pipeline";
 
     public static String postalPipeline = "postal-lookup";
-
     public static String indexNyc = "yelp-businesses-restaurants-nyc";
 
     private static void initYelpFusionClient() throws IOException {
 
-        mapper = new JacksonJsonpMapper();
-
         String hostName = "api.yelp.com";
         int port = 80;
         String scheme = "http";
-        HttpHost host = new HttpHost(hostName, 80, scheme);
+        HttpHost host = new HttpHost(hostName, port, scheme);
 
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
@@ -54,8 +50,9 @@ public abstract class AbstractRequestTestCase extends Assertions {
                 .setUserAgentEnable(false)
                 .setDefaultHeaders(defaultHeaders);
 
-
+        mapper = new JacksonJsonpMapper();
         YelpRestTransport yelpTransport;
+
         try (RestClient restClient = restBuilder.build()) {
 
             yelpTransport = new YelpRestTransport(restClient, mapper);
@@ -64,6 +61,7 @@ public abstract class AbstractRequestTestCase extends Assertions {
             throw new RuntimeException(e);
         }
 
+        logger.info("yelp client: " + yelpClient);
         yelpClient = new YelpFusionClient(yelpTransport);
     }
 

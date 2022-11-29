@@ -28,7 +28,7 @@ public class Categories implements JsonpSerializable {
         this.country_blacklist = builder.country_blacklist;
         this.country_whitelist = builder.country_whitelist;
     }
-    public  List<String> alias() {
+    public List<String> alias() {
         return alias;
     }
 

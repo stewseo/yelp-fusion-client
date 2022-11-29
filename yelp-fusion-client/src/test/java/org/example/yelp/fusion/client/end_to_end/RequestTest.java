@@ -11,13 +11,24 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.message.BasicHeader;
+import org.example.elasticsearch.client.json.JsonpMapper;
+import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.lowlevel.restclient.PrintUtils;
+import org.example.lowlevel.restclient.RestClient;
+import org.example.lowlevel.restclient.RestClientBuilder;
 import org.example.yelp.fusion.client.AbstractRequestTestCase;
+import org.example.yelp.fusion.client.YelpFusionClient;
+import org.example.yelp.fusion.client.business.BusinessDetailsRequest;
+import org.example.yelp.fusion.client.business.BusinessSearchRequest;
 import org.example.yelp.fusion.client.business.BusinessSearchResponse;
 import org.example.yelp.fusion.client.business.model.Business;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
+import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
 import org.example.yelp.fusion.client.exception.YelpFusionException;
 import org.example.yelp.fusion.client.exception.YelpRequestLogger;
+import org.example.yelp.fusion.client.transport.YelpRestTransport;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,9 +42,38 @@ import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.toMap;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SuppressWarnings({"ConstantConditions", "unused"})
+@SuppressWarnings({"unused"})
 public class RequestTest extends AbstractRequestTestCase {
     private static final Logger logger = LoggerFactory.getLogger(RequestTest.class);
+
+    static YelpFusionClient yelpClient;
+
+    private static void initYelpFusionClient() throws IOException {
+        String yelpFusionHost = "api.yelp.com";
+        int port = 80;
+        HttpHost httpHost = new HttpHost(yelpFusionHost, port, "http");
+        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
+
+        RestClientBuilder builder = RestClient.builder(
+                        httpHost)
+                .setMetaHeaderEnabled(false)
+                .setUserAgentEnable(false)
+                .setDefaultHeaders(defaultHeaders);
+
+        RestClient restClient = builder.build();
+
+        JsonpMapper mapper = new JacksonJsonpMapper();
+
+        YelpRestTransport yelpTransport = null;
+        try {
+            yelpTransport = new YelpRestTransport(restClient, mapper);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        yelpClient = new YelpFusionClient(yelpTransport);
+    }
+
     static Map<String, List<String>> categoriesMap;
     static int docsCount;
     static Set<String> setOfBusinessIds;
@@ -41,19 +81,21 @@ public class RequestTest extends AbstractRequestTestCase {
     static String categoryName;
 
     @BeforeAll
-    static void setup() {
+    static void setup() throws IOException {
 
         loadCategoriesMap();
 
-        categoryName = "japanese";
+        categoryName = "bagels";
 
-//        assertThat(docsCount).isEqualTo(setOfBusinessIds.size());
+        assertThat(docsCount-1).isEqualTo(setOfBusinessIds.size());
 
         int numberOfIdsInValues = categoriesMap.values().stream().mapToInt(List::size).sum();
 
         indexOf = categoriesMap.keySet().stream().toList().indexOf(categoryName);
 
         logger.info(PrintUtils.cyan("category name = " + categoryName + " number of businesses = " + categoriesMap.get(categoryName).size() + " index position = " + indexOf));
+
+        initYelpFusionClient();
 
     }
 
@@ -81,10 +123,6 @@ public class RequestTest extends AbstractRequestTestCase {
             logger.info("timestamp = " + timestamp + " keys in categories = " + categoriesMap.keySet().size());
         }
         setOfBusinessIds = elasticSearch.getSetOfBusinessIds();
-
-        logger.info(
-                " total categories " + map.values().size() +
-                        " total business id's = " + setOfBusinessIds.size());
 
         map.remove("restaurants");
         map.remove("nightlife");
@@ -135,15 +173,13 @@ public class RequestTest extends AbstractRequestTestCase {
 
     @Test
     public void businessSearchTest() throws Exception {
-        int docsCount = elasticSearch.getDocsCount(indexNyc);
 
         assertThat(indexNyc).isEqualTo("yelp-businesses-restaurants-nyc");
         int maxTotal = 1000;
-        int radius = 7000;
+        int radius = 6000;
         int limit = 50;
         String sort_by = "distance";
         String term = "restaurants";
-        String location = "new+york+city";
 
         Map<String, Coordinates> neighborHoodCoordinates = Map.of("manhattan", new Coordinates(40.713135, -74.004044),
                 "brooklyn", new Coordinates(40.692436, -73.990372),
@@ -157,8 +193,8 @@ public class RequestTest extends AbstractRequestTestCase {
 //                "harlem", new Coordinates(40.8116, -73.9465),
 //                "soho", new Coordinates(40.7246, -74.0019)
         );
-
-        for (String category : categoriesMap.keySet().stream().skip(indexOf).toList()) {
+        List<String> categories = categoriesMap.keySet().stream().skip(indexOf).toList();
+        for (String category : categories) {
             // reset offset, total, count, maxOffset
             int offset = 0;
             int maxOffset = 0;
@@ -172,73 +208,91 @@ public class RequestTest extends AbstractRequestTestCase {
             do {
                 final int finalOffset = offset;
                 count++;
-                PrintUtils.cyan("location = " + neighborhood +
-                        " category = " + category +
-                        " offset = " + offset);
 
                 Coordinates p = neighborHoodCoordinates.get(neighborhood);
+
+                PrintUtils.cyan("location = " + neighborhood +
+                        " category = " + category +
+                        " offset = " + offset +
+                        " latitude: " + p.latitude +
+                        " longitude: " + p.longitude);
 
                 try {
 
                     BusinessSearchResponse<Business> businessSearchResponse = yelpClient.businessSearch(s -> s
                                     .location(neighborhood)
-                                    .coordinate(coord -> coord
+                                    .coordinates(coord -> coord
                                             .geo_coordinates(geo -> geo
-                                                    .latitude(p.getLatitude())
-                                                    .longitude(p.getLongitude()))
-                                    )
+                                                    .latitude(p.latitude)
+                                                    .longitude(p.longitude)))
                                     .term(term)
                                     .categories(c -> c
                                             .alias(category))
-                                    .sort_by(sort_by)
-                                    .offset(finalOffset)
                                     .limit(limit)
+                                    .offset(finalOffset)
+                                    .sort_by(sort_by)
                                     .radius(radius)
-                            , Business.class);
+                            ,
+                            Business.class
+                    );
 
                     assertThat(businessSearchResponse).isNotNull();
 
-                    total = businessSearchResponse.hits().size();
+                    total = businessSearchResponse.total();
 
-                    if (businessSearchResponse == null) {
-                        logger.info("null response ");
+                    if (total == 0) {
+                        YelpRequestLogger.logEmptyResponseBody(logger, businessSearchResponse);
+
                     } else {
+                        if (businessSearchResponse.hits() != null && businessSearchResponse.hits().size() > 0) {
+                            List<Business> businesses = businessSearchResponse.hits();
+                            Set<String> notIndexed = new HashSet<>();
 
-                        if (total == 0) {
-                            YelpRequestLogger.logEmptyResponseBody(logger, businessSearchResponse);
-                        } else {
+                            for (Business business : businesses) {
 
-                            if (businessSearchResponse.hits() != null && businessSearchResponse.hits().size() > 0) {
-                                List<Business> businesses = businessSearchResponse.hits();
-                                for (Business business : businesses) {
+                                logger.info(PrintUtils.green("category = " + category + " lat/long/distance = " +
+                                        business.coordinates() + "/" + business.location() + "/" +
+                                        " offset = " + offset + " total results = " + total + " number of businesses " + businesses.size()));
 
-                                    logger.info(PrintUtils.green("category = " + category + " lat/long/distance = " +
-                                            business.coordinates() + "/" + business.location() + "/" +
-                                            " offset = " + offset + " total results = " + total + " number of businesses " + businesses.size()));
 
-                                    Set<String> notIndexed = new HashSet<>();
+                                String businessId = business.id();
 
-                                    String businessId = business.id();
-
-                                    if (setOfBusinessIds.add(businessId)) {
-                                        notIndexed.add(businessId);
-                                    }
-
-                                    if (notIndexed.size() > 0) {
-                                        logger.info(PrintUtils.cyan("number of ids not in database  = " + notIndexed.size()));
-
-                                        indexBusiness(notIndexed);
-                                    }
-
+                                if (setOfBusinessIds.add(businessId)) {
+                                    notIndexed.add(businessId);
                                 }
+                            }
+
+                            if (notIndexed.size() > 0) {
+                                logger.info(PrintUtils.cyan("indexing " + notIndexed.size() + " businesses"));
+
+                                indexBusiness(notIndexed);
                             }
                         }
                     }
-                } catch (YelpFusionException e) {
+                } catch (Exception e) {
+                    if(e instanceof YelpFusionException) {
+                        BusinessSearchRequest request = BusinessSearchRequest.of(s -> s
+                                .location(neighborhood)
+                                .coordinates(coord -> coord
+                                        .geo_coordinates(geo -> geo
+                                                .latitude(p.getLatitude())
+                                                .longitude(p.getLongitude()))
+                                )
+                                .term(term)
+                                .categories(c -> c
+                                        .alias(category))
+                                .sort_by(sort_by)
+                                .offset(finalOffset)
+                                .limit(limit)
+                                .radius(radius)
+                        );
+                        YelpRequestLogger.logFailedRequest(logger, request);
+                    }
                     throw new RuntimeException(e);
                 }
+
                 offset += limit;
-            } while (offset <=  (total + limit)); // iterate up to 20 50-business pages
+            } while (total != 0 && offset <= (total + limit)); // iterate up to 20 50-business pages
 
         }
     }
@@ -248,43 +302,39 @@ public class RequestTest extends AbstractRequestTestCase {
 
     private void indexBusiness(Set<String> setOfBusinessIdsToAdd) throws Exception {
 
-        BusinessDetailsResponse_ businessDetailsResponse = null;
+        BusinessDetailsResponse businessDetailsResponse = null;
 
         BulkRequest.Builder br = new BulkRequest.Builder();
 
 
         for (String businessId : setOfBusinessIdsToAdd) {
 
-            logger.info(PrintUtils.red("number of ids being added = " + setOfBusinessIdsToAdd.size()));
-
             String formattedId = businessId.replaceAll("[^\\p{IsAlphabetic}\\p{IsDigit}_\\-]", "");
             logger.info(PrintUtils.red(" formattedId  = " + formattedId));
 
-            businessDetailsResponse = yelpClient.businessDetails(s -> s
-                            .id(formattedId));
+            BusinessDetailsRequest businessDetailsRequest = BusinessDetailsRequest.of(s -> s
+                    .id(formattedId));
 
-            if (businessDetailsResponse == null) {
-                YelpRequestLogger.logResponseError(logger, businessDetailsResponse);
-            } else {
-
-                if (businessDetailsResponse != null && businessDetailsResponse.result() != null) {
-
-                    List<Business> business = businessDetailsResponse.result();
+            businessDetailsResponse = yelpClient.businessDetails(businessDetailsRequest);
 
 
-                    String documentId = indexNyc + "-" + businessId;
+            if (businessDetailsResponse != null && businessDetailsResponse.result() != null) {
 
-                    br.operations(op -> op
-                            .index(idx -> idx
-                                    .index(indexNyc)
-                                    .id(documentId)
-                                    .pipeline(timestampPipeline) // add timestamp
-                                    .document(business)
-                            )
-                    );
-                } else {
-                    logger.info(" response body is empty ");
-                }
+                List<Business> business = businessDetailsResponse.result();
+
+                String documentId = indexNyc + "-" + businessId;
+
+                br.operations(op -> op
+                        .index(idx -> idx
+                                .index(indexNyc)
+                                .id(documentId)
+                                .pipeline(timestampPipeline) // add timestamp
+                                .document(business)
+                        )
+                );
+            }
+            else {
+                YelpRequestLogger.logFailedRequest(logger, businessDetailsRequest);
             }
         }
 
@@ -304,8 +354,12 @@ public class RequestTest extends AbstractRequestTestCase {
 
     @AfterAll
     static void afterAll() {
-        logger.info(PrintUtils.red("index : [" + indexOf + "] = " + categoryName + "" +
-                "Store latitude, longitude, and distance from most recent BusinessSearchRequest "));
+        try {
+            elasticSearch.client()._transport().close();
+            yelpClient._transport().close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     static class Coordinates {

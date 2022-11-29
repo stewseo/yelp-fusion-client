@@ -173,7 +173,6 @@ public class RestClient implements Closeable {
 
     public Response performRequest(Request request) throws IOException {
         InternalRequest internalRequest = new InternalRequest(request);
-        logger.debug(PrintUtils.debug("httpRequestBase.getRequestLine: " + internalRequest.httpRequest.getRequestLine()));
         logger.debug(PrintUtils.debug("httpRequestBase.getURI: " + internalRequest.httpRequest.getURI()));
 
         return performRequest(nextNodes(), internalRequest, null);
@@ -184,9 +183,8 @@ public class RestClient implements Closeable {
 
         RequestContext context = request.createContextForNextAttempt(tuple.nodes.next(), tuple.authCache);
 
-        org.apache.http.HttpResponse httpResponse = null;
+        org.apache.http.HttpResponse httpResponse;
         try {
-
             httpResponse = client.execute(context.requestProducer, context.asyncResponseConsumer, context.context, null).get();
 
         } catch (Exception e) {
@@ -516,8 +514,8 @@ public class RestClient implements Closeable {
             // ignore is a special parameter supported by the clients, shouldn't be sent to es
             String ignoreString = params.remove("ignore");
             this.ignoreErrorCodes = getIgnoreErrorCodes(ignoreString, request.getMethod());
-            String host = "http://api.yelp.com/";
-            URI uri = buildUri(pathPrefix, host + request.getEndpoint(), params);
+
+            URI uri = buildUri(pathPrefix, request.getEndpoint(), params);
 
             this.httpRequest = createHttpRequest(request.getMethod(), uri, request.getEntity(), compressionEnabled);
 
@@ -537,8 +535,10 @@ public class RestClient implements Closeable {
             final Set<String> requestNames = new HashSet<>(requestHeaders.size());
 
             for (Header requestHeader : requestHeaders) {
+                logger.debug(PrintUtils.debug("requestNames.size " + requestNames.size()));
                 req.addHeader(requestHeader);
                 requestNames.add(requestHeader.getName());
+                logger.debug(PrintUtils.debug("req.addHeader: " + requestHeader + " " + requestHeader.getName()));
             }
 
             for (Header defaultHeader : defaultHeaders) {

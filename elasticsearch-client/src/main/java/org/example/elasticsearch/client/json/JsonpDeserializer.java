@@ -32,9 +32,9 @@ public interface JsonpDeserializer<V> {
         JsonParser.Event event = parser.next();
         // JSON null: return null unless the deserializer can handle it
         if (event == JsonParser.Event.VALUE_NULL && !accepts(JsonParser.Event.VALUE_NULL)) {
+            logger.info("event == JsonParser.Event.VALUE_NULL && !accepts(JsonParser.Event.VALUE_NULL");
             return null;
         }
-        logger.info("parser = " + parser + " mapper = " + mapper);
 
         JsonpUtils.ensureAccepts(this, parser, event);
         return deserialize(parser, mapper, event);

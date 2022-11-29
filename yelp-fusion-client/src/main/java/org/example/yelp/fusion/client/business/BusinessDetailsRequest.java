@@ -79,7 +79,7 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
 
             // Request parameters
             request -> new HashMap<>(),
-            SimpleEndpoint.emptyMap(), false, BusinessDetailsResponse_._DESERIALIZER);
+            SimpleEndpoint.emptyMap(), false, BusinessDetailsResponse._DESERIALIZER);
 
 
 }

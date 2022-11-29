@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.*;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -15,6 +14,7 @@ import org.apache.http.util.EntityUtils;
 import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.lowlevel.restclient.PrintUtils;
 import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
+import org.example.yelp.fusion.client.business.BusinessSearchRequest;
 import org.example.yelp.fusion.client.business.BusinessSearchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,6 @@ public class YelpRequestLogger {
 
 
     public static <ResponseT> void logEmptyResponseBody(Logger logger, BusinessSearchResponse<ResponseT> businessSearchResponse) {
-        logger.info(PrintUtils.red("void logEmptyResponseBody buildTraceRequest, buildWarnMessage"));
 
         if (logger.isDebugEnabled()) {
             logger.debug(PrintUtils.red("request [ request.getMethod() host getUri(request.getRequestLine()) ] returned [ httpResponse.getStatusLine() ]"
@@ -49,7 +48,6 @@ public class YelpRequestLogger {
             tracer.trace("requestLine + '\n' + responseLine");
         }
     }
-
 
     static String buildWarningMessage(HttpUriRequest request, HttpHost host, Header[] warnings) {
         StringBuilder message = new StringBuilder("request [").append(request.getMethod())
@@ -68,9 +66,7 @@ public class YelpRequestLogger {
         return message.toString();
     }
 
-    /**
-     * Creates curl output for given request
-     */
+
     static String buildTraceRequest(HttpUriRequest request, HttpHost host) throws IOException {
         String requestLine = "curl -iX " + request.getMethod() + " '" + host + request.getRequestLine() + "'";
 
@@ -90,9 +86,6 @@ public class YelpRequestLogger {
         return requestLine;
     }
 
-    /**
-     * Creates curl output for given response
-     */
     static String buildTraceResponse(HttpResponse httpResponse) throws IOException {
         StringBuilder responseLine = new StringBuilder();
         responseLine.append("# ").append(httpResponse.getStatusLine());
@@ -119,21 +112,6 @@ public class YelpRequestLogger {
             }
         }
         return responseLine.toString();
-    }
-
-
-    public static void logGreaterThanMaxResults(Log logger, Double latitude, Double longitude, Integer distance) {
-        logger.info(PrintUtils.red("void logGreaterThanMaxResponse store last non null latitude, longitude, distance. " +
-                "Track direction by latitude +-? longitude +-? distance?"));
-
-        if(logger.isDebugEnabled()) {
-            logger.debug("request line = "+
-                    "starting point for next request: latitude ="+latitude+", longitude = "+longitude+", " +
-                    "distance from starting point: " + distance);
-        }
-        if(logger.isTraceEnabled()) {
-            logger.trace("request line, starting latitude, longitude, distance of each business, if latitude / longitude are ");
-        }
     }
 
 
@@ -178,16 +156,27 @@ public class YelpRequestLogger {
 
     }
 
+    public static<RequestT> void logFailedRequest(Logger logger, RequestT request) {
+        if(request instanceof BusinessSearchRequest) {
+            BusinessSearchRequest req = (BusinessSearchRequest) request;
 
+            if (logger.isDebugEnabled()) {
+                logger.debug("");
+            }
+            if (tracer.isTraceEnabled()) {
+                String traceRequest;
+                logger.trace("");
+            }
 
+        }
+
+    }
     public static<ResponseT> void logResponse(Logger logger, ResponseT response) {
-        if(response instanceof BusinessDetailsResponse<?>) {
-            BusinessDetailsResponse<?> resp = (BusinessDetailsResponse<?>) response;
+        if(response instanceof BusinessDetailsResponse) {
+            BusinessDetailsResponse resp = (BusinessDetailsResponse) response;
 
-            if (resp.hits() != null) {
-                if (resp.hits() != null) {
-                    logger.info("businesses = " + resp.hits().size());
-                }
+            if (resp.result() != null) {
+                logger.info("businesses = " + resp.result().size());
             }
 
             if (logger.isDebugEnabled()) {

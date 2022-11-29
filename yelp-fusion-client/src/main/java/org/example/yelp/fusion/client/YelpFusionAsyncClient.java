@@ -35,7 +35,7 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         @SuppressWarnings("unchecked")
         JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse<TDocument>, ErrorResponse> endpoint = (JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse<TDocument>, ErrorResponse>) BusinessSearchRequest._ENDPOINT;
         endpoint = new EndpointWithResponseMapperAttr<>(endpoint,
-                "co.elastic.clients:Deserializer:_global.search.TDocument", getDeserializer(tDocumentClass));
+                "org.example.clients:Deserializer:_global.search.TDocument", getDeserializer(tDocumentClass));
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }

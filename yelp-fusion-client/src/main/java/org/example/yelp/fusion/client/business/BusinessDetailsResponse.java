@@ -1,67 +1,104 @@
 package org.example.yelp.fusion.client.business;
 
-import org.example.elasticsearch.client.json.JsonpDeserializer;
 
-import org.example.elasticsearch.client.json.NamedDeserializer;
-import org.example.elasticsearch.client.json.ObjectBuilderDeserializer;
-import org.example.elasticsearch.client.json.ObjectDeserializer;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonParser;
+import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.util.ObjectBuilder;
-import org.example.elasticsearch.client.json.JsonpDeserializable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.example.elasticsearch.client.util.WithJsonObjectBuilderBase;
+import org.example.yelp.fusion.client.business.model.Business;
 
-import java.util.function.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessDetailsResponse<TDocument> extends ResponseBody<TDocument> {
+public class BusinessDetailsResponse implements JsonpSerializable {
+        // ------------------------------ Fields ------------------------------------ //
+        private final List<Business> result;
 
-    private static final Logger logger = LoggerFactory.getLogger(BusinessDetailsResponse.class);
+        // ------------------------------ Constructor ------------------------------------ //
+        private BusinessDetailsResponse(Builder builder) {
+            this.result = builder.result;
+        }
 
-    public BusinessDetailsResponse(Builder<TDocument> builder) {
-        super(builder);
-    }
+        public static BusinessDetailsResponse of(Function<BusinessDetailsResponse.Builder, ObjectBuilder<BusinessDetailsResponse>> fn) {
+            return fn.apply(new BusinessDetailsResponse.Builder()).build();
+        }
 
-    public static <TDocument> BusinessDetailsResponse<TDocument> of(
-            Function<Builder<TDocument>, ObjectBuilder<BusinessDetailsResponse<TDocument>>> fn) {
-        return fn.apply(new Builder<>()).build();
-    }
+        // ------------------------------ Methods ------------------------------------ //
+        public final List<Business> result() {
+            return this.result;
+        }
 
+        public void serialize(JsonGenerator generator, JsonpMapper mapper) {
+            generator.writeStartObject();
+            for (Business item0 : this.result) {
+                item0.serialize(generator, mapper);
+            }
+            generator.writeEnd();
 
-    public static class Builder<TDocument> extends ResponseBody.AbstractBuilder<TDocument, Builder<TDocument>>
-            implements ObjectBuilder<BusinessDetailsResponse<TDocument>> {
-
-        public Builder() {}
+        }
 
         @Override
-        protected Builder<TDocument> self() {
-            return this;
+        public String toString() {
+            return JsonpUtils.toString(this);
         }
 
-        public BusinessDetailsResponse<TDocument> build() {
-            _checkSingleUse();
-            return new BusinessDetailsResponse<TDocument>(this);
+
+        // ------------------------------ Builder ------------------------------------ //
+
+        public static class Builder extends WithJsonObjectBuilderBase<Builder>
+                implements
+                ObjectBuilder<BusinessDetailsResponse> {
+            private List<Business> result = new ArrayList<>();
+
+            public final Builder result(List<Business> list) {
+                this.result = _listAddAll(this.result, list);
+                return this;
+            }
+
+            public final Builder result(Business value) {
+                this.result = _listAdd(this.result, value);
+                return this;
+            }
+
+            public final Builder result(Function<Business.Builder, ObjectBuilder<Business>> fn) {
+                return result(fn.apply(new Business.Builder()).build());
+            }
+
+            @Override
+            public Builder withJson(JsonParser parser, JsonpMapper mapper) {
+
+                List<Business> value = (List<Business>) JsonpDeserializer
+                        .arrayDeserializer(Business._DESERIALIZER).deserialize(parser, mapper);
+
+                return this.result(value);
+            }
+
+            @Override
+            protected Builder self() {
+                return this;
+            }
+
+            public BusinessDetailsResponse build() {
+                _checkSingleUse();
+                return new BusinessDetailsResponse(this);
+            }
+        }
+
+
+        // ------------------------------ Deserializer ------------------------------------ //
+
+        public static final JsonpDeserializer<BusinessDetailsResponse> _DESERIALIZER = createBusinessDetailsResponse_Deserializer();
+        protected static JsonpDeserializer<BusinessDetailsResponse> createBusinessDetailsResponse_Deserializer() {
+
+            JsonpDeserializer<List<Business>> valueDeserializer = JsonpDeserializer
+                    .arrayDeserializer(Business._DESERIALIZER);
+
+            return JsonpDeserializer.of(valueDeserializer.acceptedEvents(), (parser, mapper, event) -> new BusinessDetailsResponse.Builder()
+                    .result(valueDeserializer.deserialize(parser, mapper, event)).build());
         }
 
     }
-
-    public static <TDocument> JsonpDeserializer<BusinessDetailsResponse<TDocument>> createBusinessDetailsResponseDeserializer(
-            JsonpDeserializer<TDocument> tDocumentDeserializer) {
-        return ObjectBuilderDeserializer.createForObject((Supplier<Builder<TDocument>>) Builder::new,
-                op -> setupBusinessDetailsResponseDeserializer(op, tDocumentDeserializer));
-    }
-
-
-    public static final JsonpDeserializer<BusinessDetailsResponse<Object>> _DESERIALIZER = JsonpDeserializer
-            .lazy(() -> createBusinessDetailsResponseDeserializer(
-                    new NamedDeserializer<>("org.example.clients:Deserializer:_global.search.TDocument")));
-
-
-    public static <TDocument> void setupBusinessDetailsResponseDeserializer(
-            ObjectDeserializer<BusinessDetailsResponse.Builder<TDocument>> op,
-            JsonpDeserializer<TDocument> tDocumentDeserializer) {
-        ResponseBody.setupResponseBodyDeserializer(op, tDocumentDeserializer);
-
-    }
-
-}

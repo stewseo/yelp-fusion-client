@@ -84,36 +84,35 @@ public class RequestLogger {
 
             String traceReq;
 
-//            try {
-//                traceReq = buildTraceRequest(request, node.getHost());
-//                tracer.trace(PrintUtils.tracer("Executing command in separate process: " + traceReq));
-//                Process process = Runtime.getRuntime().exec(traceReq);
-//
-//                tracer.trace(PrintUtils.tracer("Information about the process: " + process.info()));
-//
-//                tracer.trace(PrintUtils.tracer("Direct children of the process: " + process.children()));
-//
-//
-//                try(BufferedReader errorReader = process.errorReader())
-//                {
-//                    if(errorReader.ready()) {
-//                        tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
-//                    }
-//                }
-//
-//                InputStream inputStream = process.getInputStream();
-//                if(inputStream.available() != 0) {
-//                    String response = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-//                    tracer.trace(PrintUtils.tracer("cURL response: " + response));
-//                }
-//
-//                inputStream.close();
-//                process.destroy();
-//
-//            } catch (IOException e1) {
-//                tracer.trace(PrintUtils.red("error while reading request for trace purposes"), e);
-//                traceReq = "";
-//            }
+            try {
+                traceReq = buildTraceRequest(request, node.getHost());
+                tracer.trace(PrintUtils.tracer("Executing command in separate process: " + traceReq));
+                Process process = Runtime.getRuntime().exec(traceReq);
+
+                tracer.trace(PrintUtils.tracer("Information about the process: " + process.info()));
+
+                tracer.trace(PrintUtils.tracer("Direct children of the process: " + process.children()));
+
+
+                try(BufferedReader errorReader = process.errorReader())
+                {
+                    if(errorReader.ready()) {
+                        tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
+                    }
+                }
+
+                InputStream inputStream = process.getInputStream();
+                if(inputStream.available() != 0) {
+                    String response = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+                    tracer.trace(PrintUtils.tracer("cURL response: " + response));
+                }
+
+                inputStream.close();
+                process.destroy();
+
+            } catch (IOException e1) {
+                tracer.trace(PrintUtils.red("error while reading request for trace purposes"), e);
+            }
         }
 
     }

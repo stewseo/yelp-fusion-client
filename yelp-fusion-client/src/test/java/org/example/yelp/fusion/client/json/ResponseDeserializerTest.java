@@ -3,13 +3,12 @@ package org.example.yelp.fusion.client.json;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.example.elasticsearch.client.json.JsonpDeserializer;
-import org.example.elasticsearch.client.json.ObjectDeserializer;
 import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.elasticsearch.client.transport.JsonEndpoint;
 import org.example.lowlevel.restclient.PrintUtils;
 import org.example.yelp.fusion.client.business.BusinessDetailsRequest;
 import org.example.yelp.fusion.client.business.model.Business;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
+import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +38,11 @@ public class ResponseDeserializerTest {
     @Test
     void responseDeserializerTest() {
 
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint =
-                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) BusinessDetailsRequest._ENDPOINT;
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?> jsonEndpoint =
+                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?>) BusinessDetailsRequest._ENDPOINT;
 
 
-        JsonpDeserializer<BusinessDetailsResponse_> responseParser = jsonEndpoint.responseDeserializer();
+        JsonpDeserializer<BusinessDetailsResponse> responseParser = jsonEndpoint.responseDeserializer();
 
         JacksonJsonpMapper mapper = new JacksonJsonpMapper();
 
@@ -51,7 +50,7 @@ public class ResponseDeserializerTest {
 
         JsonParser parser = mapper.jsonProvider().createParser(content);
 
-        BusinessDetailsResponse_ response = responseParser.deserialize(parser, mapper);
+        BusinessDetailsResponse response = responseParser.deserialize(parser, mapper);
 
         Business business = response.result().get(0);
 

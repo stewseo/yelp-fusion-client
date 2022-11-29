@@ -22,7 +22,7 @@ import org.example.lowlevel.restclient.PrintUtils;
 import org.example.lowlevel.restclient.Request;
 import org.example.lowlevel.restclient.RestClient;
 import org.example.yelp.fusion.client.business.BusinessDetailsRequest;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
+import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class ExecutionTests {
         BusinessDetailsRequest businessSearchRequest = BusinessDetailsRequest.of(s -> s
                 .id("wu3w6IlUct9OvYmYXDMGJA"));
 
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint = (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) businessSearchRequest._ENDPOINT;
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?> jsonEndpoint = (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?>) businessSearchRequest._ENDPOINT;
 
         assertThat(jsonEndpoint.id()).isEqualTo("v3/businesses");
 
@@ -82,11 +82,11 @@ public class ExecutionTests {
     public void requestProducerTest() throws Exception {
         HttpEntity entity = sendRequestAsync();
 
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?> jsonEndpoint =
-                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ?>) BusinessDetailsRequest._ENDPOINT;
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?> jsonEndpoint =
+                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?>) BusinessDetailsRequest._ENDPOINT;
 
 
-        JsonpDeserializer<BusinessDetailsResponse_> responseParser = jsonEndpoint.responseDeserializer();
+        JsonpDeserializer<BusinessDetailsResponse> responseParser = jsonEndpoint.responseDeserializer();
 
         JacksonJsonpMapper mapper = new JacksonJsonpMapper();
 
@@ -94,7 +94,7 @@ public class ExecutionTests {
 
         JsonParser parser = mapper.jsonProvider().createParser(content);
 
-        BusinessDetailsResponse_ response = responseParser.deserialize(parser, mapper);
+        BusinessDetailsResponse response = responseParser.deserialize(parser, mapper);
         logger.debug(PrintUtils.debug("response " + response.result()));
 
     }

@@ -1,4 +1,21 @@
-package org.example.yelp.fusion.client;
+package org.example.yelp.fusion.client.restclient;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Flow;
+
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -28,14 +45,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 
-public class CustomSubscriber {
+public class JdkHttpClientTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomSubscriber.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdkHttpClientTest.class);
     private static final String reqLine = "http://api.yelp.com/v3/businesses/search?location=sf&limit=50";
 
 
     public static void main(String[] args) {
-        CustomSubscriber jdes = new CustomSubscriber();
+        JdkHttpClientTest jdes = new JdkHttpClientTest();
 
         Object ent = null;
         try {
@@ -113,3 +130,6 @@ public class CustomSubscriber {
         }
     }
 }
+
+
+

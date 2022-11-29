@@ -1,7 +1,6 @@
 package org.example.yelp.fusion.client.transport;
 
 import co.elastic.clients.elasticsearch._types.ElasticsearchException;
-import co.elastic.clients.elasticsearch._types.ErrorResponse;
 import co.elastic.clients.transport.endpoints.BinaryEndpoint;
 import co.elastic.clients.util.MissingRequiredPropertyException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -11,6 +10,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
+import org.example.elasticsearch.client._types.ErrorResponse;
 import org.example.elasticsearch.client.json.JsonpDeserializer;
 import org.example.elasticsearch.client.json.JsonpMapper;
 import org.example.elasticsearch.client.json.NdJsonpSerializable;
@@ -18,6 +18,7 @@ import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.elasticsearch.client.transport.*;
 import org.example.elasticsearch.client.util.ApiTypeHelper;
 import org.example.lowlevel.restclient.*;
+import org.example.yelp.fusion.client.exception.YelpFusionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,7 +158,6 @@ public class YelpRestTransport implements YelpFusionTransport {
     ) throws IOException {
 
         int statusCode = clientResp.getStatusLine().getStatusCode();
-
         try {
 
             if (statusCode == 200) {
@@ -189,7 +189,7 @@ public class YelpRestTransport implements YelpFusionTransport {
                     try (JsonParser parser = mapper.jsonProvider().createParser(content)) {
                         ErrorT error = errorDeserializer.deserialize(parser, mapper);
                         // TODO: have the endpoint provide the exception constructor
-                        throw new ElasticsearchException(endpoint.id(), (ErrorResponse) error);
+                        throw new YelpFusionException(endpoint.id(), (ErrorResponse) error);
                     }
                 } catch (MissingRequiredPropertyException errorEx) {
                     // Could not decode exception, try the response type
@@ -202,7 +202,6 @@ public class YelpRestTransport implements YelpFusionTransport {
                     }
                 }
             } else {
-
                 return decodeResponse(statusCode, clientResp.getEntity(), clientResp, endpoint);
             }
             
@@ -227,18 +226,22 @@ public class YelpRestTransport implements YelpFusionTransport {
             JsonpDeserializer<ResponseT> responseParser = jsonEndpoint.responseDeserializer();
 
             if (responseParser != null) {
-
+                logger.debug("JsonpDeserializer<ResponseT> responseParser.acceptedEvents().size() " + responseParser.acceptedEvents().size() +
+                        "responseParser.nativeEvents().size(): " + responseParser.nativeEvents().size()
+                );
                 InputStream content = entity.getContent();
+                logger.debug("InputStream content = entity.getContent() " + entity.getContentType()
+                );
 
                 JsonParser parser = mapper.jsonProvider().createParser(content);
-
+                logger.debug("mapper.jsonProvider().createParser(content) " + parser.getClass().getSimpleName()
+                );
                 response = responseParser.deserialize(parser, mapper);
             }
             return response;
         }
         else {
             throw new TransportException("Unhandled endpoint type: '" + endpoint.getClass().getName() + "'", endpoint.id());
-
         }
     }
 

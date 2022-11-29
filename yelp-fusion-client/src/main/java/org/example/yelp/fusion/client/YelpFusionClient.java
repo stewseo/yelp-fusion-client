@@ -11,7 +11,7 @@ import org.example.lowlevel.restclient.RequestOptions;
 import org.example.yelp.fusion.client.business.BusinessDetailsRequest;
 import org.example.yelp.fusion.client.business.BusinessSearchRequest;
 import org.example.yelp.fusion.client.business.BusinessSearchResponse;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
+import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
 import org.example.yelp.fusion.client.exception.YelpFusionException;
 import org.example.yelp.fusion.client.transport.YelpFusionTransport;
 import org.slf4j.Logger;
@@ -69,15 +69,15 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
         }
     }
 
-    public BusinessDetailsResponse_ businessDetails(BusinessDetailsRequest request) throws Exception {
+    public BusinessDetailsResponse businessDetails(BusinessDetailsRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse_, ErrorResponse>) BusinessDetailsRequest._ENDPOINT;
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse>) BusinessDetailsRequest._ENDPOINT;
 
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final BusinessDetailsResponse_ businessDetails(
+    public final BusinessDetailsResponse businessDetails(
             Function<BusinessDetailsRequest.Builder, ObjectBuilder<BusinessDetailsRequest>> fn)
             throws Exception {
         return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());

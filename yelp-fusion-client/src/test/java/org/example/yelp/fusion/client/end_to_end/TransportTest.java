@@ -9,8 +9,9 @@ import org.example.elasticsearch.client.json.JsonpMapper;
 import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
 import org.example.lowlevel.restclient.RestClient;
 import org.example.lowlevel.restclient.RestClientBuilder;
+import org.example.yelp.fusion.client.AbstractRequestTestCase;
 import org.example.yelp.fusion.client.YelpFusionClient;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
+import org.example.yelp.fusion.client.business.BusinessDetailsResponse;
 import org.example.yelp.fusion.client.business.BusinessSearchResponse;
 import org.example.yelp.fusion.client.business.model.Business;
 import org.example.yelp.fusion.client.model.ModelTestCase;
@@ -21,10 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TransportTest extends ModelTestCase {
+public class TransportTest extends AbstractRequestTestCase {
 
     static HttpHost httpHost;
     static YelpFusionClient yelpClient;
@@ -66,7 +68,7 @@ public class TransportTest extends ModelTestCase {
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
-        BusinessDetailsResponse_ response = yelpClient.businessDetails(s -> s.id(id)
+        BusinessDetailsResponse response = yelpClient.businessDetails(s -> s.id(id)
         );
 
         logger.debug("response.result(): " + response.result());
@@ -80,31 +82,44 @@ public class TransportTest extends ModelTestCase {
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
-        BusinessSearchResponse<Business> response = yelpClient.businessSearch(s -> s
-                        .location("nyc")
-                        .latitude(40.70544486444615)
-                        .longitude(-73.99429321289062)
-                        .term("restaurants")
-                        .price("2")
+        int radius = 6000;
+        int limit = 50;
+        String sort_by = "distance";
+        String term = "restaurants";
+        String category = "bagels";
+        String neighborhood = "bronx";
+        Double latitude = 40.713272;
+        Double longitude = -73.828461;
+        Integer offset = 0;
+
+        BusinessSearchResponse<Business> businessSearchResponse = yelpClient.businessSearch(s -> s
+                        .location(neighborhood)
+                        .coordinates(coord -> coord
+                                .geo_coordinates(geo -> geo
+                                        .latitude(latitude)
+                                        .longitude(longitude)))
+                        .term(term)
                         .categories(c -> c
-                                .alias("bagels"))
-                        .limit(50)
-                        .offset(0)
+                                .alias(category))
+                        .limit(limit)
+                        .offset(offset)
+                        .sort_by(sort_by)
+                        .radius(radius)
                 ,
                 Business.class
         );
 
-        assertThat(response.total()).isEqualTo(65);
-        assertThat(response.region().longitude()).isEqualTo(-73.99429321289062);
-        assertThat(response.region().latitude()).isEqualTo(40.70544486444615);
+        assertThat(businessSearchResponse.total()).isEqualTo(38);
+        assertThat(businessSearchResponse.region().longitude()).isEqualTo(-73.828461);
+        assertThat(businessSearchResponse.region().latitude()).isEqualTo(40.713272);
 
         int maxResultsPerPage = 50;
-        assertThat(response.hits().size()).isEqualTo(maxResultsPerPage);
+        assertThat(businessSearchResponse.hits().size()).isEqualTo(businessSearchResponse.total());
 
-        response.hits().stream().map(Business::id).forEach(System.out::println);
+        List<String> businessIds = businessSearchResponse.hits().stream().map(Business::id).distinct().toList();
+        assertThat(businessIds.size()).isEqualTo(businessSearchResponse.total());
 
-        Business business = response.hits().get(0);
-        logger.debug("business: " + business);
+        Business business = businessSearchResponse.hits().get(0);
 
     }
 

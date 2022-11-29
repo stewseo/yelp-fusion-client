@@ -3,6 +3,7 @@ package org.example.yelp.fusion.client.business.model;
 
 
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.ingest.Pipeline;
 import jakarta.json.stream.*;
 import org.example.elasticsearch.client.json.*;
 import org.example.elasticsearch.client.util.*;
@@ -65,14 +66,14 @@ public class Business implements JsonpSerializable {
     @Nullable
     private final List<String> photos;
     @Nullable
-    private final List<String> special_hours;
+    private final List<SpecialHours> special_hours;
     @Nullable
     private final List<Attribute> attributes;
 
     @Nullable
     private final List<Hours> hours;
     @Nullable
-    private final Object messaging;
+    private final Messaging messaging;
 
 
 
@@ -151,30 +152,36 @@ public class Business implements JsonpSerializable {
     public Integer rating() {
         return rating;
     }
+    @Nullable
     public Location location() {
         return location;
     }
+    @Nullable
     public Coordinates coordinates() {
         return coordinates;
     }
+    @Nullable
     public List<String> photos() {
         return photos;
     }
+    @Nullable
     public List<Hours> hours() {
         return hours;
     }
+    @Nullable
     public String price() {return price;}
+
     @Nullable
     public Boolean open_now() {
         return open_now;
     }
-
+    @Nullable
     public List<String> transactions() {
         return transactions;
     }
 
-
-    public List<String> special_hours() {
+    @Nullable
+    public List<SpecialHours> special_hours() {
         return special_hours;
     }
 
@@ -182,7 +189,7 @@ public class Business implements JsonpSerializable {
         return attributes;
     }
 
-    public Object messaging() {
+    public Messaging messaging() {
         return messaging;
     }
 
@@ -256,15 +263,14 @@ public class Business implements JsonpSerializable {
 //            generator.writeEnd();
 //        }
 
-//        if (this.special_hours != null) {
-//            generator.writeKey("special_hours");
-//            generator.writeStartArray();
-//            for (String item0 : this.special_hours) {
-//                generator.write(item0);
-//
-//            }
-//            generator.writeEnd();
-//        }
+        if (this.special_hours != null) {
+            generator.writeKey("special_hours");
+            generator.writeStartArray();
+            for (SpecialHours item0 : this.special_hours) {
+                item0.serialize(generator, mapper);
+            }
+            generator.writeEnd();
+        }
 //        if (this.transactions != null) {
 //            generator.writeKey("transactions");
 //            generator.writeStartArray();
@@ -328,7 +334,7 @@ public class Business implements JsonpSerializable {
         @Nullable
         private List<String> photos;
         @Nullable
-        private List<String> special_hours;
+        private List<SpecialHours> special_hours;
         @Nullable
         private List<Attribute> attributes;
         @Nullable
@@ -340,7 +346,8 @@ public class Business implements JsonpSerializable {
         @Nullable
         private List<Hours> hours;
         @Nullable
-        private Object messaging;
+        private Messaging messaging;
+
 
         // ---------------------------------------------- Setters ---------------------------------- //
 
@@ -381,7 +388,7 @@ public class Business implements JsonpSerializable {
             this.rating = value;
             return this;
         }
-        public final Business.Builder messaging(Object value) {
+        public final Business.Builder messaging(Messaging value) {
             this.messaging = value;
             return this;
         }
@@ -449,11 +456,11 @@ public class Business implements JsonpSerializable {
             this.transactions = _listAdd(this.transactions, value, values);
             return this;
         }
-        public final Business.Builder special_hours(List<String> value) {
+        public final Business.Builder special_hours(@Nullable List<SpecialHours> value) {
             this.special_hours = value;
             return this;
         }
-        public final Business.Builder special_hours(String value, String... values) {
+        public final Business.Builder special_hours(@Nullable SpecialHours value, SpecialHours... values) {
             this.special_hours = _listAdd(this.special_hours, value, values);
             return this;
         }
@@ -469,10 +476,12 @@ public class Business implements JsonpSerializable {
             this.is_claimed = value;
             return this;
         }
+
         @Override
         protected Business.Builder self() {
             return this;
         }
+
         public Business build() {
             _checkSingleUse();
             return new Business(this);
@@ -497,14 +506,15 @@ public class Business implements JsonpSerializable {
         op.add(Business.Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Business.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
         op.add(Business.Builder::hours, JsonpDeserializer.arrayDeserializer(Hours._DESERIALIZER), "hours");
-        op.add(Business.Builder::messaging, JsonpDeserializer.stringDeserializer(), "messaging");
+        op.add(Business.Builder::messaging, Messaging._DESERIALIZER, "messaging");
         op.add(Business.Builder::photos, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");
         op.add(Business.Builder::price, JsonpDeserializer.stringDeserializer(), "price");
         op.add(Business.Builder::rating, JsonpDeserializer.integerDeserializer(), "rating");
         op.add(Business.Builder::url, JsonpDeserializer.stringDeserializer(), "url");
         op.add(Business.Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
         op.add(Business.Builder::attributes, Attribute._DESERIALIZER, "attributes");
-        op.add(Business.Builder::special_hours, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "special_hours");
+
+        op.add(Business.Builder::special_hours, JsonpDeserializer.arrayDeserializer(SpecialHours._DESERIALIZER), "special_hours");
 
     }
 
