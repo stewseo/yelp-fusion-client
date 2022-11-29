@@ -24,6 +24,7 @@ gradlew*
 *.iml
 *.ipr
 *.iws
+*.gpg
 
 images/*
 build-conventions/*

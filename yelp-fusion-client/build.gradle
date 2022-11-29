@@ -3,6 +3,18 @@ plugins {
     id 'java-library'
     id "com.dorongold.task-tree" version "2.1.0"
     id 'maven-publish'
+    id 'signing'
+}
+
+
+java {
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
 }
 
 jar {
@@ -10,17 +22,65 @@ jar {
     version = '1.0.0'
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+
 publishing {
+    repositories {
+        maven {
+            name = "ossrh"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = findProperty('ossrhUsername')
+                password = findProperty('ossrhPassword')
+            }
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+            pom {
+                name = 'YelpFusionJavaClient'
+                artifactId = 'yelp-fusion-client'
+                packaging = 'jar'
+                description = 'java client to build api objects, handle http transport, and parse/deserialize/serialize json to/from json'
+                url = 'https://github.com/stewseo/restaurant-recommendation-system'
+
+                scm {
+                    connection = 'scm:git:git://github.com/stewseo/restaurant-recommendation-system.git'
+                    developerConnection = 'scm:git:ssh://github.com/stewseo/restaurant-recommendation-system.git'
+                    url = 'https://github.com/stewseo/restaurant-recommendation-system.git'
+                }
+
+                developers {
+                    developer {
+                        id = 'stewseo'
+                        name = 'Stew seo'
+                        email = 'stewart.s.seo@gmail.com'
+                    }
+                }
+            }
         }
     }
+}
+
+
+project.logger.debug(findProperty('ossrhUsername'))
+
+signing {
+    sign publishing.publications.mavenJava
 }
 
 task wrapper(type: Wrapper){
     gradleVersion = '7.5.1'
 }
+
 
 dependencies {
     implementation project (":elasticsearch-client")
