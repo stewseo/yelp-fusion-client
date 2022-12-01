@@ -19,44 +19,29 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.yelp.fusion.util.PrintUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
-import io.github.lowlevel.restclient.PrintUtils;
-import io.github.yelp.fusion.client.exception.YelpRequestLogger;
+
+import io.github.yelp.fusion.client.transport.YelpRequestLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class Elasticsearch {
     private static final Logger logger = LoggerFactory.getLogger(Elasticsearch.class);
 
     static {
         setOfIds = new HashSet<>();
-        timestamp =  "2022-11-10T07:16:35.187452598Z";
-        if (logger.isInfoEnabled()) {
-            logger.warn("logger.isInfoEnabled ");
-        }
-        if (logger.isErrorEnabled()) {
-            logger.warn("logger.isErrorEnabled");
-        }
-        if (logger.isDebugEnabled()) {
-            logger.warn("logger.isDebugEnabled ");
-        }
-        if (logger.isWarnEnabled()) {
-            logger.warn("logger.isWarnEnabled");
-        }
-        if (logger.isTraceEnabled()) {
-            logger.trace("logger.isTraceEnabled");
-        }
+        timestamp = "2022-11-10T07:16:35.187452598Z";
     }
+
     private static volatile Elasticsearch instance;
     private static ElasticsearchClient esClient;
 
@@ -77,7 +62,7 @@ public class Elasticsearch {
     }
 
 
-    public ElasticsearchClient client(){
+    public ElasticsearchClient client() {
         return esClient;
     }
 
@@ -118,11 +103,11 @@ public class Elasticsearch {
     private static final Set<String> setOfIds;
     static String timestamp;
 
-    public String getTimestamp(String range, SortOrder sortOrder) {
+    public String getTimestamp(String timestamp, SortOrder sortOrder) {
         String field = "timestamp";
         Query byTimestamp = RangeQuery.of(r -> r
                 .field(field)
-                .gte(JsonData.of(range))
+                .gte(JsonData.of(timestamp))
         )._toQuery();
 
         SourceFilter sourceFilter = SourceFilter.of(source -> source
@@ -134,12 +119,13 @@ public class Elasticsearch {
                         .order(sortOrder))
         );
 
+        String returnTimestamp = "";
         try {
-            return esClient.search(s -> s
+            List<Hit<ObjectNode>> list = esClient.search(s -> s
                                     .index("yelp-businesses-restaurants-nyc")
                                     .query(q -> q
                                             .bool(b -> b
-                                                    .must(byTimestamp)
+                                                    .must(byTimestamp) // greater than or equal to range parameter
                                             )
                                     ).source(src -> src
                                             .filter(sourceFilter)
@@ -150,16 +136,16 @@ public class Elasticsearch {
                             , ObjectNode.class
                     )
                     .hits()
-                    .hits()
-                    .stream()
-                    .map(Hit::source)
-                    .filter(Objects::nonNull)
-                    .map(ObjectNode::fields)
-                    .map(Iterator::next)
-                    .map(Map.Entry::getValue)
-                    .map(JsonNode::asText)
-                    .limit(1)
-                    .collect(Collectors.joining());
+                    .hits();
+
+            for (Hit<ObjectNode> hit : list) {
+                JsonNode node = hit.source().get("timestamp");
+                if(node != null) {
+                    returnTimestamp = node.asText();
+                }
+            }
+
+            return returnTimestamp;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -213,37 +199,49 @@ public class Elasticsearch {
             );
 
             TotalHits total = response.hits().total();
-            AtomicInteger count = new AtomicInteger();
-            JsonNode hitsNode;
+
             response
                     .hits()
                     .hits()
                     .forEach(hit -> {
-
                         JsonNode sourceNode = hit.source();
+                        if (sourceNode != null) {
 
-                        for (JsonNode source : sourceNode) {
-                            String id = sourceNode.get("id").asText();
 
-                            ArrayNode arrayNode = (ArrayNode) sourceNode.get("categories");
-                            if (arrayNode == null) {
-                                YelpRequestLogger.logResponse(logger, response);
-                            } else {
-                                for (JsonNode node : arrayNode) {
-                                    String alias = node.get("alias").asText();
-                                    map.computeIfAbsent(alias, k ->
-                                            new ArrayList<>()).add(id);
+                            for (JsonNode source : sourceNode) {
+
+                                JsonNode idNode = sourceNode.get("id");
+
+                                if (idNode != null) {
+
+                                    String id = idNode.asText();
+
+                                    ArrayNode arrayNode = (ArrayNode) sourceNode.get("categories");
+                                    if(arrayNode != null) {
+                                        for (JsonNode node : arrayNode) {
+                                            String alias = node.get("alias").asText();
+                                            map.computeIfAbsent(alias, k ->
+                                                    new ArrayList<>()).add(id);
+                                        }
+                                        setOfIds.add(id);
+
+                                        JsonNode timeStampNode = sourceNode.get("timestamp");
+                                        if (timeStampNode != null) {
+                                            timestamp = timeStampNode.asText();
+                                        }
+                                    }
                                 }
-                                setOfIds.add(id);
+
                             }
-                            timestamp = sourceNode.get("timestamp").asText();
                         }
+
                     });
 
             if (Objects.requireNonNull(total).relation() == TotalHitsRelation.Eq) {
                 logger.info(PrintUtils.green("Less than max results, total hits TotalHitsRelation.eq " + total.value() + " results"));
                 timestamp = null;
             }
+
         } catch (Exception e) {
             if(e instanceof IOException) {
                 YelpRequestLogger.logFailedYelpRequest(logger, e);

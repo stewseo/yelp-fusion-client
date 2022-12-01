@@ -1,14 +1,14 @@
 package io.github.yelp.fusion.client.json;
 
-import io.github.yelp.fusion.client.business.BusinessDetailsRequest;
-import io.github.yelp.fusion.client.business.BusinessDetailsResponse;
+import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsRequest;
+import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsResponse;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
-import io.github.elasticsearch.client.json.JsonpDeserializer;
-import io.github.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import io.github.elasticsearch.client.transport.JsonEndpoint;
-import io.github.lowlevel.restclient.PrintUtils;
-import io.github.yelp.fusion.client.business.model.Business;
+import io.github.yelp.fusion.client.json.JsonpDeserializer;
+import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
+import io.github.yelp.fusion.client.transport.JsonEndpoint;
+import io.github.yelp.fusion.util.PrintUtils;
+import io.github.yelp.fusion.client.yelpfusion.business.Business;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

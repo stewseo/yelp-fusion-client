@@ -1,12 +1,11 @@
 package io.github.yelp.fusion.client.json.jackson;
 
-import io.github.elasticsearch.client.json.*;
-import io.github.yelp.fusion.client.business.model.Business;
-import io.github.yelp.fusion.client.model.ModelTestCase;
-import io.github.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import io.github.elasticsearch.client.util.ObjectBuilder;
-import io.github.elasticsearch.client.util.WithJsonObjectBuilderBase;
-import io.github.lowlevel.restclient.PrintUtils;
+import io.github.yelp.fusion.client.json.*;
+import io.github.yelp.fusion.client.test_models.ModelTestCase;
+import io.github.yelp.fusion.client.util.ObjectBuilder;
+import io.github.yelp.fusion.client.util.WithJsonObjectBuilderBase;
+import io.github.yelp.fusion.client.yelpfusion.business.Business;
+import io.github.yelp.fusion.util.PrintUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,7 +108,7 @@ public class JacksonMapperTest extends ModelTestCase {
             public TestData<TDocument> build() {
                 _checkSingleUse();
 
-                return new TestData<TDocument>(this);
+                return new TestData<>(this);
 
             }
         }

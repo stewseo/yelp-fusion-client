@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import io.github.elasticsearch.client.json.JsonpMapper;
-import io.github.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import io.github.elasticsearch.client.json.jsonb.JsonbJsonpMapper;
+import io.github.yelp.fusion.client.json.JsonpMapper;
+import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
+import io.github.yelp.fusion.client.json.jsonb.JsonbJsonpMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

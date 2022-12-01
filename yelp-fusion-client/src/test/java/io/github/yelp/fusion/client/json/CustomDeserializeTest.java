@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.github.elasticsearch.client.elasticsearch.core.Hit;
-import io.github.elasticsearch.client.json.JsonpDeserializer;
-import io.github.elasticsearch.client.json.JsonpMapper;
-import io.github.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import io.github.yelp.fusion.client.model.ModelTestCase;
+import io.github.yelp.fusion.client.yelpfusion.core.Hit;
+
+import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
+import io.github.yelp.fusion.client.test_models.ModelTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

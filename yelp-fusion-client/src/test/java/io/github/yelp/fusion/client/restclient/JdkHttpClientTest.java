@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class JdkHttpClientTest {
 
     private static final Logger logger = LoggerFactory.getLogger(JdkHttpClientTest.class);
@@ -25,7 +26,7 @@ public class JdkHttpClientTest {
     public static void main(String[] args) {
         JdkHttpClientTest jdes = new JdkHttpClientTest();
 
-        Object ent = null;
+        Object ent;
         try {
             ent = jdes.get(reqLine).get();
 

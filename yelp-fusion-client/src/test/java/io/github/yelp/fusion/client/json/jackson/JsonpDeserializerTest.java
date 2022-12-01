@@ -1,11 +1,12 @@
 package io.github.yelp.fusion.client.json.jackson;
 
-import io.github.yelp.fusion.client.business.model.Business;
-import io.github.yelp.fusion.client.model.ModelTestCase;
+import io.github.yelp.fusion.client.json.JsonpDeserializer;
+import io.github.yelp.fusion.client.yelpfusion.business.Business;
+import io.github.yelp.fusion.client.test_models.ModelTestCase;
+import io.github.yelp.fusion.client.yelpfusion.core.Hit;
 import jakarta.json.stream.JsonParser;
 import org.apache.http.entity.HttpEntityWrapper;
-import io.github.elasticsearch.client.elasticsearch.core.Hit;
-import io.github.elasticsearch.client.json.JsonpDeserializer;
+
 
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;

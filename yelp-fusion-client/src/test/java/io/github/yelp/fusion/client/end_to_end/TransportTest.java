@@ -1,20 +1,21 @@
 package io.github.yelp.fusion.client.end_to_end;
 
 
-import io.github.yelp.fusion.client.AbstractRequestTestCase;
-import io.github.yelp.fusion.client.YelpFusionClient;
-import io.github.yelp.fusion.client.business.BusinessDetailsResponse;
-import io.github.yelp.fusion.client.business.BusinessSearchResponse;
-import io.github.yelp.fusion.client.transport.YelpRestTransport;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import io.github.yelp.fusion.client.ElasticsearchRequestTestCase;
+import io.github.yelp.fusion.client.json.JsonpMapper;
+import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
+import io.github.yelp.fusion.client.transport.YelpRestClientTransport;
+import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsResponse;
+import io.github.yelp.fusion.client.yelpfusion.BusinessSearchResponse;
+import io.github.yelp.fusion.client.yelpfusion.YelpFusionClient;
+import io.github.yelp.fusion.client.yelpfusion.business.Business;
+import io.github.yelp.fusion.client.yelpfusion.business.BusinessSearch;
+import io.github.yelp.fusion.restclient.YelpFusionRestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
-import io.github.elasticsearch.client.json.JsonpMapper;
-
-import io.github.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import io.github.lowlevel.restclient.RestClient;
-import io.github.lowlevel.restclient.RestClientBuilder;
-import io.github.yelp.fusion.client.business.model.Business;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TransportTest extends AbstractRequestTestCase {
+public class TransportTest extends ElasticsearchRequestTestCase {
 
     static HttpHost httpHost;
     static YelpFusionClient yelpClient;
@@ -40,19 +41,17 @@ public class TransportTest extends AbstractRequestTestCase {
         httpHost = new HttpHost(yelpFusionHost, port, "http");
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
-        RestClientBuilder builder = RestClient.builder(
+        YelpFusionRestClient restClient = YelpFusionRestClient.builder(
                         httpHost)
                 .setMetaHeaderEnabled(false)
-                .setUserAgentEnable(false)
-                .setDefaultHeaders(defaultHeaders);
-
-        RestClient restClient = builder.build();
+                .setDefaultHeaders(defaultHeaders)
+                .build();
 
         mapper = new JacksonJsonpMapper();
 
-        YelpRestTransport yelpTransport = null;
+        YelpRestClientTransport yelpTransport;
         try {
-            yelpTransport = new YelpRestTransport(restClient, mapper);
+            yelpTransport = new YelpRestClientTransport(restClient, mapper);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -61,19 +60,65 @@ public class TransportTest extends AbstractRequestTestCase {
 
     }
 
-
+    //09:00:07.562 [Test worker] INFO  i.g.elasticsearch.client.util.ObjectBuilderBase - list: [Business:
+    String result = "" +
+            "{\"id\":\"wu3w6IlUct9OvYmYXDMGJA\"," +
+            "\"alias\":\"huitlacoche-taqueria-restaurant-ridgewood-2\"," +
+            "\"name\":\"Huitlacoche Taqueria Restaurant\"," +
+            "\"image_url\":\"https://s3-media3.fl.yelpcdn.com/bphoto/xi-xz-sPIEjQ5xCX4fPZ_Q/o.jpg\"," +
+            "\"is_claimed\":true," +
+            "\"url\":\"https://www.yelp.com/biz/huitlacoche-taqueria-restaurant-ridgewood-2?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=ccj3y1UCH-4gsdWSMdEDOw\"," +
+            "\"phone\":\"+13479873581\"," +
+            "\"display_phone\":\"(347) 987-3581\"," +
+            "\"review_count\":7," +
+            "\"hours\":" +
+            "   [" +
+            "   {" +
+            "       \"open\":[{\"is_overnight\":false,\"day\":0,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":1,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":2,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":3,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":4,\"start\":\"1100\",\"end\":\"2330\"},{\"is_overnight\":false,\"day\":5,\"start\":\"1100\",\"end\":\"2330\"},{\"is_overnight\":false,\"day\":6,\"start\":\"1100\",\"end\":\"2230\"}],\"hours_type\":\"REGULAR\",\"is_open_now\":true}]," +
+            "\"transactions\":[\"pickup\",\"delivery\"],\"rating\":5}]";
     @Test
     void businessDetailsTest() throws Exception {
-
+        initElasticsearchClient();
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
-        BusinessDetailsResponse response = yelpClient.businessDetails(s -> s.id(id)
+        BusinessDetailsResponse businessDetailsResponse = yelpClient.businessDetails(s -> s.id(id)
         );
 
-        logger.debug("response.result(): " + response.result());
-        Business business = response.result().get(0);
-        assertThat(business.id()).isEqualTo( "wu3w6IlUct9OvYmYXDMGJA");
+        Business business = businessDetailsResponse.result().get(0);
 
+        logger.info("is_claimed " + business.is_claimed());
+        logger.info("is_closed " + business.is_closed());
+        logger.info("categories " + business.categories());
+
+        logger.info("id " + business.id());
+
+        logger.info("alias " + business.alias());
+        logger.info("coordinates " + business.coordinates());
+        logger.info("name " + business.name());
+//        logger.info("price " + business.price());
+        logger.info("location " + business.location());
+        logger.info("review_count " + business.review_count());
+        logger.info("rating " + business.rating());
+//        logger.info("display_phone " + business.display_phone());
+        logger.info("image_url " + business.image_url());
+        logger.info("hours " + business.hours());
+
+//        logger.info("phone " + business.phone());
+//        logger.info("photos " + business.photos());
+//        logger.info("url " + business.url());
+//        logger.info("attributes " + business.attributes());
+//        logger.info("special_hours " + business.special_hours());
+//        logger.info("transactions " + business.transactions());
+//        assertThat(business.id()).isEqualTo( "wu3w6IlUct9OvYmYXDMGJA");
+
+        IndexRequest<Business> request = IndexRequest.of(i -> i
+                .index(indexNyc)
+                .id(indexNyc + "-" + business.id())
+                .document(business));
+
+        IndexResponse resp = elasticSearch.client().index(request);
+
+//        logger.info(resp.result().name());
     }
 
     @Test
@@ -91,21 +136,18 @@ public class TransportTest extends AbstractRequestTestCase {
         Double longitude = -73.828461;
         Integer offset = 0;
 
-        BusinessSearchResponse<Business> businessSearchResponse = yelpClient.businessSearch(s -> s
+        BusinessSearchResponse businessSearchResponse = yelpClient.businessSearch(s -> s
                         .location(neighborhood)
-                        .coordinates(coord -> coord
-                                .geo_coordinates(geo -> geo
+                        .coordinates(c -> c
                                         .latitude(latitude)
-                                        .longitude(longitude)))
+                                        .longitude(longitude))
                         .term(term)
-                        .categories(c -> c
+                        .categories(cat -> cat
                                 .alias(category))
                         .limit(limit)
                         .offset(offset)
                         .sort_by(sort_by)
                         .radius(radius)
-                ,
-                Business.class
         );
 
         assertThat(businessSearchResponse.total()).isEqualTo(38);
@@ -113,12 +155,27 @@ public class TransportTest extends AbstractRequestTestCase {
         assertThat(businessSearchResponse.region().latitude()).isEqualTo(40.713272);
 
         int maxResultsPerPage = 50;
-        assertThat(businessSearchResponse.hits().size()).isEqualTo(businessSearchResponse.total());
+        assertThat(businessSearchResponse.businesses().size()).isEqualTo(businessSearchResponse.total());
 
-        List<String> businessIds = businessSearchResponse.hits().stream().map(Business::id).distinct().toList();
+        List<String> businessIds = businessSearchResponse.businesses().stream().map(BusinessSearch::id).distinct().toList();
         assertThat(businessIds.size()).isEqualTo(businessSearchResponse.total());
 
-        Business business = businessSearchResponse.hits().get(0);
+        BusinessSearch business = businessSearchResponse.businesses().get(0);
+        logger.info("Creating document from: " + business);
+
+        initElasticsearchClient();
+
+        IndexRequest<BusinessSearch> request = IndexRequest.of(i -> i
+                .index(indexNyc)
+                .id(indexNyc + "-" + business.id())
+                .document(business)
+        );
+
+        IndexResponse resp = elasticSearch.client().index(request);
+
+        logger.info("response id: " + resp.id());
+        logger.info("response index: " + resp.index());
+        logger.info("response result: " + resp.result().name());
 
     }
 

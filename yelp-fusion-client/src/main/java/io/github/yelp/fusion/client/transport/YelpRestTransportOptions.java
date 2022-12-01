@@ -1,8 +1,9 @@
 package io.github.yelp.fusion.client.transport;
 
-import io.github.elasticsearch.client.transport.TransportOptions;
-import io.github.lowlevel.restclient.RequestOptions;
-import io.github.lowlevel.restclient.WarningsHandler;
+import io.github.yelp.fusion.client.transport.TransportOptions;
+import io.github.yelp.fusion.restclient.RequestOptions;
+import io.github.yelp.fusion.restclient.WarningsHandler;
+
 
 import java.util.*;
 import java.util.function.*;
@@ -119,8 +120,6 @@ public class YelpRestTransportOptions implements TransportOptions {
 
     private static RequestOptions.Builder addBuiltinHeaders(RequestOptions.Builder builder) {
         if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase("Accept"))) {
-
-//            builder.addHeader("Accept", "Accept-Ranges: bytes");
 
         }
         return builder;

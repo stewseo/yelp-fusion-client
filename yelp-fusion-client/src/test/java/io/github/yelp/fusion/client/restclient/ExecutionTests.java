@@ -1,7 +1,14 @@
 package io.github.yelp.fusion.client.restclient;
 
-import io.github.yelp.fusion.client.business.BusinessDetailsRequest;
-import io.github.yelp.fusion.client.business.BusinessDetailsResponse;
+import io.github.yelp.fusion.client.json.JsonpDeserializer;
+import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
+import io.github.yelp.fusion.client.transport.JsonEndpoint;
+import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsRequest;
+import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsResponse;
+import io.github.yelp.fusion.restclient.Node;
+import io.github.yelp.fusion.restclient.Request;
+import io.github.yelp.fusion.restclient.RestClient;
+import io.github.yelp.fusion.util.PrintUtils;
 import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -16,13 +23,6 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.nio.client.methods.HttpAsyncMethods;
 import org.apache.http.nio.protocol.HttpAsyncRequestProducer;
 import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
-import io.github.elasticsearch.client.json.JsonpDeserializer;
-import io.github.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import io.github.elasticsearch.client.transport.JsonEndpoint;
-import io.github.lowlevel.restclient.Node;
-import io.github.lowlevel.restclient.PrintUtils;
-import io.github.lowlevel.restclient.Request;
-import io.github.lowlevel.restclient.RestClient;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class ExecutionTests {
         BusinessDetailsRequest businessSearchRequest = BusinessDetailsRequest.of(s -> s
                 .id("wu3w6IlUct9OvYmYXDMGJA"));
 
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?> jsonEndpoint = (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?>) businessSearchRequest._ENDPOINT;
+        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?> jsonEndpoint = (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?>) BusinessDetailsRequest._ENDPOINT;
 
         assertThat(jsonEndpoint.id()).isEqualTo("v3/businesses");
 

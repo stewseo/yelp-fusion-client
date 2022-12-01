@@ -1,6 +1,7 @@
 package io.github.yelp.fusion.client.restclient;
 
-import io.github.lowlevel.restclient.*;
+import io.github.yelp.fusion.restclient.*;
+import io.github.yelp.fusion.util.PrintUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.RequestLine;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class RestClientTest {
     private static final Logger logger = LoggerFactory.getLogger(RestClientTest.class);
-    private static RestClient restClient;
+    private static YelpFusionRestClient restClient;
     static RequestOptions YELP_AUTHORIZATION_HEADER;
 
     @BeforeAll
@@ -27,10 +28,9 @@ public class RestClientTest {
         HttpHost host = new HttpHost("api.yelp.com", 80, "http");
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
-        RestClientBuilder builder = RestClient.builder(
+        YelpFusionRestClientBuilder builder = YelpFusionRestClient.builder(
                         host)
                 .setMetaHeaderEnabled(false)
-                .setUserAgentEnable(false)
                 .setDefaultHeaders(defaultHeaders);
 
         restClient = builder.build();
@@ -43,7 +43,7 @@ public class RestClientTest {
 
     @Test
     void httpHostTest() {
-        HttpHost host = restClient.getNodes().get(0).getHost();
+        HttpHost host = restClient.getHttpHost();
         assertThat(host.getHostName()).isEqualTo("api.yelp.com");
         assertThat(host.getPort()).isEqualTo(80);
         assertThat(host.getSchemeName()).isEqualTo("http");

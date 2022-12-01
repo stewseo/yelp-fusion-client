@@ -1,7 +1,6 @@
 package io.github.yelp.fusion.client.json;
 
-import io.github.elasticsearch.client.json.JsonpUtils;
-import io.github.elasticsearch.client.util.AllowForbiddenApis;
+import io.github.yelp.fusion.client.util.AllowForbiddenApis;
 import jakarta.json.JsonException;
 import jakarta.json.spi.JsonProvider;
 import org.junit.jupiter.api.Test;
@@ -33,9 +32,7 @@ public class JsonpUtilsTest {
         try {
             Thread.currentThread().setContextClassLoader(emptyLoader);
 
-            assertThrows(JsonException.class, () -> {
-                assertNotNull(JsonProvider.provider());
-            });
+            assertThrows(JsonException.class, () -> assertNotNull(JsonProvider.provider()));
 
             assertNotNull(JsonpUtils.provider());
 

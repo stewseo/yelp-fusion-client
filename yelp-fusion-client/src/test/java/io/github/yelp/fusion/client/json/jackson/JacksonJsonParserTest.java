@@ -1,7 +1,6 @@
 package io.github.yelp.fusion.client.json.jackson;
 
 import jakarta.json.stream.JsonParser;
-import io.github.elasticsearch.client.json.jackson.JacksonJsonProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
