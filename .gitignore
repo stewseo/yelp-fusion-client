@@ -24,11 +24,10 @@ gradlew*
 *.iml
 *.ipr
 *.iws
-
-.gitignore
+*.gpg
+*.pub
 
 images/*
 build-conventions/*
 build-tools/*
 # yelp-fusion-client/*/test/*/*/*/yelp/fusion/client/business/model/*
-
