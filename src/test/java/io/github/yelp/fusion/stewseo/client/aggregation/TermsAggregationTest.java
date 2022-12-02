@@ -27,6 +27,7 @@ public class TermsAggregationTest {
         // Dynamically build each unique bucket by field: categories alias
         TermsAggregation termsAggregation = TermsAggregation.of(t -> t
                 .field("categories.alias.keyword")
+                .size(315)
         );
         // match all documents containing the queryName: "categories"
         Query matchAll = MatchAllQuery.of(m -> m

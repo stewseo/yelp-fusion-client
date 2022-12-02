@@ -1,15 +1,22 @@
 package io.github.yelp.fusion.stewseo.client.end_to_end;
 
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.*;
 
 
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.lowlevel.restclient.YelpFusionRestClient;
+import io.github.stewseo.yelp.fusion.client.Elasticsearch;
 import io.github.yelp.fusion.stewseo.client.ElasticsearchRequestTestCase;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
@@ -19,6 +26,8 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.BusinessSearchResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.BusinessSearch;
+import io.github.yelp.fusion.stewseo.client.YelpRequestTestCase;
+import jakarta.json.stream.JsonGenerator;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -30,9 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.util.*;
 
 import static java.util.Comparator.comparingInt;
@@ -47,31 +54,6 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
     private static final String indexNyc = "yelp-businesses-restaurants-nyc";
 
-
-    private static void initYelpFusionClient() {
-        String yelpFusionHost = "api.yelp.com";
-        int port = 80;
-        HttpHost httpHost = new HttpHost(yelpFusionHost, port, "http");
-        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
-
-        YelpFusionRestClient yelpFusionRestClient = YelpFusionRestClient.builder(
-                        httpHost)
-                .setMetaHeaderEnabled(false)
-                .setDefaultHeaders(defaultHeaders)
-                .build();
-
-
-        JsonpMapper mapper = new JacksonJsonpMapper();
-
-        YelpRestClientTransport yelpTransport;
-        try {
-            yelpTransport = new YelpRestClientTransport(yelpFusionRestClient, mapper);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        yelpClient = new YelpFusionClient(yelpTransport);
-    }
-
     static Map<String, List<String>> categoriesMap;
     static int docsCount;
     static Set<String> setOfBusinessIds;
@@ -83,69 +65,75 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
         loadCategoriesMap();
 
-        categoryName = "burgers";
+        categoryName = "japanese";
 
-        assertThat(docsCount-2).isEqualTo(setOfBusinessIds.size());
+        assertThat(docsCount-5).isEqualTo(setOfBusinessIds.size());
 
-        int numberOfIdsInValues = categoriesMap.values().stream().mapToInt(List::size).sum();
+        String apiKey = System.getenv("YELP_API_KEY");
 
-        indexOf = categoriesMap.keySet().stream().toList().indexOf(categoryName);
+        YelpFusionRestClient restClient = YelpFusionRestClient.builder(apiKey).build();
 
-        logger.info(PrintUtils.cyan("category name = " + categoryName + " number of businesses = " + categoriesMap.get(categoryName).size() + " index position = " + indexOf));
+        YelpRestClientTransport yelpTransport = new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
 
-        initYelpFusionClient();
+        yelpClient = new YelpFusionClient(yelpTransport);
 
     }
-
+    static List<StringTermsBucket> numberOfDocumentsPerCategory;
     private static void loadCategoriesMap() {
         initElasticsearchClient();
         docsCount = elasticSearch.getDocsCount(indexNyc);
 
         logger.info(PrintUtils.green("index: " + indexNyc + " docs count: " + docsCount));
 
-        categoriesMap = new LinkedHashMap<>();
+        numberOfDocumentsPerCategory = elasticSearch.getStringTermsBuckets();
+        logger.info(PrintUtils.debug("number of categories with at least 1 restaurant: " + numberOfDocumentsPerCategory.size()));
 
-        Map<String, List<String>> map = new LinkedHashMap<>();
-
-        int maxResults = 10000;
+        for(StringTermsBucket bucket: numberOfDocumentsPerCategory) {
+            logger.info("Category: " + bucket.key().stringValue() + ", document count: " + bucket.docCount());;
+        }
 
         String timestamp = elasticSearch.getTimestamp("1", SortOrder.Asc);
-
         assertThat(timestamp).isEqualTo("2022-11-10T07:16:35.187452598Z");
+        setOfBusinessIds = new HashSet<>();
 
-        int counter = docsCount;
+        int iterations = (int) Math.ceil((double)docsCount / 10000);
 
-        while (timestamp != null) {
-            map.putAll(elasticSearch.getCategoriesMap(indexNyc, maxResults, timestamp));
-            timestamp = elasticSearch.getTimestamp();
-            logger.info("timestamp = " + timestamp + " keys in categories = " + map.keySet().size());
+        for(int j = 0; j < iterations; j++) {
+
+            List<Hit<ObjectNode>> nodes = elasticSearch.getSetOfBusinessIds(timestamp);
+
+            for (int i = 0; i < nodes.size(); i++) {
+                JsonNode sourceNode = nodes.get(i).source();
+                setOfBusinessIds.add(sourceNode.get("id").asText());
+                if (i + 1 == nodes.size()) {
+                    timestamp = sourceNode.get("timestamp").asText();
+                }
+            }
         }
-        setOfBusinessIds = elasticSearch.getSetOfBusinessIds();
 
-        map.remove("restaurants");
-        map.remove("bars");
-        map.remove("nightlife");
-        map.remove("food");
-        map.remove("newamerican");
+//        map.remove("restaurants");
+//        map.remove("bars");
+//        map.remove("nightlife");
+//        map.remove("food");
+//        map.remove("newamerican");
 
-        categoriesMap = map.entrySet().stream().sorted(comparingInt(e -> e.getValue().size()))
-                .collect(toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (a, b) -> {
-                            throw new AssertionError();
-                        },
-                        LinkedHashMap::new
-                ));
+//        categoriesMap = map.entrySet().stream().sorted(comparingInt(e -> e.getValue().size()))
+//                .collect(toMap(
+//                        Map.Entry::getKey,
+//                        Map.Entry::getValue,
+//                        (a, b) -> {
+//                            throw new AssertionError();
+//                        },
+//                        LinkedHashMap::new
+//                ));
     }
 
     Set<BusinessSearchRequest> unindexed;
     @Test
     public void businessSearchTest() {
-
         assertThat(indexNyc).isEqualTo("yelp-businesses-restaurants-nyc");
-        int maxTotal = 1000;
-        int radius = 5000;
+
+        int radius = 6000;
         int limit = 50;
         String sort_by = "distance";
         String term = "restaurants";
@@ -155,71 +143,60 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                 "bronx", new Coordinates_(40.713272, -73.828461),
                 "statenisland", new Coordinates_(40.642269, -74.076385),
                 "queens", new Coordinates_(40.713272, -73.828461)
-//                "chinatown", new Coordinates(40.7158, -73.9970),
-//                "littleitaly", new Coordinates(40.7191, -73.9973),
-//                "chelsea", new Coordinates(40.7465, -74.0014),
-//                "nolita", new Coordinates(40.7230, -73.9949),
-//                "harlem", new Coordinates(40.8116, -73.9465),
-//                "soho", new Coordinates(40.7246, -74.0019)
         );
 
-        List<String> categories = categoriesMap.keySet().stream().toList();
-        categories.forEach(System.out::println);
+        List<String> list = numberOfDocumentsPerCategory.stream().map(StringTermsBucket::key).map(FieldValue::stringValue).toList();
 
-        for (String category : categories) {
+        for (String category : list) {
 
-            List<String> listOfNeighborHoodKeys = List.of("manhattan", "bronx", "brooklyn", "queens", "statenisland");
+            Set<String> neighborHoods = neighborHoodCoordinates.keySet();
 
-            for (String neighborhood : listOfNeighborHoodKeys) {
-                // reset offset, total, count, maxOffset
+            for (String neighborhood : neighborHoods) {
+                // reset offset, total,
                 Integer offset = 0;
                 Integer total;
-
                 do {
-                    final int finalOffset = offset;
 
-                    Coordinates_ p = neighborHoodCoordinates.get(neighborhood);
 
-                    PrintUtils.cyan("location = " + neighborhood +
-                            " category = " + category +
-                            " offset = " + offset +
-                            " latitude: " + p.latitude +
-                            " longitude: " + p.longitude);
+                    final Integer finalOffset = offset; // update final Integer to current offset
+
+                    Double latitude = neighborHoodCoordinates.get(neighborhood).getLatitude(); // latitude of neighborhood
+                    Double longitude = neighborHoodCoordinates.get(neighborhood).getLongitude(); // longitude of neighborhood
 
                     try {
-
                         BusinessSearchResponse businessSearchResponse = yelpClient.businessSearch(s -> s
                                 .location(neighborhood)
-                                .coordinates(coord -> coord
-                                        .latitude(p.latitude)
-                                        .longitude(p.longitude))
+                                .coordinates(c -> c
+                                        .latitude(latitude)
+                                        .longitude(longitude))
                                 .term(term)
-                                .categories(c -> c
+                                .categories(cat -> cat
                                         .alias(category))
                                 .limit(limit)
                                 .offset(finalOffset)
                                 .sort_by(sort_by)
-                                .radius(radius)
+                                .radius(radius) // meters
                         );
 
                         assertThat(businessSearchResponse).isNotNull();
 
                         total = businessSearchResponse.total();
                         assertThat(total).isNotNull();
-
+                        int count = 0;
                         if (total > 0 && businessSearchResponse.businesses().size() > 0) {
 
-                            List<BusinessSearch> businesses = businessSearchResponse.businesses();
+                            List<BusinessSearch> listOfBusinessSearch = businessSearchResponse.businesses();
 
                             BulkRequest.Builder br = new BulkRequest.Builder();
                             BusinessDetailsResponse businessDetailsResponse;
-
-                            for (BusinessSearch businessSearch : businesses) {
+                            logger.info(PrintUtils.debug(" category: " + category + ", trying to add : " + listOfBusinessSearch.size() + " BusinessSearch results. Current offset: " + finalOffset));
+                            for (BusinessSearch businessSearch : listOfBusinessSearch) {
                                 String businessId = businessSearch.id();
-//                                String formattedId = businessId.replaceAll("[^A-Za-z0-9_-]", "");
+                                String formattedId = businessId.replaceAll("[^\\p{IsAlphabetic}\\p{IsDigit}_\\-]", "");
 
-                                if (setOfBusinessIds.add(businessId)) {
-
+                                if (setOfBusinessIds.add(formattedId)) {
+                                    count++;
+                                    logger.info(PrintUtils.debug("adding business with id: " + formattedId + " business id: " + businessId));
                                     // submit request to Business Details Endpoint
                                     businessDetailsResponse = yelpClient.businessDetails(s -> s.id(businessId));
 
@@ -234,7 +211,6 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
                                     Reader input = new StringReader(withoutClassName);
 
-
                                     IndexRequest<JsonData> request = IndexRequest.of(i -> i
                                             .index(indexNyc)
                                             .id(indexNyc + "-" + businessId)
@@ -243,18 +219,38 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                                     );
 
                                     IndexResponse response = elasticSearch.client().index(request);
-
+                                    logger.info(PrintUtils.debug("added version: " + response.version()));
+                                    assertThat(response.result().name().equalsIgnoreCase("created"));
                                 }
                             }
                         }
-
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
 
-                    offset += limit;
+                    if (total > 1000 && offset >= 1000) {
+                        String path = this.getClass().getResource("categories-gt-max").getPath();
+                        // the second parameter specifies whether the file should be appended
+                        try (OutputStream fos = new FileOutputStream(new File(path), true)) {
 
-                } while (offset <= (total + limit) && total > 0); // iterate up to 20 50-business pages
+                            JsonGenerator generator = mapper.jsonProvider().createGenerator(fos);
+                            generator.writeStartObject();
+
+                            generator.writeStartArray("Categories and Params returning greater than 1000");
+                            generator.write("category", category);
+                            generator.write("location", neighborhood);
+                            generator.write("radius", radius);
+                            generator.write("latitude", latitude);
+                            generator.write("longitude", longitude);
+                            generator.writeEnd();
+
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        total = 0;
+                    }
+
+                } while (total > 0 && (offset + limit) <= 1000); // iterate up to 20 50-business pages
             }
         }
     }

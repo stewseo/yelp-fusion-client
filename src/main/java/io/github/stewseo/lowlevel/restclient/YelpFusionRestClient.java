@@ -96,8 +96,6 @@ public class YelpFusionRestClient implements Closeable {
 
     public Response performRequest(Request request) throws IOException {
         InternalRequest internalRequest = new InternalRequest(request);
-        logger.debug(PrintUtils.debug("httpRequestBase.getURI: " + internalRequest.httpRequest.getURI()));
-
         return performRequest(httpHost, internalRequest, null);
     }
 
@@ -341,10 +339,8 @@ public class YelpFusionRestClient implements Closeable {
             final Set<String> requestNames = new HashSet<>(requestHeaders.size());
 
             for (Header requestHeader : requestHeaders) {
-                logger.debug(PrintUtils.debug("requestNames.size " + requestNames.size()));
                 req.addHeader(requestHeader);
                 requestNames.add(requestHeader.getName());
-                logger.debug(PrintUtils.debug("req.addHeader: " + requestHeader + " " + requestHeader.getName()));
             }
 
             for (Header defaultHeader : defaultHeaders) {
@@ -360,7 +356,7 @@ public class YelpFusionRestClient implements Closeable {
             Header[] header = req.getHeaders("Accept");
 
             if(header.length > 0) {
-                logger.debug(PrintUtils.cyan("all header: " + Arrays.stream(req.getAllHeaders()).map(Header::getName).toList()));
+//                logger.debug(PrintUtils.cyan("all headers: " + Arrays.stream(req.getAllHeaders()).map(Header::getName).toList()));
                 req.removeHeader(Arrays.stream(req.getHeaders("Accept")).toList().get(0));
             }
 

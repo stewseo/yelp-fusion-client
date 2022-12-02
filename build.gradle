@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.1'
+version = '1.0.2'
 
 java {
     sourceCompatibility = "17"
@@ -29,7 +29,7 @@ repositories {
 
 jar {
     archiveBaseName = 'yelp-fusion-client'
-    archiveVersion = '1.0.1'
+    archiveVersion = '1.0.2'
     from {
         configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }

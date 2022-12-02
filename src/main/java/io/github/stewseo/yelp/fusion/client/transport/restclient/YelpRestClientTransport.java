@@ -109,21 +109,17 @@ public class YelpRestClientTransport implements YelpFusionTransport {
             public void onSuccess(Response clientResp) {
                 try (ApiTypeHelper.DisabledChecksHandle h =
                              ApiTypeHelper.DANGEROUS_disableRequiredPropertiesCheck(disableRequiredChecks)) {
-
                     ResponseT response = getHighLevelResponse(clientResp, endpoint);
                     future.complete(response);
-
                 } catch (Exception e) {
                     future.completeExceptionally(e);
                 }
             }
-
             @Override
             public void onFailure(Exception e) {
                 future.completeExceptionally(e);
             }
         });
-
         return null;
     }
 

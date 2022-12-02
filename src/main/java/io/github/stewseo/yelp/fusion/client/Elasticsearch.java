@@ -4,6 +4,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
+import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
@@ -138,7 +140,7 @@ public class Elasticsearch {
 
             for (Hit<ObjectNode> hit : list) {
                 JsonNode node = Objects.requireNonNull(hit.source()).get("timestamp");
-                if(node != null) {
+                if (node != null) {
                     returnTimestamp = node.asText();
                 }
             }
@@ -154,21 +156,78 @@ public class Elasticsearch {
         return timestamp;
     }
 
-    public Map<String, List<String>> getCategoriesMap(String index, int size, String range) {
+//    public List<StringTermsBucket> getBusinessIds(String index, int size, String range) {
+//
+//    }
 
-        Map<String, List<String>> map = new LinkedHashMap<>();
+    public List<StringTermsBucket> getStringTermsBuckets() {
+
+
+        // Dynamically build each unique bucket by field: categories alias
+        TermsAggregation termsAggregation = TermsAggregation.of(t -> t
+                .field("categories.alias.keyword")
+                .size(350)
+        );
+        // match all documents containing the queryName: "categories"
+        Query matchAll = MatchAllQuery.of(m -> m
+                .queryName("location")
+        )._toQuery();
+
+
+        SearchResponse<Void> response = null;
+        try {
+            response = esClient.search(b -> b
+                            .index("yelp-businesses-restaurants-nyc")
+                            .size(0) // Set the number of matching documents to zero
+                            .query(matchAll) // Set the query that will filter the businesses on which to run the aggregation (all contain categories)
+                            .aggregations("categories-aggs", a -> a // Create an aggregation named "categories-aggs"
+                                    .terms(termsAggregation) // Select the terms aggregation variant.
+                            ),
+                    Void.class // Using Void will ignore any document in the response.
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<StringTermsBucket> buckets = response.aggregations()
+                .get("categories-aggs")
+                .sterms()
+                .buckets().array();
+
+        return buckets;
+    }
+
+
+//        Map<String, List<String>> map = new LinkedHashMap<>();
+//
+
+//        logger.info("RangeQuery field = timestamp: greater than of equal to = " + range + " number of results = " + size);
+
+
+
+//
+//        } catch (Exception e) {
+//
+//            if(e instanceof RuntimeException) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return map;
+
+
+    // return all business ids up to 10k, starting at specified timestamp.
+    public List<Hit<ObjectNode>> getSetOfBusinessIds(String timestampRange) {
 
         Query byTimestamp = RangeQuery.of(r -> r
                 .field("timestamp")
-                .gte(JsonData.of(range))
+                .gte(JsonData.of(timestampRange))
         )._toQuery();
 
-        Query matchAllQuery = MatchAllQuery.of(r -> r
-                .queryName("categories")
-        )._toQuery();
+//        Query matchAllQuery = MatchAllQuery.of(r -> r
+//                .queryName("id")
+//        )._toQuery();
 
         SourceFilter sourceFilter = SourceFilter.of(source -> source
-                .includes("categories.alias")
                 .includes("id")
                 .includes("timestamp"));
 
@@ -178,78 +237,31 @@ public class Elasticsearch {
                         .order(SortOrder.Asc))
         );
 
-        logger.info("RangeQuery field = timestamp: greater than of equal to = " + range + " number of results = " + size);
         SearchResponse<ObjectNode> response;
+
+        List<Hit<ObjectNode>> nodes;
         try {
 
             response = esClient.search(s -> s
-                            .index(index)
+                            .index("yelp-businesses-restaurants-nyc")
                             .query(q -> q
                                     .bool(b -> b
                                             .must(byTimestamp)
-                                            .must(matchAllQuery)
                                     )
                             ).source(src -> src
                                     .filter(sourceFilter)
-                            ).sort(sortOptions)
-                            .size(size)
+                            )
+                            .sort(sortOptions)
+                            .size(10000)
                     , ObjectNode.class
             );
-
             TotalHits total = response.hits().total();
 
-            response
-                    .hits()
-                    .hits()
-                    .forEach(hit -> {
-                        JsonNode sourceNode = hit.source();
-                        if (sourceNode != null) {
 
-
-                            for (JsonNode source : sourceNode) {
-
-                                JsonNode idNode = sourceNode.get("id");
-
-                                if (idNode != null) {
-
-                                    String id = idNode.asText();
-
-                                    ArrayNode arrayNode = (ArrayNode) sourceNode.get("categories");
-                                    if(arrayNode != null) {
-                                        for (JsonNode node : arrayNode) {
-                                            String alias = node.get("alias").asText();
-                                            map.computeIfAbsent(alias, k ->
-                                                    new ArrayList<>()).add(id);
-                                        }
-                                        setOfIds.add(id);
-
-                                        JsonNode timeStampNode = sourceNode.get("timestamp");
-                                        if (timeStampNode != null) {
-                                            timestamp = timeStampNode.asText();
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-
-                    });
-
-            if (Objects.requireNonNull(total).relation() == TotalHitsRelation.Eq) {
-                timestamp = null;
-            }
-
-        } catch (Exception e) {
-
-            if(e instanceof RuntimeException) {
-                throw new RuntimeException(e);
-            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return map;
-    }
-
-    public Set<String> getSetOfBusinessIds() {
-        return setOfIds;
+        return response.hits().hits();
     }
 
     public int getDocsCount(String index) {

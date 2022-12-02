@@ -16,7 +16,10 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="io.github.yelp.fusion" level="INFO" additivity="false">
+    <logger name="io.github.stewseo.lowlevel.restclient" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="io.github.stewseo.yelp.fusion.client" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 

@@ -37,8 +37,3 @@ Maven
 
 ### Terms Aggregation Test
 restaurants by category
-
-![](../../../Pictures/Screenshots/Screenshot_20221202_101239.png)
-
-
-![](../../../Pictures/Screenshots/Screenshot_20221202_101458.png)
