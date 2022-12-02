@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/CustomDeserializeTest.java
-package org.example.yelp.fusion.client.json;
-========
 package io.github.yelp.fusion.client.json;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/CustomDeserializeTest.java
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

@@ -3,6 +3,7 @@ package io.github.yelp.fusion.client.document;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import io.github.yelp.fusion.client.ElasticsearchRequestTestCase;
+import io.github.yelp.fusion.client.YelpRequestTestCase;
 import io.github.yelp.fusion.client.json.JsonData;
 import io.github.yelp.fusion.client.json.JsonpMapper;
 import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
@@ -33,39 +34,16 @@ public class BusinessDocumentTest extends ElasticsearchRequestTestCase {
 
     private final static Logger logger = LoggerFactory.getLogger(BusinessDocumentTest.class);
 
-    static HttpHost httpHost;
     static YelpFusionClient yelpClient;
-    private static JsonpMapper mapper;
 
-    @BeforeAll
-    static void beforeAll() {
-        String yelpFusionHost = "api.yelp.com";
-        int port = 80;
-        httpHost = new HttpHost(yelpFusionHost, port, "http");
-        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
-
-        YelpFusionRestClient restClient = YelpFusionRestClient.builder(
-                        httpHost)
-                .setMetaHeaderEnabled(false)
-                .setDefaultHeaders(defaultHeaders)
-                .build();
-
-        mapper = new JacksonJsonpMapper();
-
-        YelpRestClientTransport yelpTransport;
-        try {
-            yelpTransport = new YelpRestClientTransport(restClient, mapper);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        yelpClient = new YelpFusionClient(yelpTransport);
-
-    }
 
     @Test
     void indexBusinessDetailsTest() throws Exception {
-        initElasticsearchClient();
+
+        YelpRequestTestCase.initYelpFusionClient();
+
+        yelpClient =  YelpRequestTestCase.getYelpClient();
+
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
@@ -94,8 +72,7 @@ public class BusinessDocumentTest extends ElasticsearchRequestTestCase {
 
         String withoutClassName = business.toString().substring(jsonStart);
 
-        Assertions.assertThat(withoutClassName.codePointAt(0)).isEqualTo("{".hashCode());
-
+        assertThat(withoutClassName.codePointAt(0)).isEqualTo("{".hashCode());
 
         Reader input = new StringReader(withoutClassName);
 
@@ -103,6 +80,7 @@ public class BusinessDocumentTest extends ElasticsearchRequestTestCase {
 
         IndexRequest<JsonData> request = IndexRequest.of(i -> i
                 .index(indexNyc)
+                .pipeline(timestampPipeline)
                 .withJson(input)
         );
 

@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/jackson/JacksonMapperTest.java
-package org.example.yelp.fusion.client.json.jackson;
-========
 package io.github.yelp.fusion.client.json.jackson;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/jackson/JacksonMapperTest.java
 
 import io.github.yelp.fusion.client.json.*;
 import io.github.yelp.fusion.client.test_models.ModelTestCase;

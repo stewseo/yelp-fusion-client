@@ -1,4 +1,4 @@
-package io.github.yelp.fusion.client.restclient;
+package io.github.yelp.fusion.client.response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +17,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class JdkHttpClientTest {
+public class ResponseBodyHandlingJdkHttpClientTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(JdkHttpClientTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResponseBodyHandlingJdkHttpClientTest.class);
     private static final String reqLine = "http://api.yelp.com/v3/businesses/search?location=sf&limit=50";
 
 
     public static void main(String[] args) {
-        JdkHttpClientTest jdes = new JdkHttpClientTest();
+        ResponseBodyHandlingJdkHttpClientTest jdes = new ResponseBodyHandlingJdkHttpClientTest();
 
         Object ent;
         try {

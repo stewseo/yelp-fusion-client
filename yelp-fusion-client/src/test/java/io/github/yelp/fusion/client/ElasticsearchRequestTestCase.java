@@ -18,7 +18,8 @@ public abstract class ElasticsearchRequestTestCase extends Assertions {
     public static String timestampPipeline = "timestamp-pipeline";
 
     public static String postalPipeline = "postal-lookup";
-    public static String indexNyc = "yelp-businesses-restaurants-nyc-new";
+    public static String indexNyc = "yelp-businesses-restaurants-nyc";
+    public static String testIndex = "yelp-test-index";
 
     protected static Elasticsearch elasticSearch;
 

@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/jackson/JsonpDeserializerTest.java
-package org.example.yelp.fusion.client.json.jackson;
-========
 package io.github.yelp.fusion.client.json.jackson;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/jackson/JsonpDeserializerTest.java
 
 import io.github.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.yelp.fusion.client.yelpfusion.business.Business;

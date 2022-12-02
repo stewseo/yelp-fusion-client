@@ -12,7 +12,7 @@
     <!--        </encoder>-->
     <!--    </appender>-->
 
-    <logger name="tracer" level="TRACE" additivity="false">
+    <logger name="tracer" level="info" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 

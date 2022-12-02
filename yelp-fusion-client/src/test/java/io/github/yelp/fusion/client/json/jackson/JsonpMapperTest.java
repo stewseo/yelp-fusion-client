@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/jackson/JsonpMapperTest.java
-package org.example.yelp.fusion.client.json.jackson;
-========
 package io.github.yelp.fusion.client.json.jackson;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/jackson/JsonpMapperTest.java
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;

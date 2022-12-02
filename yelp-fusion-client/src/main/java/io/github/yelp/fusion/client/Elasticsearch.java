@@ -2,6 +2,7 @@ package io.github.yelp.fusion.client;
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
@@ -238,16 +239,12 @@ public class Elasticsearch {
                     });
 
             if (Objects.requireNonNull(total).relation() == TotalHitsRelation.Eq) {
-                logger.info(PrintUtils.green("Less than max results, total hits TotalHitsRelation.eq " + total.value() + " results"));
                 timestamp = null;
             }
 
         } catch (Exception e) {
-            if(e instanceof IOException) {
-                YelpRequestLogger.logFailedYelpRequest(logger, e);
-            }
+
             if(e instanceof RuntimeException) {
-                YelpRequestLogger.logFailedYelpRequest(logger, e);
                 throw new RuntimeException(e);
             }
         }

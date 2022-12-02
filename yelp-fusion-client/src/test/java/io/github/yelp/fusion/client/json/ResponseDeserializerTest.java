@@ -1,29 +1,15 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/ResponseDeserializerTest.java
-package org.example.yelp.fusion.client.json;
-========
+
 package io.github.yelp.fusion.client.json;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/ResponseDeserializerTest.java
 
 import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsRequest;
 import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsResponse;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/ResponseDeserializerTest.java
-import org.example.elasticsearch.client.json.JsonpDeserializer;
-import org.example.elasticsearch.client.json.ObjectDeserializer;
-import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import org.example.elasticsearch.client.transport.JsonEndpoint;
-import org.example.lowlevel.restclient.PrintUtils;
-import org.example.yelp.fusion.client.business.BusinessDetailsRequest;
-import org.example.yelp.fusion.client.business.model.Business;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
-========
 import io.github.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.yelp.fusion.client.transport.JsonEndpoint;
 import io.github.yelp.fusion.util.PrintUtils;
 import io.github.yelp.fusion.client.yelpfusion.business.Business;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/ResponseDeserializerTest.java
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +42,6 @@ public class ResponseDeserializerTest {
         JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?> jsonEndpoint =
                 (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ?>) BusinessDetailsRequest._ENDPOINT;
 
-
         JsonpDeserializer<BusinessDetailsResponse> responseParser = jsonEndpoint.responseDeserializer();
 
         JacksonJsonpMapper mapper = new JacksonJsonpMapper();
@@ -68,7 +53,6 @@ public class ResponseDeserializerTest {
         BusinessDetailsResponse response = responseParser.deserialize(parser, mapper);
 
         Business business = response.result().get(0);
-
 
         logger.debug(PrintUtils.debug("id: " + business.id() +
                 " name: " + business.name() +

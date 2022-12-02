@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/JsonpUtilsTest.java
-package org.example.yelp.fusion.client.json;
-========
 package io.github.yelp.fusion.client.json;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/JsonpUtilsTest.java
 
 import io.github.yelp.fusion.client.util.AllowForbiddenApis;
 import jakarta.json.JsonException;

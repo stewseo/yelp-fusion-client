@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/jackson/JacksonJsonParserTest.java
-package org.example.yelp.fusion.client.json.jackson;
-========
 package io.github.yelp.fusion.client.json.jackson;
->>>>>>>> maven-publish:yelp-fusion-client/src/test/java/io/github/yelp/fusion/client/json/jackson/JacksonJsonParserTest.java
 
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Assertions;

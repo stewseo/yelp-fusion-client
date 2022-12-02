@@ -41,8 +41,7 @@ public class YelpRequestLogger {
             tracer.trace("requestLine = buildTraceRequest(request, host)");
 
             String responseLine;
-            tracer.trace("requestLine = buildTraceResponse(response, host)");
-            tracer.trace("requestLine + '\n' + responseLine");
+
         }
     }
 
@@ -153,21 +152,6 @@ public class YelpRequestLogger {
 
     }
 
-    public static<RequestT> void logFailedRequest(Logger logger, RequestT request) {
-        if(request instanceof BusinessSearchRequest) {
-            BusinessSearchRequest req = (BusinessSearchRequest) request;
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("");
-            }
-            if (tracer.isTraceEnabled()) {
-                String traceRequest;
-                logger.trace("");
-            }
-
-        }
-
-    }
     public static<ResponseT> void logResponse(Logger logger, ResponseT response) {
         if(response instanceof BusinessDetailsResponse) {
             BusinessDetailsResponse resp = (BusinessDetailsResponse) response;

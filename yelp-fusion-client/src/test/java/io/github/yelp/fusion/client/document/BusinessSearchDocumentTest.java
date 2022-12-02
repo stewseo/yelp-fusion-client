@@ -3,11 +3,11 @@ package io.github.yelp.fusion.client.document;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import io.github.yelp.fusion.client.ElasticsearchRequestTestCase;
+import io.github.yelp.fusion.client.YelpRequestTestCase;
 import io.github.yelp.fusion.client.json.JsonData;
 import io.github.yelp.fusion.client.json.JsonpMapper;
 import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.yelp.fusion.client.transport.YelpRestClientTransport;
-import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsResponse;
 import io.github.yelp.fusion.client.yelpfusion.BusinessSearchResponse;
 import io.github.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.yelp.fusion.client.yelpfusion.business.BusinessSearch;
@@ -23,48 +23,23 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.setMaxStackTraceElementsDisplayed;
 
 public class BusinessSearchDocumentTest extends ElasticsearchRequestTestCase {
 
     private final static Logger logger = LoggerFactory.getLogger(BusinessSearchDocumentTest.class);
 
-    static HttpHost httpHost;
     static YelpFusionClient yelpClient;
-    private static JsonpMapper mapper;
 
-    @BeforeAll
-    static void beforeAll() {
-        String yelpFusionHost = "api.yelp.com";
-        int port = 80;
-        httpHost = new HttpHost(yelpFusionHost, port, "http");
-        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
-
-        YelpFusionRestClient restClient = YelpFusionRestClient.builder(
-                        httpHost)
-                .setMetaHeaderEnabled(false)
-                .setDefaultHeaders(defaultHeaders)
-                .build();
-
-        mapper = new JacksonJsonpMapper();
-
-        YelpRestClientTransport yelpTransport;
-        try {
-            yelpTransport = new YelpRestClientTransport(restClient, mapper);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        yelpClient = new YelpFusionClient(yelpTransport);
-
-    }
 
     // index results from BusinessSearch Endpoint
     @Test
     void indexMappingTest() throws Exception {
+
+        YelpRequestTestCase.initYelpFusionClient();
+
+        yelpClient = YelpRequestTestCase.getYelpClient();
 
         int radius = 1610;
         int limit = 50;

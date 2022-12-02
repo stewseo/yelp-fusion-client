@@ -1,20 +1,21 @@
 package org.example.yelp.fusion.client.end_to_end;
 
 
+import io.github.yelp.fusion.client.json.JsonpMapper;
+import io.github.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
+import io.github.yelp.fusion.client.test_models.ModelTestCase;
+import io.github.yelp.fusion.client.transport.YelpRestClientTransport;
+import io.github.yelp.fusion.client.yelpfusion.BusinessDetailsResponse;
+import io.github.yelp.fusion.client.yelpfusion.BusinessSearchResponse;
+import io.github.yelp.fusion.client.yelpfusion.YelpFusionClient;
+import io.github.yelp.fusion.client.yelpfusion.business.Business;
+import io.github.yelp.fusion.client.yelpfusion.business.BusinessSearch;
+import io.github.yelp.fusion.restclient.RestClient;
+import io.github.yelp.fusion.restclient.RestClientBuilder;
+import io.github.yelp.fusion.restclient.YelpFusionRestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
-import org.example.elasticsearch.client.json.JsonpMapper;
-
-import org.example.elasticsearch.client.json.jackson.JacksonJsonpMapper;
-import org.example.lowlevel.restclient.RestClient;
-import org.example.lowlevel.restclient.RestClientBuilder;
-import org.example.yelp.fusion.client.YelpFusionClient;
-import org.example.yelp.fusion.client.business.BusinessDetailsResponse_;
-import org.example.yelp.fusion.client.business.BusinessSearchResponse;
-import org.example.yelp.fusion.client.business.model.Business;
-import org.example.yelp.fusion.client.model.ModelTestCase;
-import org.example.yelp.fusion.client.transport.YelpRestTransport;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -40,19 +41,17 @@ public class TransportTest extends ModelTestCase {
         httpHost = new HttpHost(yelpFusionHost, port, "http");
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
-        RestClientBuilder builder = RestClient.builder(
+        YelpFusionRestClient restClient = YelpFusionRestClient.builder(
                         httpHost)
                 .setMetaHeaderEnabled(false)
-                .setUserAgentEnable(false)
-                .setDefaultHeaders(defaultHeaders);
+                .setDefaultHeaders(defaultHeaders).build();
 
-        RestClient restClient = builder.build();
 
         mapper = new JacksonJsonpMapper();
 
-        YelpRestTransport yelpTransport = null;
+        YelpRestClientTransport yelpTransport = null;
         try {
-            yelpTransport = new YelpRestTransport(restClient, mapper);
+            yelpTransport = new YelpRestClientTransport(restClient, mapper);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -67,7 +66,7 @@ public class TransportTest extends ModelTestCase {
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
-        BusinessDetailsResponse_ response = yelpClient.businessDetails(s -> s.id(id)
+        BusinessDetailsResponse response = yelpClient.businessDetails(s -> s.id(id)
         );
 
         logger.debug("response.result(): " + response.result());
@@ -81,18 +80,18 @@ public class TransportTest extends ModelTestCase {
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
-        BusinessSearchResponse<Business> response = yelpClient.businessSearch(s -> s
+        BusinessSearchResponse response = yelpClient.businessSearch(s -> s
                         .location("nyc")
+                .coordinates(c-> c
                         .latitude(40.70544486444615)
                         .longitude(-73.99429321289062)
-                        .term("restaurants")
-                        .price("2")
-                        .categories(c -> c
-                                .alias("bagels"))
+                ).term("restaurants")
+                .price("2")
+                .categories(c -> c
+                        .alias("bagels"))
                         .limit(50)
                         .offset(0)
-                ,
-                Business.class
+
         );
 
         assertThat(response.total()).isEqualTo(65);
@@ -100,9 +99,9 @@ public class TransportTest extends ModelTestCase {
         assertThat(response.region().latitude()).isEqualTo(40.70544486444615);
 
         int maxResultsPerPage = 50;
-        assertThat(response.hits().size()).isEqualTo(maxResultsPerPage);
+        assertThat(response.businesses().size()).isEqualTo(maxResultsPerPage);
 
-        List<String> businessIds = response.hits().stream().map(Business::id).distinct().toList();
+        List<String> businessIds = response.businesses().stream().map(BusinessSearch::id).distinct().toList();
 
         assertThat(businessIds.size()).isEqualTo(maxResultsPerPage);
 
