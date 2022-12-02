@@ -6,18 +6,17 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.0'
+version = '1.0.1'
 
-//java {
-//    withSourcesJar()
-//    withJavadocJar()
-//}
+java {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+}
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
 }
-
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
@@ -28,10 +27,13 @@ repositories {
     mavenCentral()
 }
 
-
 jar {
-    baseName = 'yelp-fusion-client'
-    version = '1.0.0'
+    archiveBaseName = 'yelp-fusion-client'
+    archiveVersion = '1.0.1'
+    from {
+        configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 publishing {
@@ -137,7 +139,7 @@ dependencies {
     api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
     api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
 
-    implementation 'gg.jte:jte:2.2.3'
+    api 'gg.jte:jte:2.2.3'
 
     // loggers
     api("org.slf4j:slf4j-api:${slf4jVersion}")
@@ -165,18 +167,19 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-//test {
-//    filter {
-//        //exclude all tests from a package.
-////        excludeTestsMatching "io.github.yelp.fusion.client.response.*"
-//        excludeTestsMatching "io.github.yelp.fusion.client.end_to_end.*"
-//        excludeTestsMatching "io.github.yelp.fusion.client.aggregation.*"
-//        excludeTestsMatching "io.github.yelp.fusion.client.json.*"
-//        excludeTestsMatching "io.github.yelp.fusion.client.restclient.*"
-//        excludeTestsMatching "io.github.yelp.fusion.client.document.*"
-//    }
-//}
+test {
+    filter {
+        //exclude all tests from a package.
+//        excludeTestsMatching "io.github.yelp.fusion.client.response.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.end_to_end.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.aggregation.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.json.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.restclient.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.document.*"
+    }
+}
 
+//
 //tasks.create('printOssr'){
 //    println findProperty('signing.keyId')
 //    println findProperty('signing.password')
