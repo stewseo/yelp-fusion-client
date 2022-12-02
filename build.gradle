@@ -117,7 +117,6 @@ ext {
 
 dependencies {
 
-    api project(":lowlevel-restclient")
     // elasticsearch
     api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
 
