@@ -23,7 +23,7 @@ Maven Configuration
 
 ### End-to-End Test 
 - Building and submitting a request to the Yelp Fusion Business Search endpoint. 
-- Parsing the content of the response body and mapping fields to a BusinessSearch object
-- Indexing the result in an Elasticsearch AWS deployment
+- Parsing the entity's input stream content and mapping json data to a BusinessSearch object
+- Indexing the result in Elasticsearch
 ![Screenshot_20221201_092328](https://user-images.githubusercontent.com/54422342/205120156-f1bee922-204c-410a-bec1-8dd4f935ae4b.png)
 
