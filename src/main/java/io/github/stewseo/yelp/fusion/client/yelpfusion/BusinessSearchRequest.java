@@ -373,13 +373,15 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
                 if (request.categories() != null) {
                     parameters.put("categories", request.categories.alias());
                 }
-                Double latitude = request.coordinates().latitude();
-                if (latitude != null) {
-                    parameters.put("latitude", String.valueOf(latitude));
-                }
-                Double longitude = request.coordinates().longitude();
-                if (latitude != null) {
-                    parameters.put("longitude", String.valueOf(longitude));
+                if (request.coordinates() != null) {
+                    Double latitude = request.coordinates().latitude();
+                    if (latitude != null) {
+                        parameters.put("latitude", String.valueOf(latitude));
+                    }
+                    Double longitude = request.coordinates().longitude();
+                    if (longitude != null) {
+                        parameters.put("longitude", String.valueOf(longitude));
+                    }
                 }
 
                 if (request.radius != null) {

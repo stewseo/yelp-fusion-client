@@ -11,13 +11,13 @@
 <br>
 
 ### Dependency Configuration
-Gradle
+Execute the clean and build tasks using the project's Gradle Wrapper: ./gradlew clean build
 ```
 dependencies {
     implementation 'io.github.stewseo:yelp-fusion-client:1.0.0'
 }
 ```
-Maven
+Execute the clean phase before each module's install phase using your Maven Wrapper: ./mvnw clean install
 ```
 <dependency>
     <groupId>io.github.stewseo</groupId>
@@ -36,4 +36,3 @@ Maven
 <br>
 
 ### Terms Aggregation Test
-restaurants by category

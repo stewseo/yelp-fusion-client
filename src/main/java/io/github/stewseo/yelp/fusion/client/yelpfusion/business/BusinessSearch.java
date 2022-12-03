@@ -112,6 +112,8 @@ public class BusinessSearch implements JsonpSerializable {
         return is_closed;
     }
 
+    public Double distance() {return this.distance;};
+
     public String phone() {
         return phone;
     }

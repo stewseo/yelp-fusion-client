@@ -13,36 +13,31 @@ public class PrintUtils {
     public static final String CYAN = "\u001B[36m";
     public static final String RED = "\u001B[31m";
     public static  <T> T  green(T title) {
-        println("");
-        println(GREEN + title + RESET);
-        println("-".repeat(("" + title).length()));
+        print(GREEN + title + RESET);
         return title;
     }
+    public static  <T> String  greenln(T title) {
+        return GREEN + title + RESET;
+    }
 
-    public static  <T> T  red(T title) {
-        final String RED = "\u001B[31m";
-        println("");
-        println(RED + title + RESET);
-        println("-".repeat(("" + title).length()));
-        return title;
+    public static  <T> String  red(T title) {
+        return RED + title + RESET;
     }
 
     public static  <T> String debug(T title) {
-        println("");
         return (CYAN + title + RESET);
     }
     public static  <T> String tracer(T title) {
-        println("");
         return (RED + title + RESET);
     }
 
-    public static  <T> T  cyan(T title) {
-        println("");
-        println(CYAN + title + RESET);
-        println("-".repeat(("" + title).length()));
-        return title;
+    public static  <T> String cyan(T title) {
+        return CYAN + title + RESET;
     }
-
+    public static <T> T print(T t) {
+        System.out.print(t);
+        return t;
+    }
     public static <T> T println(T t) {
         System.out.println(t);
         return t;

@@ -13,13 +13,11 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
-import co.elastic.clients.elasticsearch.core.search.TotalHitsRelation;
 import co.elastic.clients.json.JsonData;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -35,10 +33,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Elasticsearch {
+
     private static final Logger logger = LoggerFactory.getLogger(Elasticsearch.class);
 
     static {
-        setOfIds = new HashSet<>();
         timestamp = "2022-11-10T07:16:35.187452598Z";
     }
 
@@ -99,8 +97,6 @@ public class Elasticsearch {
 
         return builder.build();
     }
-
-    private static final Set<String> setOfIds;
     static String timestamp;
 
     public String getTimestamp(String timestamp, SortOrder sortOrder) {
@@ -156,10 +152,6 @@ public class Elasticsearch {
         return timestamp;
     }
 
-//    public List<StringTermsBucket> getBusinessIds(String index, int size, String range) {
-//
-//    }
-
     public List<StringTermsBucket> getStringTermsBuckets() {
 
 
@@ -197,26 +189,8 @@ public class Elasticsearch {
         return buckets;
     }
 
-
-//        Map<String, List<String>> map = new LinkedHashMap<>();
-//
-
-//        logger.info("RangeQuery field = timestamp: greater than of equal to = " + range + " number of results = " + size);
-
-
-
-//
-//        } catch (Exception e) {
-//
-//            if(e instanceof RuntimeException) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//        return map;
-
-
     // return all business ids up to 10k, starting at specified timestamp.
-    public List<Hit<ObjectNode>> getSetOfBusinessIds(String timestampRange) {
+    public List<Hit<ObjectNode>> getBusinessIdsWithTimestamps(String timestampRange) {
 
         Query byTimestamp = RangeQuery.of(r -> r
                 .field("timestamp")

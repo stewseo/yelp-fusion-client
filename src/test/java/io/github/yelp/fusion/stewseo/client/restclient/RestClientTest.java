@@ -50,7 +50,7 @@ public class RestClientTest {
 
     @Test
     void httpClientTest() {
-        logger.info(PrintUtils.cyan("RestClient isRunning: " + restClient.isRunning()));
+        logger.info("RestClient isRunning: " + PrintUtils.cyan(restClient.isRunning()));
     }
 
     @Test

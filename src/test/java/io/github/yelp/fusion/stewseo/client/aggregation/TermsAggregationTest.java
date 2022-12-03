@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.Elasticsearch;
 import io.github.yelp.fusion.stewseo.client.ElasticsearchRequestTestCase;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
@@ -24,7 +25,7 @@ public class TermsAggregationTest {
     @Test
     void termsAggregationTest() throws Exception {
 
-        // Dynamically build each unique bucket by field: categories alias
+        // Dynamically build each unique bucket: categories alias
         TermsAggregation termsAggregation = TermsAggregation.of(t -> t
                 .field("categories.alias.keyword")
                 .size(315)
@@ -54,8 +55,11 @@ public class TermsAggregationTest {
                 .buckets().array();
 
         for (StringTermsBucket bucket: buckets) {
-            logger.info("category: " + bucket.key().stringValue() +
-                    ", documents: " + bucket.docCount());
+            System.out.println(PrintUtils.cyan("category: " + bucket.key().stringValue() +
+                    ", "+PrintUtils.greenln("documents: " + bucket.docCount()
+                            )
+                    )
+            );
         }
 
     }
