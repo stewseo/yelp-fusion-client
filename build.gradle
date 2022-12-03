@@ -1,0 +1,197 @@
+plugins {
+    id 'java-library'
+    id "com.dorongold.task-tree" version "2.1.0"
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'io.github.stewseo'
+version = '1.0.2'
+
+java {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    archiveBaseName = 'yelp-fusion-client'
+    archiveVersion = '1.0.2'
+    from {
+        configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "ossrh"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = findProperty('ossrhUsername')
+                password = findProperty('ossrhPassword')
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'YelpFusionJavaClient'
+                artifactId = 'yelp-fusion-client'
+                setGroupId "io.github.stewseo"
+                packaging = 'jar'
+                description = 'java client to build api objects, handle http transport, and parse/deserialize/serialize json to/from json'
+                url = 'https://github.com/stewseo/restaurant-recommendation-system'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/stewseo/restaurant-recommendation-system.git'
+                    developerConnection = 'scm:git:ssh://github.com/stewseo/restaurant-recommendation-system.git'
+                    url = 'https://github.com/stewseo/restaurant-recommendation-system.git'
+                }
+                developers {
+                    developer {
+                        id = 'stewseo'
+                        name = 'Stew seo'
+                        email = 'stewart.s.seo@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+
+ext {
+    // elasticsearch
+    elasticsearchVersion = "8.5.2"
+    // json
+    jacksonVersion = "2.12.3"
+    jakartaVersion = '2.0.1'
+    jakartaJsonBindVersion = '2.0.0'
+    parssonVersion = '1.0.0'
+    // commons
+    commonscodecVersion = '1.11'
+    commonsioVersion = '2.4'
+    commonsloggingVersion = '1.2'
+    // http components
+    httpasyncclientVersion = '4.1.5'
+    httpcoreVersion = '4.4.12'
+    httpclientVersion = '4.5.10'
+    // logging
+    slf4jVersion = '2.0.4'
+    logbackVersion = '1.4.1'
+    // testing
+    jUnitVersion = "5.9.0"
+}
+
+dependencies {
+
+    // elasticsearch
+    api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
+
+    // json
+    api("org.eclipse.parsson:parsson:${parssonVersion}")
+    api("jakarta.json:jakarta.json-api:${jakartaVersion}")
+    api("jakarta.json.bind:jakarta.json.bind-api:${jakartaJsonBindVersion}")
+    api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
+    api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+
+    // apache commons
+    api("commons-io:commons-io:${commonsioVersion}")
+    api("commons-codec:commons-codec:${commonscodecVersion}")
+
+    // apache http components
+    api "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    api "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
+    api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
+    api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
+
+    api 'gg.jte:jte:2.2.3'
+
+    // loggers
+    api("org.slf4j:slf4j-api:${slf4jVersion}")
+    api("ch.qos.logback:logback-classic:${logbackVersion}")
+    api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+    configurations.all {
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+
+    // testing
+    testImplementation("org.eclipse:yasson:2.0.4") {
+        // Exclude Glassfish as we use Parsson (basically Glassfish renamed in the Jakarta namespace).
+        exclude(group: "org.glassfish", module: "jakarta.json")
+    }
+
+    testImplementation("io.github.classgraph:classgraph:4.8.147")
+
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+test {
+    filter {
+        //exclude all tests from a package.
+//        excludeTestsMatching "io.github.yelp.fusion.client.response.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.end_to_end.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.aggregation.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.json.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.restclient.*"
+        excludeTestsMatching "io.github.yelp.fusion.client.document.*"
+    }
+}
+
+//
+//tasks.create('printOssr'){
+//    println findProperty('signing.keyId')
+//    println findProperty('signing.password')
+//    println findProperty('signing.secretKeyRingFile')
+//    println findProperty('ossrhUsername')
+//    println findProperty('ossrhPassword')
+//}
+
+tasks.named('taskTree').configure {
+    depth = 3 // limit tree depth to 3. Equivalent to the --depth CLI task option.
+    withInputs = true // prints task inputs in red just below the task in the tree. Equivalent to the --with-inputs CLI task option.
+    withOutputs = true // prints task inputs in red just below the task in the tree. Equivalent to the --with-outputs CLI task option.
+    repeat = true  // allows printing a sub-tree in the task-tree more than once. Equivalent to the --repeat CLI task option
+    impliesSubProjects = true  // disables printing task-tree for child projects in a multi-project
+}
