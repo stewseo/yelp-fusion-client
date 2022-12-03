@@ -152,7 +152,7 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                 "brooklyn-dop", new Coordinates_( 40.6250, -73.9615),
                 "l-and-b-spumoni-gardens", new Coordinates_( 40.6703,  -73.9584)
         );
-        
+
         List<String> list = termsAggregationByCategory.stream()
                 .map(StringTermsBucket::key)
                 .map(FieldValue::stringValue)
