@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.lowlevel.restclient.YelpFusionRestClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Coordinates;
 import io.github.yelp.fusion.stewseo.client.ElasticsearchRequestTestCase;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
@@ -162,20 +163,20 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
             Set<String> neighborHoods = neighborHoodCoordinates.keySet();
 
-            for (Coordinates_ coords : brooklynPizza.values().stream().skip(2).toList()) {
+            for (Map.Entry<String, Coordinates_> entry : neighborHoodCoordinates.entrySet()) {
                 // reset offset, total,
                 Integer offset = 0;
                 Integer total;
                 Double distance = null;
                 do {
-
+                    String location = entry.getKey();
                     final Integer finalOffset = offset; // update final Integer to current offset
-                    Double latitude = coords.getLatitude(); // latitude of neighborhood
-                    Double longitude = coords.getLongitude(); // longitude of neighborhood
+                    Double latitude = entry.getValue().getLatitude(); // latitude of neighborhood
+                    Double longitude = entry.getValue().getLongitude(); // longitude of neighborhood
 
                     try {
                         BusinessSearchResponse businessSearchResponse = yelpClient.businessSearch(s -> s
-                                .location("brooklyn")
+                                .location(location)
                                 .coordinates(c -> c
                                         .latitude(latitude)
                                         .longitude(longitude))
