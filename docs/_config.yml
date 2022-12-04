@@ -23,7 +23,7 @@ email: stewart.s.seo.com
 description: >- # this means to ignore newlines until "baseurl:"
 yelp fusion java client.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://stewseo.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
 
