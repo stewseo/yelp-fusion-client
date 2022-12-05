@@ -5,19 +5,19 @@
 - Strongly typed requests and responses for all Yelp Fusion API Endpoints.
 - Blocking and asynchronous versions of Apis.
 - Use of fluent builders and functional patterns to create complex nested structures more conveniently.
-- Delegates protocol handling to an http client that takes care of all transport-level concerns. The http client is based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
+- Delegates protocol handling to an http client that takes care of all transport-level concerns based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Automatically maps json to/from an application class.
 
 <br>
 
 ### Dependency Configuration
-Execute the clean and build tasks using the project's Gradle Wrapper: ./gradlew clean build
+Gradle
 ```
 dependencies {
     implementation 'io.github.stewseo:yelp-fusion-client:1.0.0'
 }
 ```
-Execute the clean phase before each module's install phase using your Maven Wrapper: ./mvnw clean install
+Maven
 ```
 <dependency>
     <groupId>io.github.stewseo</groupId>
@@ -31,8 +31,18 @@ Execute the clean phase before each module's install phase using your Maven Wrap
 - Building and submitting a request to the Yelp Fusion Business Search endpoint.
 - Parsing the entity's input stream content and mapping json data to a BusinessSearch object
 - Indexing the result in Elasticsearch
-  ![Screenshot_20221201_092328](https://user-images.githubusercontent.com/54422342/205120156-f1bee922-204c-410a-bec1-8dd4f935ae4b.png)
+![Screenshot_20221202_104034](https://user-images.githubusercontent.com/54422342/205407978-447d26e5-940c-4fc6-bbe1-a1f97ad59ef4.png)
 
 <br>
 
 ### Terms Aggregation Test
+
+restaurants by category
+![Screenshot_20221202_034530](https://user-images.githubusercontent.com/54422342/205410045-91f6fd26-ee69-4fd1-a565-24dc2a791dfd.png)
+
+Top 30 categories, by document(restaurant) count
+
+![Screenshot_20221202_034618](https://user-images.githubusercontent.com/54422342/205410099-4c9a588a-6889-4442-a73a-639c6c69b50c.png)
+
+
+

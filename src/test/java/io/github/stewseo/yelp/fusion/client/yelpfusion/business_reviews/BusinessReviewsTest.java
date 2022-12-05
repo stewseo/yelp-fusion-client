@@ -31,7 +31,6 @@ public class BusinessReviewsTest {
         assertThat(response.reviews().get(0).user().name()).isEqualTo("Bonnie W.");
         assertThat(response.reviews().get(0).user().profile_url()).isEqualTo("https://www.yelp.com/user_details?userid=4niVGibeUve5Xu8pep380g");
         assertThat(response.reviews().get(0).user().id()).isEqualTo("4niVGibeUve5Xu8pep380g");
-
     }
 
 
