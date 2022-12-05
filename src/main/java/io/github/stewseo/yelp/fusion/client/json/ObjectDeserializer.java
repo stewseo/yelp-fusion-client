@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectType> {
 
-    Logger logger = LoggerFactory.getLogger(ObjectDeserializer.class);
+    private static Logger logger = LoggerFactory.getLogger(ObjectDeserializer.class);
 
     public abstract static class FieldDeserializer<ObjectType> {
         protected final String name;

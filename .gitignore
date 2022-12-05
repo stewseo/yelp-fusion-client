@@ -11,7 +11,7 @@ gradlew*
 *.gradlew
 *.jar
 *.bat
-
+*.txt
 
 .classpath
 .project
@@ -28,6 +28,3 @@ gradlew*
 *.pub
 
 images/*
-build-conventions/*
-build-tools/*
-# yelp-fusion-client/*/test/*/*/*/yelp/fusion/client/business/model/*

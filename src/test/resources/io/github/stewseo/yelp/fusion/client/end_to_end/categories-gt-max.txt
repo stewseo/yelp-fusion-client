@@ -1,0 +1,1 @@
+{"id":{"chars":"id","string":"id","valueType":"STRING"},"i1":{"chars":"i1","string":"i1","valueType":"STRING"}}

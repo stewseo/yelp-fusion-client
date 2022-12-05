@@ -9,6 +9,14 @@ import io.github.stewseo.yelp.fusion.client._types.ErrorResponse;
 import io.github.stewseo.yelp.fusion.client.transport.JsonEndpoint;
 
 import io.github.stewseo.yelp.fusion.client.transport.YelpFusionTransport;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_details.BusinessDetailsRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_details.BusinessDetailsResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +81,33 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
         return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());
     }
 
+    public AutoCompleteResponse autocomplete(AutoCompleteRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<AutoCompleteRequest, AutoCompleteResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<AutoCompleteRequest, AutoCompleteResponse, ErrorResponse>) AutoCompleteRequest._ENDPOINT;
 
+        return this.transport.performRequest(request, endpoint, this.transportOptions);
+    }
+
+    public final AutoCompleteResponse autocomplete(
+            Function<AutoCompleteRequest.Builder, ObjectBuilder<AutoCompleteRequest>> fn)
+            throws Exception {
+        return autocomplete(fn.apply(new AutoCompleteRequest.Builder()).build());
+    }
+
+    public BusinessReviewsResponse businessReviews(BusinessReviewsRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<BusinessReviewsRequest, BusinessReviewsResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<BusinessReviewsRequest, BusinessReviewsResponse, ErrorResponse>) BusinessReviewsRequest._ENDPOINT;
+
+        return this.transport.performRequest(request, endpoint, this.transportOptions);
+    }
+
+    public final BusinessReviewsResponse businessReviews(
+            Function<BusinessReviewsRequest.Builder, ObjectBuilder<BusinessReviewsRequest>> fn)
+            throws Exception {
+        return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
+    }
 
 }
 

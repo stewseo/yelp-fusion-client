@@ -9,6 +9,8 @@ import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.ApiClient;
 
 import io.github.stewseo.yelp.fusion.client.transport.YelpFusionTransport;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +32,7 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
     }
 
     public <TDocument> CompletableFuture<BusinessSearchResponse> search(BusinessSearchRequest request,
-                                                                                    Class<TDocument> tDocumentClass) {
+                                                                        Class<TDocument> tDocumentClass) {
         @SuppressWarnings("unchecked")
         JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse, ErrorResponse> endpoint = (JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse, ErrorResponse>) BusinessSearchRequest._ENDPOINT;
         endpoint = new EndpointWithResponseMapperAttr<>(endpoint,

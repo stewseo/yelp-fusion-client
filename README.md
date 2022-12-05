@@ -5,7 +5,7 @@
 - Strongly typed requests and responses for all Yelp Fusion API Endpoints.
 - Blocking and asynchronous versions of Apis.
 - Use of fluent builders and functional patterns to create complex nested structures more conveniently.
-- Delegates protocol handling to an http client that takes care of all transport-level concerns. The http client is based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
+- Delegates protocol handling to an http client that takes care of all transport-level concerns based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Automatically maps json to/from an application class.
 
 <br>

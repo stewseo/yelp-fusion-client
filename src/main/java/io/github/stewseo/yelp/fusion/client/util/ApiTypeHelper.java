@@ -1,6 +1,9 @@
 package io.github.stewseo.yelp.fusion.client.util;
 
 
+import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
+import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
+
 import java.util.*;
 
 public class ApiTypeHelper {
