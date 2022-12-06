@@ -1,6 +1,8 @@
 ## The yelp fusion java client provides features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 <br>
 
+https://github.com/stewseo/stewseo.github.io
+
 ### Features
 - Strongly typed requests and responses for all Yelp Fusion API Endpoints.
 - Blocking and asynchronous versions of Apis.
@@ -14,7 +16,7 @@
 Gradle
 ```
 dependencies {
-    implementation 'io.github.stewseo:yelp-fusion-client:1.0.0'
+    implementation 'io.github.stewseo:yelp-fusion-client:1.0.2'
 }
 ```
 Maven
@@ -22,7 +24,7 @@ Maven
 <dependency>
     <groupId>io.github.stewseo</groupId>
     <artifactId>yelp-fusion-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 <br>

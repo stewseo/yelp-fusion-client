@@ -1,7 +1,5 @@
 package io.github.stewseo.yelp.fusion.client.util;
 
-
-
 import java.util.*;
 
 public class ObjectBuilderBase {

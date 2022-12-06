@@ -1,6 +1,8 @@
 package io.github.stewseo.yelp.fusion.client.json;
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.yelp.fusion.client.util.QuadConsumer;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.BusinessSearch;
 import jakarta.json.stream.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
     Logger logger = LoggerFactory.getLogger(ObjectDeserializer.class);
 
     public abstract static class FieldDeserializer<ObjectType> {
+
         protected final String name;
 
         public FieldDeserializer(String name) {

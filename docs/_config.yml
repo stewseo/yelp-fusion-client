@@ -21,8 +21,12 @@
 title: yelp-fusion-client
 email: stewart.s.seo.com
 description: >- # this means to ignore newlines until "baseurl:"
-yelp fusion java client.
+<<<<<<< HEAD
 baseurl: "" # the subpath of your site, e.g. /blog
+=======
+yelp fusion java client.
+baseurl: "java-client" # the subpath of your site, e.g. /blog
+>>>>>>> c46746d7c2eef620f69e7456766873d49903d5d0
 url: "https://stewseo.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
@@ -31,6 +35,8 @@ github_username:  jekyll
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-archives
 
 # Exclude from processing.
 # The following items will not be processed, by default.

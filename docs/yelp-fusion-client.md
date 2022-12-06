@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Yelp Fusion Java Client"
-permalink: /java-client
+permalink: /yelp-fusion-client
 ---
 ## The yelp fusion java client provides features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 <br>

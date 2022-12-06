@@ -16,7 +16,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gg.jte.output.PrintWriterOutput;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.lowlevel.restclient.YelpFusionRestClient;
 import io.github.yelp.fusion.stewseo.client.ElasticsearchRequestTestCase;
@@ -79,12 +81,15 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
     static List<StringTermsBucket> termsAggregationByCategory;
     private static void loadCategoriesMap() {
+
         initElasticsearchClient();
+        // yelp-businesses-restaurants-nyc docs count
         docsCount = elasticSearch.getDocsCount(indexNyc);
 
         logger.info(PrintUtils.green("index: " + indexNyc + " docs count: " + docsCount));
-
+        // restaurants by category
         termsAggregationByCategory = elasticSearch.getStringTermsBuckets();
+
         logger.info(PrintUtils.debug("number of categories with at least 1 restaurant: " + termsAggregationByCategory.size()));
 
         for(StringTermsBucket bucket: termsAggregationByCategory) {
@@ -103,10 +108,17 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
             for (int i = 0; i < nodes.size(); i++) {
                 JsonNode sourceNode = nodes.get(i).source();
-                setOfBusinessIds.add(sourceNode.get("id").asText());
-                if (i + 1 == nodes.size()) {
-                    timestamp = sourceNode.get("timestamp").asText();
+
+                if(sourceNode != null) {
+
+                    setOfBusinessIds.add(sourceNode.get("id").asText());
+
+                    if (i + 1 == nodes.size()) {
+
+                        timestamp = sourceNode.get("timestamp").asText();
+                    }
                 }
+
             }
         }
 
@@ -132,12 +144,13 @@ public class RequestTest extends ElasticsearchRequestTestCase {
     public void businessSearchTest() {
         assertThat(indexNyc).isEqualTo("yelp-businesses-restaurants-nyc");
 
-        int radius = 6000;
+        int radius = 7000;
         int limit = 50;
         String sort_by = "distance";
         String term = "restaurants";
 
-        Map<String, Coordinates_> neighborHoodCoordinates = Map.of("manhattan", new Coordinates_(40.713135, -74.004044),
+        Map<String, Coordinates_> neighborHoodCoordinates = Map.of(
+                "manhattan", new Coordinates_(40.713135, -74.004044),
                 "brooklyn", new Coordinates_(40.692436, -73.990372),
                 "bronx", new Coordinates_(40.713272, -73.828461),
                 "statenisland", new Coordinates_(40.642269, -74.076385),
@@ -160,22 +173,21 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
         for (String category : list) {
 
-            Set<String> neighborHoods = neighborHoodCoordinates.keySet();
+            Set<Map.Entry<String, Coordinates_>> entries = neighborHoodCoordinates.entrySet();
 
-            for (Coordinates_ coords : brooklynPizza.values().stream().skip(2).toList()) {
+            for (Map.Entry<String, Coordinates_> entry : entries) {
                 // reset offset, total,
                 Integer offset = 0;
                 Integer total;
-                Double distance = null;
                 do {
-
+                    String location = entry.getKey();
                     final Integer finalOffset = offset; // update final Integer to current offset
-                    Double latitude = coords.getLatitude(); // latitude of neighborhood
-                    Double longitude = coords.getLongitude(); // longitude of neighborhood
+                    Double latitude = entry.getValue().getLatitude(); // latitude of neighborhood
+                    Double longitude = entry.getValue().getLongitude(); // longitude of neighborhood
 
                     try {
                         BusinessSearchResponse businessSearchResponse = yelpClient.businessSearch(s -> s
-                                .location("brooklyn")
+                                .location(location)
                                 .coordinates(c -> c
                                         .latitude(latitude)
                                         .longitude(longitude))
@@ -193,16 +205,15 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                         assertThat(total).isNotNull();
 
                         int count = 0;
-                        if (total > 0 && total <= 1000) {
+                        if (total > 0 && offset <= 1000) {
 
                             List<BusinessSearch> listOfBusinessSearch = businessSearchResponse.businesses();
 
                             BulkRequest.Builder br = new BulkRequest.Builder();
                             BusinessDetailsResponse businessDetailsResponse;
-                            logger.info(PrintUtils.debug(PrintUtils.cyan(" category: " + category + ", total: " + total + ",\n" + " distance: " + distance + ", region: " + businessSearchResponse.region().center() + PrintUtils.green("\ntrying to add : " + listOfBusinessSearch.size() + " BusinessSearch results. Current offset: " + finalOffset))));
+                            logger.info(PrintUtils.debug(PrintUtils.cyan(" category: " + category + ", total: " + total + ",\nlocation: " + location + PrintUtils.green("\ntrying to add : " + listOfBusinessSearch.size() + " BusinessSearch results. Current offset: " + finalOffset))));
 
                             for (BusinessSearch businessSearch : listOfBusinessSearch) {
-                                distance = businessSearch.distance();
                                 String businessId = businessSearch.id();
                                 String formattedId = businessId.replaceAll("[^\\p{IsAlphabetic}\\p{IsDigit}_\\-]", "");
 
@@ -229,15 +240,18 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                                             .pipeline(timestampPipeline) // add timestamp
                                             .withJson(input)
                                     );
-
                                     IndexResponse response = elasticSearch.client().index(request);
+
                                     logger.info(PrintUtils.debug("added version: " + response.version()));
-                                    assertThat(response.result().name().equalsIgnoreCase("created"));
+                                    assertThat(response.result().name()).isEqualTo("Created");
+
                                 }
                             }
                         } else {
                             String path = this.getClass().getResource("categories-gt-max.json").getPath();
+                            logger.info(PrintUtils.debug("path: " + path));
                             // the second parameter specifies whether the file should be appended
+
                             try (OutputStream fos = new FileOutputStream(new File(path), true)) {
 
                                 AtomicInteger i = new AtomicInteger();
@@ -247,15 +261,15 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                                         .peek(v -> i.incrementAndGet())
                                         .anyMatch(user ->
                                                 user.stringValue().equals(category)) ? i.get() - 1 : -1;
+
                                 JsonFactory factory = new JsonFactory();
-                                JsonGenerator generator = factory.createGenerator(new File("post.json"), JsonEncoding.UTF8);
+                                JsonGenerator generator = new ObjectMapper().getFactory().createGenerator(fos);
 
                                 generator.writeStartObject();
 //                            generator.writeStartArray("first category returning > 1000 results");
                                 generator.writeStringField("category", category);
                                 generator.writeNumberField("index", index);
                                 generator.writeStringField("location", "nyc");
-                                generator.writeNumberField("distance", distance);
                                 generator.writeNumberField("latitude", latitude);
                                 generator.writeNumberField("longitude", longitude);
                                 generator.writeEndObject();
@@ -266,7 +280,6 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                         throw new RuntimeException(e);
                     }
                     offset += limit;
-
 
                 } while (total > 0 && (offset + limit) <= 1000); // iterate up to 20 50-business pages
             }
