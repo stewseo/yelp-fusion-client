@@ -21,7 +21,6 @@ public class TermsAggregationTest {
 
     static YelpFusionClient yelpClient;
 
-
     @Test
     void termsAggregationTest() throws Exception {
 
@@ -56,7 +55,7 @@ public class TermsAggregationTest {
 
         for (StringTermsBucket bucket: buckets) {
             System.out.println(PrintUtils.cyan("category: " + bucket.key().stringValue() +
-                    ", "+PrintUtils.greenln("documents: " + bucket.docCount()
+                    ", "+PrintUtils.green("documents: " + bucket.docCount()
                             )
                     )
             );

@@ -1,85 +1,102 @@
 package io.github.stewseo.yelp.fusion.client.json.jackson;
 
+import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.ModelTestCase;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Flow;
 
 public class JsonpDeserializerTest extends ModelTestCase {
+    private static final Logger logger = LoggerFactory.getLogger(JsonpDeserializerTest.class);
+    private final static String reqLine = "http://api.yelp.com/v3/businesses/search?" +
+            "location=sf&limit=50&term=restaurants&latitude=38.2142&longitude=-122.1429&categories=";
 
-    private final static String reqLine = "http://api.yelp.com/v3/businesses/search?location=sf&limit=50";
-//    JsonpDeserializerTest jsonpDeser = new JsonpDeserializerTest();
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws Exception {
         String apiKey = System.getenv("YELP_API_KEY");
 
-        CompletableFuture<Object> completeableFuture = get(reqLine, apiKey);
+        List<URI> uris = new ArrayList<>();
 
-        System.out.println("body: " + completeableFuture.join().toString());
+        for(String category: List.of("sushi", "pizza")){
+            uris.add(new URI(reqLine + category));
+        }
+
+        List<CompletableFuture<String>> completeableFutures = get(uris, apiKey);
+        logger.info(PrintUtils.green("all live thread IDs " + Arrays.toString(ManagementFactory.getThreadMXBean().getAllThreadIds())));
+        logger.info(PrintUtils.green("getCurrentThreadCpuTime " + ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime()));
+        logger.info(PrintUtils.green("getPeakThreadCount " + ManagementFactory.getThreadMXBean().getPeakThreadCount()));
+        logger.info(PrintUtils.green("getTotalStartedThreadCount " + ManagementFactory.getThreadMXBean().getTotalStartedThreadCount()));
+        logger.info(PrintUtils.green("getDaemonThreadCount " + ManagementFactory.getThreadMXBean().getDaemonThreadCount()));
+        
+        int nbThreads =  Thread.getAllStackTraces().keySet().size();
+        logger.info(PrintUtils.green("nbThreads " + nbThreads));
+
+        int nbRunning = 0;
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getState()==Thread.State.RUNNABLE) nbRunning++;
+        }
+        
+        try {
+            for(CompletableFuture<String> cf: completeableFutures) {
+                String result = cf.get();
+                logger.info(PrintUtils.cyan("result length: " + result.length()));
+            }
+
+        } catch (Exception e) {
+            if(e instanceof RuntimeException) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    public static CompletableFuture<Object> get(String uri, String apiKey) throws URISyntaxException {
+    public static List<CompletableFuture<String>> get(List<URI> uris, String apiKey) throws Exception {
         HttpClient client = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.NORMAL)
-                .connectTimeout(Duration.ofSeconds(20))
+                .connectTimeout(Duration.ofSeconds(10))
                 .version(HttpClient.Version.HTTP_2)
                 .build();
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(new URI(uri))
-                .setHeader("Authorization", "Bearer " + apiKey)
-                .build();
+        List<HttpRequest> requests = uris.stream()
+                .map(HttpRequest::newBuilder)
+                .peek(e -> e.setHeader("Authorization", "Bearer " + apiKey))
+                .map(HttpRequest.Builder::build)
+                .toList();
 
-        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+
+        HttpResponse.BodyHandler<String> bodyHandler = HttpResponse.BodyHandlers.fromSubscriber(
+                new StringSubscriber(), StringSubscriber::getBody);
+
+        return requests.stream().map(request -> client
+                .sendAsync(request, bodyHandler)
                 .whenComplete((r, t) -> System.out.println("status code: "  + r.statusCode()))
-                .thenApply(HttpResponse::body);
+                .thenApply(HttpResponse::body)).toList();
     }
 
-//    public CompletableFuture<Object> get(String uri) throws URISyntaxException {
-//        HttpClient client = HttpClient.newBuilder()
-//                .followRedirects(HttpClient.Redirect.NORMAL)
-//                .connectTimeout(Duration.ofSeconds(20))
-//                .version(HttpClient.Version.HTTP_2)
-//                .build();
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .GET()
-//                .uri(new URI(uri))
-//                .setHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))
-//                .build();
-//
-//        HttpResponse.BodyHandler<String> bodyHandler = HttpResponse.BodyHandlers.fromSubscriber(
-//                new StringSubscriber(), StringSubscriber::getBody);
-//
-//        return client.sendAsync(request,  bodyHandler)
-//                .whenComplete((r, t) -> System.out.println("status code: "  + r.statusCode()))
-//                .thenApply(HttpResponse::body);
-//    }
-
     static class StringSubscriber implements Flow.Subscriber<List<ByteBuffer>> {
-
         Flow.Subscription subscription;
         final List<ByteBuffer> responseData = new ArrayList<>();
 
         @Override
         public void onSubscribe(Flow.Subscription subscription) {
+//            logger.info(PrintUtils.red("onSubscribe: " + subscription));
             this.subscription = subscription;
             subscription.request(1);
         }
 
         @Override
         public void onNext(List<ByteBuffer> buffers) {
-            System.out.println("onNext with:"+ buffers);
+            logger.info(PrintUtils.red("onNext with:"+ buffers));
             responseData.addAll(buffers);
             subscription.request(1);
         }
@@ -87,11 +104,15 @@ public class JsonpDeserializerTest extends ModelTestCase {
         @Override
         public void onError(Throwable throwable) {}
         private String body;
-        public String getBody(){return this.body;}
+        public String getBody(){
+//            logger.info(PrintUtils.red("returning body as String"));
+            return this.body;}
 
         @Override
         public void onComplete() {
             int size = responseData.stream().mapToInt(ByteBuffer::remaining).sum();
+            logger.info(PrintUtils.red("number of ByteBuffers: " + responseData.size() + ", total remaining byte buffers being converted to byte array: " + size));
+
             byte[] ba = new byte[size];
             int offset = 0;
             for(ByteBuffer buffer: responseData) {
@@ -103,8 +124,6 @@ public class JsonpDeserializerTest extends ModelTestCase {
         }
     }
 
-
-    Logger logger = LoggerFactory.getLogger(JsonpDeserializerTest.class);
 
 //    @Test
 //    public void testNullStringInArray() {

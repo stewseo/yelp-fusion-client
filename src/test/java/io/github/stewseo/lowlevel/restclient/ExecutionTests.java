@@ -40,16 +40,17 @@ public class ExecutionTests {
 
     @Test
     public void executeHttpRequestBaseTest() throws IOException, ExecutionException, InterruptedException {
-
+        String uri = "http://api.yelp.com/v3/businesses/search?location=sf";
         CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
         client.start();
-        HttpGet request = new HttpGet(uri);
         HttpRequestBase httpRequestBase = new HttpGet(uri);
-        request.setHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"));
+        String apiKey = System.getenv("YELP_API_KEY");
+        httpRequestBase.setHeader("Authorization", "Bearer " + apiKey);
 
         HttpResponse response = client.execute(httpRequestBase, null).get();
-
         assertThat(response.getStatusLine().toString()).isEqualTo("HTTP/1.1 200 OK");
+        client.close();
+
 
         logger.debug(PrintUtils.debug("Future<HttpResponse> future: " + response.getStatusLine() + " available bytes: " + response.getEntity().getContent().available()));
         client.close();

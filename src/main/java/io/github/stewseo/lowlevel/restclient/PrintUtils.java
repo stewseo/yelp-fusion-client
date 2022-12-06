@@ -12,14 +12,10 @@ public class PrintUtils {
     public static final String GREEN = "\u001B[32m";
     public static final String CYAN = "\u001B[36m";
     public static final String RED = "\u001B[31m";
-    public static  <T> T  green(T title) {
-        print(GREEN + title + RESET);
-        return title;
-    }
-    public static  <T> String  greenln(T title) {
+
+    public static  <T> String  green(T title) {
         return GREEN + title + RESET;
     }
-
     public static  <T> String  red(T title) {
         return RED + title + RESET;
     }

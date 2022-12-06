@@ -1,13 +1,11 @@
-package io.github.stewseo.yelp.fusion.client.document;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business_search;
 
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import io.github.stewseo.yelp.fusion.client.ElasticsearchRequestTestCase;
 import io.github.stewseo.yelp.fusion.client.YelpRequestTestCase;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearch;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +15,16 @@ import java.io.StringReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessSearchDocumentTest extends ElasticsearchRequestTestCase {
+public class BusinessSearchTest extends ElasticsearchRequestTestCase {
 
-    private final static Logger logger = LoggerFactory.getLogger(BusinessSearchDocumentTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(BusinessSearchTest.class);
 
     private static YelpFusionClient yelpClient;
     private static final String indexNyc = "yelp-businesses-restaurants-nyc";
 
     // index results from BusinessSearch Endpoint
     @Test
-    void indexMappingTest() throws Exception {
+    void businessSearchTest() throws Exception {
 
         YelpRequestTestCase.initYelpFusionClient();
 

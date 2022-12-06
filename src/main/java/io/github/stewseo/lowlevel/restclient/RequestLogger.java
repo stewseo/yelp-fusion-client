@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 public class RequestLogger {
     private static final Log tracer = LogFactory.getLog("tracer");
@@ -115,6 +116,7 @@ public class RequestLogger {
         }
 
     }
+
 
     static void logResponse(Log logger, HttpUriRequest request, HttpHost host, HttpResponse httpResponse) {
         if (logger.isDebugEnabled()) {
@@ -272,6 +274,9 @@ public class RequestLogger {
 
     public static void logResponse(Logger logger, HttpRequestBase httpRequest, HttpResponse httpResponse, Exception e) {
         logger.debug("status code: " + httpResponse.getStatusLine());
+    }
+
+    public static void logResponse(Logger logger, Exception e, CompletableFuture<Object> completeableFuture) {
     }
 }
 

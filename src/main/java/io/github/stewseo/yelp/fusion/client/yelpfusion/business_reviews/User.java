@@ -26,7 +26,6 @@ public class User implements JsonpSerializable {
         this.profile_url = builder.profile_url;
         this.image_url = builder.image_url;
         this.name = builder.name;
-
     }
 
     public String id() {

@@ -4,6 +4,7 @@ import io.github.stewseo.lowlevel.restclient.YelpFusionRestClient;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -15,7 +16,36 @@ public class YelpRequestTestCase {
 
     static HttpHost httpHost;
     static YelpFusionClient yelpClient;
+
+    static YelpFusionAsyncClient yelpFusionAsyncClient;
     private static JsonpMapper mapper;
+    public static void initYelpFusionAsyncClient() {
+        String yelpFusionHost = "api.yelp.com";
+        int port = 80;
+        httpHost = new HttpHost(yelpFusionHost, port, "http");
+
+        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
+        YelpFusionRestClient restClient = YelpFusionRestClient.builder(
+                        httpHost)
+                .setMetaHeaderEnabled(false)
+                .setDefaultHeaders(defaultHeaders)
+                .build();
+
+        mapper = new JacksonJsonpMapper();
+
+        YelpRestClientTransport yelpTransport;
+        try {
+            yelpTransport = new YelpRestClientTransport(restClient, mapper);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        yelpFusionAsyncClient = new YelpFusionAsyncClient(yelpTransport);
+
+    }
+    public static YelpFusionAsyncClient getYelpFusionAsyncClient(){
+        return yelpFusionAsyncClient;
+    }
 
     public static YelpFusionClient getYelpClient(){
         return yelpClient;

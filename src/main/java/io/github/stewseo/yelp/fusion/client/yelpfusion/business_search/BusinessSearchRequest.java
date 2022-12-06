@@ -4,7 +4,7 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business_search;
 import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Attribute;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Categories;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Coordinates;
 import jakarta.json.stream.JsonGenerator;
 import io.github.stewseo.yelp.fusion.client._types.RequestBase;

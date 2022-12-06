@@ -17,6 +17,8 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.Business
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.businss_match.BusinessMatchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.businss_match.BusinessMatchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +68,6 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
         return businessSearch(fn.apply(new BusinessSearchRequest.Builder()).build());
     }
 
-
     public BusinessDetailsResponse businessDetails(BusinessDetailsRequest request) throws Exception {
         @SuppressWarnings("unchecked")
         JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse> endpoint =
@@ -107,6 +108,20 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
             Function<BusinessReviewsRequest.Builder, ObjectBuilder<BusinessReviewsRequest>> fn)
             throws Exception {
         return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
+    }
+
+    public BusinessMatchResponse businessMatch(BusinessMatchRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
+
+        return this.transport.performRequest(request, endpoint, this.transportOptions);
+    }
+
+    public final BusinessMatchResponse businessMatch(
+            Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn)
+            throws Exception {
+        return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
     }
 
 }

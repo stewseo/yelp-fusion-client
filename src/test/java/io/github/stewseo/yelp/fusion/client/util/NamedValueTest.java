@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class NamedValueTest extends ModelTestCase {
 
+
     @Test
     public void testTermAggregation() {
 
