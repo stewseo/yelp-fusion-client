@@ -1,5 +1,5 @@
 ---
 layout: page
 title: "Async Client Example"
-permalink: /async-client-example
+permalink: /yelp-fusion-client/async-examples
 ---
