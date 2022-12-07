@@ -26,6 +26,8 @@ gradlew*
 *.iws
 *.gpg
 *.pub
+*.txt
+*.json
 
 images/*
 build-conventions/*
