@@ -17,8 +17,8 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.Business
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.businss_match.BusinessMatchRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.businss_match.BusinessMatchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_match.BusinessMatchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_match.BusinessMatchResponse;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;

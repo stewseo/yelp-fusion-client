@@ -53,14 +53,14 @@ public class YelpRestClientTransport implements YelpFusionTransport {
         }
     }
 
-    private final YelpFusionRestClient restClient;
+    private final RestClient restClient;
     private final JsonpMapper mapper;
 
     private co.elastic.clients.json.JsonpMapper esMapper;
 
     private final YelpRestTransportOptions transportOptions;
 
-    public YelpRestClientTransport(YelpFusionRestClient restClient, JsonpMapper mapper, TransportOptions options) { // TransportOptions
+    public YelpRestClientTransport(RestClient restClient, JsonpMapper mapper, TransportOptions options) { // TransportOptions
         this.restClient = restClient;
         this.mapper = mapper;
         String optionsString = null;
@@ -71,11 +71,11 @@ public class YelpRestClientTransport implements YelpFusionTransport {
         }
 
     }
-    public YelpRestClientTransport(YelpFusionRestClient restClient, JsonpMapper mapper) throws IOException {
+    public YelpRestClientTransport(RestClient restClient, JsonpMapper mapper) throws IOException {
         this(restClient, mapper, null);
     }
 
-    public YelpFusionRestClient restClient() {
+    public RestClient restClient() {
         return restClient;
     }
 

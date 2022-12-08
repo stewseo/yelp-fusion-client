@@ -2,7 +2,7 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business_search;
 
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchRequestTestCase;
+import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.YelpRequestTestCase;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
@@ -15,7 +15,7 @@ import java.io.StringReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessSearchTest extends ElasticsearchRequestTestCase {
+public class BusinessSearchTest extends ElasticsearchConnection {
 
     private final static Logger logger = LoggerFactory.getLogger(BusinessSearchTest.class);
 

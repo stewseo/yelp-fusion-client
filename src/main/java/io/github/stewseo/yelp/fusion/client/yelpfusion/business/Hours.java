@@ -4,6 +4,7 @@ import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 
@@ -37,6 +38,7 @@ public class Hours implements JsonpSerializable {
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
+
         generator.writeStartObject();
         serializeInternal(generator, mapper);
         generator.writeEnd();

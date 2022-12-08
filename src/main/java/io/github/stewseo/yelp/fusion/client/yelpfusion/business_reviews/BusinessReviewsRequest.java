@@ -15,9 +15,7 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class BusinessReviewsRequest extends RequestBase implements JsonpSerializable {
-
     private final String id;
-
     private final String alias;
 
     private BusinessReviewsRequest(BusinessReviewsRequest.Builder builder) {

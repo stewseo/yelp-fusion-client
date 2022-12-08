@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class RestClientTest {
     private static final Logger logger = LoggerFactory.getLogger(RestClientTest.class);
-    private static YelpFusionRestClient restClient;
+    private static RestClient restClient;
     static RequestOptions YELP_AUTHORIZATION_HEADER;
 
     @BeforeAll
@@ -26,7 +26,7 @@ public class RestClientTest {
         HttpHost host = new HttpHost("api.yelp.com", 80, "http");
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
-        YelpFusionRestClientBuilder builder = YelpFusionRestClient.builder(
+        RestClientBuilder builder = RestClient.builder(
                         host)
                 .setMetaHeaderEnabled(false)
                 .setDefaultHeaders(defaultHeaders);

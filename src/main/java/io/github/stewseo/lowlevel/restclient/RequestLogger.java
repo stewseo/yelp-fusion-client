@@ -278,6 +278,9 @@ public class RequestLogger {
 
     public static void logResponse(Logger logger, Exception e, CompletableFuture<Object> completeableFuture) {
     }
+
+    public static void logFailedRequest(Logger logger, HttpRequestBase httpRequest, HttpHost httpHost, Exception e) {
+    }
 }
 
 

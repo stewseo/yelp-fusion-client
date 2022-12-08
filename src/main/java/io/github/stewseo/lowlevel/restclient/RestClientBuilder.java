@@ -1,11 +1,11 @@
 package io.github.stewseo.lowlevel.restclient;
 
-
-
 import org.apache.http.Header;
+import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,34 +14,26 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Properties;
 
-
 public final class RestClientBuilder {
 
-    final Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
+    Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
     public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 1000;
     public static final int DEFAULT_SOCKET_TIMEOUT_MILLIS = 30000;
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
     public static final int DEFAULT_MAX_CONN_TOTAL = 30;
 
     public static final String VERSION;
-    static final String META_HEADER_NAME = "X-Elastic-Client-Meta";
-    static final String META_HEADER_VALUE;
-    private static final String USER_AGENT_HEADER_VALUE;
 
     private static final Header[] EMPTY_HEADERS = new Header[0];
 
-    private final List<Node> nodes;
+    private final HttpHost host;
     private Header[] defaultHeaders = EMPTY_HEADERS;
-    private RestClient.FailureListener failureListener;
     private HttpClientConfigCallback httpClientConfigCallback;
     private RequestConfigCallback requestConfigCallback;
     private String pathPrefix;
-    private NodeSelector nodeSelector = NodeSelector.ANY;
     private boolean strictDeprecationMode = false;
     private boolean compressionEnabled = false;
     private boolean metaHeaderEnabled = true;
@@ -70,54 +62,37 @@ public final class RestClientBuilder {
 
         VERSION = version;
 
-        USER_AGENT_HEADER_VALUE = String.format(
-                Locale.ROOT,
-                "elasticsearch-java/%s (Java/%s)",
-                VERSION.isEmpty() ? "Unknown" : VERSION,
-                System.getProperty("java.version")
-        );
-
         VersionInfo httpClientVersion = null;
         try {
+
             httpClientVersion = VersionInfo.loadVersionInfo(
-                            "org.apache.http.nio.client",
-                            HttpAsyncClientBuilder.class.getClassLoader()
+                    "org.apache.http.nio.client",
+                    HttpAsyncClientBuilder.class.getClassLoader()
             );
 
         } catch (Exception e) {
             // Keep unknown
         }
 
-        // Use a single 'p' suffix for all prerelease versions (snapshot, beta, etc).
-        String metaVersion = version;
-        int dashPos = metaVersion.indexOf('-');
-        if (dashPos > 0) {
-            metaVersion = metaVersion.substring(0, dashPos) + "p";
-        }
-
-        // service, language, transport, followed by additional information
-        META_HEADER_VALUE = "es="
-                + metaVersion
-                + ",jv="
-                + System.getProperty("java.specification.version")
-                + ",t="
-                + metaVersion
-                + ",hc="
-                + (httpClientVersion == null ? "" : httpClientVersion.getRelease());
     }
 
-    RestClientBuilder(List<Node> nodes) {
-        if (nodes == null || nodes.isEmpty()) {
-            throw new IllegalArgumentException("nodes must not be null or empty");
+    RestClientBuilder(String apiKey) {
+        if (apiKey == null) {
+            throw new IllegalArgumentException("apiKey must not be null");
         }
-        for (Node node : nodes) {
-            if (node == null) {
-                throw new IllegalArgumentException("node cannot be null");
-            }
-        }
-        this.nodes = nodes;
-    }
+        String yelpFusionHost = "api.yelp.com";
+        int port = 80;
+        host = new HttpHost(yelpFusionHost, port, "http");
 
+        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + apiKey)};
+        setDefaultHeaders(defaultHeaders);
+    }
+    RestClientBuilder(HttpHost host) {
+        if (host == null) {
+            throw new IllegalArgumentException("host must not be null");
+        }
+        this.host = host;
+    }
 
     public RestClientBuilder setDefaultHeaders(Header[] defaultHeaders) {
         Objects.requireNonNull(defaultHeaders, "defaultHeaders must not be null");
@@ -127,13 +102,6 @@ public final class RestClientBuilder {
         this.defaultHeaders = defaultHeaders;
         return this;
     }
-
-    public RestClientBuilder setFailureListener(RestClient.FailureListener failureListener) {
-        Objects.requireNonNull(failureListener, "failureListener must not be null");
-        this.failureListener = failureListener;
-        return this;
-    }
-
 
     public RestClientBuilder setHttpClientConfigCallback(HttpClientConfigCallback httpClientConfigCallback) {
         Objects.requireNonNull(httpClientConfigCallback, "httpClientConfigCallback must not be null");
@@ -146,7 +114,6 @@ public final class RestClientBuilder {
         this.requestConfigCallback = requestConfigCallback;
         return this;
     }
-
 
     public RestClientBuilder setPathPrefix(String pathPrefix) {
         this.pathPrefix = cleanPathPrefix(pathPrefix);
@@ -176,11 +143,6 @@ public final class RestClientBuilder {
         return cleanPathPrefix;
     }
 
-    public RestClientBuilder setNodeSelector(NodeSelector nodeSelector) {
-        Objects.requireNonNull(nodeSelector, "nodeSelector must not be null");
-        this.nodeSelector = nodeSelector;
-        return this;
-    }
 
     public RestClientBuilder setStrictDeprecationMode(boolean strictDeprecationMode) {
         this.strictDeprecationMode = strictDeprecationMode;
@@ -197,20 +159,16 @@ public final class RestClientBuilder {
         return this;
     }
 
-    @SuppressWarnings("removal")
+
     public RestClient build() {
 
-        if (failureListener == null) {
-            failureListener = new RestClient.FailureListener();
-        }
         CloseableHttpAsyncClient httpClient = createHttpClient();
+
         RestClient restClient = new RestClient(
                 httpClient,
                 defaultHeaders,
-                nodes,
+                host,
                 pathPrefix,
-                failureListener,
-                nodeSelector,
                 strictDeprecationMode,
                 compressionEnabled,
                 metaHeaderEnabled
@@ -221,7 +179,6 @@ public final class RestClientBuilder {
     }
 
 
-    @SuppressWarnings("removal")
     private CloseableHttpAsyncClient createHttpClient() {
 
         // default timeouts are all infinite
@@ -241,10 +198,7 @@ public final class RestClientBuilder {
                     .setSSLContext(SSLContext.getDefault())
                     .setTargetAuthenticationStrategy(new PersistentCredentialsAuthenticationStrategy());
 
-            if(userAgentEnable) {
-                httpClientBuilder.setUserAgent(USER_AGENT_HEADER_VALUE);
-                logger.debug("userAgentEnable" + userAgentEnable);
-            }
+
             if (httpClientConfigCallback != null) {
                 httpClientBuilder = httpClientConfigCallback.customizeHttpClient(httpClientBuilder);
             }
@@ -264,3 +218,4 @@ public final class RestClientBuilder {
         HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder);
     }
 }
+

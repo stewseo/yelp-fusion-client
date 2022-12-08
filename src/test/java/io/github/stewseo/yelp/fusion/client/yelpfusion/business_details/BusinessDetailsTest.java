@@ -3,10 +3,10 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business_details;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.lowlevel.restclient.YelpFusionRestClient;
+import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchRequestTestCase;
+import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BusinessDetailsTest extends ElasticsearchRequestTestCase {
+public class BusinessDetailsTest extends ElasticsearchConnection {
 
     private final static Logger logger = LoggerFactory.getLogger(BusinessDetailsTest.class);
 
@@ -33,7 +33,7 @@ public class BusinessDetailsTest extends ElasticsearchRequestTestCase {
 
         String apiKey = System.getenv("YELP_API_KEY");
 
-        YelpFusionRestClient restClient = YelpFusionRestClient.builder(apiKey).build();
+        RestClient restClient = RestClient.builder(apiKey).build();
 
         YelpRestClientTransport yelpTransport = new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
 

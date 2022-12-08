@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.lowlevel.restclient.YelpFusionRestClient;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchRequestTestCase;
+import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SuppressWarnings({"unused"})
-public class RequestTest extends ElasticsearchRequestTestCase {
+public class RequestTest extends ElasticsearchConnection {
     private static final Logger logger = LoggerFactory.getLogger(RequestTest.class);
 
     static YelpFusionClient yelpClient;
@@ -58,6 +58,7 @@ public class RequestTest extends ElasticsearchRequestTestCase {
     static Map<String, List<String>> categoriesMap;
     static int docsCount;
     static Set<String> setOfBusinessIds;
+
     static int indexOf;
     static String categoryName;
 
@@ -72,7 +73,7 @@ public class RequestTest extends ElasticsearchRequestTestCase {
 
         String apiKey = System.getenv("YELP_API_KEY");
 
-        YelpFusionRestClient restClient = YelpFusionRestClient.builder(apiKey).build();
+        RestClient restClient = RestClient.builder(apiKey).build();
 
         YelpRestClientTransport yelpTransport = new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
 
@@ -206,6 +207,7 @@ public class RequestTest extends ElasticsearchRequestTestCase {
                             for (BusinessSearch businessSearch : listOfBusinessSearch) {
                                 distance = businessSearch.distance();
                                 String businessId = businessSearch.id();
+
                                 String formattedId = businessId.replaceAll("[^\\p{IsAlphabetic}\\p{IsDigit}_\\-]", "");
 
                                 if (setOfBusinessIds.add(formattedId)) {

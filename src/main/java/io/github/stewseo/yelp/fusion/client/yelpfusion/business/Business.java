@@ -313,6 +313,7 @@ public class Business implements JsonpSerializable {
         private Boolean open_now;
         private List<String> transactions;
         private List<String> photos;
+        
         private List<SpecialHours> special_hours;
         private List<Attribute> attributes;
         private Coordinates coordinates;
