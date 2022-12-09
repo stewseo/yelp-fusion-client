@@ -19,6 +19,7 @@ import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -97,6 +98,7 @@ public class Elasticsearch {
 
         return builder.build();
     }
+
     static String timestamp;
 
     public String getTimestamp(String timestamp, SortOrder sortOrder) {
@@ -215,7 +217,6 @@ public class Elasticsearch {
 
         List<Hit<ObjectNode>> nodes;
         try {
-
             response = esClient.search(s -> s
                             .index("yelp-businesses-restaurants-nyc")
                             .query(q -> q
@@ -230,7 +231,6 @@ public class Elasticsearch {
                     , ObjectNode.class
             );
             TotalHits total = response.hits().total();
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -252,3 +252,8 @@ public class Elasticsearch {
     }
 
 }
+
+
+
+
+

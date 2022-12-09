@@ -6,6 +6,7 @@ import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
 import jakarta.json.stream.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -312,6 +313,7 @@ public class Business implements JsonpSerializable {
         private Boolean open_now;
         private List<String> transactions;
         private List<String> photos;
+        
         private List<SpecialHours> special_hours;
         private List<Attribute> attributes;
         private Coordinates coordinates;

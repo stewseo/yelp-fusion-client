@@ -5,7 +5,7 @@ import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Categories;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Term;
 import jakarta.json.stream.JsonGenerator;
 

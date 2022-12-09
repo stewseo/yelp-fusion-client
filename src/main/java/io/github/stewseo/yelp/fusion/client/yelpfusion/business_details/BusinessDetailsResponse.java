@@ -36,7 +36,6 @@ public class BusinessDetailsResponse implements JsonpSerializable {
             item0.serialize(generator, mapper);
         }
         generator.writeEnd();
-
     }
 
     @Override
@@ -71,7 +70,6 @@ public class BusinessDetailsResponse implements JsonpSerializable {
 
             List<Business> value = JsonpDeserializer
                     .arrayDeserializer(Business._DESERIALIZER).deserialize(parser, mapper);
-
             return this.result(value);
         }
 
@@ -89,9 +87,7 @@ public class BusinessDetailsResponse implements JsonpSerializable {
     // ------------------------------ Deserializer ------------------------------------ //
 
     public static final JsonpDeserializer<BusinessDetailsResponse> _DESERIALIZER = createBusinessDetailsResponse_Deserializer();
-
     protected static JsonpDeserializer<BusinessDetailsResponse> createBusinessDetailsResponse_Deserializer() {
-
         JsonpDeserializer<List<Business>> valueDeserializer = JsonpDeserializer
                 .arrayDeserializer(Business._DESERIALIZER);
 

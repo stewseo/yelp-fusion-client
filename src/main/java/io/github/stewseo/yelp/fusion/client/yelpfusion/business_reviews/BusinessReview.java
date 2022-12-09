@@ -1,7 +1,5 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews;
 
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
@@ -9,14 +7,9 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpSerializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
 import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
-import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Categories;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import jakarta.json.stream.JsonGenerator;
-
-import java.util.Map;
 
 @JsonpDeserializable
 public class BusinessReview implements JsonpSerializable {

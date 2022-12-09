@@ -12,13 +12,13 @@
     <!--        </encoder>-->
     <!--    </appender>-->
 
-    <logger name="tracer" level="info" additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
+<!--    <logger name="tracer" level="info" additivity="false">-->
+<!--        <appender-ref ref="STDOUT" />-->
+<!--    </logger>-->
 
-    <logger name="io.github.stewseo.lowlevel.restclient" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
+<!--    <logger name="io.github.stewseo.lowlevel.restclient" level="INFO" additivity="false">-->
+<!--        <appender-ref ref="STDOUT" />-->
+<!--    </logger>-->
     <logger name="io.github.stewseo.yelp.fusion.client" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
