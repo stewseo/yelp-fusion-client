@@ -1,6 +1,7 @@
 package io.github.stewseo.yelp.fusion.client.transport.restclient;
 
 
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import io.github.stewseo.lowlevel.restclient.*;
 import io.github.stewseo.yelp.fusion.client.transport.*;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.BinaryEndpoint;
@@ -19,6 +20,7 @@ import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,11 +107,13 @@ public class YelpRestClientTransport implements YelpFusionTransport {
 
         future.cancellable = restClient.performRequestAsync(clientReq, new ResponseListener() {
 
+
             @Override
             public void onSuccess(Response clientResp) {
                 try (ApiTypeHelper.DisabledChecksHandle h =
                              ApiTypeHelper.DANGEROUS_disableRequiredPropertiesCheck(disableRequiredChecks)) {
                     ResponseT response = getHighLevelResponse(clientResp, endpoint);
+
                     future.complete(response);
                 } catch (Exception e) {
                     future.completeExceptionally(e);
@@ -120,7 +124,7 @@ public class YelpRestClientTransport implements YelpFusionTransport {
                 future.completeExceptionally(e);
             }
         });
-        return null;
+        return future;
     }
 
 

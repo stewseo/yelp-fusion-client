@@ -12,7 +12,7 @@ import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 
-public class YelpRequestTestCase {
+public class YelpConnection {
 
     static HttpHost httpHost;
     static YelpFusionClient yelpClient;

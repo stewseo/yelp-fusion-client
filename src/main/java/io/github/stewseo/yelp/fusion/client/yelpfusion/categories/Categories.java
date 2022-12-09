@@ -22,7 +22,9 @@ public class Categories implements JsonpSerializable {
     private final String title;
     private final String alias;
     private final List<String> parent_aliases;
+    @Nullable
     private final List<String> country_whitelist;
+    @Nullable
     private final List<String> country_blacklist;
 
     private Categories(Builder builder) {
@@ -138,7 +140,6 @@ public class Categories implements JsonpSerializable {
             this.parent_aliases = _listAdd(parent_aliases, value, values);
             return this;
         }
-
         public final Builder country_whitelist(List<String> values) {
             this.country_whitelist = _listAddAll(country_whitelist, values);
             return this;

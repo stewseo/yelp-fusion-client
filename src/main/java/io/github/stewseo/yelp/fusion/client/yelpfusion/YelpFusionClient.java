@@ -21,6 +21,10 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.Business
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesAliasRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesAliasResponse;
+
+
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesResponse;
 import org.apache.http.Header;
@@ -35,7 +39,6 @@ import java.util.function.Function;
 
 
 public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionClient> {
-
 
     private static final Logger logger = LoggerFactory.getLogger(YelpFusionClient.class);
 
@@ -163,6 +166,22 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
             Function<GetCategoriesRequest.Builder, ObjectBuilder<GetCategoriesRequest>> fn)
             throws Exception {
         return categories(fn.apply(new GetCategoriesRequest.Builder()).build());
+    }
+
+    public GetCategoriesAliasResponse categoriesAlias(GetCategoriesAliasRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<GetCategoriesAliasRequest, GetCategoriesAliasResponse, ErrorResponse> endpoint =
+
+                (JsonEndpoint<GetCategoriesAliasRequest, GetCategoriesAliasResponse, ErrorResponse>) GetCategoriesAliasRequest._ENDPOINT;
+        return this.transport.performRequest(request, endpoint, this.transportOptions);
+    }
+
+    public final GetCategoriesAliasResponse categoriesAlias(
+
+            Function<GetCategoriesAliasRequest.Builder, ObjectBuilder<GetCategoriesAliasRequest>> fn)
+            throws Exception {
+
+        return categoriesAlias(fn.apply(new GetCategoriesAliasRequest.Builder()).build());
     }
 
 

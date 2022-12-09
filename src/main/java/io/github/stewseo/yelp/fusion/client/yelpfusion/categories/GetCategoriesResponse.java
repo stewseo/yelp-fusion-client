@@ -78,9 +78,8 @@ public class GetCategoriesResponse extends RequestBase implements JsonpSerializa
     }
 
         public static final JsonpDeserializer<GetCategoriesResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(GetCategoriesResponse.Builder::new,
-                GetCategoriesResponse::getCategoriesResponseDeserializer);
-        protected static void getCategoriesResponseDeserializer(ObjectDeserializer<GetCategoriesResponse.Builder> op) {
-
+                GetCategoriesResponse::setGetCategoriesResponseDeserializer);
+        protected static void setGetCategoriesResponseDeserializer(ObjectDeserializer<GetCategoriesResponse.Builder> op) {
             op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
 
         }

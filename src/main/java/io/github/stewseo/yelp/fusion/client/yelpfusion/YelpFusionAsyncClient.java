@@ -1,10 +1,13 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion;
 
 
+import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.EndpointWithResponseMapperAttr;
 import io.github.stewseo.yelp.fusion.client._types.ErrorResponse;
 import io.github.stewseo.yelp.fusion.client.transport.JsonEndpoint;
 import io.github.stewseo.yelp.fusion.client.transport.TransportOptions;
+import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.ApiClient;
 
@@ -19,8 +22,17 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessS
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_match.BusinessMatchRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_match.BusinessMatchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesAliasRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesAliasResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.YelpFusionCategoriesAsyncClient;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.message.BasicHeader;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -34,9 +46,29 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         super(transport, transportOptions);
     }
 
+    public static YelpFusionAsyncClient createAsyncClient(String apiKey) throws IOException {
+        String hostName = "api.yelp.com";
+        int port = 443;
+        String scheme = "https";
+        HttpHost host = new HttpHost(hostName, port, scheme);
+
+        Header[] defaultHeader  = {new BasicHeader("Authorization", "Bearer " + apiKey)};
+
+        RestClient restClient = RestClient.builder(host)
+                .setDefaultHeaders(defaultHeader)
+                .build();
+
+        YelpRestClientTransport transport = new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
+        return new YelpFusionAsyncClient(transport);
+    }
+
     @Override
     public YelpFusionAsyncClient withTransportOptions(@Nullable TransportOptions transportOptions) {
         return new YelpFusionAsyncClient(this.transport, transportOptions);
+    }
+
+    public YelpFusionCategoriesAsyncClient categories() {
+        return new YelpFusionCategoriesAsyncClient(this.transport, this.transportOptions);
     }
 
     public <TDocument> CompletableFuture<BusinessSearchResponse> search(BusinessSearchRequest request,
@@ -111,4 +143,16 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
     }
 
+    public CompletableFuture<GetCategoriesResponse> categories(GetCategoriesRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<GetCategoriesRequest, GetCategoriesResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<GetCategoriesRequest, GetCategoriesResponse, ErrorResponse>) GetCategoriesRequest._ENDPOINT;
+        return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
+    }
+
+    public final CompletableFuture<GetCategoriesResponse> categories(
+            Function<GetCategoriesRequest.Builder, ObjectBuilder<GetCategoriesRequest>> fn)
+            throws Exception {
+        return categories(fn.apply(new GetCategoriesRequest.Builder()).build());
+    }
 }

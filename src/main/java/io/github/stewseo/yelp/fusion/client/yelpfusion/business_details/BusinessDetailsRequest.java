@@ -16,9 +16,11 @@ import java.util.function.*;
 @JsonpDeserializable
 public class BusinessDetailsRequest extends RequestBase implements JsonpSerializable {
     private final String id;
+    private final String alias;
 
     private BusinessDetailsRequest(Builder builder) {
         this.id = builder.id;
+        this.alias = builder.alias;
     }
 
     public static BusinessDetailsRequest of(Function<Builder, ObjectBuilder<BusinessDetailsRequest>> fn) {
@@ -27,6 +29,9 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
 
     public String id() {
         return id;
+    }
+    public String alias() {
+        return alias;
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
@@ -47,9 +52,14 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             implements
             ObjectBuilder<BusinessDetailsRequest> {
         private String id;
+        private String alias;
 
         public final Builder id(String value) {
             this.id = value;
+            return this;
+        }
+        public final Builder alias(String value) {
+            this.alias = value;
             return this;
         }
 
@@ -62,6 +72,7 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             _checkSingleUse();
             return new BusinessDetailsRequest(this);
         }
+
     }
     @Override
     public String toString() {
@@ -74,7 +85,15 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             request -> "GET",
 
             // Request path
-            request -> "v3/businesses" + "/" + request.id(),
+            request -> {
+                String endpoint = "v3/businesses" + "/";
+                if(request.alias != null) {
+                     endpoint += request.alias();
+                }else {
+                    endpoint += request.id();
+                }
+                return endpoint;
+            },
 
             // Request parameters
             request -> new HashMap<>(),

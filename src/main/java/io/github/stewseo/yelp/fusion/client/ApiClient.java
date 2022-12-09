@@ -30,13 +30,11 @@ public abstract class ApiClient<T extends Transport, Self extends ApiClient<T, S
         return JsonpDeserializer.of(type);
     }
 
-
     // Creates a new client with some request options
 
     public abstract Self withTransportOptions(@Nullable TransportOptions transportOptions);
 
     // Creates a new client with additional request options
-
     // @param fn a lambda expression that takes the current options as input
 
     public Self withTransportOptions(Function<TransportOptions.Builder, TransportOptions.Builder> fn) {

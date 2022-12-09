@@ -16,39 +16,22 @@ import java.util.function.Function;
 public class GetCategoriesAliasRequest extends RequestBase implements JsonpSerializable {
 
     private final String alias;
-    private final String locale;
-
     private GetCategoriesAliasRequest(Builder builder) {
         this.alias = builder.alias;
-        this.locale = builder.locale;
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
-        serializeInternal(generator, mapper);
-        generator.writeEnd();
-    }
-
-    protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
-
         if (this.alias != null) {
             generator.writeKey("alias");
             generator.write(this.alias);
         }
-        if (this.locale != null) {
-            generator.writeKey("locale");
-            generator.write(this.locale);
-        }
+        generator.writeEnd();
     }
 
     public static GetCategoriesAliasRequest of(Function<GetCategoriesAliasRequest.Builder, ObjectBuilder<GetCategoriesAliasRequest>> fn) {
         return fn.apply(new GetCategoriesAliasRequest.Builder()).build();
     }
-
-    public String locale() {
-        return locale;
-    }
-
     public String alias() {
         return alias;
     }
@@ -58,24 +41,18 @@ public class GetCategoriesAliasRequest extends RequestBase implements JsonpSeria
         return JsonpUtils.toString(this);
     }
 
+
     public static class Builder extends RequestBase.AbstractBuilder<GetCategoriesAliasRequest.Builder>
             implements
             ObjectBuilder<GetCategoriesAliasRequest> {
         private String alias;
-        private String locale;
-
-        public final GetCategoriesAliasRequest.Builder alias(String alias) {
+        public final Builder alias(String alias) {
             this.alias = alias;
             return this;
         }
 
-        public final GetCategoriesAliasRequest.Builder locale(String locale) {
-            this.locale = locale;
-            return this;
-        }
-
         @Override
-        protected GetCategoriesAliasRequest.Builder self() {
+        protected Builder self() {
             return this;
         }
 
@@ -84,19 +61,25 @@ public class GetCategoriesAliasRequest extends RequestBase implements JsonpSeria
             _checkSingleUse();
             return new GetCategoriesAliasRequest(this);
         }
-
-        public static final SimpleEndpoint<GetCategoriesAliasRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses",
-
-                // Request method
-                request -> "GET",
-
-                // Request path
-                request -> "v3/categories",
-
-                // Request parameters
-                request -> new HashMap<>(),
-
-                SimpleEndpoint.emptyMap(), false, GetCategoriesAliasResponse._DESERIALIZER); // Business Details endpoint accepts a business id path param and returns a Business with additional fields.
-
     }
+
+
+    public static final SimpleEndpoint<GetCategoriesAliasRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",// Request method
+
+            request -> "GET",
+
+            request -> {
+                // Request path
+                if (request.alias() != null) {
+                    return "v3/categories" + "/" + request.alias;
+                }
+                System.out.println("returning null: ");
+                return null;
+            },
+            request -> {
+                return new HashMap<>();
+
+            }, SimpleEndpoint.emptyMap(), false, GetCategoriesAliasResponse._DESERIALIZER);
+
+
 }

@@ -170,7 +170,6 @@ public class RestClient implements Closeable {
         try {
             FailureTrackingResponseListener failureTrackingResponseListener = new FailureTrackingResponseListener(responseListener);
             InternalRequest internalRequest = new InternalRequest(request);
-
             performRequestAsync(httpHost, internalRequest, failureTrackingResponseListener);
             return internalRequest.cancellable;
         } catch (Exception e) {
@@ -185,6 +184,7 @@ public class RestClient implements Closeable {
             final InternalRequest request,
             final FailureTrackingResponseListener listener
     ) {
+
         request.cancellable.runIfNotCancelled(() -> {
             final RequestContext context = request.createContextForNextAttempt(host);
 
@@ -193,7 +193,6 @@ public class RestClient implements Closeable {
                     context.asyncResponseConsumer,
                     context.context,
                     new FutureCallback<>() { // A callback interface that gets invoked upon completion of a java.util.concurrent.Future.
-
                         @Override
                         public void completed(HttpResponse httpResponse) {
                             try {
@@ -232,19 +231,8 @@ public class RestClient implements Closeable {
         client.close();
     }
 
-
     private static boolean isSuccessfulResponse(int statusCode) {
         return statusCode < 300;
-    }
-
-    private static boolean isRetryableException(Throwable e) {
-        if (e instanceof ExecutionException) {
-            e = e.getCause();
-        }
-        if (e instanceof ContentTooLongException) {
-            return false;
-        }
-        return true;
     }
 
     private static boolean isRetryStatus(int statusCode) {
@@ -356,7 +344,6 @@ public class RestClient implements Closeable {
             Header[] header = req.getHeaders("Accept");
 
             if(header.length > 0) {
-//                logger.debug(PrintUtils.cyan("all headers: " + Arrays.stream(req.getAllHeaders()).map(Header::getName).toList()));
                 req.removeHeader(Arrays.stream(req.getHeaders("Accept")).toList().get(0));
             }
 

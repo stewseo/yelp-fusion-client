@@ -25,29 +25,24 @@ public class JsonpDeserializerTest extends ModelTestCase {
 
 
     public static void main(String[] args) throws Exception {
+
+        threadInfo();
+        threadStates();
+
         String apiKey = System.getenv("YELP_API_KEY");
 
         List<URI> uris = new ArrayList<>();
 
-        for(String category: List.of("sushi", "pizza")){
+        for(String category: List.of("sushi", "pizza", "japanese", "burgers")){
             uris.add(new URI(reqLine + category));
         }
 
-        List<CompletableFuture<String>> completeableFutures = get(uris, apiKey);
-        logger.info(PrintUtils.green("all live thread IDs " + Arrays.toString(ManagementFactory.getThreadMXBean().getAllThreadIds())));
-        logger.info(PrintUtils.green("getCurrentThreadCpuTime " + ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime()));
-        logger.info(PrintUtils.green("getPeakThreadCount " + ManagementFactory.getThreadMXBean().getPeakThreadCount()));
-        logger.info(PrintUtils.green("getTotalStartedThreadCount " + ManagementFactory.getThreadMXBean().getTotalStartedThreadCount()));
-        logger.info(PrintUtils.green("getDaemonThreadCount " + ManagementFactory.getThreadMXBean().getDaemonThreadCount()));
-        
-        int nbThreads =  Thread.getAllStackTraces().keySet().size();
-        logger.info(PrintUtils.green("nbThreads " + nbThreads));
+        // Returns the managed bean for the thread system of the Java virtual machine.
+        threadInfo();
+        threadStates();
 
-        int nbRunning = 0;
-        for (Thread t : Thread.getAllStackTraces().keySet()) {
-            if (t.getState()==Thread.State.RUNNABLE) nbRunning++;
-        }
-        
+        List<CompletableFuture<String>> completeableFutures = get(uris, apiKey);
+
         try {
             for(CompletableFuture<String> cf: completeableFutures) {
                 String result = cf.get();
@@ -59,6 +54,62 @@ public class JsonpDeserializerTest extends ModelTestCase {
                 throw new RuntimeException(e);
             }
         }
+        // use managed bean for thread system of JVM
+        threadInfo();
+        threadStates();
+
+    }
+
+    private static void threadInfo() {
+        logger.info(PrintUtils.green("all live thread IDs " + Arrays.toString(ManagementFactory.getThreadMXBean().getAllThreadIds())));
+
+
+        Arrays.stream(ManagementFactory
+                        .getThreadMXBean().getThreadInfo(
+                                ManagementFactory.getThreadMXBean().getAllThreadIds())
+                )
+                .forEach(thread -> {
+                    logger.info("" +
+                            PrintUtils.cyan("ThreadId: " + thread.getThreadId()) +
+                            PrintUtils.red(", ThreadName: " + thread.getThreadName() +
+                                    ", ThreadState: " + thread.getThreadState()) +
+                            PrintUtils.green(", Priority: " + thread.getPriority() +
+                                    ", BlockedCount: " + thread.getBlockedCount() +
+                                    ", BlockedTime: " + thread.getBlockedTime())
+                    );
+
+                });
+
+        logger.info(PrintUtils.green("getCurrentThreadCpuTime " + ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime()));
+        logger.info(PrintUtils.green("getPeakThreadCount " + ManagementFactory.getThreadMXBean().getPeakThreadCount()));
+        logger.info(PrintUtils.green("getTotalStartedThreadCount " + ManagementFactory.getThreadMXBean().getTotalStartedThreadCount()));
+        logger.info(PrintUtils.green("getDaemonThreadCount " + ManagementFactory.getThreadMXBean().getDaemonThreadCount()));
+    }
+
+    static int nbThreads =  Thread.getAllStackTraces().keySet().size();
+
+    static int nbNew = 0;
+    static int nbRunning = 0;
+    static int nbBlocked = 0;
+    static  int nbWaiting = 0;
+    static int nbTerminated = 0;
+    static  int nbTimedWaiting = 0;
+    private static void threadStates() {
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getState()==Thread.State.NEW) nbNew++;
+            if (t.getState()==Thread.State.RUNNABLE) nbRunning++;
+            if (t.getState()==Thread.State.BLOCKED) nbBlocked++;
+            if (t.getState()==Thread.State.WAITING) nbWaiting++;
+            if (t.getState()==Thread.State.TIMED_WAITING) nbTimedWaiting++;
+            if (t.getState()==Thread.State.TERMINATED) nbTerminated++;
+        }
+        logger.info(PrintUtils.green("Total threads " + nbThreads));
+        logger.info(PrintUtils.red("Thread.State.NEW " + nbNew));
+        logger.info(PrintUtils.red("Thread.State.RUNNABLE " + nbRunning));
+        logger.info(PrintUtils.red("Thread.State.BLOCKED " + nbBlocked));
+        logger.info(PrintUtils.red("Thread.State.WAITING " + nbWaiting));
+        logger.info(PrintUtils.red("Thread.State.TIMED_WAITING " + nbTimedWaiting));
+        logger.info(PrintUtils.red("Thread.State.TERMINATED " + nbTerminated));
     }
 
     public static List<CompletableFuture<String>> get(List<URI> uris, String apiKey) throws Exception {
@@ -96,7 +147,7 @@ public class JsonpDeserializerTest extends ModelTestCase {
 
         @Override
         public void onNext(List<ByteBuffer> buffers) {
-            logger.info(PrintUtils.red("onNext with:"+ buffers));
+//            logger.info(PrintUtils.red("onNext with:"+ buffers));
             responseData.addAll(buffers);
             subscription.request(1);
         }
@@ -111,7 +162,9 @@ public class JsonpDeserializerTest extends ModelTestCase {
         @Override
         public void onComplete() {
             int size = responseData.stream().mapToInt(ByteBuffer::remaining).sum();
-            logger.info(PrintUtils.red("number of ByteBuffers: " + responseData.size() + ", total remaining byte buffers being converted to byte array: " + size));
+            logger.info(PrintUtils.cyan("onComplete"));
+
+//            logger.info(PrintUtils.red("number of ByteBuffers: " + responseData.size() + ", total remaining byte buffers being converted to byte array: " + size));
 
             byte[] ba = new byte[size];
             int offset = 0;

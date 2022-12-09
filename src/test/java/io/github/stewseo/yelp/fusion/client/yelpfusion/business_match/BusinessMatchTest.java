@@ -4,7 +4,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.yelp.fusion.client.Elasticsearch;
-import io.github.stewseo.yelp.fusion.client.YelpRequestTestCase;
+import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsTest;
 import org.junit.jupiter.api.Test;
@@ -30,8 +30,8 @@ public class BusinessMatchTest {
                 .match_threshold("none")
         );
 
-        YelpRequestTestCase.initYelpFusionClient();
-        YelpFusionClient client = YelpRequestTestCase.getYelpClient();
+        YelpConnection.initYelpFusionClient();
+        YelpFusionClient client = YelpConnection.getYelpClient();
         BusinessMatchResponse response = client.businessMatch(request);
 
         BusinessMatch businessMatch = response.businesses().get(0);
@@ -48,9 +48,9 @@ public class BusinessMatchTest {
     @Test
     public void businessMatchSendRequestASyncTest() throws Exception {
 
-        YelpRequestTestCase.initYelpFusionClient();
+        YelpConnection.initYelpFusionClient();
 
-        YelpFusionClient client = YelpRequestTestCase.getYelpClient();
+        YelpFusionClient client = YelpConnection.getYelpClient();
 
         BusinessMatchResponse response  = client.businessMatch(s -> s
                 .city("sf")

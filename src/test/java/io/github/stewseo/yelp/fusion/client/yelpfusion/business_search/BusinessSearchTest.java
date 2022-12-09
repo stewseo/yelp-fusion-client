@@ -3,7 +3,7 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business_search;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
-import io.github.stewseo.yelp.fusion.client.YelpRequestTestCase;
+import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,9 @@ public class BusinessSearchTest extends ElasticsearchConnection {
     @Test
     void businessSearchTest() throws Exception {
 
-        YelpRequestTestCase.initYelpFusionClient();
+        YelpConnection.initYelpFusionClient();
 
-        yelpClient = YelpRequestTestCase.getYelpClient();
+        yelpClient = YelpConnection.getYelpClient();
 
         int radius = 1610;
         int limit = 50;

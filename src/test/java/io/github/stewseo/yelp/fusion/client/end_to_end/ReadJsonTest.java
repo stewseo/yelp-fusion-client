@@ -55,7 +55,6 @@ public class ReadJsonTest {
         elasticsearch.createESClient(transport);
         bucketCategoryTest();
     }
-
     static Set<String> setOfBusinessIds;
     static String timestamp;
 
@@ -100,13 +99,6 @@ public class ReadJsonTest {
         logger.info("terms: " + response.terms());
 
 
-
-
-
-
-
-
-
 //        ElasticsearchConnection.initElasticsearchClient();
 //        SearchResponse<ObjectNode> response = Elasticsearch.getInstance().client().search(s -> s
 //                        .index(index)
@@ -141,8 +133,6 @@ public class ReadJsonTest {
                 sourceNodes.add(hit.get("_source"));
             }
         }
-
-
 
         logger.info("size : " + sourceNodes.size());
 

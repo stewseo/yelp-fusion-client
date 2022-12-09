@@ -1,7 +1,7 @@
 package io.github.stewseo.lowlevel.restclient.response;
 
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.yelp.fusion.client.YelpRequestTestCase;
+import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 
@@ -32,8 +32,8 @@ public class ResponseBodyTest {
     @Test
     void entityContentTest() throws IOException {
 
-        YelpRequestTestCase.initYelpFusionClient();
-        YelpFusionClient yelpClient = YelpRequestTestCase.getYelpClient();
+        YelpConnection.initYelpFusionClient();
+        YelpFusionClient yelpClient = YelpConnection.getYelpClient();
         YelpRestClientTransport yelpTransport = (YelpRestClientTransport) yelpClient._transport();
         HttpHost host = yelpTransport.restClient().getHttpHost();
 
