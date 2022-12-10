@@ -23,7 +23,7 @@ permalink: /yelp-fusion-client/examples/business
              
             if (setOfBusinessIds.add(bSearch.id())) {
            
-                // Business Details API objects are only built if a business' id is not in the database.        
+                // In this example, Business Details API objects are only built if a business' id is not in the database.        
                 
                 BusinessDetailsResponse resp = yelpClient.businessDetails(s -> s.id(businessId));
  ```               

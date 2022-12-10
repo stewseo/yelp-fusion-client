@@ -4,21 +4,33 @@ title: "Blocking and Async client examples"
 permalink: /yelp-fusion-client/examples/clients
 ---
 
-#### Use your Yelp Fusion API key and initialize the client
+#### Use your Yelp Fusion API key for a Synchronous blocking client
 
 ```
-        String apiKey = System.getenv("YELP_API_KEY");
+     String apiKey = System.getenv("YELP_API_KEY");
+     
+        // Synchronous blocking client
+        YelpFusionClient client = YelpFusionClient.createClient(apiKey);
 
-        YelpFusionClient yelpFusionClient = YelpFusionClient.createClient(apiKey);
-
-        AutoCompleteResponse response = yelpFusionClient.autocomplete(a -> a.text("piz"));
+        if (client.businessDetails(a -> a.alias("hinata-san-francisco")) != null) {
+            logger.info("business exists");
+        }
         
-        logger.info("categories: " + response.categories());
-        logger.info("businesses: " + response.businesses());
-        logger.info("terms: " + response.terms());
+```
+#### Use your Yelp Fusion API key for an Asynchronous non-blocking client
+```
+      String apiKey = System.getenv("YELP_API_KEY");
         
-```
-#### console output
+        // Asynchronous non-blocking client
+        YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(apiKey);
 
-![Screenshot_20221207_015126](https://user-images.githubusercontent.com/54422342/206304471-ba73e057-e602-421f-8eda-0a054d4da327.png)
+        asyncClient.businessDetails(a -> a.alias("hinata-san-francisco"))
+                .whenComplete((response, exception) -> {
+                    if (exception != null) {
+                        logger.error("business does not exist", exception);
+                    } else {
+                        logger.info("business exists");
+                    }
+                });
 ```
+
