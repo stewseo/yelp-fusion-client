@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews;
 
 
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;

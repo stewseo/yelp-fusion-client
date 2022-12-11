@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_match;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.match;
 
 import io.github.stewseo.yelp.fusion.client._types.RequestBase;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;

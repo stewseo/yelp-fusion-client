@@ -9,11 +9,6 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
 import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Region;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearch;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;

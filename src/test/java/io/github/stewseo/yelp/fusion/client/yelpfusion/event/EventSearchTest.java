@@ -6,6 +6,7 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.events.EventSearchRespons
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.http.HttpResponse;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 

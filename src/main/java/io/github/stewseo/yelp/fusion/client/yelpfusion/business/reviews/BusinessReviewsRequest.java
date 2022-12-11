@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews;
 
 import io.github.stewseo.yelp.fusion.client._types.RequestBase;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
@@ -10,7 +10,6 @@ import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @JsonpDeserializable

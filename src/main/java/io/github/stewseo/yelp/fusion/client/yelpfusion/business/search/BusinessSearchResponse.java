@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_search;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.search;
 
 
 import io.github.stewseo.yelp.fusion.client.json.*;

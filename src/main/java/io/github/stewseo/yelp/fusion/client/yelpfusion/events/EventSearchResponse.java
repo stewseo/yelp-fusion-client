@@ -9,9 +9,6 @@ import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearch;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;

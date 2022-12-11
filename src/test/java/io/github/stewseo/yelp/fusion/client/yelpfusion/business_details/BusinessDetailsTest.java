@@ -10,6 +10,7 @@ import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class BusinessDetailsTest extends ElasticsearchConnection {
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
 
-        BusinessDetailsResponse response = yelpClient.businessDetails(s -> s.id(id)
+        BusinessDetailsResponse response = yelpClient.businesses().businessDetails(s -> s.id(id)
         );
 
         Assertions.assertThat(response.result().size()).isEqualTo(1); // business/{id} endpoint returns a single business with additional fields

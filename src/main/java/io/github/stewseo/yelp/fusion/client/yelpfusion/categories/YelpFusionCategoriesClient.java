@@ -14,9 +14,10 @@ public class YelpFusionCategoriesClient extends ApiClient<YelpFusionTransport, Y
     public YelpFusionCategoriesClient(YelpFusionTransport transport, @Nullable TransportOptions transportOptions) {
         super(transport, transportOptions);
     }
-
     @Override
     public YelpFusionCategoriesClient withTransportOptions(@Nullable TransportOptions transportOptions) {
         return new YelpFusionCategoriesClient(this.transport, transportOptions);
     }
+
+
 }

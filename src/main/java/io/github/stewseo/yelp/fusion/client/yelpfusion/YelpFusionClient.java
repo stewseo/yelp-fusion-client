@@ -12,14 +12,15 @@ import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientT
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_details.BusinessDetailsRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_match.BusinessMatchRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_match.BusinessMatchResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.YelpFusionBusinessClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesAliasRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesAliasResponse;
 
@@ -76,10 +77,16 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
         super(transport, transportOptions);
     }
 
+    // Businesses Endpoint client
+    public YelpFusionBusinessClient businesses() {
+        return new YelpFusionBusinessClient(this.transport, this.transportOptions);
+    }
+
+    // Categories Endpoint client
     public YelpFusionCategoriesClient categories() {
         return new YelpFusionCategoriesClient(this.transport, this.transportOptions);
     }
-
+    // Events Endpoint client
     public YelpFusionEventsClient events() {
         return new YelpFusionEventsClient(this.transport, this.transportOptions);
     }
@@ -92,34 +99,6 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
     // Returns results matching a query.
     //Params:
     //fn – a function that initializes a builder to create the BusinessSearchRequest
-    public BusinessSearchResponse businessSearch(BusinessSearchRequest request)
-            throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse, ErrorResponse> endpoint = (JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse, ErrorResponse>) BusinessSearchRequest._ENDPOINT;
-
-        return this.transport.performRequest(request, endpoint, this.transportOptions);
-    }
-
-    public final BusinessSearchResponse businessSearch(
-            Function<BusinessSearchRequest.Builder, ObjectBuilder<BusinessSearchRequest>> fn)
-            throws Exception {
-
-        return businessSearch(fn.apply(new BusinessSearchRequest.Builder()).build());
-    }
-
-    public BusinessDetailsResponse businessDetails(BusinessDetailsRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse>) BusinessDetailsRequest._ENDPOINT;
-
-        return this.transport.performRequest(request, endpoint, this.transportOptions);
-    }
-
-    public final BusinessDetailsResponse businessDetails(
-            Function<BusinessDetailsRequest.Builder, ObjectBuilder<BusinessDetailsRequest>> fn)
-            throws Exception {
-        return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());
-    }
 
     public AutoCompleteResponse autocomplete(AutoCompleteRequest request) throws Exception {
         @SuppressWarnings("unchecked")
@@ -133,34 +112,6 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
             Function<AutoCompleteRequest.Builder, ObjectBuilder<AutoCompleteRequest>> fn)
             throws Exception {
         return autocomplete(fn.apply(new AutoCompleteRequest.Builder()).build());
-    }
-
-    public BusinessReviewsResponse businessReviews(BusinessReviewsRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessReviewsRequest, BusinessReviewsResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessReviewsRequest, BusinessReviewsResponse, ErrorResponse>) BusinessReviewsRequest._ENDPOINT;
-
-        return this.transport.performRequest(request, endpoint, this.transportOptions);
-    }
-
-    public final BusinessReviewsResponse businessReviews(
-            Function<BusinessReviewsRequest.Builder, ObjectBuilder<BusinessReviewsRequest>> fn)
-            throws Exception {
-        return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
-    }
-
-    public BusinessMatchResponse businessMatch(BusinessMatchRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
-
-        return this.transport.performRequest(request, endpoint, this.transportOptions);
-    }
-
-    public final BusinessMatchResponse businessMatch(
-            Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn)
-            throws Exception {
-        return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
     }
 
     public GetCategoriesResponse categories(GetCategoriesRequest request) throws Exception {

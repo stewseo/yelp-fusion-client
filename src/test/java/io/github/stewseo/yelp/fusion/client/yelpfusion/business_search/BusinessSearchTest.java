@@ -6,6 +6,8 @@ import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearch;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,7 @@ public class BusinessSearchTest extends ElasticsearchConnection {
         Double longitude = -73.9855;
         Integer offset = 0;
 
-        BusinessSearchResponse response = yelpClient.businessSearch(s -> s
+        BusinessSearchResponse response = yelpClient.businesses().businessSearch(s -> s
                 .location("manhattan")
                 .coordinates(c -> c
                         .latitude(40.7580)

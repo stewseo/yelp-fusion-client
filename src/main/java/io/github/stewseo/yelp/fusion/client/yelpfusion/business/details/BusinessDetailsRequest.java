@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_details;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.details;
 
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.yelp.fusion.client._types.RequestBase;

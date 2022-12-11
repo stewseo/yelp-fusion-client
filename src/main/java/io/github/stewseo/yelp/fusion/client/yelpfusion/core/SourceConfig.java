@@ -10,13 +10,9 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class SourceConfig implements TaggedUnion<SourceConfig.Kind, Object>, JsonpSerializable {
-
     public enum Kind {
         Filter, Fetch
-
-
     }
-
     private final SourceConfig.Kind _kind;
     private final Object _value;
 

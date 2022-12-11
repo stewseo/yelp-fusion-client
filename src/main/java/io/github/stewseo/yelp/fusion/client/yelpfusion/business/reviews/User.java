@@ -1,6 +1,5 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews;
 
-import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
@@ -11,8 +10,6 @@ import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
-
-import java.util.Map;
 
 @JsonpDeserializable
 public class User implements JsonpSerializable {

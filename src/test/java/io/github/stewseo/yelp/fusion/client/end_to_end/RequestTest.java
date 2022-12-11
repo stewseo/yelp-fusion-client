@@ -21,11 +21,11 @@ import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearchResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_search.BusinessSearch;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearch;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
@@ -178,7 +178,7 @@ public class RequestTest extends ElasticsearchConnection {
                     Double longitude = entry.getValue().getLongitude(); // longitude of neighborhood
 
                     try {
-                        BusinessSearchResponse businessSearchResponse = yelpClient.businessSearch(s -> s
+                        BusinessSearchResponse businessSearchResponse = yelpClient.businesses().businessSearch(s -> s
                                 .location(location)
                                 .coordinates(c -> c
                                         .latitude(latitude)
@@ -214,7 +214,7 @@ public class RequestTest extends ElasticsearchConnection {
 
                                     logger.info(PrintUtils.debug("adding business with id: " + formattedId + " business id: " + businessId));
                                     // submit request to Business Details Endpoint
-                                    businessDetailsResponse = yelpClient.businessDetails(s -> s.id(businessId));
+                                    businessDetailsResponse = yelpClient.businesses().businessDetails(s -> s.id(businessId));
 
                                     Business business = businessDetailsResponse.result().get(0);
 

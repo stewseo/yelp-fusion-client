@@ -1,4 +1,4 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.events;
 
-public class GetFeaturedEventRequest {
+public class FeaturedEventResponse {
 }

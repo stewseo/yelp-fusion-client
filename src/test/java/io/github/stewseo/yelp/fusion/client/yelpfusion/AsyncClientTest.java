@@ -38,7 +38,7 @@ public class AsyncClientTest {
         // Synchronous blocking client
         YelpFusionClient client = YelpFusionClient.createClient(apiKey);
 
-        if (client.businessDetails(a -> a.alias("hinata-san-francisco")) != null) {
+        if (client.businesses().businessDetails(a -> a.alias("hinata-san-francisco")) != null) {
             logger.info("business exists");
         }
     }

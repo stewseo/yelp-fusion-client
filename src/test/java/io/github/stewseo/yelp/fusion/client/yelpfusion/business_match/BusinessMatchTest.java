@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.yelp.fusion.client.Elasticsearch;
 import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatch;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsTest;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;
@@ -32,7 +35,7 @@ public class BusinessMatchTest {
 
         YelpConnection.initYelpFusionClient();
         YelpFusionClient client = YelpConnection.getYelpClient();
-        BusinessMatchResponse response = client.businessMatch(request);
+        BusinessMatchResponse response = client.businesses().businessMatch(request);
 
         BusinessMatch businessMatch = response.businesses().get(0);
 
@@ -52,7 +55,7 @@ public class BusinessMatchTest {
 
         YelpFusionClient client = YelpConnection.getYelpClient();
 
-        BusinessMatchResponse response  = client.businessMatch(s -> s
+        BusinessMatchResponse response  = client.businesses().businessMatch(s -> s
                 .city("sf")
                 .name("Brenda's+French+Soul+Food")
                 .address1("625+polk+st")
