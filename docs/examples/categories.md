@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Categories examples https://docs.developer.yelp.com/reference/v3_all_categories"
-permalink: /yelp-fusion-client/categories
+permalink: /yelp-fusion-client/examples/categories
 ---
 
 #### Endpoint: https://api.yelp.com/v3/categories 
