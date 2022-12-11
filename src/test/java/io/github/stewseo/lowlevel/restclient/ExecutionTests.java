@@ -34,8 +34,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
 public class ExecutionTests {
-
     private static final Logger logger = LoggerFactory.getLogger(ExecutionTests.class);
+
     final String uri = "http://api.yelp.com/v3/businesses/search?location=sf";
 
     @Test
@@ -50,7 +50,6 @@ public class ExecutionTests {
         HttpResponse response = client.execute(httpRequestBase, null).get();
         assertThat(response.getStatusLine().toString()).isEqualTo("HTTP/1.1 200 OK");
         client.close();
-
 
         logger.debug(PrintUtils.debug("Future<HttpResponse> future: " + response.getStatusLine() + " available bytes: " + response.getEntity().getContent().available()));
         client.close();

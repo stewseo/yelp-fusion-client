@@ -26,7 +26,6 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
         return locale;
     }
 
-
     public static GetCategoriesRequest of(Function<Builder, ObjectBuilder<GetCategoriesRequest>> fn) {
         return fn.apply(new GetCategoriesRequest.Builder()).build();
     }
@@ -39,12 +38,10 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
         }
         generator.writeEnd();
     }
-
     @Override
     public String toString() {
         return JsonpUtils.toString(this);
     }
-
 
     public static class Builder extends RequestBase.AbstractBuilder<GetCategoriesRequest.Builder>
             implements
@@ -74,8 +71,8 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
 
     }
 
-    public static final SimpleEndpoint<GetCategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",
 
+    public static final SimpleEndpoint<GetCategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",
             // Request method
             request -> "GET",
 
@@ -90,6 +87,5 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
                 return params;
 
             }, SimpleEndpoint.emptyMap(), false, GetCategoriesResponse._DESERIALIZER);
-
 
 }

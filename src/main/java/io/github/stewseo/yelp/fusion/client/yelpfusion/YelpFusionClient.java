@@ -1,6 +1,5 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion;
 
-
 import io.github.stewseo.lowlevel.restclient.RequestOptions;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.ApiClient;
@@ -27,6 +26,8 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesA
 
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.YelpFusionCategoriesClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.events.YelpFusionEventsClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -73,6 +74,14 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
 
     public YelpFusionClient(YelpFusionTransport transport, TransportOptions transportOptions) {
         super(transport, transportOptions);
+    }
+
+    public YelpFusionCategoriesClient categories() {
+        return new YelpFusionCategoriesClient(this.transport, this.transportOptions);
+    }
+
+    public YelpFusionEventsClient events() {
+        return new YelpFusionEventsClient(this.transport, this.transportOptions);
     }
 
     @Override
@@ -177,14 +186,11 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
     }
 
     public final GetCategoriesAliasResponse categoriesAlias(
-
             Function<GetCategoriesAliasRequest.Builder, ObjectBuilder<GetCategoriesAliasRequest>> fn)
             throws Exception {
 
         return categoriesAlias(fn.apply(new GetCategoriesAliasRequest.Builder()).build());
     }
-
-
 
 }
 
