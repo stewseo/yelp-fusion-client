@@ -3,6 +3,8 @@
 
 https://github.com/stewseo/stewseo.github.io
 
+[example requests](https://stewseo.github.io/yelp-fusion-client/examples)
+
 ### Features
 - Strongly typed requests and responses for all Yelp Fusion API Endpoints.
 - Blocking and asynchronous versions of Apis.
