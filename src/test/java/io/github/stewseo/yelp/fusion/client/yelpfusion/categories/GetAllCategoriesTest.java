@@ -21,7 +21,7 @@ public class GetAllCategoriesTest {
 
         YelpFusionClient client = YelpFusionClient.createClient(apiKey);
 
-        GetCategoriesResponse response = client.categories(c -> c.locale("en_US"));
+        GetCategoriesResponse response = client.categories().all(c -> c.locale("en_US"));
 
         assertThat(response.categories().size()).isEqualTo(1295);
 

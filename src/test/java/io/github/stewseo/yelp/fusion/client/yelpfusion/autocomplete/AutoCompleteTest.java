@@ -1,8 +1,8 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete;
 
-import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

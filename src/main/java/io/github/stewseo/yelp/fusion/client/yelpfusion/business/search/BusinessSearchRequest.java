@@ -149,7 +149,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         }
 
         if(this.categories != null) {
-            generator.writeKey("categories");
+            generator.writeKey("all");
             this.categories.serialize(generator, mapper);
         }
 
@@ -346,7 +346,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
         op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
-        op.add(Builder::categories, Categories._DESERIALIZER, "categories");
+        op.add(Builder::categories, Categories._DESERIALIZER, "all");
         op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
         op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
         op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
@@ -371,7 +371,7 @@ public class BusinessSearchRequest extends RequestBase implements JsonpSerializa
                     request.location.forEach(location -> parameters.put("location", location));
                 }
                 if (request.categories() != null) {
-                    parameters.put("categories", request.categories.alias());
+                    parameters.put("all", request.categories.alias());
                 }
                 if (request.coordinates() != null) {
                     Double latitude = request.coordinates().latitude();

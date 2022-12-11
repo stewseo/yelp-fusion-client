@@ -2,17 +2,15 @@ package io.github.stewseo.yelp.fusion.client.end_to_end;
 
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.yelp.fusion.client.Elasticsearch;
 import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business_;
 import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.BeforeAll;
@@ -94,7 +92,7 @@ public class ReadJsonTest {
 
         AutoCompleteResponse response = yelpFusionClient.autocomplete(a -> a.text("piz"));
 
-        logger.info("categories: " + response.categories());
+        logger.info("all: " + response.categories());
         logger.info("businesses: " + response.businesses());
         logger.info("terms: " + response.terms());
 
@@ -105,7 +103,7 @@ public class ReadJsonTest {
 //                        .storedFields("_none_")
 //                        .query(q -> q
 //                                .match(m -> m
-//                                        .field("categories.alias")
+//                                        .field("all.alias")
 //                                        .query("japanese")
 //                                )
 //                        )

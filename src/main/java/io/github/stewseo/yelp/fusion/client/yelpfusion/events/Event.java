@@ -9,8 +9,10 @@ import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Location;
 import jakarta.json.stream.JsonGenerator;
 
+import javax.annotation.Nullable;
 import java.util.function.Function;
 
 @JsonpDeserializable
@@ -33,6 +35,8 @@ public class Event implements JsonpSerializable {
     private final Double cost_max;
     private final Double latitude;
     private final Double longitude;
+    @Nullable
+    private final Location location;
     private Event(Builder builder) {
         this.category = builder.category;
         this.description = builder.description;
@@ -52,6 +56,7 @@ public class Event implements JsonpSerializable {
         this.cost_max = builder.cost_max;
         this.latitude = builder.latitude;
         this.longitude = builder.longitude;
+        this.location = builder.location;
     }
 
     public static Event of(Function< Builder, ObjectBuilder<Event>> fn) {
@@ -136,6 +141,10 @@ public class Event implements JsonpSerializable {
             generator.writeKey("longitude");
             generator.write(this.longitude);
         }
+        if (this.location != null) {
+            generator.writeKey("location");
+            this.location.serialize(generator, mapper);
+        }
     }
 
     @Override
@@ -165,6 +174,7 @@ public class Event implements JsonpSerializable {
         private Double cost_max;
         private Double latitude;
         private Double longitude;
+        private Location location;
 
         public final Builder description(String description) {
             this.description = description;
@@ -178,7 +188,6 @@ public class Event implements JsonpSerializable {
             this.event_site_url = event_site_url;
             return this;
         }
-
         public final Builder name(String name) {
             this.name = name;
             return this;
@@ -192,7 +201,6 @@ public class Event implements JsonpSerializable {
             this.image_url = image_url;
             return this;
         }
-
         public final Builder id(String id) {
             this.id = id;
             return this;
@@ -244,6 +252,11 @@ public class Event implements JsonpSerializable {
             return this;
         }
 
+        public final Builder location(Location value) {
+            this.location = value;
+            return this;
+        }
+
         @Override
         protected Event.Builder self() {
             return this;
@@ -279,5 +292,7 @@ public class Event implements JsonpSerializable {
         op.add(Event.Builder::cost_max, JsonpDeserializer.doubleDeserializer(), "cost_max");
         op.add(Event.Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
         op.add(Event.Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
+
+        op.add(Event.Builder::location, Location._DESERIALIZER, "location");
     }
 }

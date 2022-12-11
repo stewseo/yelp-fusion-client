@@ -14,9 +14,7 @@ import static io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer.string
 public class Attribute implements JsonpSerializable {
     @Nullable
     private final String attribute;
-
     public String attribute(){return this.attribute;}
-
     private Attribute(Builder builder) {
         this.attribute = builder.attribute;
     }

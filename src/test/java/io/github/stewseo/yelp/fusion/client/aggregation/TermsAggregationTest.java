@@ -36,12 +36,12 @@ public class TermsAggregationTest {
     @Test
     void termsAggregationTest() throws Exception {
 
-        // Dynamically build each unique bucket: categories alias
+        // Dynamically build each unique bucket: all alias
         TermsAggregation termsAggregation = TermsAggregation.of(t -> t
-                .field("categories.alias.keyword")
+                .field("all.alias.keyword")
                 .size(315)
         );
-        // match all documents containing the queryName: "categories"
+        // match all documents containing the queryName: "all"
         Query matchAll = MatchAllQuery.of(m -> m
                 .queryName("location")
         )._toQuery();
@@ -52,8 +52,8 @@ public class TermsAggregationTest {
         SearchResponse<Void> response =  Elasticsearch.getInstance().client().search(b -> b
                         .index("yelp-businesses-restaurants-nyc")
                         .size(0) // Set the number of matching documents to zero
-                        .query(matchAll) // Set the query that will filter the businesses on which to run the aggregation (all contain categories)
-                        .aggregations("categories-aggs", a -> a // Create an aggregation named "categories-aggs"
+                        .query(matchAll) // Set the query that will filter the businesses on which to run the aggregation (all contain all)
+                        .aggregations("all-aggs", a -> a // Create an aggregation named "all-aggs"
                                 .terms(termsAggregation) // Select the terms aggregation variant.
 
                         ),
@@ -61,7 +61,7 @@ public class TermsAggregationTest {
         );
 
         List<StringTermsBucket> buckets = response.aggregations()
-                .get("categories-aggs")
+                .get("all-aggs")
                 .sterms()
                 .buckets().array();
 

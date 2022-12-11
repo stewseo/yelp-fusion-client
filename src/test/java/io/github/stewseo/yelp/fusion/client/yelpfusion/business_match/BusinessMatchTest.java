@@ -9,7 +9,7 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatch;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business_reviews.BusinessReviewsTest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsTest;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;

@@ -23,17 +23,29 @@ public class YelpFusionEventsClient extends ApiClient<YelpFusionTransport, YelpF
         return new YelpFusionEventsClient(this.transport, transportOptions);
     }
 
-    public EventSearchResponse eventSearch(EventSearchRequest request) throws Exception {
+    public EventSearchResponse search(EventSearchRequest request) throws Exception {
         @SuppressWarnings("unchecked")
         JsonEndpoint<EventSearchRequest, EventSearchResponse, ErrorResponse> endpoint =
                 (JsonEndpoint<EventSearchRequest, EventSearchResponse, ErrorResponse>) EventSearchRequest._ENDPOINT;
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final EventSearchResponse eventSearch(
+    public final EventSearchResponse search(
             Function<EventSearchRequest.Builder, ObjectBuilder<EventSearchRequest>> fn)
             throws Exception {
 
-        return eventSearch(fn.apply(new EventSearchRequest.Builder()).build());
+        return search(fn.apply(new EventSearchRequest.Builder()).build());
+    }
+    public FeaturedEventResponse featured(FeaturedEventRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<FeaturedEventRequest, FeaturedEventResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<FeaturedEventRequest, FeaturedEventResponse, ErrorResponse>) FeaturedEventRequest._ENDPOINT;
+        return this.transport.performRequest(request, endpoint, this.transportOptions);
+    }
+    public final FeaturedEventResponse featured(
+            Function<FeaturedEventRequest.Builder, ObjectBuilder<FeaturedEventRequest>> fn)
+            throws Exception {
+
+        return featured(fn.apply(new FeaturedEventRequest.Builder()).build());
     }
 }

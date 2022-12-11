@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +19,7 @@ public class CategoriesAliasTest {
         // Specify the Yelp category alias
         YelpFusionClient client = YelpFusionClient.createClient(System.getenv("YELP_API_KEY"));
 
-        GetCategoriesAliasResponse response = client.categoriesAlias(c -> c.alias("sushi"));
+        GetCategoriesAliasResponse response = client.categories().alias(c -> c.alias("sushi"));
 
         assertThat(response.category().toString()).isEqualTo(
                 "Categories: {\"alias\":\"sushi\",\"title\":\"Sushi Bars\",\"parent_aliases\":[\"restaurants\"],\"country_whitelist\":[],\"country_blacklist\":[]}");

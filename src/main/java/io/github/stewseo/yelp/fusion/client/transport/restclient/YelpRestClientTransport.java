@@ -88,9 +88,9 @@ public class YelpRestClientTransport implements YelpFusionTransport {
             TransportOptions transportOptions) throws IOException {
 
         Request clientRequest = prepareLowLevelRequest(request, endpoint, transportOptions);
-
+        logger.info("client request: " + clientRequest.getEndpoint() + " " + clientRequest.getParameters());
         Response clientResponse = restClient.performRequest(clientRequest);
-
+        logger.info("clientResponse: " + clientResponse.getRequestLine());
         return getHighLevelResponse(clientResponse, endpoint);
     }
 
@@ -106,7 +106,6 @@ public class YelpRestClientTransport implements YelpFusionTransport {
         boolean disableRequiredChecks = ApiTypeHelper.requiredPropertiesCheckDisabled();
 
         future.cancellable = restClient.performRequestAsync(clientReq, new ResponseListener() {
-
 
             @Override
             public void onSuccess(Response clientResp) {
@@ -183,7 +182,6 @@ public class YelpRestClientTransport implements YelpFusionTransport {
 
                 // We may have to replay it.
                 entity = new BufferedHttpEntity(entity);
-
                 try {
                     InputStream content = entity.getContent();
                     try (JsonParser parser = mapper.jsonProvider().createParser(content)) {
@@ -232,7 +230,7 @@ public class YelpRestClientTransport implements YelpFusionTransport {
                             endpoint.id(), new ResponseException(clientResp)
                     );
                 }
-
+//                logger.info("entity = new BufferedHttpEntity(entity): " + EntityUtils.toString(entity));
                 InputStream content = entity.getContent();
 
                 JsonParser parser = mapper.jsonProvider().createParser(content);

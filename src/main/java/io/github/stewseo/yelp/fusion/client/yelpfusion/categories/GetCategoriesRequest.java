@@ -17,8 +17,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class GetCategoriesRequest extends RequestBase implements JsonpSerializable {
     private final String locale;
-
-    private Integer test;
     private GetCategoriesRequest(Builder builder) {
         this.locale = builder.locale;
     }
@@ -67,16 +65,14 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
             this.test = test;
             return this;
         }
-
-
     }
 
 
-    public static final SimpleEndpoint<GetCategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",
+    public static final SimpleEndpoint<GetCategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/all",
             // Request method
             request -> "GET",
 
-            request -> "v3/categories",
+            request -> "v3/all",
 
             // Request path
             request -> {

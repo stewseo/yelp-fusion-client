@@ -88,7 +88,7 @@ public class RequestTest extends ElasticsearchConnection {
         logger.info(PrintUtils.green("index: " + indexNyc + " docs count: " + docsCount));
 
         termsAggregationByCategory = elasticSearch.getStringTermsBuckets();
-        logger.info(PrintUtils.debug("number of categories with at least 1 restaurant: " + termsAggregationByCategory.size()));
+        logger.info(PrintUtils.debug("number of all with at least 1 restaurant: " + termsAggregationByCategory.size()));
 
         for(StringTermsBucket bucket: termsAggregationByCategory) {
             logger.info("Category: " + bucket.key().stringValue() + ", document count: " + bucket.docCount());
@@ -253,7 +253,7 @@ public class RequestTest extends ElasticsearchConnection {
                                     .anyMatch(user ->
                                             user.stringValue().equals(category)) ? i.get() - 1 : -1;
 
-                            File file = new File(this.getClass().getResource("categories-gt-max.txt").getPath());
+                            File file = new File(this.getClass().getResource("all-gt-max.txt").getPath());
 
                             JsonObjectBuilder builder = Json.createObjectBuilder();
                             builder.add("category", category);
@@ -290,21 +290,21 @@ public class RequestTest extends ElasticsearchConnection {
     }
 
     void termsAggregationTest() {
-        String queryName = "categories";
+        String queryName = "all";
 
         Query query = MatchAllQuery.of(m -> m
                 .queryName(queryName)
         )._toQuery();
 
 
-        String field = "categories.alias";
+        String field = "all.alias";
         SearchResponse<Void> searchResponse;
         TermsAggregation termsAggregation = TermsAggregation.of(a -> a
                 .field(field));
 
         Aggregation aggs = Aggregation.of(a -> a.terms(termsAggregation));
 
-        Map<String, Aggregation> aggsMap = Map.of("categories-aggregation", aggs);
+        Map<String, Aggregation> aggsMap = Map.of("all-aggregation", aggs);
 
         try {
             searchResponse = elasticSearch.client().search(_1 -> _1

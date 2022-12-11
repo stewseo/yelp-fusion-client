@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.business_search;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.business.search;
 
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
@@ -6,8 +6,6 @@ import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearch;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

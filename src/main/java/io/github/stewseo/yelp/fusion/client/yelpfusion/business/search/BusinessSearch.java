@@ -20,7 +20,6 @@ public class BusinessSearch implements JsonpSerializable {
     private static final Logger logger = LoggerFactory.getLogger(BusinessSearch.class);
 
     // ------------------------------ Fields ------------------------------------ //
-    //Strings: display_phone, url, name, alias, id, price, image_url
 
     private final String id;
 
@@ -38,30 +37,19 @@ public class BusinessSearch implements JsonpSerializable {
 
     private final String price;
 
-    //Boolean: is_closed
-
     private final Boolean is_closed;
 
-    //Double: distance, rating
     private final Double distance;
 
     private final Double rating;
 
-    //Integer: review_count
-
     private final Integer review_count;
-
-    //Array of Strings: transactions
 
     private final List<String> transactions;
 
-
-    //java objects location, coordinates
     private final Coordinates coordinates;
 
     private final Location location;
-
-    //Array of java objects
 
     private final List<Categories> categories;
 
@@ -90,7 +78,7 @@ public class BusinessSearch implements JsonpSerializable {
         return fn.apply(new BusinessSearch.Builder()).build();
     }
 
-    // ------------------------------ Methods ------------------------------------ //
+    // ------------------------------ Getters ------------------------------------ //
     public String id() {
         return id;
     }
@@ -149,7 +137,7 @@ public class BusinessSearch implements JsonpSerializable {
         return transactions;
     }
 
-
+    // ------------------------------ serialize ------------------------------------ //
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
         serializeInternal(generator, mapper);
@@ -228,7 +216,7 @@ public class BusinessSearch implements JsonpSerializable {
             coordinates.serialize(generator, mapper);
         }
         if(ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("categories");
+            generator.writeKey("all");
             generator.writeStartArray();
             for (Categories item0 : this.categories) {
                 item0.serialize(generator, mapper);
@@ -377,6 +365,8 @@ public class BusinessSearch implements JsonpSerializable {
         }
     }
 
+    // ------------------------------ Deserializer ------------------------------------ //
+
     public static final JsonpDeserializer<BusinessSearch> _DESERIALIZER = ObjectBuilderDeserializer.lazy(BusinessSearch.Builder::new,
             BusinessSearch::setUpBusinessDeserializer);
 
@@ -401,7 +391,7 @@ public class BusinessSearch implements JsonpSerializable {
 
         op.add(BusinessSearch.Builder::location, Location._DESERIALIZER, "location");
         op.add(BusinessSearch.Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
-        op.add(BusinessSearch.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
+        op.add(BusinessSearch.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
 
     }
     

@@ -28,7 +28,7 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
         generator.writeStartObject();
         if(this.category != null) {
             this.category.serialize(generator, mapper);
-            System.out.println("categories: " );
+            System.out.println("all: " );
         }
         generator.writeEnd();
     }
@@ -49,13 +49,13 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
 
         private Categories  category;
 
-//        public final GetCategoriesAliasResponse.Builder categories(Category categories) {
-//            this.categories = _listAddAll(this.categories, categories);;
+//        public final GetCategoriesAliasResponse.Builder all(Category all) {
+//            this.all = _listAddAll(this.all, all);;
 //            return this;
 //        }
 //
-//        public final GetCategoriesAliasResponse.Builder categories(Categories value, Categories ... values) {
-//            this.categories = _listAdd(categories, value, values);
+//        public final GetCategoriesAliasResponse.Builder all(Categories value, Categories ... values) {
+//            this.all = _listAdd(all, value, values);
 //            return this;
 //        }
 

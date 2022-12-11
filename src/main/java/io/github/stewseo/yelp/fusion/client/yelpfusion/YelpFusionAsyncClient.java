@@ -12,8 +12,13 @@ import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.ApiClient;
 
 import io.github.stewseo.yelp.fusion.client.transport.YelpFusionTransport;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.AutoCompleteResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.YelpFusionBusinessAsyncClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.YelpFusionBusinessClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.YelpFusionCategoriesClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.events.YelpFusionEventsAsyncClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.events.YelpFusionEventsClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsRequest;
@@ -44,6 +49,11 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         super(transport, transportOptions);
     }
 
+    @Override
+    public YelpFusionAsyncClient withTransportOptions(@Nullable TransportOptions transportOptions) {
+        return new YelpFusionAsyncClient(this.transport, transportOptions);
+    }
+
     public static YelpFusionAsyncClient createAsyncClient(String apiKey) throws IOException {
         String hostName = "api.yelp.com";
         int port = 443;
@@ -60,13 +70,19 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         return new YelpFusionAsyncClient(transport);
     }
 
-    @Override
-    public YelpFusionAsyncClient withTransportOptions(@Nullable TransportOptions transportOptions) {
-        return new YelpFusionAsyncClient(this.transport, transportOptions);
+    // Businesses Endpoint client
+    public YelpFusionBusinessAsyncClient businesses() {
+        return new YelpFusionBusinessAsyncClient(this.transport, this.transportOptions);
     }
 
+    // Categories Endpoint client
     public YelpFusionCategoriesAsyncClient categories() {
         return new YelpFusionCategoriesAsyncClient(this.transport, this.transportOptions);
+    }
+
+    // Events Endpoint client
+    public YelpFusionEventsAsyncClient events() {
+        return new YelpFusionEventsAsyncClient(this.transport, this.transportOptions);
     }
 
     public <TDocument> CompletableFuture<BusinessSearchResponse> search(BusinessSearchRequest request,

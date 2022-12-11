@@ -64,14 +64,14 @@ public class GetCategoriesAliasRequest extends RequestBase implements JsonpSeria
     }
 
 
-    public static final SimpleEndpoint<GetCategoriesAliasRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",// Request method
+    public static final SimpleEndpoint<GetCategoriesAliasRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/all",// Request method
 
             request -> "GET",
 
             request -> {
                 // Request path
                 if (request.alias() != null) {
-                    return "v3/categories" + "/" + request.alias;
+                    return "v3/all" + "/" + request.alias;
                 }
                 System.out.println("returning null: ");
                 return null;

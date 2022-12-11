@@ -1,12 +1,8 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.event;
 
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.events.EventSearchResponse;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.net.http.HttpResponse;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -18,7 +14,7 @@ public class EventSearchTest {
 
         YelpFusionClient client = YelpFusionClient.createClient(apiKey);
 
-        EventSearchResponse response = client.events().eventSearch(c -> c
+        EventSearchResponse response = client.events().search(c -> c
                 .location("sf")
                 .limit(10)
         );

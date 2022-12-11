@@ -1,4 +1,4 @@
-package io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete;
+package io.github.stewseo.yelp.fusion.client.yelpfusion.misc;
 
 import co.elastic.clients.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.json.*;
@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
-// TODO: extend Result<TDocument> and replace categories, terms, businesses with TDocument result
+// TODO: extend Result<TDocument> and replace all, terms, businesses with TDocument result
 @JsonpDeserializable
 public class AutoCompleteResponse implements JsonpSerializable {
     // ------------------------------ Fields ------------------------------------ //
@@ -55,7 +55,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
         if (ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("categories");
+            generator.writeKey("all");
             generator.writeStartObject();
             for (Categories item0 : categories) {
                 item0.serialize(generator, mapper);
@@ -149,7 +149,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
     
     protected static void setupAutoCompleteDeserializer(ObjectDeserializer<AutoCompleteResponse.Builder> op) {
         op.add(Builder::terms, JsonpDeserializer.arrayDeserializer(Term._DESERIALIZER), "terms");
-        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
+        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
 
         op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(Business._DESERIALIZER), "businesses");
     }

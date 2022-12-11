@@ -28,7 +28,7 @@ public class ResponseDeserializerTest {
             "\"phone\": \"+13479873581\", " +
             "\"display_phone\": \"(347) 987-3581\", " +
             "\"review_count\": 7, " +
-            "\"categories\": [{\"alias\": \"mexican\", \"title\": \"Mexican\"}], " +
+            "\"all\": [{\"alias\": \"mexican\", \"title\": \"Mexican\"}], " +
             "\"rating\": 5.0," +
             " \"location\": {\"address1\": \"778 Seneca Ave\", \"address2\": null, \"address3\": null, \"city\": \"Ridgewood\", \"zip_code\": \"11385\", \"country\": \"US\", \"state\": \"NY\", \"display_address\": [\"778 Seneca Ave\", \"Ridgewood, NY 11385\"], \"cross_streets\": \"\"}, " +
             "\"coordinates\": {\"latitude\": 40.701692, \"longitude\": -73.906044}, " +

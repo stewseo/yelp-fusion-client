@@ -21,7 +21,7 @@ import java.util.concurrent.Flow;
 public class JsonpDeserializerTest extends ModelTestCase {
     private static final Logger logger = LoggerFactory.getLogger(JsonpDeserializerTest.class);
     private final static String reqLine = "http://api.yelp.com/v3/businesses/search?" +
-            "location=sf&limit=50&term=restaurants&latitude=38.2142&longitude=-122.1429&categories=";
+            "location=sf&limit=50&term=restaurants&latitude=38.2142&longitude=-122.1429&all=";
 
 
     public static void main(String[] args) throws Exception {

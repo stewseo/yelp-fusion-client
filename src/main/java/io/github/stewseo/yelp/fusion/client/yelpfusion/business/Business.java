@@ -259,7 +259,7 @@ public class Business implements JsonpSerializable {
             generator.writeEnd();
         }
         if (ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("categories");
+            generator.writeKey("all");
             generator.writeStartArray();
             for (Categories item0 : this.categories) {
                 item0.serialize(generator, mapper);
@@ -488,7 +488,7 @@ public class Business implements JsonpSerializable {
         op.add(Business.Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
         op.add(Business.Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
 
-        op.add(Business.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
+        op.add(Business.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
         op.add(Business.Builder::hours, JsonpDeserializer.arrayDeserializer(Hours._DESERIALIZER), "hours");
 
     }
