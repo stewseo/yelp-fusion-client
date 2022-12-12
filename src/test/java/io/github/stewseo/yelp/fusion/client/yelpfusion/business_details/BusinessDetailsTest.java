@@ -49,7 +49,7 @@ public class BusinessDetailsTest extends ElasticsearchConnection {
 
         Business business = response.result().get(0);
         logger.debug(PrintUtils.debug("business details response: " + business));
-
+        assertThat(business.toString().length()).isEqualTo(1471);
         assertThat(business.id()).isEqualTo("wu3w6IlUct9OvYmYXDMGJA");
         assertThat(Objects.requireNonNull(business.hours()).toString()).isEqualTo("[Hours: {\"open\":[{\"is_overnight\":false,\"day\":0,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":1,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":2,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":3,\"start\":\"1100\",\"end\":\"2230\"},{\"is_overnight\":false,\"day\":4,\"start\":\"1100\",\"end\":\"2330\"},{\"is_overnight\":false,\"day\":5,\"start\":\"1100\",\"end\":\"2330\"},{\"is_overnight\":false,\"day\":6,\"start\":\"1100\",\"end\":\"2230\"}],\"hours_type\":\"REGULAR\",\"is_open_now\":true}]");
         assertThat(business.alias()).isEqualTo("huitlacoche-taqueria-restaurant-ridgewood-2");

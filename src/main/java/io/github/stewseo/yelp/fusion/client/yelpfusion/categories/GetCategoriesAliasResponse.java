@@ -24,11 +24,10 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-
+        generator.writeKey("category");
         generator.writeStartObject();
         if(this.category != null) {
             this.category.serialize(generator, mapper);
-            System.out.println("all: " );
         }
         generator.writeEnd();
     }
@@ -48,16 +47,6 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
             ObjectBuilder<GetCategoriesAliasResponse> {
 
         private Categories  category;
-
-//        public final GetCategoriesAliasResponse.Builder all(Category all) {
-//            this.all = _listAddAll(this.all, all);;
-//            return this;
-//        }
-//
-//        public final GetCategoriesAliasResponse.Builder all(Categories value, Categories ... values) {
-//            this.all = _listAdd(all, value, values);
-//            return this;
-//        }
 
         public final GetCategoriesAliasResponse.Builder categories(Categories value) {
             this.category = value;
@@ -85,7 +74,6 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
 
     protected static void setCategoriesAliasResponseDeserializer(ObjectDeserializer<GetCategoriesAliasResponse.Builder> op) {
         op.add(Builder::categories, Categories._DESERIALIZER, "category");
-
     }
 }
 

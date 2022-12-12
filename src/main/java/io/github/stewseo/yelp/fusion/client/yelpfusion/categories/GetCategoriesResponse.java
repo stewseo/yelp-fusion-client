@@ -23,7 +23,8 @@ public class GetCategoriesResponse extends RequestBase implements JsonpSerializa
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeStartObject();
+        generator.writeKey("categories");
+        generator.writeStartArray();
         for (Categories item0 : this.categories) {
             item0.serialize(generator, mapper);
         }
@@ -75,7 +76,7 @@ public class GetCategoriesResponse extends RequestBase implements JsonpSerializa
         public static final JsonpDeserializer<GetCategoriesResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(GetCategoriesResponse.Builder::new,
                 GetCategoriesResponse::setGetCategoriesResponseDeserializer);
         protected static void setGetCategoriesResponseDeserializer(ObjectDeserializer<GetCategoriesResponse.Builder> op) {
-            op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
+            op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
         }
 
 

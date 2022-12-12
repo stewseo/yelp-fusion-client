@@ -49,9 +49,11 @@ public class SearchBusinessResponse implements JsonpSerializable {
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if(this.businesses != null) {
             generator.writeKey("businesses");
+            generator.writeStartArray();
             for(SearchBusiness business: businesses) {
                 business.serialize(generator, mapper);
             }
+            generator.writeEnd();
         }
         if (this.total != null) {
             generator.writeKey("total");

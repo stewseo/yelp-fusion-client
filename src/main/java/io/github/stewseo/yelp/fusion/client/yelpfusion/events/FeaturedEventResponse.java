@@ -4,6 +4,7 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.JsonpSerializable;
+import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
@@ -54,6 +55,11 @@ public class FeaturedEventResponse implements JsonpSerializable {
             generator.writeKey("business_id");
             generator.write(this.business_id);
         }
+    }
+
+    @Override
+    public String toString() {
+        return JsonpUtils.toString(this);
     }
 
     //----------------------------- builder -----------------------------------//

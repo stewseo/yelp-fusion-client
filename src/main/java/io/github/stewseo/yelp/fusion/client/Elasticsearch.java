@@ -43,9 +43,7 @@ public class Elasticsearch {
 
     private static volatile Elasticsearch instance;
     private static ElasticsearchClient esClient;
-
     private static ElasticsearchAsyncClient esAsyncClient;
-
     private static final Object mutex = new Object();
 
     public static Elasticsearch getInstance() {

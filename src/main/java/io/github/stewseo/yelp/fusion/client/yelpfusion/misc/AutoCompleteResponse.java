@@ -55,8 +55,8 @@ public class AutoCompleteResponse implements JsonpSerializable {
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
         if (ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("all");
-            generator.writeStartObject();
+            generator.writeKey("categories");
+            generator.writeStartArray();
             for (Categories item0 : categories) {
                 item0.serialize(generator, mapper);
             }
@@ -65,15 +65,15 @@ public class AutoCompleteResponse implements JsonpSerializable {
         }
         if (ApiTypeHelper.isDefined(this.terms)) {
             generator.writeKey("terms");
-            generator.writeStartObject();
+            generator.writeStartArray();
             for (Term item0 : terms) {
                 item0.serialize(generator, mapper);
             }
             generator.writeEnd();
         }
-        if (this.businesses != null) {
+        if (ApiTypeHelper.isDefined(this.businesses)) {
             generator.writeKey("businesses");
-            generator.writeStartObject();
+            generator.writeStartArray();
             for (Business item0 : businesses) {
                 item0.serialize( generator, mapper);
             }
@@ -149,8 +149,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
     
     protected static void setupAutoCompleteDeserializer(ObjectDeserializer<AutoCompleteResponse.Builder> op) {
         op.add(Builder::terms, JsonpDeserializer.arrayDeserializer(Term._DESERIALIZER), "terms");
-        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
-
+        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
         op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(Business._DESERIALIZER), "businesses");
     }
 

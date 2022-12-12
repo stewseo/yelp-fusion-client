@@ -31,7 +31,8 @@ public class BusinessDetailsResponse implements JsonpSerializable {
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeStartObject();
+        generator.writeKey("businesses");
+        generator.writeStartArray();
         for (Business item0 : this.result) {
             item0.serialize(generator, mapper);
         }

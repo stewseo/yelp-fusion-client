@@ -22,6 +22,7 @@ public class BusinessReviewsTest {
         YelpFusionClient client = YelpConnection.getYelpClient();
         ReviewsResponse response = client.businesses().businessReviews(request);
         assertThat(response.reviews().size()).isEqualTo(3);
+        assertThat(response.toString().length()).isEqualTo(1959);
         assertThat(response.reviews().get(0).id().toString()).isEqualTo("WoTuZDEv1_9cVfydgellYg");
         assertThat(response.reviews().get(0).url().toString()).isEqualTo("https://www.yelp.com/biz/katzs-delicatessen-new-york?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&hrid=WoTuZDEv1_9cVfydgellYg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=ccj3y1UCH-4gsdWSMdEDOw");
         assertThat(response.reviews().get(0).rating()).isEqualTo(5.0);

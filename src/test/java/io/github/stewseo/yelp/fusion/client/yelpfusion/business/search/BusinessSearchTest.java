@@ -53,7 +53,7 @@ public class BusinessSearchTest extends ElasticsearchConnection {
                 .radius(1610)
                 .sort_by("distance")
         );
-
+        assertThat(response.toString().length()).isEqualTo(10027);
         assertThat(response.total()).isEqualTo(239); // // max results per page total
         assertThat(response.businesses().size()).isEqualTo(50); // total results max results per page
 

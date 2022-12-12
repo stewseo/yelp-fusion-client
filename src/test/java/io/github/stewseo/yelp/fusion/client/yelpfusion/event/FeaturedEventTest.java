@@ -14,7 +14,7 @@ public class FeaturedEventTest {
         YelpFusionClient client = YelpFusionClient.createClient(apiKey);
 
         FeaturedEventResponse response = client.events().featured(f -> f.location("NYC"));
-
+        assertThat(response.toString().length()).isEqualTo(1017);
         assertThat(response.event().toString()).isEqualTo(
                 "Event: " +
                         "{\"category\":\"sports-active-life\"," +

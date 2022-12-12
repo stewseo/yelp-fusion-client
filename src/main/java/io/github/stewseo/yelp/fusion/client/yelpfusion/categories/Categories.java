@@ -18,9 +18,9 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class Categories implements JsonpSerializable {
-
     private final String title;
     private final String alias;
+    @Nullable
     private final List<String> parent_aliases;
     @Nullable
     private final List<String> country_whitelist;
@@ -118,8 +118,11 @@ public class Categories implements JsonpSerializable {
 
         private String alias;
         private String title;
+        @Nullable
         private List<String> parent_aliases;
+        @Nullable
         private List<String> country_whitelist;
+        @Nullable
         private List<String> country_blacklist;
 
         public final Builder alias(String value) {
@@ -132,7 +135,7 @@ public class Categories implements JsonpSerializable {
             return this;
         }
 
-        public final Builder parent_aliases(List<String> values) {
+        public final Builder parent_aliases(@Nullable List<String> values) {
             this.parent_aliases = _listAddAll(this.parent_aliases, values);
             return this;
         }
@@ -141,7 +144,7 @@ public class Categories implements JsonpSerializable {
             return this;
         }
         public final Builder country_whitelist(List<String> values) {
-            this.country_whitelist = _listAddAll(country_whitelist, values);
+            this.country_whitelist = _listAddAll(this.country_whitelist, values);
             return this;
         }
         public final Builder country_whitelist(String value, String ... values) {
@@ -167,7 +170,6 @@ public class Categories implements JsonpSerializable {
             return new Categories(this);
         }
     }
-
 
     public static final JsonpDeserializer<Categories> _DESERIALIZER =
             ObjectBuilderDeserializer.lazy(Categories.Builder::new,

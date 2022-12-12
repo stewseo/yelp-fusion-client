@@ -18,7 +18,7 @@ public class EventSearchTest {
                 .location("sf")
                 .limit(10)
         );
-
+        assertThat(response.toString().length()).isEqualTo(9511);
         assertThat(response.total()).isEqualTo(10);
         assertThat(response.events().size()).isEqualTo(10);
         assertThat(response.events().get(0).toString()).isEqualTo(

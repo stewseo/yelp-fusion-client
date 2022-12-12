@@ -38,6 +38,7 @@ public class BusinessMatchTest {
         BusinessMatchResponse response = client.businesses().businessMatch(request);
 
         BusinessMatch businessMatch = response.businesses().get(0);
+        assertThat(businessMatch.toString().length()).isEqualTo(85);
 
         assertThat(businessMatch.coordinates().toString()).isEqualTo("Coordinates: {\"latitude\":37.7829016035273,\"longitude\":-122.419043442957}");
         assertThat(businessMatch.location().toString()).isEqualTo("Location: {\"address1\":\"652 Polk St\",\"address2\":\"\",\"address3\":\"\",\"city\":\"San Francisco\",\"zip_code\":\"94102\",\"country\":\"US\",\"display_address\":[\"652 Polk St\",\"San Francisco, CA 94102\"]}");

@@ -41,9 +41,11 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
         if (this.businesses != null) {
             generator.writeKey("businesses");
-            for(BusinessMatch bu : businesses) {
-                bu.serialize(generator, mapper);
+            generator.writeStartArray();
+            for(BusinessMatch item0 : businesses) {
+                item0.serialize(generator, mapper);
             }
+            generator.writeEnd();
         }
 
     }

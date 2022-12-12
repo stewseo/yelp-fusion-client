@@ -68,11 +68,11 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
     }
 
 
-    public static final SimpleEndpoint<GetCategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/all",
+    public static final SimpleEndpoint<GetCategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",
             // Request method
             request -> "GET",
 
-            request -> "v3/all",
+            request -> "v3/categories",
 
             // Request path
             request -> {
