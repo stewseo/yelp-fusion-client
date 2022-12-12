@@ -54,8 +54,8 @@ public class BusinessSearchTest extends ElasticsearchConnection {
                 .sort_by("distance")
         );
         assertThat(response.toString().length()).isEqualTo(10027);
-        assertThat(response.total()).isEqualTo(239); // // max results per page total
-        assertThat(response.businesses().size()).isEqualTo(50); // total results max results per page
+        assertThat(response.total()).isEqualTo(3300); // total results
+        assertThat(response.businesses().size()).isEqualTo(50); // max results per page
 
         assertThat(response.region().latitude()).isEqualTo(40.7580); //meta field region.latitude
         assertThat(response.region().longitude()).isEqualTo(-73.9855); //meta field region.longitude

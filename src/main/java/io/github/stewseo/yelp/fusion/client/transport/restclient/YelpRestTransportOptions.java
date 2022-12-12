@@ -121,7 +121,7 @@ public class YelpRestTransportOptions implements TransportOptions {
 
     private static RequestOptions.Builder addBuiltinHeaders(RequestOptions.Builder builder) {
         if (builder.getHeaders().stream().noneMatch(h -> h.getName().equalsIgnoreCase("Accept"))) {
-            System.out.println("stub built in headers for yelp fusion endpoints");
+
         }
         return builder;
     }
