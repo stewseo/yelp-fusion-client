@@ -8,8 +8,10 @@
 - Delegates protocol handling to an http client that takes care of all transport-level concerns based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Automatically maps json to/from an application class.
 
-[Examples and use cases](https://stewseo.github.io/yelp-fusion-client/examples)
+### [Examples and use cases](https://stewseo.github.io/yelp-fusion-client/examples)
+
 <br>
+
 ### Dependency Configuration
 Gradle
 ```
