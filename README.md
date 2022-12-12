@@ -14,7 +14,7 @@
 Gradle
 ```
 dependencies {
-    implementation 'io.github.stewseo:yelp-fusion-client:1.0.0'
+    implementation 'io.github.stewseo:yelp-fusion-client:1.0.4'
 }
 ```
 Maven
@@ -22,7 +22,7 @@ Maven
 <dependency>
     <groupId>io.github.stewseo</groupId>
     <artifactId>yelp-fusion-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 <br>
