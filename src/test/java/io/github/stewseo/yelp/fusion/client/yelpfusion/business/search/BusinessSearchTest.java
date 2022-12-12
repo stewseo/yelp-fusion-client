@@ -40,7 +40,7 @@ public class BusinessSearchTest extends ElasticsearchConnection {
         Double longitude = -73.9855;
         Integer offset = 0;
 
-        BusinessSearchResponse response = yelpClient.businesses().businessSearch(s -> s
+        SearchBusinessResponse response = yelpClient.businesses().businessSearch(s -> s
                 .location("manhattan")
                 .coordinates(c -> c
                         .latitude(40.7580)
@@ -61,7 +61,7 @@ public class BusinessSearchTest extends ElasticsearchConnection {
         assertThat(response.region().longitude()).isEqualTo(-73.9855); //meta field region.longitude
 
         // closest pizza restaurant to times square coordinates provided by: https://www.latlong.net/place/times-square-nyc-usa-7560.html
-        BusinessSearch business = response.businesses().get(0);
+        SearchBusiness business = response.businesses().get(0);
         assertThat(business.alias()).isEqualTo("slice-of-ny-pizza-new-york");
         assertThat(business.review_count()).isEqualTo(17);
         assertThat(business.is_closed()).isEqualTo(false); // current time: 12:15 PM EST

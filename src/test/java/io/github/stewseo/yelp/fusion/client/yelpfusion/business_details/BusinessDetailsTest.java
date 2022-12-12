@@ -2,8 +2,8 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business_details;
 
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;

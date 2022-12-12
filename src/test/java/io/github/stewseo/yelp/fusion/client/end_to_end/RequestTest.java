@@ -15,8 +15,8 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
@@ -24,8 +24,8 @@ import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientT
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearch;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusiness;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessResponse;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
@@ -178,7 +178,7 @@ public class RequestTest extends ElasticsearchConnection {
                     Double longitude = entry.getValue().getLongitude(); // longitude of neighborhood
 
                     try {
-                        BusinessSearchResponse businessSearchResponse = yelpClient.businesses().businessSearch(s -> s
+                        SearchBusinessResponse businessSearchResponse = yelpClient.businesses().businessSearch(s -> s
                                 .location(location)
                                 .coordinates(c -> c
                                         .latitude(latitude)
@@ -198,13 +198,13 @@ public class RequestTest extends ElasticsearchConnection {
 
                         if (total > 0 && finalOffset <= 1000) {
 
-                            List<BusinessSearch> listOfBusinessSearch = businessSearchResponse.businesses();
+                            List<SearchBusiness> listOfBusinessSearch = businessSearchResponse.businesses();
 
                             BulkRequest.Builder br = new BulkRequest.Builder();
                             BusinessDetailsResponse businessDetailsResponse;
                             logger.info(PrintUtils.debug(PrintUtils.cyan(" category: " + category + ", total: " + total + ", location: " + location + ", distance: " + distance + ", region: " + businessSearchResponse.region().center() + PrintUtils.green("\ntrying to add : " + listOfBusinessSearch.size() + " BusinessSearch results. Current offset: " + finalOffset))));
 
-                            for (BusinessSearch businessSearch : listOfBusinessSearch) {
+                            for (SearchBusiness businessSearch : listOfBusinessSearch) {
                                 distance = businessSearch.distance();
                                 String businessId = businessSearch.id();
 

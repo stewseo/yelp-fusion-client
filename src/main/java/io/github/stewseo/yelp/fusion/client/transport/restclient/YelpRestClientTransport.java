@@ -1,8 +1,6 @@
 package io.github.stewseo.yelp.fusion.client.transport.restclient;
 
 
-import co.elastic.clients.transport.rest_client.RestClientTransport;
-import io.github.stewseo.lowlevel.restclient.*;
 import io.github.stewseo.yelp.fusion.client.transport.*;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.BinaryEndpoint;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.BooleanEndpoint;
@@ -15,6 +13,13 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.NdJsonpSerializable;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.Cancellable;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.Request;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RequestOptions;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.Response;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.ResponseException;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.ResponseListener;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;

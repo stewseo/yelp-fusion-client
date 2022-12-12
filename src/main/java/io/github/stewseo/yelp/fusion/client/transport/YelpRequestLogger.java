@@ -3,9 +3,9 @@ package io.github.stewseo.yelp.fusion.client.transport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessResponse;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import org.apache.http.*;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -28,7 +28,7 @@ public class YelpRequestLogger {
     }
 
 
-    public static <ResponseT> void logEmptyResponseBody(Logger logger, BusinessSearchResponse businessSearchResponse) {
+    public static <ResponseT> void logEmptyResponseBody(Logger logger, SearchBusinessResponse businessSearchResponse) {
 
         if (logger.isDebugEnabled()) {
             logger.debug(PrintUtils.red("request [ request.getMethod() host getUri(request.getRequestLine()) ] returned [ httpResponse.getStatusLine() ]"
@@ -124,7 +124,7 @@ public class YelpRequestLogger {
     public static<ResponseT> void logFailedElasticsearchRequest(Logger logger, ResponseT responseT) {
         logger.info(PrintUtils.red("logging Failed Elasticsearch Request."));
 
-        if(responseT instanceof BusinessSearchResponse business) {
+        if(responseT instanceof SearchBusinessResponse business) {
             logger.info("Request for Elasticsearch failed.");
         }
 

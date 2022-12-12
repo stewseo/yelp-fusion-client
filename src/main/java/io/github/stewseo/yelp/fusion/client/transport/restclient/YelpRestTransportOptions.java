@@ -1,7 +1,7 @@
 package io.github.stewseo.yelp.fusion.client.transport.restclient;
 
-import io.github.stewseo.lowlevel.restclient.RequestOptions;
-import io.github.stewseo.lowlevel.restclient.WarningsHandler;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RequestOptions;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.WarningsHandler;
 import io.github.stewseo.yelp.fusion.client.transport.TransportOptions;
 
 

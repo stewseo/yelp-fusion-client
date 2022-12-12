@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.4'
+version = '1.0.5'
 
 java {
     sourceCompatibility = "17"
@@ -60,7 +60,7 @@ publishing {
                 setGroupId "io.github.stewseo"
                 packaging = 'jar'
                 description = 'java client to build api objects, handle http transport, and parse/deserialize/serialize json to/from json'
-                url = 'https://github.com/stewseo/restaurant-recommendation-system'
+                url = 'https://github.com/stewseo/stewseo.github.io'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -68,9 +68,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/stewseo/restaurant-recommendation-system.git'
-                    developerConnection = 'scm:git:ssh://github.com/stewseo/restaurant-recommendation-system.git'
-                    url = 'https://github.com/stewseo/restaurant-recommendation-system.git'
+                    connection = 'scm:git:git://github.com/stewseo/stewseo.github.io.git'
+                    developerConnection = 'scm:git:ssh://github.com/stewseo/stewseo.github.io.git'
+                    url = 'https://github.com/stewseo/stewseo.github.io.git'
                 }
                 developers {
                     developer {
@@ -98,28 +98,32 @@ signing {
 ext {
     // elasticsearch
     elasticsearchVersion = "8.5.2"
+
     // json
     jacksonVersion = "2.12.3"
     jakartaVersion = '2.0.1'
     jakartaJsonBindVersion = '2.0.0'
     parssonVersion = '1.0.0'
+
     // commons
-//    commonscodecVersion = '1.11'
-//    commonsioVersion = '2.4'
-//    commonsloggingVersion = '1.2'
+    commonscodecVersion = '1.11'
+    commonsioVersion = '2.4'
+    commonsloggingVersion = '1.2'
+
     // http components
-//    httpasyncclientVersion = '4.1.5'
-//    httpcoreVersion = '4.4.12'
-//    httpclientVersion = '4.5.10'
+    httpasyncclientVersion = '4.1.5'
+    httpcoreVersion = '4.4.12'
+    httpclientVersion = '4.5.10'
+
     // logging
     slf4jVersion = '2.0.4'
     logbackVersion = '1.4.1'
+
     // testing
     jUnitVersion = "5.9.0"
 }
 
 dependencies {
-    implementation project(":lowlevel-restclient")
 
     // elasticsearch
     api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
@@ -131,6 +135,23 @@ dependencies {
     api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 
+    // apache commons
+    api("commons-io:commons-io:${commonsioVersion}")
+    api("commons-codec:commons-codec:${commonscodecVersion}")
+
+    // apache http components
+    api "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    api "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
+    api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
+    api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
+
+    // loggers
+    api("org.slf4j:slf4j-api:${slf4jVersion}")
+    api("ch.qos.logback:logback-classic:${logbackVersion}")
+    api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+    configurations.all {
+        exclude group: "commons-logging", module: "commons-logging"
+    }
     api 'gg.jte:jte:2.2.3'
 
     // testing
@@ -145,6 +166,19 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 }
+
+//subprojects{
+//    publishing {
+//        publications {
+//            "$project.name"(MavenPublication) {
+//                groupId project.group
+//                artifactId project.name
+//                version project.version
+//                from components.java
+//            }
+//        }
+//    }
+//}
 
 tasks.named('test') {
     useJUnitPlatform()

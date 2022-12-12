@@ -1,6 +1,6 @@
 package io.github.stewseo.yelp.fusion.client;
 
-import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;

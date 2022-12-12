@@ -10,11 +10,10 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.Business
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.BusinessSearchResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.YelpFusionCategoriesClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessResponse;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -34,19 +33,19 @@ public class YelpFusionBusinessClient extends ApiClient<YelpFusionTransport, Yel
         return new YelpFusionBusinessClient(this.transport, transportOptions);
     }
 
-    public BusinessSearchResponse businessSearch(BusinessSearchRequest request)
+    public SearchBusinessResponse businessSearch(SearchBusinessRequest request)
             throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse, ErrorResponse> endpoint = (JsonEndpoint<BusinessSearchRequest, BusinessSearchResponse, ErrorResponse>) BusinessSearchRequest._ENDPOINT;
+        JsonEndpoint<SearchBusinessRequest, SearchBusinessResponse, ErrorResponse> endpoint = (JsonEndpoint<SearchBusinessRequest, SearchBusinessResponse, ErrorResponse>) SearchBusinessRequest._ENDPOINT;
 
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final BusinessSearchResponse businessSearch(
-            Function<BusinessSearchRequest.Builder, ObjectBuilder<BusinessSearchRequest>> fn)
+    public final SearchBusinessResponse businessSearch(
+            Function<SearchBusinessRequest.Builder, ObjectBuilder<SearchBusinessRequest>> fn)
             throws Exception {
 
-        return businessSearch(fn.apply(new BusinessSearchRequest.Builder()).build());
+        return businessSearch(fn.apply(new SearchBusinessRequest.Builder()).build());
     }
 
     public BusinessDetailsResponse businessDetails(BusinessDetailsRequest request) throws Exception {
@@ -63,18 +62,18 @@ public class YelpFusionBusinessClient extends ApiClient<YelpFusionTransport, Yel
         return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());
     }
 
-    public BusinessReviewsResponse businessReviews(BusinessReviewsRequest request) throws Exception {
+    public ReviewsResponse businessReviews(ReviewsRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessReviewsRequest, BusinessReviewsResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessReviewsRequest, BusinessReviewsResponse, ErrorResponse>) BusinessReviewsRequest._ENDPOINT;
+        JsonEndpoint<ReviewsRequest, ReviewsResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<ReviewsRequest, ReviewsResponse, ErrorResponse>) ReviewsRequest._ENDPOINT;
 
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final BusinessReviewsResponse businessReviews(
-            Function<BusinessReviewsRequest.Builder, ObjectBuilder<BusinessReviewsRequest>> fn)
+    public final ReviewsResponse businessReviews(
+            Function<ReviewsRequest.Builder, ObjectBuilder<ReviewsRequest>> fn)
             throws Exception {
-        return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
+        return businessReviews(fn.apply(new ReviewsRequest.Builder()).build());
     }
 
     public BusinessMatchResponse businessMatch(BusinessMatchRequest request) throws Exception {

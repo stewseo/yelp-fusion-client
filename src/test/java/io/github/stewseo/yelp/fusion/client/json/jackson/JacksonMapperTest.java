@@ -1,6 +1,6 @@
 package io.github.stewseo.yelp.fusion.client.json.jackson;
 
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.ModelTestCase;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;

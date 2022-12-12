@@ -17,10 +17,10 @@ public class BusinessReviewsTest {
     @Test
     public void businessReviewsByIdTest() throws Exception {
         String id = "V7lXZKBDzScDeGB8JmnzSA";
-        BusinessReviewsRequest request = BusinessReviewsRequest.of(a -> a.id(id));
+        ReviewsRequest request = ReviewsRequest.of(a -> a.id(id));
         YelpConnection.initYelpFusionClient();
         YelpFusionClient client = YelpConnection.getYelpClient();
-        BusinessReviewsResponse response = client.businesses().businessReviews(request);
+        ReviewsResponse response = client.businesses().businessReviews(request);
         assertThat(response.reviews().size()).isEqualTo(3);
         assertThat(response.reviews().get(0).id().toString()).isEqualTo("WoTuZDEv1_9cVfydgellYg");
         assertThat(response.reviews().get(0).url().toString()).isEqualTo("https://www.yelp.com/biz/katzs-delicatessen-new-york?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&hrid=WoTuZDEv1_9cVfydgellYg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=ccj3y1UCH-4gsdWSMdEDOw");
@@ -35,10 +35,10 @@ public class BusinessReviewsTest {
     @Test
     public void businessReviewsByAliasTest() throws Exception {
         String alias = "katzs-delicatessen-new-york";
-        BusinessReviewsRequest request = BusinessReviewsRequest.of(a -> a.alias(alias));
+        ReviewsRequest request = ReviewsRequest.of(a -> a.alias(alias));
         YelpConnection.initYelpFusionClient();
         YelpFusionClient client = YelpConnection.getYelpClient();
-        BusinessReviewsResponse response = client.businesses().businessReviews(request);
+        ReviewsResponse response = client.businesses().businessReviews(request);
         assertThat(response.reviews().size()).isEqualTo(3);
         assertThat(response.reviews().get(0).id().toString()).isEqualTo("WoTuZDEv1_9cVfydgellYg");
         assertThat(response.reviews().get(0).url().toString()).isEqualTo("https://www.yelp.com/biz/katzs-delicatessen-new-york?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&hrid=WoTuZDEv1_9cVfydgellYg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=ccj3y1UCH-4gsdWSMdEDOw");

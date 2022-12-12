@@ -1,7 +1,7 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion;
 
-import io.github.stewseo.lowlevel.restclient.RequestOptions;
-import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RequestOptions;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.ApiClient;
 import io.github.stewseo.yelp.fusion.client._types.ErrorResponse;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;

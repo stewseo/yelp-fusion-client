@@ -1,6 +1,6 @@
 package io.github.stewseo.lowlevel.restclient.response;
 
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;

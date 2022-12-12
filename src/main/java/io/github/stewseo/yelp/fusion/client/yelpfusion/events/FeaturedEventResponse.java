@@ -1,17 +1,11 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.events;
 
-import io.github.stewseo.yelp.fusion.client._types.RequestBase;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.JsonpSerializable;
-import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
-import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
