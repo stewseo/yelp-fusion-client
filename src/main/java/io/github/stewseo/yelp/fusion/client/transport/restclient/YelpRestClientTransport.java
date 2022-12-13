@@ -152,7 +152,6 @@ public class YelpRestClientTransport implements YelpFusionTransport {
         return clientReq;
     }
 
-
     private <ResponseT, ErrorT> ResponseT getHighLevelResponse(
             Response clientResp,
             Endpoint<?, ResponseT, ErrorT> endpoint
