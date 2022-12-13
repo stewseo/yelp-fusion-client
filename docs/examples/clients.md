@@ -4,12 +4,14 @@ title: "Blocking and Async client examples"
 permalink: /yelp-fusion-client/examples/clients
 ---
 
-#### Use your Yelp Fusion API key for a Synchronous blocking client
+#### Create a Yelp Fusion Client with your Api Key
 
 ```
-     String apiKey = System.getenv("YELP_API_KEY");
+        
+        String apiKey = System.getenv("YELP_API_KEY");
      
         // Synchronous blocking client
+        
         YelpFusionClient client = YelpFusionClient.createClient(apiKey);
 
         if (client.businessDetails(a -> a.alias("hinata-san-francisco")) != null) {
@@ -17,11 +19,10 @@ permalink: /yelp-fusion-client/examples/clients
         }
         
 ```
-#### Use your Yelp Fusion API key for an Asynchronous non-blocking client
+
 ```
-      String apiKey = System.getenv("YELP_API_KEY");
-        
         // Asynchronous non-blocking client
+        
         YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(apiKey);
 
         asyncClient.businessDetails(a -> a.alias("hinata-san-francisco"))
@@ -34,3 +35,18 @@ permalink: /yelp-fusion-client/examples/clients
                 });
 ```
 
+#### Create all required components HttpHost, RestClient, a Json Object mapper, and Transport
+
+```
+        Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + apiKey)};
+        
+        // API base URL and authorzation header
+        RestClient restClient = RestClient.builder(new HttpHost("api.yelp.com", 443, "https"))
+                .setDefaultHeaders(defaultHeaders)
+                .build();
+     
+        YelpRestClientTransport yelpTransport = new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
+     
+        YelpFusionClient yelpFusionClient = new YelpFusionClient(yelpTransport);
+
+```
