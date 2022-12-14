@@ -23,7 +23,7 @@ email: stewart.s.seo.@gmailcom
 description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 yelp fusion java client.
-url: "https://stewseo.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://stewseo.github.io/coding-challenges-java" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  stewseo
 
