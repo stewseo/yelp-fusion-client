@@ -14,6 +14,3 @@ permalink: /examples
 [Events examples](https://stewseo.github.io/yelp-fusion-client/examples/events)
 
 [Autocomplete examples](https://stewseo.github.io/yelp-fusion-client/examples/autocomplete)
-
-
-
