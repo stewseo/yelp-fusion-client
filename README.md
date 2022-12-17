@@ -33,7 +33,7 @@ You can use [Gradle's dependency management](https://search.maven.org/search?q=g
 **Example - Gradle**
 ```gradle
 dependencies {
-    compile group: 'software.aws.rds', name: 'aws-postgresql-jdbc', version: '0.1.0'
+    implementation 'io.github.stewseo:yelp-fusion-client:1.0.52'
 }
 ```
 <br>
