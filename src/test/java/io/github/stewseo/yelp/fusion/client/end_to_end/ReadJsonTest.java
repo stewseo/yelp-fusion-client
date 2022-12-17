@@ -116,7 +116,7 @@ public class ReadJsonTest {
     @Test
     public void readJsonTest() throws IOException {
 
-        URL file = ReadJsonTest.class.getResource("15000-22000.json");
+        URL file = ReadJsonTest.class.getResource("nyc-restaurants.json");
 
         JsonNode node = new JacksonJsonpMapper().objectMapper().readValue(file, JsonNode.class);
 
