@@ -4,7 +4,7 @@ title: "Business Details Example"
 permalink: /examples/business-details
 ---
 
-#### Get the business details of each restaurant in New York City
+#### Example request and response body containing detailed business content.
 ```
 
         String id = "wu3w6IlUct9OvYmYXDMGJA";
