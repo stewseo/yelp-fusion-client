@@ -1,9 +1,9 @@
 rootProject.name = 'yelp-fusion-client'
+include 'lowlevel-restclient'
 
-List projects = [
-        'yelp-fusion-client',
-        'lowlevel-restclient'
-]
+//List projects = [
+//        'lowlevel-restclient'
+//]
 
 /**
  * Iterates over sub directories, looking for build.gradle, and adds a project if found
@@ -11,28 +11,28 @@ List projects = [
  * of the dir hierarchy to have a build.gradle. Otherwise we would have to iterate
  * all files/directories in the source tree to find all projects.
  */
-void addSubProjects(String path, File dir) {
-    if (!dir.isDirectory()) return;
-    if (dir.name == 'buildSrc') return;
-    if (!new File(dir, 'build.gradle').exists()) return;
-    if (findProject(dir) != null) return;
-
-    final String projectName = "${path}:${dir.name}"
-
-    include projectName
-    if (path.isEmpty() || path.startsWith(':example-plugins')) {
-        project(projectName).projectDir = dir
-    }
-    for (File subdir : dir.listFiles()) {
-        addSubProjects(projectName, subdir)
-    }
-}
+//void addSubProjects(String path, File dir) {
+//    if (!dir.isDirectory()) return;
+//    if (dir.name == 'buildSrc') return;
+//    if (!new File(dir, 'build.gradle').exists()) return;
+//    if (findProject(dir) != null) return;
+//
+//    final String projectName = "${path}:${dir.name}"
+//
+//    include projectName
+//    if (path.isEmpty() || path.startsWith(':example-plugins')) {
+//        project(projectName).projectDir = dir
+//    }
+//    for (File subdir : dir.listFiles()) {
+//        addSubProjects(projectName, subdir)
+//    }
+//}
 
 //addSubProjects('', new File(rootProject.projectDir, 'libs'))
 //addSubProjects('', new File(rootProject.projectDir, 'plugins'))
 //addSubProjects('test', new File(rootProject.projectDir, 'test/external-modules'))
 
-include projects.toArray(new String[0])
+//include projects.toArray(new String[0])
 
 //project(":example").children.each { libsProject ->
 //    libsProject.name = "name-${libsProject.name}"
@@ -46,11 +46,11 @@ include projects.toArray(new String[0])
 //}
 
 // look for extra plugins
-File extraProjects = new File(rootProject.projectDir.parentFile, "${rootProject.projectDir.name}-extra")
-if (extraProjects.exists()) {
-    for (File extraProjectDir : extraProjects.listFiles()) {
-        addSubProjects('', extraProjectDir)
-    }
-}
-include 'lowlevel-restclient'
+//File extraProjects = new File(rootProject.projectDir.parentFile, "${rootProject.projectDir.name}-extra")
+//if (extraProjects.exists()) {
+//    for (File extraProjectDir : extraProjects.listFiles()) {
+//        addSubProjects('', extraProjectDir)
+//    }
+//}
+
 

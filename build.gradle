@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.52'
+version = '1.0.63'
 
 java {
     sourceCompatibility = "17"
@@ -30,10 +30,11 @@ repositories {
 
 jar {
     archiveFileName = 'yelp-fusion-client'
-    archiveVersion = '1.0.52'
+    archiveVersion = '1.0.63'
     from {
         configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
@@ -60,7 +61,7 @@ publishing {
                 setGroupId "io.github.stewseo"
                 packaging = 'jar'
                 description = 'java client to build api objects, handle http transport, and parse/deserialize/serialize json to/from json'
-                url = 'https://github.com/stewseo/stewseo.github.io'
+                url = 'https://github.com/stewseo/yelp-fusion-client'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -68,9 +69,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/stewseo/stewseo.github.io.git'
+                    connection = 'scm:git:git://github.com/stewseo/yelp-fusion-client.git'
                     developerConnection = 'scm:git:ssh://github.com/stewseo/stewseo.github.io.git'
-                    url = 'https://github.com/stewseo/stewseo.github.io.git'
+                    url = 'https://github.com/stewseo/yelp-fusion-client.git'
                 }
                 developers {
                     developer {
@@ -114,7 +115,8 @@ ext {
 }
 
 dependencies {
-    api project(":lowlevel-restclient")
+    api files("libs/lowlevel-restclient-1.0.62.jar")
+//    api project(":lowlevel-restclient")
     // elasticsearch
     api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
 
@@ -125,13 +127,6 @@ dependencies {
     api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 
-    // loggers
-//    api("org.slf4j:slf4j-api:${slf4jVersion}")
-//    api("ch.qos.logback:logback-classic:${logbackVersion}")
-//    api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
-//    configurations.all {
-//        exclude group: "commons-logging", module: "commons-logging"
-//    }
     api 'gg.jte:jte:2.2.3'
 
     // testing
@@ -147,18 +142,6 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 }
 
-//subprojects{
-//    publishing {
-//        publications {
-//            "$project.name"(MavenPublication) {
-//                groupId project.group
-//                artifactId project.name
-//                version project.version
-//                from components.java
-//            }
-//        }
-//    }
-//}
 
 tasks.named('test') {
     useJUnitPlatform()

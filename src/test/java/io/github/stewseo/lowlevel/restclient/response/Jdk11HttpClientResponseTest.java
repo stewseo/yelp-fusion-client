@@ -18,10 +18,8 @@ import java.util.concurrent.Flow;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class Jdk11HttpClientResponseTest {
-
     private static final Logger logger = LoggerFactory.getLogger(Jdk11HttpClientResponseTest.class);
     private static final String reqLine = "http://api.yelp.com/v3/businesses/search?location=sf&limit=50";
-
 
     public static void main(String[] args) {
         Jdk11HttpClientResponseTest jdes = new Jdk11HttpClientResponseTest();
