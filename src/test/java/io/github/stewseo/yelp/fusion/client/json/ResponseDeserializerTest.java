@@ -1,7 +1,7 @@
 
 package io.github.stewseo.yelp.fusion.client.json;
 
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
 import jakarta.json.stream.JsonParser;

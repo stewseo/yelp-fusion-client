@@ -88,11 +88,12 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             request -> {
                 String endpoint = "v3/businesses" + "/";
                 if(request.alias != null) {
-                     endpoint += request.alias();
-                }else {
-                    endpoint += request.id();
+                    return endpoint += request.alias();
+
+                }else if(request.id != null) {
+                    return endpoint += request.id();
                 }
-                return endpoint;
+                throw SimpleEndpoint.noPathTemplateFound("path");
             },
 
             // Request parameters

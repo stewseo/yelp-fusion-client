@@ -38,7 +38,7 @@ public class GetAllCategoriesTest {
 
         YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(apiKey);
 
-        CompletableFuture<GetCategoriesResponse> future = asyncClient.categories(c -> c.locale("en_US"));
+        CompletableFuture<GetCategoriesResponse> future = asyncClient.categories().categories(c -> c.locale("en_US"));
 
         List<Categories> categories = future.get().categories();
         assertThat(categories.size()).isEqualTo(1295);

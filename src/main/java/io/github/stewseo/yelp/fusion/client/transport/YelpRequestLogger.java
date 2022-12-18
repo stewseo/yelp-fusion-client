@@ -3,7 +3,7 @@ package io.github.stewseo.yelp.fusion.client.transport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessResponse;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;

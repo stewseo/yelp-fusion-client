@@ -53,7 +53,6 @@ public class SearchBusiness implements JsonpSerializable {
 
     private final List<Categories> categories;
 
-
     // ------------------------------ Constructor -------------------------------- //
     private SearchBusiness(Builder builder) {
         this.id = builder.id;

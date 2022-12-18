@@ -1,11 +1,11 @@
 package io.github.stewseo.lowlevel.restclient;
 
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.Request;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.RequestOptions;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.Response;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClientBuilder;
+import io.github.stewseo.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.lowlevel.restclient.Request;
+import io.github.stewseo.lowlevel.restclient.RequestOptions;
+import io.github.stewseo.lowlevel.restclient.Response;
+import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.lowlevel.restclient.RestClientBuilder;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.RequestLine;

@@ -17,7 +17,7 @@ public class AsyncClientTest {
         // Asynchronous non-blocking client
         YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(apiKey);
 
-        asyncClient.businessDetails(a -> a.alias("hinata-san-francisco"))
+        asyncClient.businesses().businessDetails(a -> a.alias("hinata-san-francisco"))
                 .whenComplete((response, exception) -> {
                     if (exception != null) {
                         logger.error("business does not exist", exception);

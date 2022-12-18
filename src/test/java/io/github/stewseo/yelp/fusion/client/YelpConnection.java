@@ -1,6 +1,6 @@
 package io.github.stewseo.yelp.fusion.client;
 
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
+import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
@@ -9,11 +9,14 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class YelpConnection {
 
+    private static final Logger logger = LoggerFactory.getLogger(YelpConnection.class);
     static HttpHost httpHost;
     static YelpFusionClient yelpClient;
 

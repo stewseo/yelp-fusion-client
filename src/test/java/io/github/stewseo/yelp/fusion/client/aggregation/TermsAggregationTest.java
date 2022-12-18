@@ -6,7 +6,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.PrintUtils;
+import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.Elasticsearch;
 import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;

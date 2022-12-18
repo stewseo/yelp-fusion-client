@@ -1,7 +1,7 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion;
 
 
-import io.github.stewseo.yelp.fusion.lowlevel.restclient.RestClient;
+import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.EndpointWithResponseMapperAttr;
 import io.github.stewseo.yelp.fusion.client._types.ErrorResponse;
@@ -82,36 +82,6 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         return new YelpFusionEventsAsyncClient(this.transport, this.transportOptions);
     }
 
-    public <TDocument> CompletableFuture<SearchBusinessResponse> search(SearchBusinessRequest request,
-                                                                        Class<TDocument> tDocumentClass) {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchBusinessRequest, SearchBusinessResponse, ErrorResponse> endpoint = (JsonEndpoint<SearchBusinessRequest, SearchBusinessResponse, ErrorResponse>) SearchBusinessRequest._ENDPOINT;
-        endpoint = new EndpointWithResponseMapperAttr<>(endpoint,
-                "org.example.clients:Deserializer:_global.search.TDocument", getDeserializer(tDocumentClass));
-        return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
-    }
-
-    public final <TDocument> CompletableFuture<SearchBusinessResponse> search(
-
-            Function<SearchBusinessRequest.Builder, ObjectBuilder<SearchBusinessRequest>> fn, Class<TDocument> tDocumentClass) {
-
-        return search(fn.apply(new SearchBusinessRequest.Builder()).build(), tDocumentClass);
-    }
-
-    public CompletableFuture<BusinessDetailsResponse> businessDetails(BusinessDetailsRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessDetailsRequest, BusinessDetailsResponse, ErrorResponse>) BusinessDetailsRequest._ENDPOINT;
-
-        return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
-    }
-
-    public final CompletableFuture<BusinessDetailsResponse> businessDetails(
-            Function<BusinessDetailsRequest.Builder, ObjectBuilder<BusinessDetailsRequest>> fn)
-            throws Exception {
-        return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());
-    }
-
     public CompletableFuture<AutoCompleteResponse> autocomplete(AutoCompleteRequest request) throws Exception {
         @SuppressWarnings("unchecked")
         JsonEndpoint<AutoCompleteRequest, AutoCompleteResponse, ErrorResponse> endpoint =
@@ -126,44 +96,4 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
         return autocomplete(fn.apply(new AutoCompleteRequest.Builder()).build());
     }
 
-    public CompletableFuture<ReviewsResponse> businessReviews(ReviewsRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<ReviewsRequest, ReviewsResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<ReviewsRequest, ReviewsResponse, ErrorResponse>) ReviewsRequest._ENDPOINT;
-
-        return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
-    }
-
-    public final CompletableFuture<ReviewsResponse> businessReviews(
-            Function<ReviewsRequest.Builder, ObjectBuilder<ReviewsRequest>> fn)
-            throws Exception {
-        return businessReviews(fn.apply(new ReviewsRequest.Builder()).build());
-    }
-
-    public CompletableFuture<BusinessMatchResponse> businessMatch(BusinessMatchRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
-
-        return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
-    }
-
-    public final CompletableFuture<BusinessMatchResponse> businessMatch(
-            Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn)
-            throws Exception {
-        return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
-    }
-
-    public CompletableFuture<GetCategoriesResponse> categories(GetCategoriesRequest request) throws Exception {
-        @SuppressWarnings("unchecked")
-        JsonEndpoint<GetCategoriesRequest, GetCategoriesResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<GetCategoriesRequest, GetCategoriesResponse, ErrorResponse>) GetCategoriesRequest._ENDPOINT;
-        return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
-    }
-
-    public final CompletableFuture<GetCategoriesResponse> categories(
-            Function<GetCategoriesRequest.Builder, ObjectBuilder<GetCategoriesRequest>> fn)
-            throws Exception {
-        return categories(fn.apply(new GetCategoriesRequest.Builder()).build());
-    }
 }

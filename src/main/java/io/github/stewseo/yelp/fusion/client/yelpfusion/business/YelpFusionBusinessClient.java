@@ -14,6 +14,8 @@ import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsR
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessResponse;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.transactions.SearchTransactionRequest;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.transactions.SearchTransactionResponse;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -88,6 +90,20 @@ public class YelpFusionBusinessClient extends ApiClient<YelpFusionTransport, Yel
             Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn)
             throws Exception {
         return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
+    }
+
+    public SearchTransactionResponse searchTransaction(SearchTransactionRequest request) throws Exception {
+        @SuppressWarnings("unchecked")
+        JsonEndpoint<SearchTransactionRequest, SearchTransactionResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchTransactionRequest, SearchTransactionResponse, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
+
+        return this.transport.performRequest(request, endpoint, this.transportOptions);
+    }
+
+    public final SearchTransactionResponse searchTransaction(
+            Function<SearchTransactionRequest.Builder, ObjectBuilder<SearchTransactionRequest>> fn)
+            throws Exception {
+        return searchTransaction(fn.apply(new SearchTransactionRequest.Builder()).build());
     }
 
 }

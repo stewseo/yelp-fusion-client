@@ -1,8 +1,11 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.reviews;
 
+import io.github.stewseo.yelp.fusion.client.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -45,6 +48,5 @@ public class BusinessReviewsTest {
                         "\"image_url\":\"https://s3-media4.fl.yelpcdn.com/photo/9soayR_EBgNKuAIhHa8SJg/o.jpg\"," +
                         "\"name\":\"Gabriel R.\"}}"
         );
-
     }
 }

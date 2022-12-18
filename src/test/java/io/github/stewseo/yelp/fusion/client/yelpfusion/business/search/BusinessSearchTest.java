@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BusinessSearchTest extends ElasticsearchConnection {
 
     private final static Logger logger = LoggerFactory.getLogger(BusinessSearchTest.class);
-
     private static YelpFusionClient yelpClient;
     private static final String indexNyc = "yelp-businesses-restaurants-nyc";
 

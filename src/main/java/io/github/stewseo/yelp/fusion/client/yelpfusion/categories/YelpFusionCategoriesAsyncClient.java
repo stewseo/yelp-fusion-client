@@ -54,4 +54,5 @@ public class YelpFusionCategoriesAsyncClient extends ApiClient<YelpFusionTranspo
             throws Exception {
         return categoriesAlias(fn.apply(new GetCategoriesAliasRequest.Builder()).build());
     }
+
 }
