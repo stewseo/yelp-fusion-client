@@ -14,6 +14,7 @@ permalink: /examples
 | [Categories](https://stewseo.github.io/yelp-fusion-client/examples/categories)   |  /categories   | This endpoint returns all Yelp business categories across all locales by default. Include the "locale" parameter to filter to only those categories available for a particular locale, and translate/localize the names of those categories.   |
 | [Events](https://stewseo.github.io/yelp-fusion-client/examples/events)  |  /events   | Endpoints to search for events, get detailed information about an event and get information the featured event for a given location. Featured events are chosen by Yelp's community managers.  |
 | [Reviews](https://stewseo.github.io/yelp-fusion-client/examples/reviews)   | /reviews/{id}    | Get up to three review excerpts for a business.   |
+| [Transactions](https://stewseo.github.io/yelp-fusion-client/examples/transactions)   | /transactions/{transacton_type}/search    | This endpoint returns a list of businesses which support requested transaction type.   |
 
 
 
