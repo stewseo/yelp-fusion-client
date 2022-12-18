@@ -24,7 +24,7 @@ You can use [Maven's dependency management](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>io.github.stewseo</groupId>
   <artifactId>yelp-fusion-client</artifactId>
-  <version>1.0.52</version>
+  <version>1.0.63</version>
 </dependency>
 </dependencies>
 ```
@@ -34,7 +34,7 @@ You can use [Gradle's dependency management](https://search.maven.org/search?q=g
 **Example - Gradle**
 ```gradle
 dependencies {
-   implementation 'io.github.stewseo:yelp-fusion-client:1.0.52'
+   implementation 'io.github.stewseo:yelp-fusion-client:1.0.63'
 }
 ```
 <br>
