@@ -36,6 +36,8 @@ ext {
     logbackVersion = '1.4.1'
 }
 
+
+
 dependencies {
     // apache commons
     api("commons-io:commons-io:${commonsioVersion}")
@@ -56,6 +58,29 @@ dependencies {
     }
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    archiveFileName = 'lowlevel-restclient.jar'
+    archiveVersion = '1.0.63'
+    from {
+        configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 
 
 

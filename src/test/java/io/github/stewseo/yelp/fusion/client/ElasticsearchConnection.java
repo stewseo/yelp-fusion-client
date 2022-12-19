@@ -4,6 +4,7 @@ package io.github.stewseo.yelp.fusion.client;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Assertions;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ public abstract class ElasticsearchConnection extends Assertions {
     protected static Elasticsearch elasticSearch;
 
     public static void initElasticsearchClient() {
+        
         elasticSearch = Elasticsearch.getInstance();
 
         String host = "my-deployment-274408.es.us-east-2.aws.elastic-cloud.com";

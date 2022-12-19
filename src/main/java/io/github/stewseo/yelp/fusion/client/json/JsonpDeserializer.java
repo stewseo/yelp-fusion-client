@@ -4,8 +4,6 @@ import io.github.stewseo.yelp.fusion.client.util.TriFunction;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.stream.JsonParser.Event;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
 import java.lang.reflect.Type;
