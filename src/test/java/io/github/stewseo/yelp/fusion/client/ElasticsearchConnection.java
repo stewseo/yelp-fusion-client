@@ -25,7 +25,7 @@ public abstract class ElasticsearchConnection extends Assertions {
     protected static Elasticsearch elasticSearch;
 
     public static void initElasticsearchClient() {
-        
+
         elasticSearch = Elasticsearch.getInstance();
 
         String host = "my-deployment-274408.es.us-east-2.aws.elastic-cloud.com";
