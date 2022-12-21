@@ -85,7 +85,7 @@ public class Elasticsearch {
     }
 
     public RestClient createRestClient(String host, int port, String scheme, String apiKeyId, String apiKeySecret) {
-        String apiKeyIdAndSecret = System.getenv("API_KEY_ID") + ":" + System.getenv("API_KEY_SECRET");
+        String apiKeyIdAndSecret = apiKeyId + ":" + apiKeySecret;
 
         String encodedApiKey = Base64.getEncoder() // The encoder maps the input to a set of characters in the A-Za-z0-9+/ character set
                 .encodeToString((apiKeyIdAndSecret) // Encodes the specified byte array into a String using the Base64 encoding scheme.

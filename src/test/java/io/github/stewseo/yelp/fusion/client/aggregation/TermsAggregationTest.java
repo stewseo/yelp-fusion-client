@@ -48,7 +48,7 @@ public class TermsAggregationTest {
         ElasticsearchConnection.initElasticsearchClient();
 
         SearchResponse<Void> response =  Elasticsearch.getInstance().client().search(b -> b
-                        .index("yelp-businesses-restaurants-nyc")
+                        .index("yelp-fusion-businesses-restaurants-nyc")
                         .size(0) // Set the number of matching documents to zero
                         .query(matchAll) // Set the query that will filter the businesses on which to run the aggregation (all contain all)
                         .aggregations("all-aggs", a -> a // Create an aggregation named "all-aggs"

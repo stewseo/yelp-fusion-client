@@ -115,7 +115,7 @@ ext {
 }
 
 dependencies {
-    api files("libs/lowlevel-restclient-1.0.63.jar")
+    api files("libs/lowlevel-restclient.jar")
 //    api project(":lowlevel-restclient")
 
     // elasticsearch

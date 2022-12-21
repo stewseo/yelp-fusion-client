@@ -28,10 +28,10 @@ public abstract class ElasticsearchConnection extends Assertions {
 
         elasticSearch = Elasticsearch.getInstance();
 
-        String host = "my-deployment-274408.es.us-east-2.aws.elastic-cloud.com";
+        String host = "1ff0acb6626441789a7e846726159410.us-east-2.aws.elastic-cloud.com";
         int port = 443;
         String scheme = "https";
-        String apiKey = System.getenv("API_KEY_SECRET");
+        String apiKey = System.getenv("API_KEY_ID");
         String apiKeySecret = System.getenv("API_KEY_SECRET");
         org.elasticsearch.client.RestClient restClient = elasticSearch.createRestClient(host, port, scheme, apiKey, apiKeySecret);
 
