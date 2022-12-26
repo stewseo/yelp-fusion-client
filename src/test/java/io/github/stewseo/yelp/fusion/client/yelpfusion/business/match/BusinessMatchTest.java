@@ -3,19 +3,15 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business.match;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.yelp.fusion.client.Elasticsearch;
-import io.github.stewseo.yelp.fusion.client.YelpConnection;
+import io.github.stewseo.yelp.fusion.client.YelpFusionTestCase;
+import io.github.stewseo.yelp.fusion.client.connection.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.BusinessReviewsTest;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessMatchTest {
+public class BusinessMatchTest extends YelpFusionTestCase {
 
-    private static final Logger logger = LoggerFactory.getLogger(BusinessReviewsTest.class);
 
     // http://api.yelp.com/v3/businesses/matches?city=sanfrancisco&name=brendas+french+soul+food&address1=625+polk+street&state=ca&country=US
     @Test
@@ -45,7 +41,6 @@ public class BusinessMatchTest {
 
     }
 
-
     @Test
     public void businessMatchSendRequestASyncTest() throws Exception {
 
@@ -64,10 +59,11 @@ public class BusinessMatchTest {
 
         new SearchRequest.Builder().storedFields("_none_");
 
-        SearchResponse<ObjectNode> respon = Elasticsearch.getInstance().client().search(s -> s
+        SearchResponse<ObjectNode> respon = elasticsearchService.getAsyncClient().search(s -> s
                 .storedFields("_none_")
                         .index("index"),
-                ObjectNode.class);
+                ObjectNode.class)
+                .get();
 
         assertThat(response.businesses().size()).isEqualTo(1);
         BusinessMatch businessMatch = response.businesses().get(0);

@@ -27,19 +27,7 @@ import java.io.IOException;
 import java.util.function.Function;
 
 
-
 public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionClient> {
-
-    private static final Logger logger = LoggerFactory.getLogger(YelpFusionClient.class);
-
-    public static final RequestOptions YELP_AUTHORIZATION_HEADER;
-
-    static {
-
-        RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
-        builder.addHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"));
-        YELP_AUTHORIZATION_HEADER = builder.build();
-    }
 
     public YelpFusionClient(YelpFusionTransport transport) {
         super(transport, null);
@@ -55,9 +43,13 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
     }
 
     public static YelpFusionClient createClient(String apiKey) throws IOException {
+
         String hostName = "api.yelp.com";
+
         int port = 443;
+
         String scheme = "https";
+
         HttpHost host = new HttpHost(hostName, port, scheme);
 
         Header[] defaultHeader  = {new BasicHeader("Authorization", "Bearer " + apiKey)};
@@ -70,21 +62,34 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
         return new YelpFusionClient(transport);
     }
 
-    // Businesses Endpoint client
+    /** Businesses Endpoint client
+     *
+     *@return YelpFusionBusinessClient
+     */
     public YelpFusionBusinessClient businesses() {
         return new YelpFusionBusinessClient(this.transport, this.transportOptions);
     }
 
-    // Categories Endpoint client
+    /** Categories Endpoint client
+     *
+     * @return YelpFusionCategoriesClient
+     */
     public YelpFusionCategoriesClient categories() {
         return new YelpFusionCategoriesClient(this.transport, this.transportOptions);
     }
 
-    // Events Endpoint client
+    /** Events Endpoint client
+     *
+     * @return YelpFusionEventsClient
+     */
     public YelpFusionEventsClient events() {
         return new YelpFusionEventsClient(this.transport, this.transportOptions);
     }
 
+    /** AutoComplete Endpoint
+     * @param request AutoCompleteRequest request
+     * @return AutoCompleteResponse
+     */
     public AutoCompleteResponse autocomplete(AutoCompleteRequest request) throws Exception {
         @SuppressWarnings("unchecked")
         JsonEndpoint<AutoCompleteRequest, AutoCompleteResponse, ErrorResponse> endpoint =

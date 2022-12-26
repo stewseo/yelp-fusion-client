@@ -6,10 +6,8 @@ import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Category;
 import jakarta.json.stream.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -18,8 +16,6 @@ import java.util.function.*;
 @SuppressWarnings({"unused", "ConstantConditions"})
 @JsonpDeserializable
 public class Business implements JsonpSerializable {
-
-    private static final Logger logger = LoggerFactory.getLogger(Business.class);
 
     // ------------------------------ Fields ------------------------------------ //
 
@@ -57,15 +53,13 @@ public class Business implements JsonpSerializable {
 
     private final List<Hours> hours;
 
-    private final List<Categories> categories;
+    private final List<Category> categories;
 
     @Nullable
     private final List<Attribute> attributes;
 
-//    @Nullable
-//    private final List<SpecialHours> special_hours;
-
-
+    @Nullable
+    private final List<SpecialHours> special_hours;
 
 //    @Nullable
 //    private final Messaging messaging;
@@ -93,7 +87,7 @@ public class Business implements JsonpSerializable {
         this.url = builder.url;
         this.rating = builder.rating;
         this.review_count = builder.review_count;
-//        this.special_hours = builder.special_hours;
+        this.special_hours = builder.special_hours;
         this.transactions = builder.transactions;
     }
 
@@ -125,49 +119,61 @@ public class Business implements JsonpSerializable {
     public Boolean is_closed() {
         return is_closed;
     }
+
     public String url() {
         return url;
     }
+
     public String phone() {
         return phone;
     }
+
     public String display_phone() {
         return display_phone;
     }
+
     public Integer review_count() {
         return review_count;
     }
-    public List<Categories> categories() {
+
+    public List<Category> categories() {
         return categories;
     }
+
     public Double rating() {
         return rating;
     }
+
     @Nullable
     public Location location() {
         return location;
     }
+
     @Nullable
     public Coordinates coordinates() {
         return coordinates;
     }
+
     @Nullable
     public List<String> photos() {
         return photos;
     }
+
     @Nullable
     public List<Hours> hours() {
         return hours;
     }
+
     public String price() {return price;}
+
     @Nullable
     public List<String> transactions() {
         return transactions;
     }
-//    @Nullable
-//    public List<SpecialHours> special_hours() {
-//        return special_hours;
-//    }
+    @Nullable
+    public List<SpecialHours> special_hours() {
+        return special_hours;
+    }
 
     public List<Attribute> attributes() {
         return attributes;
@@ -221,22 +227,27 @@ public class Business implements JsonpSerializable {
             generator.writeKey("is_claimed");
             generator.write(this.is_claimed);
         }
+
         if (is_closed != null) {
             generator.writeKey("is_closed");
             generator.write(this.is_closed);
         }
+
         if (this.rating != null) {
             generator.writeKey("rating");
             generator.write(this.rating);
         }
-        if (this.review_count != 0) {
+
+        if (this.review_count != null) {
             generator.writeKey("review_count");
             generator.write(this.review_count);
         }
+
         if (this.location != null) {
             generator.writeKey("location");
             this.location.serialize(generator, mapper);
         }
+
         if (this.coordinates != null) {
             generator.writeKey("coordinates");
             this.coordinates.serialize(generator, mapper);
@@ -250,6 +261,7 @@ public class Business implements JsonpSerializable {
             }
             generator.writeEnd();
         }
+
         if (ApiTypeHelper.isDefined(this.hours)) {
             generator.writeKey("hours");
             generator.writeStartArray();
@@ -258,14 +270,16 @@ public class Business implements JsonpSerializable {
             }
             generator.writeEnd();
         }
+
         if (ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("all");
             generator.writeStartArray();
-            for (Categories item0 : this.categories) {
+            for (Category item0 : this.categories) {
                 item0.serialize(generator, mapper);
             }
             generator.writeEnd();
         }
+
         if (ApiTypeHelper.isDefined(this.attributes)) {
             generator.writeKey("attributes");
             generator.writeStartArray();
@@ -275,15 +289,14 @@ public class Business implements JsonpSerializable {
             generator.writeEnd();
         }
 
-//        if (this.special_hours != null) {
-//            generator.writeKey("special_hours");
-//            generator.writeStartArray();
-//            for (SpecialHours item0 : this.special_hours) {
-//                item0.serialize(generator, mapper);
-//            }
-//            generator.writeEnd();
-//        }
-
+        if (ApiTypeHelper.isDefined(this.special_hours)) {
+            generator.writeKey("special_hours");
+            generator.writeStartArray();
+            for (SpecialHours item0 : this.special_hours) {
+                item0.serialize(generator, mapper);
+            }
+            generator.writeEnd();
+        }
     }
 
     @Override
@@ -298,28 +311,49 @@ public class Business implements JsonpSerializable {
         private String id;
 
         private String alias;
+
         private String display_phone;
+
         private String price;
+
         private String url;
+
         private String name;
+
         private String phone;
+
         private String image_url;
+
         private Double rating;
+
         private Integer review_count;
 
+
         private Integer distance;
+
         private Boolean is_claimed;
+
         private Boolean is_closed;
+
         private Boolean open_now;
+
         private List<String> transactions;
+
         private List<String> photos;
         
         private List<SpecialHours> special_hours;
+
         private List<Attribute> attributes;
+
         private Coordinates coordinates;
-        private List<Categories> categories;
+
+        private List<Category> categories;
+
         private Location location;
+
         private List<Hours> hours;
+
+
         private Messaging messaging;
 
 
@@ -329,127 +363,158 @@ public class Business implements JsonpSerializable {
             this.phone = value;
             return this;
         }
+
         public final Business.Builder price(String value) {
             this.price = value;
             return this;
         }
+
         public final Business.Builder name(String value) {
             this.name = value;
             return this;
         }
+
         public final Business.Builder image_url(String value) {
             this.image_url = value;
             return this;
         }
+
         public final Business.Builder alias(String value) {
             this.alias = value;
             return this;
         }
+
         @SuppressWarnings("UnusedReturnValue")
         public final Business.Builder url(String value) {
             this.url = value;
             return this;
         }
+
         public final Business.Builder display_phone(String value) {
             this.display_phone = value;
             return this;
         }
+
         public final Business.Builder review_count(int value) {
             this.review_count = value;
             return this;
         }
+
         public final Business.Builder is_closed(Boolean value) {
             this.is_closed = value;
             return this;
         }
+
         public final Business.Builder is_claimed(Boolean value) {
             this.is_claimed = value;
             return this;
         }
+
         public final Business.Builder id(String value) {
             this.id = value;
             return this;
         }
+
         public final Business.Builder rating(Double value) {
             this.rating = value;
             return this;
         }
-        public final Business.Builder messaging(Messaging value) {
-            this.messaging = value;
-            return this;
-        }
+
+//        public final Business.Builder messaging(Messaging value) {
+//            this.messaging = value;
+//            return this;
+//        }
+
         public final Business.Builder open_now(Boolean value) {
             this.open_now = value;
             return this;
         }
+
         public final Builder hours(Function<Hours.Builder, ObjectBuilder<Hours>> fn) {
             return this.hours(fn.apply(new Hours.Builder()).build());
         }
+
         public final Business.Builder hours(List<Hours> list) {
             this.hours = _listAddAll(this.hours, list);
             return this;
         }
+
         public final Business.Builder hours(Hours value, Hours... values) {
             this.hours = _listAdd(this.hours, value, values);
             return this;
         }
+
         public final Business.Builder photos(List<String> list) {
             this.photos = _listAddAll(this.photos, list);
             return this;
         }
+
         public final Business.Builder photos(String value, String... values) {
             this.photos = _listAdd(this.photos, value, values);
             return this;
         }
+
         public final Business.Builder location(Location value) {
             this.location = value;
             return this;
         }
+
         public final Builder location(Function<Location.Builder, ObjectBuilder<Location>> fn) {
             return this.location(fn.apply(new Location.Builder()).build());
         }
+
         public final Business.Builder coordinates(Coordinates value) {
             this.coordinates = value;
             return this;
         }
+
         public final Builder coordinates(Function<Coordinates.Builder, ObjectBuilder<Coordinates>> fn) {
             return this.coordinates(fn.apply(new Coordinates.Builder()).build());
         }
-        public final Business.Builder categories(Function<Categories.Builder, ObjectBuilder<Categories>> fn) {
-            return categories(fn.apply(new Categories.Builder()).build());
+
+        public final Business.Builder categories(Function<Category.Builder, ObjectBuilder<Category>> fn) {
+            return categories(fn.apply(new Category.Builder()).build());
         }
-        public final Business.Builder categories(List<Categories> list) {
+
+        public final Business.Builder categories(List<Category> list) {
             this.categories = _listAddAll(this.categories, list);
             return this;
         }
-        public final Business.Builder categories(Categories value, Categories... values) {
+
+        public final Business.Builder categories(Category value, Category... values) {
             this.categories = _listAdd(this.categories, value, values);
             return this;
         }
+
         public final Builder attributes(List<Attribute> value) {
             this.attributes = _listAddAll(this.attributes, value);
             return this;
         }
+
         public final Builder attributes(Attribute value, Attribute... values) {
             this.attributes = _listAdd(this.attributes, value, values);
             return this;
         }
+
         public final Builder transactions(List<String> value) {
             this.transactions = _listAddAll(this.transactions, value);
             return this;
         }
+
         public final Builder transactions(String value, String... values) {
             this.transactions = _listAdd(this.transactions, value, values);
             return this;
         }
-//        public final Business.Builder special_hours(@Nullable List<SpecialHours> value) {
-//            this.special_hours = _listAddAll(this.special_hours, value);
-//            return this;
-//        }
-//        public final Business.Builder special_hours(@Nullable SpecialHours value, SpecialHours... values) {
-//            this.special_hours = _listAdd(this.special_hours, value, values);
-//            return this;
-//        }
+
+        public final Business.Builder special_hours(@Nullable List<SpecialHours> value) {
+            this.special_hours = _listAddAll(this.special_hours, value);
+            return this;
+        }
+
+        public final Business.Builder special_hours(@Nullable SpecialHours value, SpecialHours... values) {
+            this.special_hours = _listAdd(this.special_hours, value, values);
+            return this;
+        }
 
         @Override
         protected Business.Builder self() {
@@ -474,21 +539,16 @@ public class Business implements JsonpSerializable {
         op.add(Business.Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
         op.add(Business.Builder::url, JsonpDeserializer.stringDeserializer(), "url");
         op.add(Business.Builder::price, JsonpDeserializer.stringDeserializer(), "price");
-
         op.add(Business.Builder::is_claimed, JsonpDeserializer.booleanDeserializer(), "is_closed");
         op.add(Business.Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
-
         op.add(Business.Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
-
         op.add(Business.Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
         op.add(Business.Builder::location, Location._DESERIALIZER, "location");
         op.add(Business.Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
-
         op.add(Business.Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");
         op.add(Business.Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
         op.add(Business.Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
-
-        op.add(Business.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
+        op.add(Business.Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
         op.add(Business.Builder::hours, JsonpDeserializer.arrayDeserializer(Hours._DESERIALIZER), "hours");
 
     }

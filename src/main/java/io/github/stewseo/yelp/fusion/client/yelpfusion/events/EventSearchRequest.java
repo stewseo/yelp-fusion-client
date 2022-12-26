@@ -7,7 +7,6 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;

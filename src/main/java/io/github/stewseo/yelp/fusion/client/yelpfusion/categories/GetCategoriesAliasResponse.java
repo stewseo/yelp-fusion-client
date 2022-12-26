@@ -9,15 +9,13 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
 import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
-import io.github.stewseo.yelp.fusion.client.util.ObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
-import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
 public class GetCategoriesAliasResponse extends RequestBase implements JsonpSerializable {
-    private final Categories category;
+    private final Category category;
 
     private GetCategoriesAliasResponse(Builder builder) {
         this.category = builder.category;
@@ -40,21 +38,21 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
     public static GetCategoriesAliasResponse of(Function<Builder, ObjectBuilder<GetCategoriesAliasResponse>> fn) {
         return fn.apply(new GetCategoriesAliasResponse.Builder()).build();
     }
-    public Categories category() {return category;}
+    public Category category() {return category;}
 
     public static class Builder extends RequestBase.AbstractBuilder<GetCategoriesAliasResponse.Builder>
             implements
             ObjectBuilder<GetCategoriesAliasResponse> {
 
-        private Categories  category;
+        private Category category;
 
-        public final GetCategoriesAliasResponse.Builder categories(Categories value) {
+        public final GetCategoriesAliasResponse.Builder categories(Category value) {
             this.category = value;
             return this;
         }
 
-        public final GetCategoriesAliasResponse.Builder categories(Function<Categories.Builder, ObjectBuilder<Categories>> fn) {
-            return categories(fn.apply(new Categories.Builder()).build());
+        public final GetCategoriesAliasResponse.Builder categories(Function<Category.Builder, ObjectBuilder<Category>> fn) {
+            return categories(fn.apply(new Category.Builder()).build());
         }
 
         @Override
@@ -73,7 +71,7 @@ public class GetCategoriesAliasResponse extends RequestBase implements JsonpSeri
             GetCategoriesAliasResponse::setCategoriesAliasResponseDeserializer);
 
     protected static void setCategoriesAliasResponseDeserializer(ObjectDeserializer<GetCategoriesAliasResponse.Builder> op) {
-        op.add(Builder::categories, Categories._DESERIALIZER, "category");
+        op.add(Builder::categories, Category._DESERIALIZER, "category");
     }
 }
 

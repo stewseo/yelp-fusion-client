@@ -15,21 +15,22 @@ import static io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer.string
 @JsonpDeserializable
 public class Location implements JsonpSerializable {
 
-    // "location": {"address1": "8515 Main St", "address2": "", "address3": null,
-    // "city": "Briarwood",
-    // "zip_code": "11435",
-    // "country": "US",
-    // "state": "NY",
-    // "display_address": ["8515 Main St", "Briarwood, NY 11435"]},
     private final String address1;
+
     @Nullable
     private final String address2;
+
     @Nullable
     private final String address3;
+
     private final String city;
+
     private final String zip_code;
+
     private final String country;
+
     private final String state;
+
     private final List<String> display_address;
 
     private String address1() {
@@ -86,22 +87,27 @@ public class Location implements JsonpSerializable {
             generator.writeKey("address1");
             generator.write(this.address1);
         }
+
         if (this.address2 != null) {
             generator.writeKey("address2");
             generator.write(this.address2);
         }
+
         if (this.address3 != null) {
             generator.writeKey("address3");
             generator.write(this.address3);
         }
+
         if (this.city != null) {
             generator.writeKey("city");
             generator.write(this.city);
         }
+
         if (this.state != null) {
             generator.writeKey("state");
             generator.write(this.state);
         }
+
         if (this.zip_code != null) {
             generator.writeKey("zip_code");
             generator.write(this.zip_code);
@@ -111,6 +117,7 @@ public class Location implements JsonpSerializable {
             generator.writeKey("country");
             generator.write(this.country);
         }
+
         if (this.display_address != null) {
             generator.writeKey("display_address");
             generator.writeStartArray();

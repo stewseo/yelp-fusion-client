@@ -5,7 +5,7 @@ import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Category;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Term;
 import jakarta.json.stream.JsonGenerator;
 
@@ -17,7 +17,7 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class AutoCompleteResponse implements JsonpSerializable {
     // ------------------------------ Fields ------------------------------------ //
-    private final List<Categories> categories;
+    private final List<Category> categories;
     private final List<Term> terms;
     private final List<Business> businesses;
     // ------------------------------ Constructor ------------------------------------ //
@@ -33,7 +33,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
 
     // ------------------------------ Methods ------------------------------------ //
     @Nullable
-    public final List<Categories> categories() {
+    public final List<Category> categories() {
         return this.categories;
     }
     @Nullable
@@ -57,7 +57,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
         if (ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("categories");
             generator.writeStartArray();
-            for (Categories item0 : categories) {
+            for (Category item0 : categories) {
                 item0.serialize(generator, mapper);
             }
             generator.writeEnd();
@@ -94,19 +94,19 @@ public class AutoCompleteResponse implements JsonpSerializable {
             ObjectBuilder<AutoCompleteResponse> {
         
         @Nullable
-        private List<Categories> categories;
+        private List<Category> categories;
 
         @Nullable
         private List<Term> terms;
         @Nullable
         private List<Business> businesses;
 
-        public final Builder categories(List<Categories> categories) {
+        public final Builder categories(List<Category> categories) {
             this.categories = _listAddAll(this.categories, categories);
             return self();
         }
 
-        public final Builder categories(Categories value, Categories... values) {
+        public final Builder categories(Category value, Category... values) {
             this.categories = _listAdd(this.categories, value, values);
             return self();
         }
@@ -149,7 +149,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
     
     protected static void setupAutoCompleteDeserializer(ObjectDeserializer<AutoCompleteResponse.Builder> op) {
         op.add(Builder::terms, JsonpDeserializer.arrayDeserializer(Term._DESERIALIZER), "terms");
-        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "categories");
+        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
         op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(Business._DESERIALIZER), "businesses");
     }
 

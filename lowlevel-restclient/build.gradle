@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.63'
+version = '1.0.64'
 
 java {
     sourceCompatibility = "17"
@@ -74,7 +74,7 @@ repositories {
 
 jar {
     archiveFileName = 'lowlevel-restclient.jar'
-    archiveVersion = '1.0.63'
+    archiveVersion = '1.0.64'
     from {
         configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }

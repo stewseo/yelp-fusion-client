@@ -4,7 +4,7 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business.search;
 import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Attribute;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Category;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Coordinates;
 import jakarta.json.stream.JsonGenerator;
 import io.github.stewseo.yelp.fusion.client._types.RequestBase;
@@ -31,7 +31,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
     @Nullable
     private final Integer radius;
     @Nullable
-    private final Categories categories;
+    private final Category categories;
     @Nullable
     private final String locale;
     @Nullable
@@ -83,7 +83,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         return this.radius;
     }
 
-    public Categories categories() {
+    public Category categories() {
         return this.categories;
     }
 
@@ -216,7 +216,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         @Nullable
         private Integer radius;
         @Nullable
-        private Categories categories;
+        private Category categories;
         @Nullable
         private String locale;
         @Nullable
@@ -243,13 +243,13 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             return this;
         }
 
-        public final Builder categories(@Nullable Categories value) {
+        public final Builder categories(@Nullable Category value) {
             this.categories = value;
             return this;
         }
 
-        public final Builder categories(@Nullable Function<Categories.Builder, ObjectBuilder<Categories>> fn) {
-            return this.categories(fn.apply(new Categories.Builder()).build());
+        public final Builder categories(@Nullable Function<Category.Builder, ObjectBuilder<Category>> fn) {
+            return this.categories(fn.apply(new Category.Builder()).build());
         }
         public final Builder coordinates(@Nullable Coordinates value) {
             this.coordinates = value;
@@ -346,7 +346,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
         op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
-        op.add(Builder::categories, Categories._DESERIALIZER, "all");
+        op.add(Builder::categories, Category._DESERIALIZER, "all");
         op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
         op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
         op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");

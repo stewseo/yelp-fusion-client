@@ -1,7 +1,7 @@
 package io.github.stewseo.lowlevel.restclient.response;
 
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.yelp.fusion.client.YelpConnection;
+import io.github.stewseo.yelp.fusion.client.connection.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 
@@ -36,12 +36,8 @@ public class ResponseBodyTest {
         YelpFusionClient yelpClient = YelpConnection.getYelpClient();
         YelpRestClientTransport yelpTransport = (YelpRestClientTransport) yelpClient._transport();
         HttpHost host = yelpTransport.restClient().getHttpHost();
-
-        HttpRequestBase requestBase = new HttpGet("businesses/" + "wu3w6IlUct9OvYmYXDMGJA");
+        HttpRequestBase requestBase = new HttpGet("/v3/businesses/wu3w6IlUct9OvYmYXDMGJA");
         String traceReq = buildTraceRequest(requestBase, host);
-
-        tracer.trace("Executing command in separate process: " + traceReq);
-        assertThat(traceReq).isEqualTo("curl -H Authorization: Bearer dxAGGph7uj-XYO2ZY2qD2gOd9zEcKeNsp-Epg5SzducUwu65a9DU7kwI_0_MRqEkPuUPNYzGct-P4jrAKj8OFmMi9Tq_oyycqQb2_jGBHvb_amm5vqUzOGIP2Js1Y3Yx -X http://api.yelp.com:80/businesses/wu3w6IlUct9OvYmYXDMGJA");
 
         //Process provides control of native processes started by ProcessBuilder.start and Runtime.exec.
         // The class provides methods for performing input from the process, performing output to the process,
@@ -60,17 +56,19 @@ public class ResponseBodyTest {
         }
 
         InputStream inputStream = process.getInputStream();
-        tracer.trace(PrintUtils.tracer("response: " + IOUtils.toString(inputStream, StandardCharsets.UTF_8)));
+        String resp = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        assertThat(resp.getBytes()).contains(new byte[]{123, 34, 105, 100, 34, 58, 32, 34, 119, 117, 51, 119, 54});
 
         inputStream.close();
         process.destroy();
     }
 
-
     static String buildTraceRequest(HttpUriRequest request, HttpHost host) throws IOException {
-//        String requestLine = "curl -X " + request.getMethod() + " '" + host + getUri(request.getRequestLine()) + "'";
-        String requestLine = "curl -H Authorization: Bearer " + System.getenv("YELP_API_KEY");
-        requestLine += " -X " + host + getUri(request.getRequestLine());
+
+        String requestLine = "curl -XGET \"" + host + getUri(request.getRequestLine()) + "\"";
+
+        String header = " -H \"Authorization: Bearer " + System.getenv("YELP_API_KEY") + "\"";
+        requestLine += header;
 
         if (request instanceof HttpEntityEnclosingRequest enclosingRequest) {
             if (enclosingRequest.getEntity() != null) {
@@ -85,6 +83,7 @@ public class ResponseBodyTest {
         }
         return requestLine;
     }
+
     private static String getUri(RequestLine requestLine) {
         if (requestLine.getUri().charAt(0) != '/') {
             return "/" + requestLine.getUri();

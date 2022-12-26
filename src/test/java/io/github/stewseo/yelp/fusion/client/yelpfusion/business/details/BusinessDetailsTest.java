@@ -6,7 +6,7 @@ import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
+import io.github.stewseo.yelp.fusion.client.connection.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
@@ -60,7 +60,7 @@ public class BusinessDetailsTest extends ElasticsearchConnection {
         assertThat(business.rating()).isEqualTo(5);
         assertThat(Objects.requireNonNull(business.location()).toString()).isEqualTo("Location: {\"address1\":\"778 Seneca Ave\",\"city\":\"Ridgewood\",\"zip_code\":\"11385\",\"country\":\"US\",\"display_address\":[\"778 Seneca Ave\",\"Ridgewood, NY 11385\"]}");
 
-        initElasticsearchClient();
+        createElasticsearchService();
 
         int jsonStart = business.toString().indexOf("{");
 
@@ -70,7 +70,7 @@ public class BusinessDetailsTest extends ElasticsearchConnection {
 
         Reader input = new StringReader(withoutClassName);
 
-        initElasticsearchClient();
+        createElasticsearchService();
 
         IndexRequest<JsonData> request = IndexRequest.of(i -> i
                 .index(testIndex)
@@ -78,7 +78,7 @@ public class BusinessDetailsTest extends ElasticsearchConnection {
                 .withJson(input)
         );
 
-        IndexResponse indexResponse = elasticSearch.client().index(request);
+        IndexResponse indexResponse = elasticSearchService.getAsyncClient().index(request).get();
 
         Assertions.assertThat(indexResponse.version()).isEqualTo(1);
         logger.info("response id: " + indexResponse.id());

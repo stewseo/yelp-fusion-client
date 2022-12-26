@@ -4,7 +4,7 @@ import io.github.stewseo.yelp.fusion.client.json.*;
 import io.github.stewseo.yelp.fusion.client.util.ApiTypeHelper;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
 import io.github.stewseo.yelp.fusion.client.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Categories;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Category;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Coordinates;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Location;
 import jakarta.json.stream.JsonGenerator;
@@ -51,7 +51,7 @@ public class SearchBusiness implements JsonpSerializable {
 
     private final Location location;
 
-    private final List<Categories> categories;
+    private final List<Category> categories;
 
     // ------------------------------ Constructor -------------------------------- //
     private SearchBusiness(Builder builder) {
@@ -128,7 +128,7 @@ public class SearchBusiness implements JsonpSerializable {
         return coordinates;
     }
 
-    public List<Categories> categories() {
+    public List<Category> categories() {
         return categories;
     }
 
@@ -217,7 +217,7 @@ public class SearchBusiness implements JsonpSerializable {
         if(ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("all");
             generator.writeStartArray();
-            for (Categories item0 : this.categories) {
+            for (Category item0 : this.categories) {
                 item0.serialize(generator, mapper);
             }
             generator.writeEnd();
@@ -249,7 +249,7 @@ public class SearchBusiness implements JsonpSerializable {
         private List<String> transactions;
         private Coordinates coordinates;
         private Location location;
-        private List<Categories> categories;
+        private List<Category> categories;
 
 
 
@@ -318,16 +318,16 @@ public class SearchBusiness implements JsonpSerializable {
             return this.coordinates(fn.apply(new Coordinates.Builder()).build());
         }
 
-        public final SearchBusiness.Builder categories(Function<Categories.Builder, ObjectBuilder<Categories>> fn) {
-            return categories(fn.apply(new Categories.Builder()).build());
+        public final SearchBusiness.Builder categories(Function<Category.Builder, ObjectBuilder<Category>> fn) {
+            return categories(fn.apply(new Category.Builder()).build());
         }
 
-        public final SearchBusiness.Builder categories(List<Categories> list) {
+        public final SearchBusiness.Builder categories(List<Category> list) {
             this.categories = _listAddAll(this.categories, list);
             return this;
         }
 
-        public final SearchBusiness.Builder categories(Categories value, Categories... values) {
+        public final SearchBusiness.Builder categories(Category value, Category... values) {
             this.categories = _listAdd(this.categories, value, values);
             return this;
         }
@@ -390,7 +390,7 @@ public class SearchBusiness implements JsonpSerializable {
 
         op.add(SearchBusiness.Builder::location, Location._DESERIALIZER, "location");
         op.add(SearchBusiness.Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
-        op.add(SearchBusiness.Builder::categories, JsonpDeserializer.arrayDeserializer(Categories._DESERIALIZER), "all");
+        op.add(SearchBusiness.Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "all");
 
     }
     

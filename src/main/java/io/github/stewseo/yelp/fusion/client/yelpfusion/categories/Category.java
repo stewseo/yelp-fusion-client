@@ -2,6 +2,7 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.categories;
 
 import co.elastic.clients.util.ApiTypeHelper;
 import co.elastic.clients.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.yelp.fusion.client.json.JsonEnum;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class Categories implements JsonpSerializable {
+public class Category implements JsonpSerializable {
     private final String title;
     private final String alias;
     @Nullable
@@ -27,7 +28,7 @@ public class Categories implements JsonpSerializable {
     @Nullable
     private final List<String> country_blacklist;
 
-    private Categories(Builder builder) {
+    private Category(Builder builder) {
         this.alias = builder.alias;
         this.title = builder.title;
         this.parent_aliases = builder.parent_aliases;
@@ -58,7 +59,7 @@ public class Categories implements JsonpSerializable {
         return country_blacklist;
     }
 
-    public static Categories of(Function<Builder, ObjectBuilder<Categories>> fn) {
+    public static Category of(Function<Builder, ObjectBuilder<Category>> fn) {
         return fn.apply(new Builder()).build();
     }
 
@@ -114,7 +115,7 @@ public class Categories implements JsonpSerializable {
     }
 
 
-    public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Categories> {
+    public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Category> {
 
         private String alias;
         private String title;
@@ -164,16 +165,16 @@ public class Categories implements JsonpSerializable {
             return this;
         }
 
-        public Categories build() {
+        public Category build() {
             _checkSingleUse();
 
-            return new Categories(this);
+            return new Category(this);
         }
     }
 
-    public static final JsonpDeserializer<Categories> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Categories.Builder::new,
-                    Categories::setupCategoriesDeserializer);
+    public static final JsonpDeserializer<Category> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Category.Builder::new,
+                    Category::setupCategoriesDeserializer);
     protected static void setupCategoriesDeserializer(ObjectDeserializer<Builder> op) {
         op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
         op.add(Builder::title, JsonpDeserializer.stringDeserializer(), "title");
@@ -182,4 +183,27 @@ public class Categories implements JsonpSerializable {
         op.add(Builder::country_blacklist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "country_blacklist");
 
     }
+
+    @JsonpDeserializable
+    public static enum MappingProperties implements JsonEnum {
+
+        ALIAS("categories.alias.keyword"),
+
+        TITLE("categories.title.keyword"),
+
+        PARENTS("categories.parents.keyword");
+
+        private final String type;
+
+        MappingProperties(String value) {this.type = value;}
+
+        @Override
+        public String jsonValue() {
+            return type;
+        }
+
+        public static final JsonEnum.Deserializer<MappingProperties> _DESERIALIZER = new JsonEnum.Deserializer<>(values());
+
+    }
+
 }

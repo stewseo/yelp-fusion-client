@@ -22,10 +22,11 @@ import java.util.stream.Collectors;
  */
 public class JsonpUtils {
 
-
     @AllowForbiddenApis("Implementation of the JsonProvider lookup")
     public static JsonProvider provider() {
+
         RuntimeException exception;
+
         try {
             return JsonProvider.provider();
         } catch(RuntimeException re) {
@@ -189,12 +190,11 @@ public class JsonpUtils {
         }
     }
 
-
+    // serialize to JSON
     public static String toString(JsonpSerializable value) {
-        StringBuilder sb = new StringBuilder(value.getClass().getSimpleName()).append(": ");
+        StringBuilder sb = new StringBuilder();
         return toString(value, ToStringMapper.INSTANCE, sb).toString();
     }
-
 
     public static void maxToStringLength(int length) {
         MAX_TO_STRING_LENGTH = length;

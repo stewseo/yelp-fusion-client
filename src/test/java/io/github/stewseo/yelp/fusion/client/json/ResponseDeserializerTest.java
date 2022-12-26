@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 
 public class ResponseDeserializerTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(ResponseDeserializerTest.class);
     final String inputStream = "{\"id\": \"wu3w6IlUct9OvYmYXDMGJA\", " +
             "\"alias\": \"huitlacoche-taqueria-restaurant-ridgewood-2\", " +
             "\"name\": \"Huitlacoche Taqueria Restaurant\", " +
@@ -53,9 +51,5 @@ public class ResponseDeserializerTest {
 
         Business business = response.result().get(0);
 
-        logger.debug(PrintUtils.debug("id: " + business.id() +
-                " name: " + business.name() +
-                " coordinates: " + business.coordinates() +
-                " location: " + business.location()));
     }
 }

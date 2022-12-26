@@ -6,13 +6,12 @@ import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.yelp.fusion.client.Elasticsearch;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
+import io.github.stewseo.yelp.fusion.client.elasticsearch.ElasticsearchService;
+import io.github.stewseo.yelp.fusion.client.connection.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business_;
-import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 
 public class ReadJsonTest {
@@ -33,9 +33,10 @@ public class ReadJsonTest {
     public final String timestampPipeline = "timestamp-pipeline";
 
     public final String testIndex = "yelp-test-index";
+
     public static String index = "yelp-businesses-restaurants-nyc";
 
-    private static Elasticsearch elasticsearch;
+    private static ElasticsearchService elasticsearchService;
 
     @BeforeAll
     static void setup() {
@@ -45,12 +46,9 @@ public class ReadJsonTest {
         String scheme = "https";
         String apiKeyId = System.getenv("API_KEY_SECRET");
         String apiKeySecret = System.getenv("API_KEY_SECRET");
-        elasticsearch = Elasticsearch.getInstance();
-        RestClient restClient = elasticsearch.createRestClient(host, port, scheme, apiKeyId, apiKeySecret);
 
-        co.elastic.clients.transport.ElasticsearchTransport transport = elasticsearch.createTransport(restClient, new co.elastic.clients.json.jackson.JacksonJsonpMapper());
+        ElasticsearchConnection.createElasticsearchService();
 
-        elasticsearch.createESClient(transport);
         bucketCategoryTest();
     }
     static Set<String> setOfBusinessIds;
@@ -58,13 +56,13 @@ public class ReadJsonTest {
 
     static void bucketCategoryTest() {
 
-        int docsCount = Elasticsearch.getInstance().getDocsCount(index);
+        int docsCount = elasticsearchService.getDocsCount(index);
 
         int iterations = (int) Math.ceil((double) docsCount / 10000);
 
         for (int j = 0; j < iterations; j++) {
 
-            List<Hit<ObjectNode>> nodes = Elasticsearch.getInstance().getBusinessIdsWithTimestamps("1");
+            List<Hit<ObjectNode>> nodes = elasticsearchService.getBusinessIdsWithTimestamps("1");
 
             for (int i = 0; i < nodes.size(); i++) {
                 JsonNode sourceNode = nodes.get(i).source();
@@ -97,7 +95,7 @@ public class ReadJsonTest {
         logger.info("terms: " + response.terms());
 
 
-//        ElasticsearchConnection.initElasticsearchClient();
+//        ElasticsearchConnection.createElasticsearchService();
 //        SearchResponse<ObjectNode> response = Elasticsearch.getInstance().client().search(s -> s
 //                        .index(index)
 //                        .storedFields("_none_")
@@ -157,9 +155,14 @@ public class ReadJsonTest {
 
         }
 
-        ElasticsearchConnection.initElasticsearchClient();
+        ElasticsearchConnection.createElasticsearchService();
 
-        BulkResponse result = Elasticsearch.getInstance().client().bulk(br.build());
+        BulkResponse result = null;
+        try {
+            result = elasticsearchService.getAsyncClient().bulk(br.build()).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
 // Log errors, if any
         if (result.errors()) {

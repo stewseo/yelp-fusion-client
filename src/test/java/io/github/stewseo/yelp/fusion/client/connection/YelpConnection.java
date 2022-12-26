@@ -1,7 +1,9 @@
-package io.github.stewseo.yelp.fusion.client;
+package io.github.stewseo.yelp.fusion.client.connection;
 
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
+import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
+import io.github.stewseo.yelp.fusion.client.json.JsonpUtilsTest;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionAsyncClient;
@@ -16,13 +18,16 @@ import java.io.IOException;
 
 public class YelpConnection {
 
-    private static final Logger logger = LoggerFactory.getLogger(YelpConnection.class);
     static HttpHost httpHost;
+
     static YelpFusionClient yelpClient;
 
     static YelpFusionAsyncClient yelpFusionAsyncClient;
+
     private static JsonpMapper mapper;
+
     public static void initYelpFusionAsyncClient() {
+
         String yelpFusionHost = "api.yelp.com";
         int port = 443;
         HttpHost httpHost = new HttpHost(yelpFusionHost, port, "https");

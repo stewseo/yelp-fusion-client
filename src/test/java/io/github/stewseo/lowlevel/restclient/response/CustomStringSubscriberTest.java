@@ -1,8 +1,7 @@
 package io.github.stewseo.lowlevel.restclient.response;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,16 +17,17 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class Jdk11HttpClientResponseTest {
-    private static final Logger logger = LoggerFactory.getLogger(Jdk11HttpClientResponseTest.class);
+public class CustomStringSubscriberTest {
     private static final String reqLine = "http://api.yelp.com/v3/businesses/search?location=sf&limit=50";
 
-    public static void main(String[] args) {
-        Jdk11HttpClientResponseTest jdes = new Jdk11HttpClientResponseTest();
+    @Test
+    public void customStringSubscriberTest() {
+
+        CustomStringSubscriberTest custSubTest = new CustomStringSubscriberTest();
 
         Object ent;
         try {
-            ent = jdes.get(reqLine).get();
+            ent = custSubTest.get(reqLine).get();
 
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -65,19 +65,18 @@ public class Jdk11HttpClientResponseTest {
         public void onSubscribe(Flow.Subscription subscription) {
             this.subscription = subscription;
             subscription.request(1);
-            logger.info("subscription :");
         }
 
         @Override
         public void onNext(List<ByteBuffer> buffers) {
-            logger.info("onNext with:" + buffers);
+            System.out.println("onNext with:" + buffers);
             responseData.addAll(buffers);
             subscription.request(1);
         }
 
         @Override
         public void onError(Throwable throwable) {
-            logger.error("throwable: ", throwable);
+            System.out.println("throwable: " + throwable);
         }
 
         private String body;
@@ -97,7 +96,6 @@ public class Jdk11HttpClientResponseTest {
                 offset += remaining;
             }
             body = new String(ba);
-            logger.info("complete. body length: " + body.length());
         }
     }
 }

@@ -103,7 +103,7 @@ public class RestClientTest {
             assertThat(statusLine.getProtocolVersion().toString()).isEqualTo("HTTP/1.1");
 
             RequestLine requestLine = response.getRequestLine();
-            assertThat(requestLine.toString()).isEqualTo("Get uri http/1.1");
+            assertThat(requestLine.toString()).isEqualTo("GET v3/businesses/search?all=pizza&location=nyc HTTP/1.1");
             assertThat(response.getEntity()).isNotNull();
 
         } catch (IOException e) {
@@ -130,7 +130,7 @@ public class RestClientTest {
             assertThat(statusLine.getProtocolVersion().toString()).isEqualTo("HTTP/1.1");
 
             RequestLine requestLine = response.getRequestLine();
-            assertThat(requestLine.toString()).isEqualTo("Get uri http/1.1");
+            assertThat(requestLine.toString()).isEqualTo("GET v3/businesses/wu3w6IlUct9OvYmYXDMGJA HTTP/1.1");
             assertThat(response.getEntity()).isNotNull();
 
         } catch (IOException e) {

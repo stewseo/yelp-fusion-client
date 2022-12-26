@@ -2,8 +2,9 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion.business.search;
 
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
-import io.github.stewseo.yelp.fusion.client.YelpConnection;
+import io.github.stewseo.yelp.fusion.client.YelpFusionTestCase;
+import io.github.stewseo.yelp.fusion.client.connection.ElasticsearchConnection;
+import io.github.stewseo.yelp.fusion.client.connection.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;
@@ -13,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import java.io.Reader;
 import java.io.StringReader;
 
+import static io.github.stewseo.yelp.fusion.client.connection.ElasticsearchConnection.elasticSearchService;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessSearchTest extends ElasticsearchConnection {
+public class BusinessSearchTest extends YelpFusionTestCase {
 
-    private final static Logger logger = LoggerFactory.getLogger(BusinessSearchTest.class);
     private static YelpFusionClient yelpClient;
     private static final String indexNyc = "yelp-businesses-restaurants-nyc";
 
@@ -75,18 +76,14 @@ public class BusinessSearchTest extends ElasticsearchConnection {
 
         Reader input = new StringReader(withoutClassName);
 
-        initElasticsearchClient();
-
         IndexRequest<JsonData> request = IndexRequest.of(i -> i
                 .index(indexNyc)
                 .withJson(input)
         );
 
-        IndexResponse indexResponse = elasticSearch.client().index(request);
+        IndexResponse indexResponse = elasticSearchService.getAsyncClient().index(request).get();
 
         assertThat(indexResponse.version()).isEqualTo(1);
-        logger.info("response id: " + indexResponse.id());
-        logger.info("response index: " + indexResponse.index());
 
         assertThat(indexResponse.result().name()).isEqualTo("Created");
     }

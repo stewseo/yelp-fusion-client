@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.lowlevel.restclient.RestClient;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
+import io.github.stewseo.yelp.fusion.client.connection.ElasticsearchConnection;
 import io.github.stewseo.yelp.fusion.client.json.JsonData;
 import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
@@ -82,19 +82,22 @@ public class RequestTest extends ElasticsearchConnection {
 
     static List<StringTermsBucket> termsAggregationByCategory;
     private static void loadCategoriesMap() {
-        initElasticsearchClient();
-        docsCount = elasticSearch.getDocsCount(indexNyc);
+
+        createElasticsearchService();
+
+        docsCount = elasticSearchService.getDocsCount(indexNyc);
 
         logger.info(PrintUtils.green("index: " + indexNyc + " docs count: " + docsCount));
 
-        termsAggregationByCategory = elasticSearch.getStringTermsBuckets();
+        termsAggregationByCategory = elasticSearchService.restaurantsByCategory();
+
         logger.info(PrintUtils.debug("number of all with at least 1 restaurant: " + termsAggregationByCategory.size()));
 
         for(StringTermsBucket bucket: termsAggregationByCategory) {
             logger.info("Category: " + bucket.key().stringValue() + ", document count: " + bucket.docCount());
         }
 
-        String timestamp = elasticSearch.getTimestamp("1", SortOrder.Asc);
+        String timestamp = String.valueOf(elasticSearchService.getTimestamp(1L, SortOrder.Asc));
 
         assertThat(timestamp).isEqualTo("2022-11-10T07:16:35.187452598Z");
 
@@ -104,7 +107,7 @@ public class RequestTest extends ElasticsearchConnection {
 
         for(int j = 0; j < iterations; j++) {
 
-            List<Hit<ObjectNode>> nodes = elasticSearch.getBusinessIdsWithTimestamps(timestamp);
+            List<Hit<ObjectNode>> nodes = elasticSearchService.getBusinessIdsWithTimestamps(timestamp);
 
             for (int i = 0; i < nodes.size(); i++) {
                 JsonNode sourceNode = nodes.get(i).source();
@@ -234,7 +237,7 @@ public class RequestTest extends ElasticsearchConnection {
                                             .withJson(input)
                                     );
 
-                                    IndexResponse response = elasticSearch.client().index(request);
+                                    IndexResponse response = elasticSearchService.getAsyncClient().index(request).get();
                                     logger.info(PrintUtils.debug("added version: " + response.version()));
                                     assertThat(response.result().name()).isEqualTo("Created");
                                 }
@@ -282,7 +285,7 @@ public class RequestTest extends ElasticsearchConnection {
     @AfterAll
     static void afterAll() {
         try {
-            elasticSearch.client()._transport().close();
+            elasticSearchService.getAsyncClient()._transport().close();
             yelpClient._transport().close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -307,17 +310,16 @@ public class RequestTest extends ElasticsearchConnection {
         Map<String, Aggregation> aggsMap = Map.of("all-aggregation", aggs);
 
         try {
-            searchResponse = elasticSearch.client().search(_1 -> _1
+            searchResponse = elasticSearchService.getAsyncClient().search(_1 -> _1
                             .index(indexNyc)
                             .size(0)
                             .aggregations(aggsMap),
                     Void.class
-            );
+            ).get();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     static class Coordinates_ {

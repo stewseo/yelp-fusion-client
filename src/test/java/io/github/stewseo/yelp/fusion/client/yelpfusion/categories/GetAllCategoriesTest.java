@@ -1,15 +1,11 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.categories;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import io.github.stewseo.yelp.fusion.client.Elasticsearch;
-import io.github.stewseo.yelp.fusion.client.ElasticsearchConnection;
-import io.github.stewseo.yelp.fusion.client.YelpConnection;
+import io.github.stewseo.yelp.fusion.client.YelpFusionTestCase;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;
@@ -22,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetAllCategoriesTest {
+public class GetAllCategoriesTest extends YelpFusionTestCase {
     private final static Logger logger = LoggerFactory.getLogger(GetAllCategoriesTest.class);
 
     @Test
@@ -35,7 +31,7 @@ public class GetAllCategoriesTest {
         assertThat(response.categories().toString().length()).isEqualTo(199188);
         assertThat(response.categories().size()).isEqualTo(1295);
 
-        for(Categories cat : response.categories()) {
+        for(Category cat : response.categories()) {
             if (cat != null) {
                 logger.info(" " + cat);
             }
@@ -50,9 +46,9 @@ public class GetAllCategoriesTest {
 
         CompletableFuture<GetCategoriesResponse> future = asyncClient.categories().categories(c -> c.locale("en_US"));
 
-        List<Categories> categories = future.get().categories();
+        List<Category> categories = future.get().categories();
         assertThat(categories.size()).isEqualTo(1295);
-        for(Categories category : categories) {
+        for(Category category : categories) {
             if (category != null) {
                 logger.info(" " + category);
             }
@@ -61,9 +57,6 @@ public class GetAllCategoriesTest {
 
     @Test
     public void termsAggregationTest() throws IOException {
-
-        ElasticsearchConnection.initElasticsearchClient();
-        ElasticsearchClient esClient = Elasticsearch.getInstance().client();
 
         // Dynamically build each unique bucket by field: all alias
         TermsAggregation termsAggregation = TermsAggregation.of(t -> t
@@ -78,7 +71,7 @@ public class GetAllCategoriesTest {
         SearchResponse<Void> response = null;
 
         try {
-            response = esClient.search(b -> b
+            response = elasticsearchService.getAsyncClient().search(b -> b
                             .index("yelp-businesses-restaurants-nyc")
                             .size(0) // Set the number of matching documents to zero
                             .query(matchAll) // Set the query that will filter the businesses on which to run the aggregation (all contain all)
@@ -86,8 +79,8 @@ public class GetAllCategoriesTest {
                                     .terms(termsAggregation) // Select the terms aggregation variant.
                             ),
                     Void.class // Using Void will ignore any document in the response.
-            );
-        } catch (IOException | ElasticsearchException e) {
+            ).get();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.63'
+version = '1.0.64'
 
 java {
     sourceCompatibility = "17"
@@ -30,7 +30,7 @@ repositories {
 
 jar {
     archiveFileName = 'yelp-fusion-client'
-    archiveVersion = '1.0.63'
+    archiveVersion = '1.0.64'
     from {
         configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -115,8 +115,10 @@ ext {
 }
 
 dependencies {
+
     api files("libs/lowlevel-restclient.jar")
-//    api project(":lowlevel-restclient")
+
+    api files("libs/temporaldata.jar")
 
     // elasticsearch
     implementation("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
@@ -154,18 +156,13 @@ tasks.named('test') {
 
 test {
     filter {
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.response.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.end_to_end.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.aggregation.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.end_to_end.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.yelpfusion.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.yelpfusion.autocomplete.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.util.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.json.*"
-//        excludeTestsMatching "io.github.stewseo.yelp.fusion.client.document.*"
-//        excludeTestsMatching "io.github.stewseo.lowlevel.restclient.RestClientTest"
-//        excludeTestsMatching "io.github.stewseo.lowlevel.restclient.ExecutionTests"
-//        excludeTestsMatching "io.github.stewseo.lowlevel.restclient.response.ResponseBodyTest"
+        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
+
+        excludeTestsMatching "io.*.*.yelp.*.client.connection.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.end_to_end.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.json.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.util.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.*"
     }
 }
 

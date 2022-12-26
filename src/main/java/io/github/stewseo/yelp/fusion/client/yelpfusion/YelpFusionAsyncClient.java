@@ -2,31 +2,19 @@ package io.github.stewseo.yelp.fusion.client.yelpfusion;
 
 
 import io.github.stewseo.lowlevel.restclient.RestClient;
-import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.yelp.fusion.client.transport.endpoints.EndpointWithResponseMapperAttr;
+import io.github.stewseo.yelp.fusion.client.ApiClient;
 import io.github.stewseo.yelp.fusion.client._types.ErrorResponse;
+import io.github.stewseo.yelp.fusion.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.yelp.fusion.client.transport.JsonEndpoint;
 import io.github.stewseo.yelp.fusion.client.transport.TransportOptions;
+import io.github.stewseo.yelp.fusion.client.transport.YelpFusionTransport;
 import io.github.stewseo.yelp.fusion.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
-import io.github.stewseo.yelp.fusion.client.ApiClient;
-
-import io.github.stewseo.yelp.fusion.client.transport.YelpFusionTransport;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.business.YelpFusionBusinessAsyncClient;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.YelpFusionCategoriesAsyncClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.events.YelpFusionEventsAsyncClient;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteRequest;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.misc.AutoCompleteResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.details.BusinessDetailsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews.ReviewsResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.search.SearchBusinessResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.business.match.BusinessMatchResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesRequest;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.GetCategoriesResponse;
-import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.YelpFusionCategoriesAsyncClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;

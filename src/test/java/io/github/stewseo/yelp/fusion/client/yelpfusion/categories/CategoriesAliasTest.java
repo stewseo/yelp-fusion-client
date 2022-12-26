@@ -41,7 +41,7 @@ public class CategoriesAliasTest {
                     }
                 });
 
-        Categories category = future.get().category();
+        Category category = future.get().category();
         assertThat(category.toString()).isEqualTo(
                 "Categories: {\"alias\":\"sushi\",\"title\":\"Sushi Bars\",\"parent_aliases\":[\"restaurants\"],\"country_whitelist\":[],\"country_blacklist\":[]}");
 

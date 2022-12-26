@@ -1,6 +1,6 @@
 package io.github.stewseo.yelp.fusion.client.yelpfusion.business.reviews;
 
-import io.github.stewseo.yelp.fusion.client.YelpConnection;
+import io.github.stewseo.yelp.fusion.client.connection.YelpConnection;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;

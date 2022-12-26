@@ -16,19 +16,24 @@ import java.util.function.Function;
 
 //Returns events that match search criteria
 public class EventSearchResponse extends RequestBase implements JsonpSerializable {
+
     private final List<Event> events;
+
     private final Integer total;
 
     private EventSearchResponse(Builder builder) {
         this.events = builder.events;
         this.total = builder.total;
     }
+
     public static EventSearchResponse of(Function<EventSearchResponse.Builder, ObjectBuilder<EventSearchResponse>> fn) {
         return fn.apply(new EventSearchResponse.Builder()).build();
     }
+
     public List<Event> events() {
         return this.events;
     }
+
     public Integer total() {
         return this.total;
     }
@@ -53,12 +58,11 @@ public class EventSearchResponse extends RequestBase implements JsonpSerializabl
             generator.write(this.total);
         }
     }
+
     @Override
     public String toString() {
         return JsonpUtils.toString(this);
     }
-
-
 
     public static class Builder extends RequestBase.AbstractBuilder<EventSearchResponse.Builder>
             implements

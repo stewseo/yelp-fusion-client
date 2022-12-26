@@ -36,6 +36,7 @@ public class GetCategoriesRequest extends RequestBase implements JsonpSerializab
         }
         generator.writeEnd();
     }
+
     @Override
     public String toString() {
         return JsonpUtils.toString(this);
