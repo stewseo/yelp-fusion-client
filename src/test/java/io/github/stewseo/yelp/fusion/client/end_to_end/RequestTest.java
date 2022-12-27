@@ -89,7 +89,7 @@ public class RequestTest extends ElasticsearchConnection {
 
         logger.info(PrintUtils.green("index: " + indexNyc + " docs count: " + docsCount));
 
-        termsAggregationByCategory = elasticSearchService.restaurantsByCategory();
+        termsAggregationByCategory = elasticSearchService.termsAggregationByCategory(1000);
 
         logger.info(PrintUtils.debug("number of all with at least 1 restaurant: " + termsAggregationByCategory.size()));
 
@@ -293,14 +293,14 @@ public class RequestTest extends ElasticsearchConnection {
     }
 
     void termsAggregationTest() {
-        String queryName = "all";
+        String queryName = "categories";
 
         Query query = MatchAllQuery.of(m -> m
                 .queryName(queryName)
         )._toQuery();
 
 
-        String field = "all.alias";
+        String field = "categories.alias";
         SearchResponse<Void> searchResponse;
         TermsAggregation termsAggregation = TermsAggregation.of(a -> a
                 .field(field));

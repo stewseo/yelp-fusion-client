@@ -65,8 +65,8 @@ public class Business implements JsonpSerializable {
 //    private final Messaging messaging;
 
 
-
     // ------------------------------ Constructor -------------------------------- //
+
     private Business(Builder builder) {
         this.id = builder.id;
         this.alias = builder.alias;
@@ -272,7 +272,7 @@ public class Business implements JsonpSerializable {
         }
 
         if (ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("all");
+            generator.writeKey("categories");
             generator.writeStartArray();
             for (Category item0 : this.categories) {
                 item0.serialize(generator, mapper);
@@ -552,6 +552,8 @@ public class Business implements JsonpSerializable {
         op.add(Business.Builder::hours, JsonpDeserializer.arrayDeserializer(Hours._DESERIALIZER), "hours");
 
     }
+
+
 
 }
 

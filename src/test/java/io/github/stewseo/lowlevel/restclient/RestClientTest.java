@@ -88,7 +88,7 @@ public class RestClientTest {
     @Test
     void performBusinessSearchRequestTest() {
         Request request = new Request("GET", "v3/businesses/search");
-        Map<String, String> params = Map.of("location", "nyc", "all", "pizza");
+        Map<String, String> params = Map.of("location", "nyc", "categories", "pizza");
         request.addParameters(params);
 
         try {

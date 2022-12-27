@@ -215,7 +215,7 @@ public class SearchBusiness implements JsonpSerializable {
             coordinates.serialize(generator, mapper);
         }
         if(ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("all");
+            generator.writeKey("categories");
             generator.writeStartArray();
             for (Category item0 : this.categories) {
                 item0.serialize(generator, mapper);
@@ -390,7 +390,7 @@ public class SearchBusiness implements JsonpSerializable {
 
         op.add(SearchBusiness.Builder::location, Location._DESERIALIZER, "location");
         op.add(SearchBusiness.Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
-        op.add(SearchBusiness.Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "all");
+        op.add(SearchBusiness.Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
 
     }
     

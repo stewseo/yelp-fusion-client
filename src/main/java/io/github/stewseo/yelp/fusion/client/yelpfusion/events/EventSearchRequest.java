@@ -108,7 +108,7 @@ public class EventSearchRequest extends RequestBase implements JsonpSerializable
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if (ApiTypeHelper.isDefined(this.categories)) {
-            generator.writeKey("all");
+            generator.writeKey("categories");
             generator.writeStartArray();
             for (String item0 : this.categories) {
                 generator.write(item0);

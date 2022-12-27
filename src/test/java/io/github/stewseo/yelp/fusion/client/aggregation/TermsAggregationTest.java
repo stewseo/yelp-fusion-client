@@ -1,9 +1,6 @@
 package io.github.stewseo.yelp.fusion.client.aggregation;
 
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
-import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
@@ -60,7 +57,7 @@ public class TermsAggregationTest extends YelpFusionTestCase {
     @Test
     void termsAggregationTest() throws Exception {
 
-        List<StringTermsBucket> buckets = elasticsearchService.restaurantsByCategory(350, index);
+        List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(350, index);
 
         for (StringTermsBucket bucket: buckets) {
             System.out.println(PrintUtils.cyan("category: " + bucket.key().stringValue() +

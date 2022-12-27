@@ -13,10 +13,8 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import co.elastic.clients.json.JsonData;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Category;
-import jakarta.json.bind.config.BinaryDataStrategy;
 
 import java.util.List;
 import java.util.Objects;
@@ -110,9 +108,6 @@ public class ElasticsearchService {
         return timestamp;
     }
 
-    public List<StringTermsBucket> restaurantsByCategory() {
-        return restaurantsByCategory(null);
-    }
 
     /**
      *
@@ -120,9 +115,9 @@ public class ElasticsearchService {
      * @param index String index
      * @return restaurants aggregated into categories
      */
-    public List<StringTermsBucket> restaurantsByCategory(Integer size, String index) {
+    public List<StringTermsBucket> termsAggregationByCategory(Integer size, String index) {
 
-        if(size == null) {
+        if (size == null) {
             size = MAX_RESULTS;
         }
 
@@ -130,7 +125,7 @@ public class ElasticsearchService {
         TermsAggregation termsAggregation = buildTermsAggregation(Category.MappingProperties.ALIAS.jsonValue(), size);
 
         // match all documents containing the queryName: "all"
-        Query matchAll = buildMatchAllQuery("location")._toQuery();
+        Query matchAll = buildMatchAllQuery("*")._toQuery();
 
         SearchResponse<Void> response = null;
 
@@ -138,8 +133,7 @@ public class ElasticsearchService {
             response = asyncClient.search(b -> b
                             .index(index)
                             .size(0) // Set the number of matching documents to zero
-                            .query(matchAll) // Set the query that will filter the businesses on which to run the aggregation (all contain all)
-                            .aggregations("all-aggs", a -> a // Create an aggregation named "all-aggs"
+                            .aggregations("buildTermsAggregation", a -> a // Create an aggregation named "all-aggs"
                                     .terms(termsAggregation) // Select the terms aggregation variant.
                             ),
                     Void.class // Using Void will ignore any document in the response.
@@ -148,20 +142,18 @@ public class ElasticsearchService {
             throw new RuntimeException(e);
         }
 
-        List<StringTermsBucket> buckets = response.aggregations()
-                .get("all-aggs")
+        return response.aggregations()
+                .get("buildTermsAggregation")
                 .sterms()
                 .buckets().array();
-
-        return buckets;
     }
 
-    public List<StringTermsBucket> restaurantsByCategory(Integer size) {
+    public List<StringTermsBucket> termsAggregationByCategory(Integer size) {
 
         if(size == null) {
             size = MAX_RESULTS;
         }
-        return restaurantsByCategory(size, null);
+        return termsAggregationByCategory(size, null);
     }
 
     // return all business ids up to 10k, starting at specified timestamp.

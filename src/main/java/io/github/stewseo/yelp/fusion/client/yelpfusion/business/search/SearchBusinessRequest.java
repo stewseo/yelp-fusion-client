@@ -149,7 +149,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         }
 
         if(this.categories != null) {
-            generator.writeKey("all");
+            generator.writeKey("categories");
             this.categories.serialize(generator, mapper);
         }
 
@@ -346,7 +346,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
         op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
-        op.add(Builder::categories, Category._DESERIALIZER, "all");
+        op.add(Builder::categories, Category._DESERIALIZER, "categories");
         op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
         op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
         op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
@@ -355,6 +355,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
         op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
     }
+
     public static final SimpleEndpoint<SearchBusinessRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/search",
             // Request method
             request -> "GET",
@@ -371,7 +372,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
                     request.location.forEach(location -> parameters.put("location", location));
                 }
                 if (request.categories() != null) {
-                    parameters.put("all", request.categories.alias());
+                    parameters.put("categories", request.categories.alias());
                 }
                 if (request.coordinates() != null) {
                     Double latitude = request.coordinates().latitude();
@@ -383,7 +384,6 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
                         parameters.put("longitude", String.valueOf(longitude));
                     }
                 }
-
                 if (request.radius != null) {
                     parameters.put("radius", String.valueOf(request.radius));
                 }

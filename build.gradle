@@ -162,7 +162,9 @@ test {
         excludeTestsMatching "io.*.*.yelp.*.client.end_to_end.*"
         excludeTestsMatching "io.*.*.yelp.*.client.json.*"
         excludeTestsMatching "io.*.*.yelp.*.client.util.*"
-        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.business.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.categories.*"
+        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.event"
     }
 }
 

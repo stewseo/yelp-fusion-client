@@ -37,6 +37,7 @@ public class Event implements JsonpSerializable {
     private final Double longitude;
     @Nullable
     private final Location location;
+
     private Event(Builder builder) {
         this.category = builder.category;
         this.description = builder.description;
@@ -62,6 +63,84 @@ public class Event implements JsonpSerializable {
     public static Event of(Function< Builder, ObjectBuilder<Event>> fn) {
         return fn.apply(new Event.Builder()).build();
     }
+
+    public String category() {
+        return category;
+    }
+
+    public String description() {
+        return description;
+    }
+
+    public String event_site_url() {
+        return event_site_url;
+    }
+
+    public String id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String tickets_url() {
+        return tickets_url;
+    }
+
+    public String image_url() {
+        return image_url;
+    }
+
+    public String time_end() {
+        return time_end;
+    }
+
+    public String time_start() {
+        return time_start;
+    }
+
+    public Integer attending_count() {
+        return attending_count;
+    }
+
+    public Integer interested_count() {
+        return interested_count;
+    }
+
+    public Boolean is_canceled() {
+        return is_canceled;
+    }
+
+    public Boolean is_free() {
+        return is_free;
+    }
+
+    public Boolean is_official() {
+        return is_official;
+    }
+
+    public Double cost() {
+        return cost;
+    }
+
+    public Double cost_max() {
+        return cost_max;
+    }
+
+    public Double latitude() {
+        return latitude;
+    }
+
+    public Double longitude() {
+        return longitude;
+    }
+
+    @Nullable
+    public Location location() {
+        return location;
+    }
+
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
         serializeInternal(generator, mapper);

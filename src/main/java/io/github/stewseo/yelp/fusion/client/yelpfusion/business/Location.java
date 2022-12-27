@@ -8,6 +8,7 @@ import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Function;
 
 import static io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer.stringDeserializer;
 
@@ -73,6 +74,10 @@ public class Location implements JsonpSerializable {
         this.city = builder.city;
         this.state = builder.state;
         this.display_address = builder.display_address;
+    }
+
+    public static Location of(Function<Location.Builder, ObjectBuilder<Location>> fn) {
+        return fn.apply(new Location.Builder()).build();
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
@@ -211,11 +216,12 @@ public class Location implements JsonpSerializable {
         op.add(Location.Builder::address1, stringDeserializer(), "address1");
         op.add(Location.Builder::address2, stringDeserializer(), "address2");
         op.add(Location.Builder::address3, stringDeserializer(), "address3");
-        op.add(Location.Builder::display_address, JsonpDeserializer.arrayDeserializer(stringDeserializer()), "display_address");
         op.add(Location.Builder::city, stringDeserializer(), "city");
+        op.add(Location.Builder::state, stringDeserializer(), "state");
         op.add(Location.Builder::zip_code, stringDeserializer(), "zip_code");
         op.add(Location.Builder::county, stringDeserializer(), "county");
         op.add(Location.Builder::country, stringDeserializer(), "country");
+        op.add(Location.Builder::display_address, JsonpDeserializer.arrayDeserializer(stringDeserializer()), "display_address");
         op.add(Location.Builder::cross_streets, stringDeserializer(), "cross_streets");
     }
 

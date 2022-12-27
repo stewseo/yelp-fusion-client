@@ -22,9 +22,14 @@ public class AutoCompleteTest {
         String apiKey = System.getenv("YELP_API_KEY");
         YelpFusionClient client = YelpFusionClient.createClient(apiKey);
         AutoCompleteResponse response = client.autocomplete(a -> a.text("sush"));
-        assertThat(Objects.requireNonNull(response).toString()).isEqualTo("[Term: {\"text\":\"Delivery\"}, Term: {\"text\":\"Delivery Food\"}, Term: {\"text\":\"Deli Sandwich\"}]");
-        assertThat(Objects.requireNonNull(response.terms()).toString()).isEqualTo("[Term: {\"text\":\"Delivery\"}, Term: {\"text\":\"Delivery Food\"}, Term: {\"text\":\"Deli Sandwich\"}]");
-        assertThat(Objects.requireNonNull(response.categories()).toString()).isEqualTo("[Categories: {\"alias\":\"delis\",\"title\":\"Delis\"}, Categories: {\"alias\":\"icedelivery\",\"title\":\"Ice Delivery\"}, Categories: {\"alias\":\"waterdelivery\",\"title\":\"Water Delivery\"}]");
+
+
+        assertThat(Objects.requireNonNull(response).toString()).isEqualTo(
+                "{\"categories\":[{\"alias\":\"sushi\",\"title\":\"Sushi Bars\"},{\"alias\":\"conveyorsushi\",\"title\":\"Conveyor Belt Sushi\"}],\"terms\":[{\"text\":\"Sushi\"},{\"text\":\"Sushi Near Me\"},{\"text\":\"Sushi Restaurant\"}],\"businesses\":[]}");
+
+        assertThat(Objects.requireNonNull(response.terms()).toString()).isEqualTo("[{\"text\":\"Sushi\"}, {\"text\":\"Sushi Near Me\"}, {\"text\":\"Sushi Restaurant\"}]");
+
+        assertThat(Objects.requireNonNull(response.categories()).toString()).isEqualTo("[{\"alias\":\"sushi\",\"title\":\"Sushi Bars\"}, {\"alias\":\"conveyorsushi\",\"title\":\"Conveyor Belt Sushi\"}]");
         assertThat(Objects.requireNonNull(response.businesses()).toString()).isEqualTo("[]");
     }
 
@@ -34,7 +39,7 @@ public class AutoCompleteTest {
         String apiKey = System.getenv("YELP_API_KEY");
         YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(apiKey);
 
-        CompletableFuture<AutoCompleteResponse> future = asyncClient.autocomplete(a -> a.text("del"))
+        CompletableFuture<AutoCompleteResponse> future = asyncClient.autocomplete(a -> a.text("sush"))
                 .whenComplete((response, exception) -> {
                     if (exception != null) {
                         logger.error("Failed " + exception);
@@ -44,8 +49,12 @@ public class AutoCompleteTest {
                 });
 
         AutoCompleteResponse response = future.get();
-        assertThat(Objects.requireNonNull(response.terms()).toString()).isEqualTo("[Term: {\"text\":\"Delicatessen\"}, Term: {\"text\":\"Delivery\"}, Term: {\"text\":\"Delivery Food\"}]");
-        assertThat(Objects.requireNonNull(response.categories()).toString()).isEqualTo("[Categories: {\"alias\":\"delis\",\"title\":\"Delis\"}, Categories: {\"alias\":\"icedelivery\",\"title\":\"Ice Delivery\"}, Categories: {\"alias\":\"waterdelivery\",\"title\":\"Water Delivery\"}]");
+        assertThat(Objects.requireNonNull(response).toString()).isEqualTo(
+                "{\"categories\":[{\"alias\":\"sushi\",\"title\":\"Sushi Bars\"},{\"alias\":\"conveyorsushi\",\"title\":\"Conveyor Belt Sushi\"}],\"terms\":[{\"text\":\"Sushi\"},{\"text\":\"Sushi Near Me\"},{\"text\":\"Sushi Restaurant\"}],\"businesses\":[]}");
+
+        assertThat(Objects.requireNonNull(response.terms()).toString()).isEqualTo("[{\"text\":\"Sushi\"}, {\"text\":\"Sushi Near Me\"}, {\"text\":\"Sushi Restaurant\"}]");
+
+        assertThat(Objects.requireNonNull(response.categories()).toString()).isEqualTo("[{\"alias\":\"sushi\",\"title\":\"Sushi Bars\"}, {\"alias\":\"conveyorsushi\",\"title\":\"Conveyor Belt Sushi\"}]");
         assertThat(Objects.requireNonNull(response.businesses()).toString()).isEqualTo("[]");
     }
 }
