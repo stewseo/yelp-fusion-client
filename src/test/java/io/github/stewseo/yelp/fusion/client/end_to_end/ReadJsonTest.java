@@ -56,7 +56,7 @@ public class ReadJsonTest {
 
     static void bucketCategoryTest() {
 
-        int docsCount = elasticsearchService.getDocsCount(index);
+        int docsCount = elasticsearchService.docsCount(index);
 
         int iterations = (int) Math.ceil((double) docsCount / 10000);
 

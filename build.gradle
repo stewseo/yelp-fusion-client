@@ -55,6 +55,15 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
 
+            pom.withXml {
+                Node pomNode = asNode()
+                pomNode.dependencies.'*'.findAll() {
+                    it.artifactId.text() == 'elasticsearch-java'
+                }.each() {
+                    it.parent().remove(it)
+                }
+            }
+
             pom {
                 name = 'YelpFusionJavaClient'
                 artifactId = 'yelp-fusion-client'
@@ -84,6 +93,7 @@ publishing {
         }
     }
 }
+
 
 javadoc {
     source = sourceSets.main.allJava
@@ -117,7 +127,6 @@ ext {
 dependencies {
 
     api files("libs/lowlevel-restclient.jar")
-
     api files("libs/temporaldata.jar")
 
     // elasticsearch
@@ -157,14 +166,13 @@ tasks.named('test') {
 test {
     filter {
         excludeTestsMatching "io.*.*.lowlevel.restclient.*"
-
         excludeTestsMatching "io.*.*.yelp.*.client.connection.*"
         excludeTestsMatching "io.*.*.yelp.*.client.end_to_end.*"
         excludeTestsMatching "io.*.*.yelp.*.client.json.*"
         excludeTestsMatching "io.*.*.yelp.*.client.util.*"
         excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.business.*"
         excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.categories.*"
-        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.event"
+        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.event.*"
     }
 }
 

@@ -31,7 +31,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class JsonpDeserializeTest extends YelpFusionTestCase {
 
     JacksonJsonpMapper mapper = new JacksonJsonpMapper();
-    int size = 50;
+    int size = 10;
 
     final BreinConfig config = new BreinConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", "utakxp7sm6weo5gvk7cytw==")
             .setRestEngineType(BreinEngineType.UNIREST_ENGINE);
@@ -46,15 +46,30 @@ public class JsonpDeserializeTest extends YelpFusionTestCase {
         }
     }
     JsonpDeserializer<Business> businessDeserializer = Business._DESERIALIZER;
+
+
+    // Business toString format:
+    //      List<String> list = List.of(
+    //                "{\"location\":{\"city\":\"Carmel\",\"country\":\"USA\",\"state\":\"CA\"},\"coordinates\":{\"latitude\":0.0,\"longitude\":0.0},\"categories\":[{\"alias\":\"burgers\"}]}",
+    //                "{\"location\":{\"city\":\"Los Angeles\",\"country\":\"USA\",\"state\":\"CA\"},\"coordinates\":{\"latitude\":34.0522342,\"longitude\":34.0522342},\"categories\":[{\"alias\":\"burgers\"}]}",
+    //                "{\"location\":{\"city\":\"Oakland\",\"country\":\"USA\",\"state\":\"CA\"},\"coordinates\":{\"latitude\":37.8043722,\"longitude\":37.8043722},\"categories\":[{\"alias\":\"burgers\"}]}",
+    //                "{\"location\":{\"city\":\"San Diego\",\"country\":\"USA\",\"state\":\"CA\"},\"coordinates\":{\"latitude\":32.7153292,\"longitude\":32.7153292},\"categories\":[{\"alias\":\"burgers\"}]}",
+    //                "{\"location\":{\"city\":\"San Francisco\",\"country\":\"USA\",\"state\":\"CA\"},\"coordinates\":{\"latitude\":37.7749295,\"longitude\":37.7749295},\"categories\":[{\"alias\":\"burgers\"}]}"
+    //        );
     private void testDeserialize(Business business) {
+
         String expectedBusinessString = business.toString();
 
         InputStream is = IOUtils.toInputStream(expectedBusinessString, StandardCharsets.UTF_8);
 
+        // Creates a JSON parser from the specified byte stream. The character encoding of the stream is determined as defined in RFC 7159  .
+        //Params: i/o stream from which JSON is to be read
+        //Returns: a JSON parser
         JsonParser parser = mapper.jsonProvider().createParser(is);
 
+        // Deserialize a value. The value starts at the next state in the JSON stream.
         String deserializedBusinessString = businessDeserializer.deserialize(parser, mapper).toString();
-        
+
         assertThat(deserializedBusinessString).isEqualTo(expectedBusinessString);
 
     }

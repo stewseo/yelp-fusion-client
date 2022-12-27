@@ -5,7 +5,6 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.yelp.fusion.client.YelpFusionTestCase;
 import io.github.stewseo.yelp.fusion.client.connection.ElasticsearchConnection;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.in;
 
 public class TermsAggregationTest extends YelpFusionTestCase {
 
@@ -60,12 +60,20 @@ public class TermsAggregationTest extends YelpFusionTestCase {
         List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(350, index);
 
         for (StringTermsBucket bucket: buckets) {
-            System.out.println(PrintUtils.cyan("category: " + bucket.key().stringValue() +
-                    ", "+PrintUtils.green("documents: " + bucket.docCount()
-                            )
-                    )
+            System.out.println("category: " + bucket.key().stringValue() +
+                    ", documents: " + bucket.docCount()
             );
         }
 
     }
+
+    @Test
+    void docsCountTest() {
+        int count = elasticsearchService.docsCount(index);
+        assertThat(count).isGreaterThanOrEqualTo(1);
+        assertThat(count).isEqualTo(26927);
+    }
+
 }
+
+

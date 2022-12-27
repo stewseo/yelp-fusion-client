@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class Category implements JsonpSerializable {
+
     private final String title;
     private final String alias;
     @Nullable

@@ -86,8 +86,16 @@ public abstract class YelpFusionTestCase {
                 .latitude(latitude)
                 .longitude(longitude)
         );
+        String id = "id-"+i;
+        String phoneNumber = "000000000" + String.valueOf(i);
 
-        return Business.of(e -> e.coordinates(coordinates).location(location).categories(category));
+        return Business.of(e -> e
+                .coordinates(coordinates)
+                .location(location)
+                .categories(category)
+                .id(id)
+                .phone(phoneNumber)
+        );
     }
 
     private BreinLocationResult breinLocationResult(String city) {

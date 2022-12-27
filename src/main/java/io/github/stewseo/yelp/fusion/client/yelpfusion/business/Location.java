@@ -108,6 +108,11 @@ public class Location implements JsonpSerializable {
             generator.write(this.city);
         }
 
+        if (this.country != null) {
+            generator.writeKey("country");
+            generator.write(this.country);
+        }
+
         if (this.state != null) {
             generator.writeKey("state");
             generator.write(this.state);
@@ -116,11 +121,6 @@ public class Location implements JsonpSerializable {
         if (this.zip_code != null) {
             generator.writeKey("zip_code");
             generator.write(this.zip_code);
-        }
-
-        if (this.country != null) {
-            generator.writeKey("country");
-            generator.write(this.country);
         }
 
         if (this.display_address != null) {

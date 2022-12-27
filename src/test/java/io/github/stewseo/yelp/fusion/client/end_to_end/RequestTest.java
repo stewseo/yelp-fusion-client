@@ -85,7 +85,7 @@ public class RequestTest extends ElasticsearchConnection {
 
         createElasticsearchService();
 
-        docsCount = elasticSearchService.getDocsCount(indexNyc);
+        docsCount = elasticSearchService.docsCount(indexNyc);
 
         logger.info(PrintUtils.green("index: " + indexNyc + " docs count: " + docsCount));
 

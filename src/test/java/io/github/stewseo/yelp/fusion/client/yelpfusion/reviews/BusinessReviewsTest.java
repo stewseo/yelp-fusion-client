@@ -23,7 +23,6 @@ public class BusinessReviewsTest {
 
         assertThat(response.reviews().size()).isEqualTo(3);
         assertThat(response.reviews().get(2).toString()).isEqualTo(
-                "Review: " +
                         "{\"id\":\"Ob6aIbhYOZM3yrLgymjXcQ\"," +
                         "\"text\":\"The food is consistently good. Real deal authentic Mexican cooking much like it's predecessor New Mexico II \\n\\nTacos, nachos, and tortas all slap.\"," +
                         "\"url\":\"https://www.yelp.com/biz/huitlacoche-taqueria-restaurant-ridgewood-2?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&hrid=Ob6aIbhYOZM3yrLgymjXcQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=ccj3y1UCH-4gsdWSMdEDOw\"," +
@@ -35,7 +34,7 @@ public class BusinessReviewsTest {
                         "\"name\":\"Caleb M.\"}}");
 
         assertThat(response.reviews().get(1).toString()).isEqualTo(
-                "Review: {\"id\":\"_4Fy-e2S3zSE0dmgf1jy_w\"," +
+                "{\"id\":\"_4Fy-e2S3zSE0dmgf1jy_w\"," +
                         "\"text\":\"Great birria tacos, awesome horchata, friendly service! Definitely a good place to have around.\"," +
                         "\"url\":\"https://www.yelp.com/biz/huitlacoche-taqueria-restaurant-ridgewood-2?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&hrid=_4Fy-e2S3zSE0dmgf1jy_w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=ccj3y1UCH-4gsdWSMdEDOw\"," +
                         "\"rating\":5.0," +

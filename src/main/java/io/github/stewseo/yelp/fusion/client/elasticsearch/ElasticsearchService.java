@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
@@ -14,6 +15,7 @@ import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.stewseo.yelp.fusion.client.yelpfusion.business.Business;
 import io.github.stewseo.yelp.fusion.client.yelpfusion.categories.Category;
 
 import java.util.List;
@@ -44,6 +46,9 @@ public class ElasticsearchService {
         }
     }
 
+    public ElasticsearchAsyncClient getAsyncClient() {
+        return asyncClient;
+    }
 
     public List<Long> getTimestamp(Long timestamp, SortOrder sortOrder) {
 
@@ -53,7 +58,7 @@ public class ElasticsearchService {
 
         Query byTimestamp = buildRangeQuery(field, timestamp)._toQuery();
 
-        SortOptions sortOptions = getSortOptions(field, sortOrder);
+        SortOptions sortOptions = buildSortOptions(field, sortOrder);
 
         try {
             List<ObjectNode> list = asyncClient.search(s -> s
@@ -90,30 +95,50 @@ public class ElasticsearchService {
         }
     }
 
-    private SourceFilter buildSourceFilter(String field) {
-        return SourceFilter.of(source -> source
-                .includes(field));
-
-    }
-
-    private SortOptions getSortOptions(String field, SortOrder sortOrder) {
-        return SortOptions.of(options -> options
-                .field(f -> f
-                        .field(field)
-                        .order(sortOrder))
-        );
-    }
-
     public Long getTimestamp() {
         return timestamp;
     }
 
+    /**
+     *
+     * @param type Integer size number of docs to return
+     *
+     * @return Returns documents that match the provided Category.MappingProperties type value. The provided text is analyzed before matching.
+     */
+    public SearchResponse<Business> occurences(Category.MappingProperties type, String searchText,
+                                              int size,
+                                              String rangeQueryField, long timestamp) {
 
+        Query byCategory = MatchQuery.of(m -> m
+                .field(type.jsonValue())
+                .query(searchText)
+        )._toQuery();
+
+        Query byTimestamp = buildRangeQuery(rangeQueryField, timestamp)._toQuery();
+
+        SearchResponse<JsonData> response = null;
+
+        try {
+            return asyncClient.search(s -> s
+                            .index(index)
+                            .query(q -> q
+                                    .bool(b -> b
+                                            .must(byCategory)
+                                            .must(byTimestamp)
+                                    )
+                            )
+                            .size(size),
+                    Business.class // Using Void will ignore any document in the response.
+            ).get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
     /**
      *
      * @param size Integer size number of docs to return
      * @param index String index
-     * @return restaurants aggregated into categories
+     * @return a multi-bucket value source based aggregation where buckets are dynamically built - one per unique value.
      */
     public List<StringTermsBucket> termsAggregationByCategory(Integer size, String index) {
 
@@ -123,9 +148,6 @@ public class ElasticsearchService {
 
         // Dynamically build each unique bucket by field: all alias
         TermsAggregation termsAggregation = buildTermsAggregation(Category.MappingProperties.ALIAS.jsonValue(), size);
-
-        // match all documents containing the queryName: "all"
-        Query matchAll = buildMatchAllQuery("*")._toQuery();
 
         SearchResponse<Void> response = null;
 
@@ -156,6 +178,7 @@ public class ElasticsearchService {
         return termsAggregationByCategory(size, null);
     }
 
+
     // return all business ids up to 10k, starting at specified timestamp.
     public List<Hit<ObjectNode>> getBusinessIdsWithTimestamps(String timestampRange) {
 
@@ -164,13 +187,7 @@ public class ElasticsearchService {
                 .gte(JsonData.of(timestampRange))
         )._toQuery();
 
-//        Query matchAllQuery = MatchAllQuery.of(r -> r
-//                .queryName("id")
-//        )._toQuery();
-
-        SourceFilter sourceFilter = SourceFilter.of(source -> source
-                .includes("id")
-                .includes("timestamp"));
+        SourceFilter sourceFilter = buildSourceFilter("id", "timestamp");
 
         SortOptions sortOptions = SortOptions.of(options -> options
                 .field(f -> f
@@ -204,7 +221,7 @@ public class ElasticsearchService {
         return response.hits().hits();
     }
 
-    public int getDocsCount(String index) {
+    public int docsCount(String index) {
         try {
             return Integer.parseInt(Objects.requireNonNull(asyncClient.cat().count(c -> c
                             .index(index)
@@ -225,10 +242,12 @@ public class ElasticsearchService {
         );
     }
 
-    public ElasticsearchAsyncClient getAsyncClient() {
-      return asyncClient;
+    public RangeQuery buildRangeQuery(String field, long timestamp) {
+        return RangeQuery.of(r -> r
+                .field(field)
+                .gte(JsonData.of(timestamp))
+        );
     }
-
 
     public MatchAllQuery buildMatchAllQuery(String queryName) {
         return MatchAllQuery.of(m -> m
@@ -236,10 +255,23 @@ public class ElasticsearchService {
         );
     }
 
-    public RangeQuery buildRangeQuery(String field, long timestamp) {
-        return RangeQuery.of(r -> r
-                .field(field)
-                .gte(JsonData.of(timestamp))
+    private SourceFilter buildSourceFilter(String field) {
+        return SourceFilter.of(source -> source
+                .includes(field));
+
+    }
+
+    private SourceFilter buildSourceFilter(String field1, String field2) {
+        return SourceFilter.of(source -> source
+                .includes(field1)
+                .includes(field2));
+    }
+
+    private SortOptions buildSortOptions(String field, SortOrder sortOrder) {
+        return SortOptions.of(options -> options
+                .field(f -> f
+                        .field(field)
+                        .order(sortOrder))
         );
     }
 
