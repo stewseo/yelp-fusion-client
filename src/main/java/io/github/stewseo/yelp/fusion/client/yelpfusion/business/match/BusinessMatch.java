@@ -5,6 +5,7 @@ import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializable;
 import io.github.stewseo.yelp.fusion.client.json.JsonpDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.JsonpMapper;
 import io.github.stewseo.yelp.fusion.client.json.JsonpSerializable;
+import io.github.stewseo.yelp.fusion.client.json.JsonpUtils;
 import io.github.stewseo.yelp.fusion.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.yelp.fusion.client.json.ObjectDeserializer;
 import io.github.stewseo.yelp.fusion.client.util.ObjectBuilder;
@@ -110,6 +111,11 @@ public class BusinessMatch implements JsonpSerializable {
             generator.writeKey("display");
             generator.write(this.display);
         }
+    }
+
+    @Override
+    public String toString() {
+        return JsonpUtils.toString(this);
     }
 
 

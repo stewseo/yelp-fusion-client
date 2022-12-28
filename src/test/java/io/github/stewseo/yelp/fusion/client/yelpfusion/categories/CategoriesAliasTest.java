@@ -20,9 +20,9 @@ public class CategoriesAliasTest {
         YelpFusionClient client = YelpFusionClient.createClient(System.getenv("YELP_API_KEY"));
 
         GetCategoriesAliasResponse response = client.categories().alias(c -> c.alias("sushi"));
-        assertThat(response.category().toString().length()).isEqualTo(129);
+        assertThat(response.category()).isNotNull();
         assertThat(response.category().toString()).isEqualTo(
-                "Categories: {\"alias\":\"sushi\",\"title\":\"Sushi Bars\",\"parent_aliases\":[\"restaurants\"],\"country_whitelist\":[],\"country_blacklist\":[]}");
+                "{\"alias\":\"sushi\",\"title\":\"Sushi Bars\",\"parent_aliases\":[\"restaurants\"],\"country_whitelist\":[],\"country_blacklist\":[]}");
 
     }
 
@@ -43,7 +43,7 @@ public class CategoriesAliasTest {
 
         Category category = future.get().category();
         assertThat(category.toString()).isEqualTo(
-                "Categories: {\"alias\":\"sushi\",\"title\":\"Sushi Bars\",\"parent_aliases\":[\"restaurants\"],\"country_whitelist\":[],\"country_blacklist\":[]}");
+                "{\"alias\":\"sushi\",\"title\":\"Sushi Bars\",\"parent_aliases\":[\"restaurants\"],\"country_whitelist\":[],\"country_blacklist\":[]}");
 
     }
 

@@ -45,16 +45,16 @@ public class BusinessSearchTest extends YelpFusionTestCase {
                 .coordinates(c -> c
                         .latitude(40.7580)
                         .longitude(-73.9855))
-                .term( "restaurants")
+                .term( term)
                 .categories(cat -> cat
                         .alias("pizza"))
                 .offset(offset)
                 .limit(50)
                 .radius(1610)
-                .sort_by("distance")
+                .sort_by(sort_by)
         );
-        assertThat(response.toString().length()).isEqualTo(10027);
-        assertThat(response.total()).isEqualTo(3300); // total results
+        assertThat(response.toString().length()).isEqualTo(10003);
+        assertThat(response.total()).isEqualTo(241); // total results
         assertThat(response.businesses().size()).isEqualTo(50); // max results per page
 
         assertThat(response.region().latitude()).isEqualTo(40.7580); //meta field region.latitude

@@ -115,17 +115,17 @@ public class JsonpSerializeTest extends YelpFusionTestCase {
         assertThat(businessToStringToByteArray).isEqualTo(toJsonToByteArray);
     }
 
-    private void testInputStream(String expected, String actual){
+    private void testInputStream(String expectedJsonString, String actualJsonString){
 
-        final InputStream toJsonToIS = IOUtils.toInputStream(expected, StandardCharsets.UTF_8);
-        final InputStream businessToStringToIS = IOUtils.toInputStream(actual, StandardCharsets.UTF_8);
+        final InputStream expectedJsonToIS = IOUtils.toInputStream(expectedJsonString, StandardCharsets.UTF_8);
+        final InputStream actualJsonToIS = IOUtils.toInputStream(actualJsonString, StandardCharsets.UTF_8);
 
-        try(businessToStringToIS; toJsonToIS){
-            assertThat(toJsonToIS).isNotEmpty();
-            assertThat(businessToStringToIS).isNotEmpty();
+        try(expectedJsonToIS; actualJsonToIS){
+            assertThat(actualJsonToIS).isEqualTo(expectedJsonString);
 
-            businessToStringToIS.close();
-            toJsonToIS.close();
+            expectedJsonToIS.close();
+            actualJsonToIS.close();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
