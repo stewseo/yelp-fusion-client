@@ -28,7 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class JsonpSerializeTest extends YelpFusionTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonpSerializeTest.class);
+
     JacksonJsonpMapper mapper = new JacksonJsonpMapper();
+
     int size = 10;
 
     @Test

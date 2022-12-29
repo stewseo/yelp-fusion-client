@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -44,27 +45,30 @@ public abstract class YelpFusionTestCase {
     private static String country = "USA";
 
     private int numCities;
+
     public Stream<Business> generateBusinessInstances(int size) {
 
-        JsonpDeserializer<Business> businessJsonpDeserializer = Business._DESERIALIZER;
+        list = getStreamOfTemporalData().toList();
 
-        List<Business> businesses = new ArrayList<>();
+        numCities = list.size();
 
-        return IntStream.range(0, size).mapToObj(this::generateBusiness);
+        return getStreamOfTemporalData().map(this::generateBusiness);
 
     }
+    AtomicInteger ai = new AtomicInteger(0);
+    public Business generateBusiness(BreinTemporalDataResult breinTemporalDataResult) {
 
-    public Business generateBusiness(int i) {
-
-        int index = ThreadLocalRandom.current().nextInt(0, numCities);
-
-        String city = list.get(index).getLocation().getCity();
-
-        BreinLocationResult breinLocationResult = locationByCity(city).getLocation();
+        BreinLocationResult breinLocationResult = breinTemporalDataResult.getLocation();
 
         double longitude = breinLocationResult.getLat();
 
         double latitude = breinLocationResult.getLat();
+
+        String city = breinLocationResult.getCity();
+
+        String state = breinLocationResult.getState();
+
+        String country = breinLocationResult.getCountry();
 
         Category category = Category.of(cat -> cat.alias("burgers"));
 
@@ -78,8 +82,10 @@ public abstract class YelpFusionTestCase {
                 .latitude(latitude)
                 .longitude(longitude)
         );
-        String id = "id-"+i;
-        String phoneNumber = "000000000" + String.valueOf(i);
+
+        String id = "id-"+ ai.get();
+
+        String phoneNumber = "000000000" + String.valueOf(ai.getAndIncrement());
 
         return Business.of(e -> e
                 .coordinates(coordinates)

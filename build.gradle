@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.64'
+version = '1.0.7'
 
 java {
     sourceCompatibility = "17"
@@ -30,7 +30,7 @@ repositories {
 
 jar {
     archiveFileName = 'yelp-fusion-client'
-    archiveVersion = '1.0.64'
+    archiveVersion = '1.0.7'
     from {
         configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -125,8 +125,9 @@ ext {
 dependencies {
 
     api files("libs/lowlevel-restclient.jar")
-//    api files ("libs/temporaldata.jar")
-    api project (":temporaldata")
+    api files ("libs/temporaldata.jar")
+//    api project (":temporaldata")
+
     // elasticsearch
     implementation("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
 
@@ -142,6 +143,7 @@ dependencies {
     api("org.slf4j:slf4j-api:${slf4jVersion}")
     api("ch.qos.logback:logback-classic:${logbackVersion}")
     api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+    implementation 'org.jetbrains:annotations:20.1.0'
 
     // testing
     testImplementation("org.eclipse:yasson:2.0.4") {
