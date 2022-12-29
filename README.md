@@ -24,7 +24,7 @@ You can use [Maven's dependency management](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>io.github.stewseo</groupId>
   <artifactId>yelp-fusion-client</artifactId>
-  <version>1.0.63</version>
+  <version>1.0.64</version>
 </dependency>
 </dependencies>
 ```
