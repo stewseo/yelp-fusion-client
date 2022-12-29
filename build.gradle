@@ -94,7 +94,6 @@ publishing {
     }
 }
 
-
 javadoc {
     source = sourceSets.main.allJava
 }
@@ -104,7 +103,6 @@ javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 signing {
     sign publishing.publications.mavenJava
 }
-
 
 ext {
     // elasticsearch
@@ -127,8 +125,8 @@ ext {
 dependencies {
 
     api files("libs/lowlevel-restclient.jar")
-    api files("libs/temporaldata.jar")
-
+//    api files ("libs/temporaldata.jar")
+    api project (":temporaldata")
     // elasticsearch
     implementation("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
 
@@ -158,24 +156,20 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 }
 
-
 tasks.named('test') {
     useJUnitPlatform()
 }
 
 test {
     filter {
-        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
-        excludeTestsMatching "io.*.*.yelp.*.client.connection.*"
-        excludeTestsMatching "io.*.*.yelp.*.client.end_to_end.*"
-//        excludeTestsMatching "io.*.*.yelp.*.client.json.*"
-        excludeTestsMatching "io.*.*.yelp.*.client.util.*"
-//        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.business.*"
-//        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.categories.*"
-//        excludeTestsMatching "io.*.*.yelp.*.client.yelpfusion.event.*"
+//        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
+        excludeTestsMatching "io.*.*.client._types.*"
+        excludeTestsMatching "io.*.*.client.connection.*"
+        excludeTestsMatching "io.*.*.client.elasticsearch.*"
+        excludeTestsMatching "io.*.*.client.end_to_end.*"
+        excludeTestsMatching "io.*.*.client.transport.*"
     }
 }
-
 
 tasks.named('taskTree').configure {
     depth = 3 // limit tree depth to 3. Equivalent to the --depth CLI task option.
