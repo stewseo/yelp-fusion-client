@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'io.github.stewseo'
-version = '1.0.4'
+version = '1.0.64'
 
 java {
     sourceCompatibility = "17"
@@ -20,30 +20,27 @@ ext {
     jacksonVersion = "2.12.3"
     jakartaVersion = '2.0.1'
     jakartaJsonBindVersion = '2.0.0'
-    parssonVersion = '1.0.0'
+
     // commons
     commonscodecVersion = '1.11'
     commonsioVersion = '2.4'
     commonsloggingVersion = '1.2'
+
     // http components
     httpasyncclientVersion = '4.1.5'
     httpcoreVersion = '4.4.12'
     httpclientVersion = '4.5.10'
+
     // logging
     slf4jVersion = '2.0.4'
     logbackVersion = '1.4.1'
 
+    jUnitVersion = "5.9.0"
 }
 
+
+
 dependencies {
-
-    // json
-//    api("org.eclipse.parsson:parsson:${parssonVersion}")
-    api("jakarta.json:jakarta.json-api:${jakartaVersion}")
-    api("jakarta.json.bind:jakarta.json.bind-api:${jakartaJsonBindVersion}")
-    api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-    api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
-
     // apache commons
     api("commons-io:commons-io:${commonsioVersion}")
     api("commons-codec:commons-codec:${commonscodecVersion}")
@@ -61,8 +58,37 @@ dependencies {
     configurations.all {
         exclude group: "commons-logging", module: "commons-logging"
     }
+
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 }
 
-test {
-    useJUnitPlatform()
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
 }
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    archiveFileName = 'lowlevel-restclient.jar'
+    archiveVersion = '1.0.64'
+    from {
+        configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
+
+
+
