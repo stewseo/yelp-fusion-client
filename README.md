@@ -1,7 +1,7 @@
 ## Yelp Fusion Java Client
 <br>
 
-[![release](https://badgen.net/badge/version/1.0.52/green?icon=github)](https://github.com/stewseo/stewseo.github.io/tree/version-1.0.5)
+[![release](https://badgen.net/badge/version/1.0.52/green?icon=github)](https://github.com/stewseo/yelp-fusion-client/tree/version-1.0.5)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.stewseo/yelp-fusion-client?versionPrefix=1.0.52)](https://search.maven.org/artifact/io.github.stewseo/yelp-fusion-client/1.0.52/jar)
 [![examples](https://badgen.net/badge/docs/examples/cyan?icon=github)](https://stewseo.github.io/yelp-fusion-client/examples)
 
@@ -24,7 +24,7 @@ You can use [Maven's dependency management](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>io.github.stewseo</groupId>
   <artifactId>yelp-fusion-client</artifactId>
-  <version>1.0.52</version>
+  <version>1.0.63</version>
 </dependency>
 </dependencies>
 ```
@@ -34,7 +34,7 @@ You can use [Gradle's dependency management](https://search.maven.org/search?q=g
 **Example - Gradle**
 ```gradle
 dependencies {
-   implementation 'io.github.stewseo:yelp-fusion-client:1.0.52'
+   implementation 'io.github.stewseo:yelp-fusion-client:1.0.63'
 }
 ```
 <br>
