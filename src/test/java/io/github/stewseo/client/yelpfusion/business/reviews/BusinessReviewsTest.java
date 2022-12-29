@@ -1,12 +1,8 @@
 package io.github.stewseo.client.yelpfusion.business.reviews;
 
-import io.github.stewseo.client.YelpFusionTestCase;
-import io.github.stewseo.client.connection.YelpFusionConnection;
-import io.github.stewseo.client.yelpfusion.business.reviews.Review;
-import io.github.stewseo.client.yelpfusion.business.reviews.ReviewsRequest;
-import io.github.stewseo.client.yelpfusion.business.reviews.ReviewsResponse;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.client.YelpFusionConnection;
 
-import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;

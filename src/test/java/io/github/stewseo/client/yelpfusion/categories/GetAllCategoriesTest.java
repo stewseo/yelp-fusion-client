@@ -1,9 +1,7 @@
 package io.github.stewseo.client.yelpfusion.categories;
 
-import io.github.stewseo.client.YelpFusionTestCase;
-import io.github.stewseo.client.connection.YelpFusionConnection;
-import io.github.stewseo.client.yelpfusion.categories.Category;
-import io.github.stewseo.client.yelpfusion.categories.GetCategoriesResponse;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.client.YelpFusionConnection;
 
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;

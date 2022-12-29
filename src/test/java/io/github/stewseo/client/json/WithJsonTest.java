@@ -13,7 +13,6 @@ import co.elastic.clients.elasticsearch.indices.PutIndicesSettingsRequest;
 import co.elastic.clients.json.JsonData;
 
 
-import io.github.stewseo.client.yelpfusion.business.ModelTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;

@@ -1,4 +1,4 @@
-package io.github.stewseo.client.end_to_end;
+package io.github.stewseo.client.usage;
 
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
@@ -6,7 +6,7 @@ import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.client.connection.ElasticsearchConnection;
+import io.github.stewseo.client.elasticsearch.ElasticsearchConnection;
 import io.github.stewseo.client.elasticsearch.ElasticsearchService;
 import io.github.stewseo.client.yelpfusion.business.Business;
 
@@ -28,9 +28,9 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 
-public class ReadJsonTest {
+public class BulkIngestJsonTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReadJsonTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BulkIngestJsonTest.class);
 
     public final String timestampPipeline = "timestamp-pipeline";
 
@@ -116,7 +116,7 @@ public class ReadJsonTest {
     @Test
     public void readJsonTest() throws IOException {
 
-        URL file = ReadJsonTest.class.getResource("nyc-restaurants.json");
+        URL file = BulkIngestJsonTest.class.getResource("nyc-restaurants.json");
 
         JsonNode node = new JacksonJsonpMapper().objectMapper().readValue(file, JsonNode.class);
 

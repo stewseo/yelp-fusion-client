@@ -1,11 +1,8 @@
 package io.github.stewseo.client.json;
 
 import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.google.gson.reflect.TypeToken;
 import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.client.yelpfusion.business.Business;
 
@@ -15,22 +12,16 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestJson {
+public class ValidateJson {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestJson.class);
+    private static final Logger logger = LoggerFactory.getLogger(ValidateJson.class);
     private static final JacksonJsonpMapper mapper = new JacksonJsonpMapper();
 
     private static final Gson gson = new Gson();
@@ -59,6 +50,7 @@ public class TestJson {
     }
 
     static AtomicInteger count = new AtomicInteger(0);
+
     public <T> int assertIsValidJson(T json) {
         String actualJsonString = json.toString();
         // assert that business to String is valid JSON

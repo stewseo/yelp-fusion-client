@@ -1,4 +1,4 @@
-package io.github.stewseo.client.connection;
+package io.github.stewseo.client.elasticsearch;
 
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;

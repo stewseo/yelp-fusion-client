@@ -1,19 +1,14 @@
-package io.github.stewseo.client.yelpfusion.json;
+package io.github.stewseo.client.json;
 
 
 import io.github.stewseo.client._types.Bytes;
 import io.github.stewseo.client._types.GeoOrientation;
 import io.github.stewseo.client._types.Refresh;
-
-import io.github.stewseo.client.yelpfusion.business.ModelTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class EnumTest extends ModelTestCase {
 

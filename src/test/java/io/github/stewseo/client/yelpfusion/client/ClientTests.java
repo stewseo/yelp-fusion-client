@@ -1,4 +1,4 @@
-package io.github.stewseo.client.yelpfusion;
+package io.github.stewseo.client.yelpfusion.client;
 
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;
@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-
-public class AsyncClientTest {
-    Logger logger = LoggerFactory.getLogger(AsyncClientTest.class);
+public class ClientTests {
+    Logger logger = LoggerFactory.getLogger(ClientTests.class);
 
     @Test
     public void asyncClientTest() throws Exception {
+
         String apiKey = System.getenv("YELP_API_KEY");
 
         // Asynchronous non-blocking client

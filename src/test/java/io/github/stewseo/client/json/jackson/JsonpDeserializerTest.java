@@ -1,6 +1,6 @@
 package io.github.stewseo.client.json.jackson;
 
-import io.github.stewseo.client.yelpfusion.business.ModelTestCase;
+import io.github.stewseo.client.json.ModelTestCase;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 
 import org.slf4j.Logger;

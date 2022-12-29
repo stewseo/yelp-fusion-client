@@ -1,18 +1,16 @@
-package io.github.stewseo.client;
+package io.github.stewseo.client.yelpfusion;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-
-import io.github.stewseo.client.connection.YelpFusionConnection;
-import io.github.stewseo.client.json.TestJson;
-import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
-import io.github.stewseo.temporaldata.TemporalDataService;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.business.Coordinates;
 import io.github.stewseo.client.yelpfusion.business.Location;
 import io.github.stewseo.client.yelpfusion.categories.Category;
-
+import io.github.stewseo.client.yelpfusion.client.YelpFusionConnection;
+import io.github.stewseo.client.yelpfusion.json.JsonTestCase;
+import io.github.stewseo.client.yelpfusion.json.YelpFusionJsonTestCase;
+import io.github.stewseo.temporaldata.TemporalDataService;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.ArrayList;
@@ -22,12 +20,10 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public abstract class YelpFusionTestCase {
-    
+
     public static YelpFusionAsyncClient yelpFusionAsyncClient;
 
-    private static TestJson testJson;
-
-    private static int numCities;
+    private static JsonTestCase jsonTestCase;
 
     private static List<BreinTemporalDataResult> list;
 
@@ -40,24 +36,14 @@ public abstract class YelpFusionTestCase {
         
         temporalDataService = new TemporalDataService();
 
-        testJson = new TestJson();
-        
-        list = loadCaliforniaCities().toList();
-        
-        numCities = list.size();
-    }
-
-    private static Stream<BreinTemporalDataResult> loadCaliforniaCities() {
-
-        return Stream.of("San Francisco", "Oakland", "San Jose", "Carmel", "Monterey", "Napa", "Sonoma", "Los Angeles", "San Diego", "Santa Barbara")
-                .map(YelpFusionTestCase::locationByCity);
-
+        jsonTestCase =  new YelpFusionJsonTestCase();
     }
 
     private static String state = "CA";
 
     private static String country = "USA";
 
+    private int numCities;
     public Stream<Business> generateBusinessInstances(int size) {
 
         JsonpDeserializer<Business> businessJsonpDeserializer = Business._DESERIALIZER;
@@ -104,9 +90,10 @@ public abstract class YelpFusionTestCase {
         );
     }
 
-    public TestJson getTestJson() {
-        return testJson;
+    public JsonTestCase getTestJson() {
+        return jsonTestCase;
     }
+
     public Stream<BreinTemporalDataResult> getStreamOfTemporalData() {
 
         final Stream<String> citiesInCa =
@@ -119,13 +106,13 @@ public abstract class YelpFusionTestCase {
     }
 
     public static BreinTemporalDataResult locationByCity(String city) {
-        //
-        return temporalDataService.temporalData(city);
+
+        return temporalDataService.temporalDataResult(city);
     }
 
     public static BreinTemporalDataResult locationByCity(String city, String state, String country) {
 
-        return temporalDataService.temporalData(city, state, country);
+        return temporalDataService.temporalDataResult(city, state, country);
     }
 
 

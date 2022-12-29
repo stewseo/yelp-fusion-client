@@ -1,4 +1,4 @@
-package io.github.stewseo.client.end_to_end;
+package io.github.stewseo.client.usage;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOrder;
@@ -15,7 +15,7 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.client.connection.ElasticsearchConnection;
+import io.github.stewseo.client.elasticsearch.ElasticsearchConnection;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.client.json.JsonData;
@@ -48,18 +48,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SuppressWarnings({"unused"})
-public class RequestTest extends ElasticsearchConnection {
-    private static final Logger logger = LoggerFactory.getLogger(RequestTest.class);
+public class IterateAllResultsTest extends ElasticsearchConnection {
+    private static final Logger logger = LoggerFactory.getLogger(IterateAllResultsTest.class);
 
     static YelpFusionSyncBlockingClient yelpClient;
 
     private static final String indexNyc = "yelp-businesses-restaurants-nyc";
 
+
     static Map<String, List<String>> categoriesMap;
+
     static int docsCount;
+
     static Set<String> setOfBusinessIds;
 
     static int indexOf;
+
     static String categoryName;
 
     @BeforeAll

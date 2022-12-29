@@ -14,13 +14,14 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public class TemporalDataService {
+public class TemporalDataService implements TemporalDataInterface {
 
     public TemporalDataService() {
 
     }
 
-    public BreinTemporalDataResult temporalData(String city) {
+
+    public BreinTemporalDataResult temporalDataResult(String city) {
 
         BreinConfig config = new BreinConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", "utakxp7sm6weo5gvk7cytw==")
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE);
@@ -45,7 +46,9 @@ public class TemporalDataService {
 
         return result;
     }
-    public BreinTemporalDataResult temporalData(String city, String state, String country) {
+
+
+    public BreinTemporalDataResult temporalDataResult(String city, String state, String country) {
 
         BreinConfig config = new BreinConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", "utakxp7sm6weo5gvk7cytw==")
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE);
@@ -69,5 +72,21 @@ public class TemporalDataService {
         BreinWeatherResult field6 = result.getWeather();
 
         return result;
+    }
+
+
+    @Override
+    public BreinHolidayResult holidayResult() {
+        return null;
+    }
+
+    @Override
+    public BreinWeatherResult weatherResult() {
+        return null;
+    }
+
+    @Override
+    public BreinLocationResult locationResult() {
+        return null;
     }
 }

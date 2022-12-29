@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.client.connection.ElasticsearchConnection;
+import io.github.stewseo.client.elasticsearch.ElasticsearchConnection;
 import io.github.stewseo.client.elasticsearch.ElasticsearchTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.in;
 
 public class TermsAggregationTest extends ElasticsearchTestCase {
     

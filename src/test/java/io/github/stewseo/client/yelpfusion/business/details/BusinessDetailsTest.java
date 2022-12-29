@@ -1,30 +1,20 @@
 package io.github.stewseo.client.yelpfusion.business.details;
 
-import co.elastic.clients.elasticsearch.core.IndexRequest;
-import co.elastic.clients.elasticsearch.core.IndexResponse;
-import io.github.stewseo.client.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.business.Hours;
-import io.github.stewseo.client.yelpfusion.business.details.BusinessDetailsResponse;
-import io.github.stewseo.client.elasticsearch.ElasticsearchService;
 import io.github.stewseo.client.yelpfusion.business.search.SearchBusiness;
 import io.github.stewseo.client.yelpfusion.business.search.SearchBusinessResponse;
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
 
 
-import io.github.stewseo.client.json.JsonData;
 import io.github.stewseo.client.yelpfusion.business.Business;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

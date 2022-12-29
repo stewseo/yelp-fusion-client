@@ -1,6 +1,6 @@
 package io.github.stewseo.client.yelpfusion.autocomplete;
 
-import io.github.stewseo.client.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;
 import io.github.stewseo.client.yelpfusion.misc.AutoCompleteResponse;

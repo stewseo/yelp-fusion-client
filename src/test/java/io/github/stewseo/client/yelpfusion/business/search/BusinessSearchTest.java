@@ -1,15 +1,13 @@
 package io.github.stewseo.client.yelpfusion.business.search;
 
-import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.client.YelpFusionTestCase;
-import io.github.stewseo.client.connection.YelpFusionConnection;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.client.YelpFusionConnection;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

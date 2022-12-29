@@ -3,7 +3,7 @@ package io.github.stewseo.client.yelpfusion.json;
 import com.fasterxml.jackson.core.JacksonException;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import io.github.stewseo.client.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.temporaldata.TemporalDataService;
 
 import io.github.stewseo.client.json.JsonpDeserializer;

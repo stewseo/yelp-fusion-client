@@ -2,17 +2,13 @@ package io.github.stewseo.client.util;
 
 import io.github.stewseo.client._types.SortOrder;
 import io.github.stewseo.client._types.aggregations.Aggregation;
-import io.github.stewseo.client._types.aggregations.DateHistogramAggregation;
 import io.github.stewseo.client._types.aggregations.HistogramAggregation;
-import io.github.stewseo.client._types.aggregations.HistogramBucket;
 import io.github.stewseo.client._types.aggregations.TermsAggregation;
 import io.github.stewseo.client.json.JsonData;
-import io.github.stewseo.client.util.NamedValue;
 
-import io.github.stewseo.client.yelpfusion.business.ModelTestCase;
+import io.github.stewseo.client.json.ModelTestCase;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

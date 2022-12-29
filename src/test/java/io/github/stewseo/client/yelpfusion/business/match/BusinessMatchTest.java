@@ -1,13 +1,7 @@
 package io.github.stewseo.client.yelpfusion.business.match;
 
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.client.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.business.Location;
-import io.github.stewseo.client.yelpfusion.business.match.BusinessMatch;
-import io.github.stewseo.client.yelpfusion.business.match.BusinessMatchRequest;
-import io.github.stewseo.client.yelpfusion.business.match.BusinessMatchResponse;
 
 
 import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;
@@ -15,9 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

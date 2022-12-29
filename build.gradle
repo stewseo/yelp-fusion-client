@@ -164,9 +164,7 @@ test {
     filter {
 //        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
         excludeTestsMatching "io.*.*.client._types.*"
-        excludeTestsMatching "io.*.*.client.connection.*"
-        excludeTestsMatching "io.*.*.client.elasticsearch.*"
-        excludeTestsMatching "io.*.*.client.end_to_end.*"
+        excludeTestsMatching "io.*.*.client.usage.*"
         excludeTestsMatching "io.*.*.client.transport.*"
     }
 }

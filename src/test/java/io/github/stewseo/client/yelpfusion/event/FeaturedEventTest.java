@@ -1,14 +1,10 @@
 package io.github.stewseo.client.yelpfusion.event;
 
 import com.brein.domain.results.BreinTemporalDataResult;
-import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.client.YelpFusionTestCase;
-import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.events.Event;
 import io.github.stewseo.client.yelpfusion.events.FeaturedEventResponse;
 import org.junit.jupiter.api.Test;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

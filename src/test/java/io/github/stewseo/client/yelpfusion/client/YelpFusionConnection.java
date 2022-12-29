@@ -1,4 +1,4 @@
-package io.github.stewseo.client.connection;
+package io.github.stewseo.client.yelpfusion.client;
 
 import io.github.stewseo.client.transport.YelpFusionTransport;
 import io.github.stewseo.lowlevel.restclient.RestClient;

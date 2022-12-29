@@ -1,4 +1,4 @@
-package io.github.stewseo.client.yelpfusion.business;
+package io.github.stewseo.client.json;
 
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
