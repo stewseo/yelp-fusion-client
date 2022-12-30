@@ -1,10 +1,15 @@
 package io.github.stewseo.client;
 
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpMapperBase;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.transport.Transport;
 import io.github.stewseo.client.transport.TransportOptions;
+
+
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;

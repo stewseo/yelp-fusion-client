@@ -34,8 +34,11 @@ ext {
     // logging
     slf4jVersion = '2.0.4'
     logbackVersion = '1.4.1'
-
-    jUnitVersion = "5.9.0"
+    randomizedRunnerVersion = '2.8.1'
+    jUnit4Version = '4.13.2'
+    jUnit5Version = '5.9.0'
+    hamcrestVersion = '2.2'
+    assertJCoreVersion = '3.23.1'
 }
 
 
@@ -59,9 +62,18 @@ dependencies {
         exclude group: "commons-logging", module: "commons-logging"
     }
 
-    testImplementation 'org.assertj:assertj-core:3.23.1'
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+    api "com.carrotsearch.randomizedtesting:randomizedtesting-runner:${slf4jVersion}"
+    api "junit:junit:${jUnit4Version}"
+    api "org.hamcrest:hamcrest:${hamcrestVersion}"
+
+    // mockito
+    api 'org.mockito:mockito-core:4.4.0'
+    api 'net.bytebuddy:byte-buddy:1.12.9'
+    api 'org.objenesis:objenesis:3.2'
+
+    testImplementation "org.assertj:assertj-core:${assertJCoreVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnit5Version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnit5Version}"
 }
 
 task javadocJar(type: Jar) {

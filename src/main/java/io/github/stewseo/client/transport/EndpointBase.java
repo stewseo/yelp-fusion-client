@@ -106,6 +106,7 @@ public class EndpointBase<RequestT, ResponseT> implements Endpoint<RequestT, Res
     }
 
     public static void pathEncode(String src, StringBuilder dest) {
+
         // TODO: avoid dependency on HttpClient here (and use something more efficient)
         dest.append(URLEncodedUtils.formatSegments(src).substring(1));
     }

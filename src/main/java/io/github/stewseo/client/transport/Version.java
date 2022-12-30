@@ -92,7 +92,6 @@ public class Version {
         return s.toString();
     }
 
-
     public static final Version VERSION;
 
     static {
@@ -103,6 +102,7 @@ public class Version {
             try {
                 properties.load(in);
                 String versionStr = properties.getProperty("version");
+
                 if (versionStr != null) {
                     version = Version.parse(versionStr);
                 }

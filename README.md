@@ -4,7 +4,9 @@
 [![release](https://badgen.net/badge/version/1.0.52/green?icon=github)](https://github.com/stewseo/yelp-fusion-client/tree/version-1.0.5)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.stewseo/yelp-fusion-client?versionPrefix=1.0.52)](https://search.maven.org/artifact/io.github.stewseo/yelp-fusion-client/1.0.52/jar)
 [![examples](https://badgen.net/badge/docs/examples/cyan?icon=github)](https://stewseo.github.io/yelp-fusion-client/examples)
-
+![LINE](https://img.shields.io/badge/line--coverage-26.54%25-red.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-17.03%25-red.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-5.24-brightgreen.svg)
 
 ### Features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Strongly typed requests and responses for all Yelp Fusion APIs.

@@ -16,6 +16,7 @@ import io.github.stewseo.client.transport.TransportOptions;
 import io.github.stewseo.client.transport.restclient.YelpRestClientTransport;
 
 
+import io.github.stewseo.lowlevel.restclient.RestClientInterface;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -51,7 +52,7 @@ public class YelpFusionSyncBlockingClient extends ApiClient<YelpFusionTransport,
 
         Header[] defaultHeader  = {new BasicHeader("Authorization", "Bearer " + apiKey)};
 
-        RestClient restClient = RestClient.builder(host)
+        RestClientInterface restClient = RestClient.builder(host)
                 .setDefaultHeaders(defaultHeader)
                 .build();
 

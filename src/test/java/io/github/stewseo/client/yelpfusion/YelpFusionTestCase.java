@@ -26,10 +26,10 @@ public abstract class YelpFusionTestCase {
 
     private static JsonTestCase jsonTestCase;
 
+    private static TemporalDataService temporalDataService;
+
     private static List<BreinTemporalDataResult> list;
 
-    private static TemporalDataService temporalDataService;
-    
     @BeforeAll
     static void beforeAll() {
 
@@ -39,10 +39,6 @@ public abstract class YelpFusionTestCase {
 
         jsonTestCase =  new YelpFusionJsonTestCase();
     }
-
-    private static String state = "CA";
-
-    private static String country = "USA";
 
     private int numCities;
 

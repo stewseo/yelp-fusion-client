@@ -1,3 +1,5 @@
+package io.github.stewseo.lowlevel.restclient;
+
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

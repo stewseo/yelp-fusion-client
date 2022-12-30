@@ -1,15 +1,18 @@
 package io.github.stewseo.client.yelpfusion.client;
 
 import io.github.stewseo.client.transport.YelpFusionTransport;
-import io.github.stewseo.lowlevel.restclient.RestClient;
+
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionSyncBlockingClient;
+import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.lowlevel.restclient.RestClientInterface;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
+
 import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
@@ -100,7 +103,7 @@ public class YelpFusionConnection {
 
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + apiKey)};
 
-        RestClient restClient = RestClient.builder(httpHost)
+        RestClientInterface restClient = RestClient.builder(httpHost)
                 .setDefaultHeaders(defaultHeaders)
                 .build();
 

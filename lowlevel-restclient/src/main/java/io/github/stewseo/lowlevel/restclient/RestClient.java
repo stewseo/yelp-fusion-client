@@ -1,18 +1,29 @@
 package io.github.stewseo.lowlevel.restclient;
 
-import org.apache.http.*;
+import org.apache.http.ConnectionClosedException;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.GzipCompressingEntity;
 import org.apache.http.client.entity.GzipDecompressingEntity;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.nio.client.HttpAsyncClient;
 import org.apache.http.nio.client.methods.HttpAsyncMethods;
 import org.apache.http.nio.protocol.HttpAsyncRequestProducer;
 import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
@@ -21,18 +32,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLHandshakeException;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
 import java.util.zip.GZIPOutputStream;
 
 
-public class RestClient implements Closeable {
+public class RestClient implements Closeable, RestClientInterface {
     //    private static final Log logger = LogFactory.getLog(RestClient.class);
     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
     private final CloseableHttpAsyncClient client;
@@ -77,10 +100,6 @@ public class RestClient implements Closeable {
         return new RestClientBuilder(host);
     }
 
-
-    public HttpAsyncClient getHttpClient() {
-        return this.client;
-    }
     public HttpHost getHttpHost() {
         return this.httpHost;
     }
@@ -89,15 +108,12 @@ public class RestClient implements Closeable {
         return client.isRunning();
     }
 
-    public String add(String string, Function<String, String> fn) {
-        return fn.apply(string);
-    }
-
 
     public Response performRequest(Request request) throws IOException {
         InternalRequest internalRequest = new InternalRequest(request);
         return performRequest(httpHost, internalRequest, null);
     }
+
 
     private Response performRequest(HttpHost httpHost, final InternalRequest request, Exception previousException)
             throws IOException {
@@ -176,6 +192,11 @@ public class RestClient implements Closeable {
             responseListener.onFailure(e);
             return Cancellable.NO_OP;
         }
+    }
+
+    @Override
+    public HttpHost httpHost() {
+        return httpHost;
     }
 
 

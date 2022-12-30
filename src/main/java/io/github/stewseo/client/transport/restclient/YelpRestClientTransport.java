@@ -25,6 +25,7 @@ import io.github.stewseo.lowlevel.restclient.Response;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
 import io.github.stewseo.lowlevel.restclient.ResponseListener;
 import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.lowlevel.restclient.RestClientInterface;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;
@@ -65,14 +66,16 @@ public class YelpRestClientTransport implements YelpFusionTransport {
         }
     }
 
-    private final RestClient restClient;
+    private final RestClientInterface restClient;
+
     private final JsonpMapper mapper;
+
 
     private co.elastic.clients.json.JsonpMapper esMapper;
 
     private final YelpRestTransportOptions transportOptions;
 
-    public YelpRestClientTransport(RestClient restClient, JsonpMapper mapper, TransportOptions options) { // TransportOptions
+    public YelpRestClientTransport(RestClientInterface restClient, JsonpMapper mapper, TransportOptions options) { // TransportOptions
         this.restClient = restClient;
         this.mapper = mapper;
         String optionsString = null;
@@ -83,12 +86,9 @@ public class YelpRestClientTransport implements YelpFusionTransport {
         }
 
     }
-    public YelpRestClientTransport(RestClient restClient, JsonpMapper mapper) throws IOException {
-        this(restClient, mapper, null);
-    }
 
-    public RestClient restClient() {
-        return restClient;
+    public YelpRestClientTransport(RestClientInterface restClient, JsonpMapper mapper) throws IOException {
+        this(restClient, mapper, null);
     }
 
 
@@ -291,6 +291,12 @@ public class YelpRestClientTransport implements YelpFusionTransport {
     public TransportOptions options() {
         return transportOptions;
     }
+
+    @Override
+    public RestClientInterface restClientInterface() {
+        return restClient;
+    }
+
 
     @SuppressWarnings("EmptyMethod")
     private void checkHeaders() {

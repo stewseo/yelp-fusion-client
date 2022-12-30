@@ -2,6 +2,7 @@ package io.github.stewseo.client.transport;
 
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.lowlevel.restclient.RestClient;
+import io.github.stewseo.lowlevel.restclient.RestClientInterface;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -27,5 +28,5 @@ public interface Transport extends Closeable {
 
     TransportOptions options();
 
-    RestClient restClient();
+    RestClientInterface restClientInterface();
 }

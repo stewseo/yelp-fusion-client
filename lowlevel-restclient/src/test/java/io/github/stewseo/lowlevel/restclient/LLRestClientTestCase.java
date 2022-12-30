@@ -1,28 +1,21 @@
-import io.github.stewseo.lowlevel.restclient.PrintUtils;
-import io.github.stewseo.lowlevel.restclient.Request;
-import io.github.stewseo.lowlevel.restclient.Response;
-import io.github.stewseo.lowlevel.restclient.RestClient;
-import org.apache.commons.io.IOUtils;
+package io.github.stewseo.lowlevel.restclient;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
 import org.apache.http.RequestLine;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class LLRestClientTestCase implements HttpRequestTestCase {
+public abstract class LLRestClientTestCase {
 
     // connect to host for each
     private static RestClient restClient;
@@ -80,18 +73,4 @@ public abstract class LLRestClientTestCase implements HttpRequestTestCase {
         return requestLine.getUri();
     }
 
-    @Override
-    public void testRequestLine() {
-
-    }
-
-    @Override
-    public void testRequestWithCurl() {
-
-    }
-
-    @Override
-    public void testHeaders() {
-
-    }
 }
