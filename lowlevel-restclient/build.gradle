@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id 'yelpfusion.java-conventions'
+    id 'org.java-conventions'
 }
 
 group = 'io.github.stewseo'
@@ -93,7 +93,7 @@ repositories {
 
 jar {
     archiveFileName = 'lowlevel-restclient.jar'
-    archiveVersion = '1.0.7'
+//    archiveVersion = '1.0.7'
     from {
         configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }

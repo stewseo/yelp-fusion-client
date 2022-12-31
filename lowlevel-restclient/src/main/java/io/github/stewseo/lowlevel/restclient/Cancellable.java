@@ -1,7 +1,6 @@
 package io.github.stewseo.lowlevel.restclient;
 
 
-
 import org.apache.http.client.methods.*;
 
 import java.util.concurrent.*;
@@ -14,7 +13,8 @@ public abstract class Cancellable {
 
     static final Cancellable NO_OP = new Cancellable() {
         @Override
-        public void cancel() {}
+        public void cancel() {
+        }
 
         @Override
         void runIfNotCancelled(Runnable runnable) {
