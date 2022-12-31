@@ -5,7 +5,6 @@ import io.github.stewseo.client._types.aggregations.Aggregation;
 import io.github.stewseo.client._types.aggregations.HistogramAggregation;
 import io.github.stewseo.client._types.aggregations.TermsAggregation;
 import io.github.stewseo.client.json.JsonData;
-
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import org.junit.jupiter.api.Test;
 

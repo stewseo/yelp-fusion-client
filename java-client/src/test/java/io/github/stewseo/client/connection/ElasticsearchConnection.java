@@ -13,11 +13,14 @@ import org.elasticsearch.client.RestClientBuilder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-// build all requests before transporting
 public abstract class ElasticsearchConnection {
+
     public static final String timestampPipeline = "timestamp-pipeline";
+
     public static final String testIndex = "yelp-test-index";
+
     public static String postalPipeline = "postal-lookup";
+
     public static ElasticsearchService elasticSearchService;
 
     public static ElasticsearchService createElasticsearchService() {

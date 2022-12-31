@@ -8,8 +8,8 @@ import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.client.yelpfusion.business.search.SearchBusiness;
 import io.github.stewseo.client.yelpfusion.business.Region;
+import io.github.stewseo.client.yelpfusion.business.search.SearchBusiness;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;

@@ -29,12 +29,16 @@ import java.util.concurrent.ExecutionException;
 
 public class BulkIngestJsonTest {
 
+    public static final String index = "yelp-businesses-restaurants-nyc";
     private static final Logger logger = LoggerFactory.getLogger(BulkIngestJsonTest.class);
-    public static String index = "yelp-businesses-restaurants-nyc";
     static Set<String> setOfBusinessIds;
+
     static String timestamp;
+
     private static ElasticsearchService elasticsearchService;
+
     public final String timestampPipeline = "timestamp-pipeline";
+
     public final String testIndex = "yelp-test-index";
 
     @BeforeAll

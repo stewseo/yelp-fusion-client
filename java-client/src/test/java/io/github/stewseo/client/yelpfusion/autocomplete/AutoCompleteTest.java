@@ -1,15 +1,12 @@
 package io.github.stewseo.client.yelpfusion.autocomplete;
 
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
-
 import io.github.stewseo.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.misc.AutoCompleteResponse;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;

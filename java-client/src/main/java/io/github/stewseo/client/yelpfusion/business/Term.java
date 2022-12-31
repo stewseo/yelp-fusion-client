@@ -9,11 +9,9 @@ import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.ObjectBuilderBase;
+import jakarta.json.stream.JsonGenerator;
 
-import jakarta.json.stream.*;
-
-
-import java.util.function.*;
+import java.util.function.Function;
 
 @JsonpDeserializable
 public class Term implements JsonpSerializable {

@@ -21,7 +21,7 @@ public class ResponseBodyTest extends LLRestClientTestCase {
     @Test
     void responseBodyTest() throws IOException {
 
-        try(RestClient restClient = restClient()) {
+        try (RestClient restClient = restClient()) {
 
             HttpHost host = restClient.getHttpHost();
 
@@ -37,8 +37,8 @@ public class ResponseBodyTest extends LLRestClientTestCase {
             assertThat(process.descendants().count()).isEqualTo(1);
             assertThat(process.info().user().isPresent()).isTrue();
 
-            try(BufferedReader errorReader = process.errorReader()) {
-                if(errorReader.ready()) {
+            try (BufferedReader errorReader = process.errorReader()) {
+                if (errorReader.ready()) {
                     tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
                 }
             }

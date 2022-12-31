@@ -3,7 +3,6 @@ package io.github.stewseo.client.elasticsearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import io.github.stewseo.client.elasticsearch.ElasticsearchService;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -14,14 +13,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 // build all requests before transporting
-public abstract class ElasticsearchConnection {
+public class ElasticsearchConnection {
 
     protected static final String timestampPipeline = "timestamp-pipeline";
+
     protected static final String testIndex = "yelp-test-index";
+
     protected static String postalPipeline = "postal-lookup";
+
     protected static ElasticsearchService elasticSearchService;
 
-    public static ElasticsearchService createElasticsearchService() {
+    public static void createElasticsearchService() {
 
         String host = "1ff0acb6626441789a7e846726159410.us-east-2.aws.elastic-cloud.com";
         int port = 443;
@@ -31,11 +33,12 @@ public abstract class ElasticsearchConnection {
 
         org.elasticsearch.client.RestClient restClient = createRestClient(host, port, scheme, apiKey, apiKeySecret);
 
-        co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient, new co.elastic.clients.json.jackson.JacksonJsonpMapper());
+        co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient,
+                new co.elastic.clients.json.jackson.JacksonJsonpMapper());
 
         ElasticsearchAsyncClient client = new ElasticsearchAsyncClient(transport);
 
-        return elasticSearchService = new ElasticsearchService(client);
+        elasticSearchService = new ElasticsearchService(client);
     }
 
     public static RestClient createRestClient(String host, int port, String scheme, String apiKeyId, String apiKeySecret) {
@@ -55,7 +58,7 @@ public abstract class ElasticsearchConnection {
         return builder.build();
     }
 
-    public ElasticsearchService getElasticsearchService() {
+    protected ElasticsearchService getElasticsearchService() {
         return elasticSearchService;
     }
 

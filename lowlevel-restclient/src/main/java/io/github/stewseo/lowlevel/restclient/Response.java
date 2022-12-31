@@ -1,6 +1,11 @@
 package io.github.stewseo.lowlevel.restclient;
 
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.RequestLine;
+import org.apache.http.StatusLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,56 +15,6 @@ import java.util.regex.Pattern;
 
 
 public class Response {
-
-    private final RequestLine requestLine;
-    private final HttpHost host;
-    private final HttpResponse response;
-
-
-
-    Response(RequestLine requestLine, HttpHost host, HttpResponse response) {
-        Objects.requireNonNull(requestLine, "requestLine cannot be null");
-        Objects.requireNonNull(host, "host cannot be null");
-        Objects.requireNonNull(response, "response cannot be null");
-        this.requestLine = requestLine;
-        this.host = host;
-        this.response = response;
-    }
-
-
-    public RequestLine getRequestLine() {
-        return requestLine;
-    }
-
-
-    public HttpHost getHost() {
-        return host;
-    }
-
-    public StatusLine getStatusLine() {
-        return response.getStatusLine();
-    }
-
-    public Header[] getHeaders() {
-        return response.getAllHeaders();
-    }
-
-
-    public String getHeader(String name) {
-        Header header = response.getFirstHeader(name);
-        if (header == null) {
-            return null;
-        }
-        return header.getValue();
-    }
-
-    /**
-     * Returns the response body available, null otherwise
-     * @see HttpEntity
-     */
-    public HttpEntity getEntity() {
-        return response.getEntity();
-    }
 
     /**
      * Optimized regular expression to test if a string matches the RFC 1123 date
@@ -76,7 +31,6 @@ public class Response {
             "\\d{2}:\\d{2}:\\d{2} " + // (two-digit hour):(two-digit minute):(two-digit second)
             "GMT" + // GMT
             "\"$"); // closing quote (optional, since an older version can still send a warn-date), end of line
-
     /**
      * Length of RFC 1123 format (with quotes and leading space), used in
      * matchWarningHeaderPatternByPrefix(String).
@@ -92,7 +46,19 @@ public class Response {
             + 2 + 1 + 2 + 1 + 2 + 1
             + 3
             + 1;
-    // end::noformat
+    private final RequestLine requestLine;
+    private final HttpHost host;
+    private final HttpResponse response;
+
+
+    Response(RequestLine requestLine, HttpHost host, HttpResponse response) {
+        Objects.requireNonNull(requestLine, "requestLine cannot be null");
+        Objects.requireNonNull(host, "host cannot be null");
+        Objects.requireNonNull(response, "response cannot be null");
+        this.requestLine = requestLine;
+        this.host = host;
+        this.response = response;
+    }
 
     /**
      * Tests if a string matches the RFC 7234 specification for warning headers.
@@ -129,6 +95,40 @@ public class Response {
         final int lastQuote = warningHeader.length() - 1;
         final String warningValue = warningHeader.substring(firstQuote + 1, lastQuote);
         return warningValue;
+    }
+
+    public RequestLine getRequestLine() {
+        return requestLine;
+    }
+
+    public HttpHost getHost() {
+        return host;
+    }
+
+    public StatusLine getStatusLine() {
+        return response.getStatusLine();
+    }
+
+    public Header[] getHeaders() {
+        return response.getAllHeaders();
+    }
+    // end::noformat
+
+    public String getHeader(String name) {
+        Header header = response.getFirstHeader(name);
+        if (header == null) {
+            return null;
+        }
+        return header.getValue();
+    }
+
+    /**
+     * Returns the response body available, null otherwise
+     *
+     * @see HttpEntity
+     */
+    public HttpEntity getEntity() {
+        return response.getEntity();
     }
 
     public List<String> getWarnings() {

@@ -51,11 +51,6 @@ public final class Request {
         return unmodifiableMap(parameters);
     }
 
-    public void setEntity(HttpEntity entity) {
-        this.entity = entity;
-    }
-
-
     public void setJsonEntity(String body) {
         setEntity(body == null ? null : new NStringEntity(body, ContentType.APPLICATION_JSON));
     }
@@ -64,6 +59,13 @@ public final class Request {
         return entity;
     }
 
+    public void setEntity(HttpEntity entity) {
+        this.entity = entity;
+    }
+
+    public RequestOptions getOptions() {
+        return options;
+    }
 
     public void setOptions(RequestOptions options) {
         Objects.requireNonNull(options, "options cannot be null");
@@ -73,10 +75,6 @@ public final class Request {
     public void setOptions(RequestOptions.Builder options) {
         Objects.requireNonNull(options, "options cannot be null");
         this.options = options.build();
-    }
-
-    public RequestOptions getOptions() {
-        return options;
     }
 
     @Override

@@ -5,7 +5,6 @@ import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectDeserializer;
-
 import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;

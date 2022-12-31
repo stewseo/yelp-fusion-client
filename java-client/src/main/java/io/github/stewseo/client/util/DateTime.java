@@ -5,14 +5,13 @@ import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpDeserializerBase;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
-
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
-import java.time.ZonedDateTime;
 import javax.annotation.Nullable;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
@@ -23,7 +22,7 @@ import java.util.Locale;
 @JsonpDeserializable
 public class DateTime implements JsonpSerializable {
 
-    public final static JsonpDeserializer<DateTime> _DESERIALIZER = new TimestampDeserializer();
+    public static final JsonpDeserializer<DateTime> _DESERIALIZER = new TimestampDeserializer();
     // Visible for testing
     @Nullable
     final DateTimeFormatter formatter;

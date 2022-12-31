@@ -1,14 +1,11 @@
 package io.github.stewseo.client.yelpfusion.business.match;
 
+import io.github.stewseo.client.yelpfusion.YelpFusionClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.business.Location;
-
-
-import io.github.stewseo.client.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +37,7 @@ public class BusinessMatchTest extends YelpFusionTestCase {
 
         BusinessMatchResponse response = client.businesses().businessMatch(request);
 
-        BusinessMatch businessMatch = response.businesses().get(0);
+        BusinessMatch businessMatch = response.businesses();
 
         assertBusinessMatch(businessMatch);
     }
@@ -59,10 +56,10 @@ public class BusinessMatchTest extends YelpFusionTestCase {
                     if (exception != null) {
                         logger.error("no businesses matched : ", exception);
                     } else {
-                        assertBusinessMatch(response.businesses().get(0));
+                        assertBusinessMatch(response.businesses());
                         logger.info("business match found ");
                     }
-                }).thenApply(t -> t.businesses().get(0))
+                }).thenApply(t -> t.businesses())
                 .get().
                 location();
     }

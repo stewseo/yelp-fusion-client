@@ -3,17 +3,15 @@ package io.github.stewseo.client.yelpfusion.json;
 import com.fasterxml.jackson.core.JacksonException;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
-import io.github.stewseo.temporaldata.TemporalDataService;
-
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
+import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.business.Business;
+import io.github.stewseo.temporaldata.TemporalDataService;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonpSerializeTest extends YelpFusionTestCase {

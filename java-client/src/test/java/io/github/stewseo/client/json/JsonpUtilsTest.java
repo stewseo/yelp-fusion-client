@@ -1,6 +1,5 @@
 package io.github.stewseo.client.json;
 
-import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.util.AllowForbiddenApis;
 import jakarta.json.JsonException;
 import jakarta.json.spi.JsonProvider;

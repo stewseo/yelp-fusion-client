@@ -13,7 +13,6 @@ import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.business.Term;
 import io.github.stewseo.client.yelpfusion.categories.Category;
-
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;

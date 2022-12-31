@@ -3,10 +3,10 @@ package io.github.stewseo.client.transport.restclient;
 import io.github.stewseo.client.transport.TransportOptions;
 import io.github.stewseo.client.transport.Version;
 import io.github.stewseo.client.util.VisibleForTesting;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
-import org.apache.http.util.VersionInfo;
 import io.github.stewseo.lowlevel.restclient.RequestOptions;
 import io.github.stewseo.lowlevel.restclient.WarningsHandler;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.util.VersionInfo;
 
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -31,9 +31,8 @@ public class EsRestClientOptions implements TransportOptions {
     }
 
     static EsRestClientOptions of(TransportOptions options) {
-        if (options instanceof EsRestClientTransport) {
+        if (options instanceof EsRestClientOptions) {
             return (EsRestClientOptions) options;
-
         } else {
             final Builder builder = new Builder(RequestOptions.DEFAULT.toBuilder());
             options.headers().forEach(h -> builder.addHeader(h.getKey(), h.getValue()));
@@ -139,7 +138,7 @@ public class EsRestClientOptions implements TransportOptions {
 
     public static class Builder implements TransportOptions.Builder {
 
-        private RequestOptions.Builder builder;
+        private final RequestOptions.Builder builder;
 
         public Builder(RequestOptions.Builder builder) {
             this.builder = builder;

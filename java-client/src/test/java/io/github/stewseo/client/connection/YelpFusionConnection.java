@@ -1,12 +1,12 @@
 package io.github.stewseo.client.connection;
 
-import io.github.stewseo.client.transport.YelpFusionTransport;
-import io.github.stewseo.client.yelpfusion.YelpFusionClient;
-import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
+import io.github.stewseo.client.transport.YelpFusionTransport;
 import io.github.stewseo.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
+import io.github.stewseo.client.yelpfusion.YelpFusionClient;
+import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -17,9 +17,13 @@ import java.io.IOException;
 public class YelpFusionConnection {
 
     static YelpFusionClient yelpFusionClient;
+
     static YelpFusionAsyncClient yelpFusionAsyncClient;
+
     private static YelpFusionTransport yelpTransport;
+
     private static JsonpMapper mapper;
+
     private static String API_BASE_URL;
 
     @BeforeAll

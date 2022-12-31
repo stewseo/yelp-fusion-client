@@ -3,8 +3,6 @@ package io.github.stewseo.client._types;
 import io.github.stewseo.client.json.JsonEnum;
 import io.github.stewseo.client.json.JsonpDeserializable;
 
-import io.github.stewseo.client._types.Bytes;
-
 @JsonpDeserializable
 public enum Bytes implements JsonEnum {
     Bytes("b"),

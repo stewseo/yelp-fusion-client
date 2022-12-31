@@ -1,6 +1,5 @@
 package io.github.stewseo.client._types.aggregations;
 
-import io.github.stewseo.client._types.aggregations.TermsPartition;
 import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;

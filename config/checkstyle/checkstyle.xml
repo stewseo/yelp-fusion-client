@@ -23,10 +23,10 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
-    <property name="charset" value="UTF-8" />
+    <property name="charset" value="UTF-8"/>
 
     <module name="SuppressionFilter">
-        <property name="file" value="${config_loc}/checkstyle_suppressions.xml" />
+        <property name="file" value="${config_loc}/checkstyle_suppressions.xml"/>
     </module>
 
     <module name="Header">
@@ -34,7 +34,7 @@
         <property name="fileExtensions" value="java,kt,kts"/>
     </module>
 
-    <module name="SuppressWarningsFilter" />
+    <module name="SuppressWarningsFilter"/>
 
     <!-- Checks Java files and forbids empty Javadoc comments. -->
     <!-- Although you can use the "JavadocStyle" rule for this, it considers Javadoc -->
@@ -52,36 +52,36 @@
       suppress the check there but enforce it everywhere else. This prevents the list from getting longer even if it is
       unfair. -->
     <module name="LineLength">
-        <property name="max" value="140" />
-        <property name="ignorePattern" value="^ *\* *https?://[^ ]+$" />
+        <property name="max" value="150"/>
+        <property name="ignorePattern" value="^ *\* *https?://[^ ]+$"/>
     </module>
 
     <module name="TreeWalker">
         <!-- Make the @SuppressWarnings annotations available to Checkstyle -->
-        <module name="SuppressWarningsHolder" />
+        <module name="SuppressWarningsHolder"/>
 
-        <module name="AvoidStarImport" />
+        <module name="AvoidStarImport"/>
 
         <!-- Unused imports are forbidden -->
-        <module name="UnusedImports" />
+        <module name="UnusedImports"/>
 
         <!-- Non-inner classes must be in files that match their names. -->
-        <module name="OuterTypeFilename" />
+        <module name="OuterTypeFilename"/>
 
         <!-- No line wraps inside of import and package statements. -->
-        <module name="NoLineWrap" />
+        <module name="NoLineWrap"/>
 
         <!-- only one statement per line should be allowed -->
-        <module name="OneStatementPerLine" />
+        <module name="OneStatementPerLine"/>
 
         <!-- Each java file has only one outer class -->
-        <module name="OneTopLevelClass" />
+        <module name="OneTopLevelClass"/>
 
         <!-- The suffix L is preferred, because the letter l (ell) is often
           hard to distinguish from the digit 1 (one). -->
-        <module name="UpperEll" />
+        <module name="UpperEll"/>
 
-        <module name="EqualsHashCode" />
+        <module name="EqualsHashCode"/>
 
         <!-- Checks that the order of modifiers conforms to the suggestions in the
         Java Language specification. It is not that
@@ -100,16 +100,16 @@
                 native
                 strictfp
         -->
-        <module name="ModifierOrder" />
+        <module name="ModifierOrder"/>
 
         <!-- Checks that we don't include modifier where they are implied. For
           example, this does not allow interface methods to be declared public
           because they are *always* public. -->
-        <module name="RedundantModifier" />
+        <module name="RedundantModifier"/>
 
         <!-- Checks that all java files have a package declaration and that it
           lines up with the directory structure. -->
-        <module name="PackageDeclaration" />
+        <module name="PackageDeclaration"/>
 
         <!-- We don't use Java's builtin serialization and we suppress all warning
           about it. The flip side of that coin is that we shouldn't _try_ to use
@@ -118,25 +118,25 @@
           Exception.
           -->
         <module name="RegexpSinglelineJava">
-            <property name="format" value="serialVersionUID" />
-            <property name="message" value="Do not declare serialVersionUID." />
-            <property name="ignoreComments" value="true" />
+            <property name="format" value="serialVersionUID"/>
+            <property name="message" value="Do not declare serialVersionUID."/>
+            <property name="ignoreComments" value="true"/>
         </module>
         <module name="RegexpSinglelineJava">
-            <property name="format" value="java\.io\.Serializable;" />
-            <property name="message" value="References java.io.Serializable." />
-            <property name="ignoreComments" value="true" />
+            <property name="format" value="java\.io\.Serializable;"/>
+            <property name="message" value="References java.io.Serializable."/>
+            <property name="ignoreComments" value="true"/>
         </module>
         <!-- end Orwellian suppression of Serializable -->
 
         <!-- Forbid equality comparisons with `true` -->
         <module name="DescendantToken">
-            <property name="id" value="EqualityWithTrue" />
-            <property name="tokens" value="EQUAL" />
-            <property name="limitedTokens" value="LITERAL_TRUE" />
-            <property name="maximumNumber" value="0" />
-            <property name="maximumDepth" value="1" />
-            <message key="descendant.token.max" value="Do not check for equality with 'true', since it is implied" />
+            <property name="id" value="EqualityWithTrue"/>
+            <property name="tokens" value="EQUAL"/>
+            <property name="limitedTokens" value="LITERAL_TRUE"/>
+            <property name="maximumNumber" value="0"/>
+            <property name="maximumDepth" value="1"/>
+            <message key="descendant.token.max" value="Do not check for equality with 'true', since it is implied"/>
         </module>
 
     </module>

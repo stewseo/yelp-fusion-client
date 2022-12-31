@@ -4,12 +4,12 @@ import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
+import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.yelpfusion.business.Location;
-import io.github.stewseo.client.json.JsonpUtils;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;

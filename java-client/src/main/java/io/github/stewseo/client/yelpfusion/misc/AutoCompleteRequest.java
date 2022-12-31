@@ -6,13 +6,14 @@ import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
-import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.transport.endpoints.SimpleEndpoint;
-import jakarta.json.stream.*;
+import io.github.stewseo.client.util.ObjectBuilder;
+import jakarta.json.stream.JsonGenerator;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-import java.util.*;
-import java.util.function.*;
 
 @JsonpDeserializable
 public class AutoCompleteRequest extends RequestBase implements JsonpSerializable {
@@ -135,7 +136,7 @@ public class AutoCompleteRequest extends RequestBase implements JsonpSerializabl
         }
 
         public final Builder locale(String value) {
-            this.text = value;
+            this.locale = value;
             return this;
         }
 

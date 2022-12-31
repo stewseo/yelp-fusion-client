@@ -6,7 +6,6 @@ import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpSerializer;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectDeserializer;
-import io.github.stewseo.client.yelpfusion.business.Region;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 import org.slf4j.Logger;

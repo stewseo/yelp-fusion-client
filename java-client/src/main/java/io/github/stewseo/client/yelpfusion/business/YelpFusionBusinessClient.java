@@ -3,6 +3,7 @@ package io.github.stewseo.client.yelpfusion.business;
 import io.github.stewseo.client.ApiClient;
 import io.github.stewseo.client._types.ErrorResponse;
 import io.github.stewseo.client.transport.JsonEndpoint;
+import io.github.stewseo.client.transport.TransportOptions;
 import io.github.stewseo.client.transport.YelpFusionTransport;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.yelpfusion.business.details.BusinessDetailsRequest;
@@ -15,7 +16,6 @@ import io.github.stewseo.client.yelpfusion.business.search.SearchBusinessRequest
 import io.github.stewseo.client.yelpfusion.business.search.SearchBusinessResponse;
 import io.github.stewseo.client.yelpfusion.business.transactions.SearchTransactionRequest;
 import io.github.stewseo.client.yelpfusion.business.transactions.SearchTransactionResponse;
-import io.github.stewseo.client.transport.TransportOptions;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;

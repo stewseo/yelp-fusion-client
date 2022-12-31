@@ -31,17 +31,6 @@ public final class EsRestClientBuilder {
 
     private static final Header[] EMPTY_HEADERS = new Header[0];
 
-    private final List<Node> nodes;
-    private Header[] defaultHeaders = EMPTY_HEADERS;
-    private EsRestClient.FailureListener failureListener;
-    private HttpClientConfigCallback httpClientConfigCallback;
-    private RequestConfigCallback requestConfigCallback;
-    private String pathPrefix;
-    private NodeSelector nodeSelector = NodeSelector.ANY;
-    private boolean strictDeprecationMode = false;
-    private boolean compressionEnabled = false;
-    private boolean metaHeaderEnabled = true;
-
     static {
 
         // Never fail on unknown version, even if an environment messed up their classpath enough that we can't find it.
@@ -73,8 +62,8 @@ public final class EsRestClientBuilder {
         VersionInfo httpClientVersion = null;
         try {
             httpClientVersion = VersionInfo.loadVersionInfo(
-                            "org.apache.http.nio.client",
-                            HttpAsyncClientBuilder.class.getClassLoader()
+                    "org.apache.http.nio.client",
+                    HttpAsyncClientBuilder.class.getClassLoader()
             );
         } catch (Exception e) {
             // Keep unknown
@@ -99,6 +88,17 @@ public final class EsRestClientBuilder {
                 + LanguageRuntimeVersions.getRuntimeMetadata();
     }
 
+    private final List<Node> nodes;
+    private Header[] defaultHeaders = EMPTY_HEADERS;
+    private EsRestClient.FailureListener failureListener;
+    private HttpClientConfigCallback httpClientConfigCallback;
+    private RequestConfigCallback requestConfigCallback;
+    private String pathPrefix;
+    private NodeSelector nodeSelector = NodeSelector.ANY;
+    private boolean strictDeprecationMode = false;
+    private boolean compressionEnabled = false;
+    private boolean metaHeaderEnabled = true;
+
     /**
      * Creates a new builder instance and sets the hosts that the client will send requests to.
      *
@@ -116,6 +116,29 @@ public final class EsRestClientBuilder {
         this.nodes = nodes;
     }
 
+    public static String cleanPathPrefix(String pathPrefix) {
+        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
+
+        if (pathPrefix.isEmpty()) {
+            throw new IllegalArgumentException("pathPrefix must not be empty");
+        }
+
+        String cleanPathPrefix = pathPrefix;
+        if (cleanPathPrefix.startsWith("/") == false) {
+            cleanPathPrefix = "/" + cleanPathPrefix;
+        }
+
+        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
+        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
+            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
+
+            if (cleanPathPrefix.endsWith("/")) {
+                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
+            }
+        }
+        return cleanPathPrefix;
+    }
+
     /**
      * Sets the default request headers, which will be sent along with each request.
      * <p>
@@ -131,7 +154,7 @@ public final class EsRestClientBuilder {
         this.defaultHeaders = defaultHeaders;
         return this;
     }
-    
+
     public EsRestClientBuilder setFailureListener(EsRestClient.FailureListener failureListener) {
         Objects.requireNonNull(failureListener, "failureListener must not be null");
         this.failureListener = failureListener;
@@ -169,7 +192,7 @@ public final class EsRestClientBuilder {
      * Elasticsearch is behind a proxy that provides a base path or a proxy that requires all paths to start with '/';
      * it is not intended for other purposes and it should not be supplied in other scenarios.
      *
-     * @throws NullPointerException if {@code pathPrefix} is {@code null}.
+     * @throws NullPointerException     if {@code pathPrefix} is {@code null}.
      * @throws IllegalArgumentException if {@code pathPrefix} is empty, or ends with more than one '/'.
      */
     public EsRestClientBuilder setPathPrefix(String pathPrefix) {
@@ -177,31 +200,9 @@ public final class EsRestClientBuilder {
         return this;
     }
 
-    public static String cleanPathPrefix(String pathPrefix) {
-        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
-
-        if (pathPrefix.isEmpty()) {
-            throw new IllegalArgumentException("pathPrefix must not be empty");
-        }
-
-        String cleanPathPrefix = pathPrefix;
-        if (cleanPathPrefix.startsWith("/") == false) {
-            cleanPathPrefix = "/" + cleanPathPrefix;
-        }
-
-        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
-        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
-            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
-
-            if (cleanPathPrefix.endsWith("/")) {
-                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
-            }
-        }
-        return cleanPathPrefix;
-    }
-
     /**
      * Sets the {@link NodeSelector} to be used for all requests.
+     *
      * @throws NullPointerException if the provided nodeSelector is null
      */
     public EsRestClientBuilder setNodeSelector(NodeSelector nodeSelector) {
@@ -293,6 +294,7 @@ public final class EsRestClientBuilder {
 
     /**
      * Callback used the default {@link RequestConfig} being set to the {@link CloseableHttpClient}
+     *
      * @see HttpClientBuilder#setDefaultRequestConfig
      */
     public interface RequestConfigCallback {

@@ -1,13 +1,12 @@
 package io.github.stewseo.client.json;
 
-import io.github.stewseo.client.json.JsonpDeserializer;
+import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
+import io.github.stewseo.client.transport.JsonEndpoint;
+import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.business.details.BusinessDetailsRequest;
 import io.github.stewseo.client.yelpfusion.business.details.BusinessDetailsResponse;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
-import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.client.transport.JsonEndpoint;
-import io.github.stewseo.client.yelpfusion.business.Business;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

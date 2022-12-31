@@ -8,12 +8,9 @@ import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.yelpfusion.business.Business;
-
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable

@@ -13,8 +13,6 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public abstract class LLRestClientTestCase {
 
     // connect to host for each
@@ -38,11 +36,6 @@ public abstract class LLRestClientTestCase {
 
     public static RestClient restClient() {
         return restClient;
-    }
-
-
-    public void testResponseCode(Response response) {
-
     }
 
     static String buildTraceRequest(HttpUriRequest request, HttpHost host) throws IOException {
@@ -71,6 +64,10 @@ public abstract class LLRestClientTestCase {
             return "/" + requestLine.getUri();
         }
         return requestLine.getUri();
+    }
+
+    public void testResponseCode(Response response) {
+
     }
 
 }

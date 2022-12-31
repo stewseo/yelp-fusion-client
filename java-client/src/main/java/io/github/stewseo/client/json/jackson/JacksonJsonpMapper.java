@@ -8,8 +8,6 @@ import io.github.stewseo.client.json.JsonpDeserializerBase;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpMapperBase;
 import io.github.stewseo.client.json.JsonpSerializer;
-
-
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;

@@ -7,8 +7,8 @@ import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
-import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.transport.endpoints.SimpleEndpoint;
+import io.github.stewseo.client.util.ObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;

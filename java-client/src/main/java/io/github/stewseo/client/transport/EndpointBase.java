@@ -1,8 +1,8 @@
 package io.github.stewseo.client.transport;
 
+import io.github.stewseo.client._types.ErrorResponse;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.transport.endpoints.SimpleEndpoint;
-import io.github.stewseo.client._types.ErrorResponse;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 import java.util.Collections;
@@ -18,6 +18,7 @@ public class EndpointBase<RequestT, ResponseT> implements Endpoint<RequestT, Res
     protected final Function<RequestT, Map<String, String>> queryParameters;
     protected final Function<RequestT, Map<String, String>> headers;
     protected final boolean hasRequestBody;
+
     public EndpointBase(
             String id,
             Function<RequestT, String> method,

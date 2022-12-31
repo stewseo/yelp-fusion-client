@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class JsonpUtils {
 
     @Deprecated
-    protected static int MAX_TO_STRING_LENGTH = 10000;
+    private static int MAX_TO_STRING_LENGTH = 10000;
 
     @AllowForbiddenApis("Implementation of the JsonProvider lookup")
     public static JsonProvider provider() {

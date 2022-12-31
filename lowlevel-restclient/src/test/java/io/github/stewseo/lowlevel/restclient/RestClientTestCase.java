@@ -6,13 +6,11 @@ import com.carrotsearch.randomizedtesting.RandomizedTest;
 import com.carrotsearch.randomizedtesting.annotations.SeedDecorators;
 import com.carrotsearch.randomizedtesting.annotations.TestMethodProviders;
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakAction;
-import com.carrotsearch.randomizedtesting.annotations.ThreadLeakFilters;
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakGroup;
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakLingering;
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope;
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakZombies;
 import com.carrotsearch.randomizedtesting.annotations.TimeoutSuite;
-
 import org.apache.http.Header;
 
 import java.util.ArrayList;
@@ -22,15 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-@TestMethodProviders({ JUnit3MethodProvider.class })
-@SeedDecorators({ MixWithSuiteName.class }) // See LUCENE-3995 for rationale.
+@TestMethodProviders({JUnit3MethodProvider.class})
+@SeedDecorators({MixWithSuiteName.class}) // See LUCENE-3995 for rationale.
 @ThreadLeakScope(ThreadLeakScope.Scope.SUITE)
 @ThreadLeakGroup(ThreadLeakGroup.Group.MAIN)
-@ThreadLeakAction({ ThreadLeakAction.Action.WARN, ThreadLeakAction.Action.INTERRUPT })
+@ThreadLeakAction({ThreadLeakAction.Action.WARN, ThreadLeakAction.Action.INTERRUPT})
 @ThreadLeakZombies(ThreadLeakZombies.Consequence.IGNORE_REMAINING_TESTS)
 @ThreadLeakLingering(linger = 5000) // 5 sec lingering
 @TimeoutSuite(millis = 2 * 60 * 60 * 1000)
@@ -42,9 +36,9 @@ public abstract class RestClientTestCase extends RandomizedTest {
      *
      * @param defaultHeaders the default headers set to the REST client instance
      * @param requestHeaders the request headers sent with a particular request
-     * @param actualHeaders the actual headers as a result of the provided default and request headers
-     * @param ignoreHeaders header keys to be ignored as they are not part of default nor request headers, yet they
-     *                      will be part of the actual ones
+     * @param actualHeaders  the actual headers as a result of the provided default and request headers
+     * @param ignoreHeaders  header keys to be ignored as they are not part of default nor request headers, yet they
+     *                       will be part of the actual ones
      */
     protected static void assertHeaders(
             final Header[] defaultHeaders,

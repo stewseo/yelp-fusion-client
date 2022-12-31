@@ -23,7 +23,6 @@
 
 package io.github.stewseo.client._types.aggregations;
 
-import io.github.stewseo.client._types.aggregations.MultiBucketBase;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.ObjectDeserializer;

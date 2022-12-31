@@ -1,9 +1,12 @@
 package io.github.stewseo.lowlevel.restclient;
 
-
 import org.apache.http.HttpHost;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Node {
 
@@ -23,6 +26,7 @@ public class Node {
         if (host == null) {
             throw new IllegalArgumentException("host cannot be null");
         }
+
         this.host = host;
         this.boundHosts = boundHosts;
         this.name = name;
@@ -44,7 +48,6 @@ public class Node {
     public Set<HttpHost> getBoundHosts() {
         return boundHosts;
     }
-
 
     public String getName() {
         return name;
@@ -124,6 +127,7 @@ public class Node {
 
         /**
          * Returns whether or not the node stores data.
+         *
          * @deprecated use {@link #hasDataRole()} or {@link #canContainData()}
          */
         @Deprecated

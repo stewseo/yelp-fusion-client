@@ -10,7 +10,6 @@ import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
-
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;
@@ -21,7 +20,7 @@ public class Coordinates implements JsonpSerializable {
     public static final JsonpDeserializer<Coordinates> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             Coordinates::setUpCoordinatesDeserializer);
     private final Double latitude;
-//    @Nullable
+    //    @Nullable
 //    private final Object geo_coordinates;
     private final Double longitude;
 

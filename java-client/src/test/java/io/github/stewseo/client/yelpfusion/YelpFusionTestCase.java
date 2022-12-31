@@ -2,16 +2,14 @@ package io.github.stewseo.client.yelpfusion;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-
 import io.github.stewseo.client.connection.YelpFusionConnection;
-import io.github.stewseo.client.yelpfusion.json.YelpFusionJsonTestCase;
-import io.github.stewseo.temporaldata.TemporalDataService;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.business.Coordinates;
 import io.github.stewseo.client.yelpfusion.business.Location;
 import io.github.stewseo.client.yelpfusion.categories.Category;
-
+import io.github.stewseo.client.yelpfusion.json.YelpFusionJsonTestCase;
+import io.github.stewseo.temporaldata.TemporalDataService;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.ArrayList;
@@ -22,17 +20,13 @@ import java.util.stream.Stream;
 
 public abstract class YelpFusionTestCase {
 
+    private static final String state = "CA";
+    private static final String country = "USA";
     public static YelpFusionAsyncClient yelpFusionAsyncClient;
-
     public static YelpFusionJsonTestCase jsonTestCase;
-
     private static int numCities;
-
     private static List<BreinTemporalDataResult> list;
-
     private static TemporalDataService temporalDataService;
-    private static String state = "CA";
-    private static String country = "USA";
 
     @BeforeAll
     static void beforeAll() {

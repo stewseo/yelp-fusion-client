@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import io.github.stewseo.client.json.JsonpMapper;
+import io.github.stewseo.client.json.jsonb.JsonbJsonpMapper;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import io.github.stewseo.client.json.JsonpMapper;
-import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.client.json.jsonb.JsonbJsonpMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

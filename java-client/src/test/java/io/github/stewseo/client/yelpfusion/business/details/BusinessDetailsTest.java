@@ -1,13 +1,10 @@
 package io.github.stewseo.client.yelpfusion.business.details;
 
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.business.Hours;
 import io.github.stewseo.client.yelpfusion.business.search.SearchBusiness;
 import io.github.stewseo.client.yelpfusion.business.search.SearchBusinessResponse;
-
-
-import io.github.stewseo.client.yelpfusion.business.Business;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

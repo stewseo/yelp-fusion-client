@@ -1,13 +1,15 @@
 package io.github.stewseo.client.transport.restclient;
 
+import io.github.stewseo.client.transport.TransportOptions;
 import io.github.stewseo.lowlevel.restclient.RequestOptions;
 import io.github.stewseo.lowlevel.restclient.WarningsHandler;
-import io.github.stewseo.client.transport.TransportOptions;
 
-
-import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class YelpRestTransportOptions implements TransportOptions {
 

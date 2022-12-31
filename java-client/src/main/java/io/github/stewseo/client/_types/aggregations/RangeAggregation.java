@@ -24,8 +24,6 @@
 package io.github.stewseo.client._types.aggregations;
 
 
-import io.github.stewseo.client._types.aggregations.Aggregation;
-import io.github.stewseo.client._types.aggregations.AggregationVariant;
 import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;

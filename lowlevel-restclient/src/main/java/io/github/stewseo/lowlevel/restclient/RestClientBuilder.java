@@ -19,27 +19,13 @@ import java.util.Properties;
 
 public final class RestClientBuilder {
 
-    Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
     public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 1000;
     public static final int DEFAULT_SOCKET_TIMEOUT_MILLIS = 30000;
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
     public static final int DEFAULT_MAX_CONN_TOTAL = 30;
-
     public static final String VERSION;
-
     private static final Header[] EMPTY_HEADERS = new Header[0];
-
-    private final HttpHost host;
-    private Header[] defaultHeaders = EMPTY_HEADERS;
-    private HttpClientConfigCallback httpClientConfigCallback;
-    private RequestConfigCallback requestConfigCallback;
-    private String pathPrefix;
-    private boolean strictDeprecationMode = false;
-    private boolean compressionEnabled = false;
-    private boolean metaHeaderEnabled = true;
-
     public static boolean userAgentEnable = true;
-
 
     static {
 
@@ -76,6 +62,16 @@ public final class RestClientBuilder {
 
     }
 
+    private final HttpHost host;
+    Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
+    private Header[] defaultHeaders = EMPTY_HEADERS;
+    private HttpClientConfigCallback httpClientConfigCallback;
+    private RequestConfigCallback requestConfigCallback;
+    private String pathPrefix;
+    private boolean strictDeprecationMode = false;
+    private boolean compressionEnabled = false;
+    private boolean metaHeaderEnabled = true;
+
     RestClientBuilder(String apiKey) {
         if (apiKey == null) {
             throw new IllegalArgumentException("apiKey must not be null");
@@ -87,11 +83,35 @@ public final class RestClientBuilder {
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + apiKey)};
         setDefaultHeaders(defaultHeaders);
     }
+
     RestClientBuilder(HttpHost host) {
         if (host == null) {
             throw new IllegalArgumentException("host must not be null");
         }
         this.host = host;
+    }
+
+    public static String cleanPathPrefix(String pathPrefix) {
+        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
+
+        if (pathPrefix.isEmpty()) {
+            throw new IllegalArgumentException("pathPrefix must not be empty");
+        }
+
+        String cleanPathPrefix = pathPrefix;
+        if (!cleanPathPrefix.startsWith("/")) {
+            cleanPathPrefix = "/" + cleanPathPrefix;
+        }
+
+        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
+        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
+            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
+
+            if (cleanPathPrefix.endsWith("/")) {
+                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
+            }
+        }
+        return cleanPathPrefix;
     }
 
     public RestClientBuilder setDefaultHeaders(Header[] defaultHeaders) {
@@ -119,30 +139,6 @@ public final class RestClientBuilder {
         this.pathPrefix = cleanPathPrefix(pathPrefix);
         return this;
     }
-
-    public static String cleanPathPrefix(String pathPrefix) {
-        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
-
-        if (pathPrefix.isEmpty()) {
-            throw new IllegalArgumentException("pathPrefix must not be empty");
-        }
-
-        String cleanPathPrefix = pathPrefix;
-        if (!cleanPathPrefix.startsWith("/")) {
-            cleanPathPrefix = "/" + cleanPathPrefix;
-        }
-
-        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
-        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
-            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
-
-            if (cleanPathPrefix.endsWith("/")) {
-                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
-            }
-        }
-        return cleanPathPrefix;
-    }
-
 
     public RestClientBuilder setStrictDeprecationMode(boolean strictDeprecationMode) {
         this.strictDeprecationMode = strictDeprecationMode;

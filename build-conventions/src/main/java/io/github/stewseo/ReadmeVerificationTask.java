@@ -10,6 +10,7 @@ import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,8 @@ public abstract class ReadmeVerificationTask extends DefaultTask {
 
     @TaskAction
     void verifyServiceReadme() throws IOException {
-        String readmeContents = new String (Files.readAllBytes(getReadme().getAsFile().get().toPath()));
+        byte[] readmeContentsBA = Files.readAllBytes(getReadme().getAsFile().get().toPath());
+        String readmeContents = new String(readmeContentsBA, StandardCharsets.UTF_8);
         for (String requiredSection : getReadmePatterns().get()) {
             Pattern pattern = Pattern.compile(requiredSection, Pattern.MULTILINE);
             if (!pattern.matcher(readmeContents).find()) {

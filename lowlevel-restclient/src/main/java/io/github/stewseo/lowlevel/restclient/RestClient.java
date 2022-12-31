@@ -58,11 +58,9 @@ import java.util.zip.GZIPOutputStream;
 public class RestClient implements Closeable, RestClientInterface {
     //    private static final Log logger = LogFactory.getLog(RestClient.class);
     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
+    final List<Header> defaultHeaders;
     private final CloseableHttpAsyncClient client;
     private final HttpHost httpHost;
-
-    final List<Header> defaultHeaders;
-
     private final String pathPrefix;
 
     private final WarningsHandler warningsHandler;
@@ -103,6 +101,171 @@ public class RestClient implements Closeable, RestClientInterface {
         return new RestClientBuilder(host);
     }
 
+    private static boolean isSuccessfulResponse(int statusCode) {
+        return statusCode < 300;
+    }
+
+    private static boolean isRetryStatus(int statusCode) {
+        return switch (statusCode) {
+            case 502, 503, 504 -> true;
+            default -> false;
+        };
+    }
+
+    private static void addSuppressedException(Exception suppressedException, Exception currentException) {
+        if (suppressedException != null && suppressedException != currentException) {
+            currentException.addSuppressed(suppressedException);
+        }
+    }
+
+    public static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
+        Objects.requireNonNull(path, "path must not be null");
+
+        try {
+            String fullPath;
+            if (pathPrefix != null && !pathPrefix.isEmpty()) {
+                if (pathPrefix.endsWith("/") && path.startsWith("/")) {
+
+                    fullPath = pathPrefix.substring(0, pathPrefix.length() - 1) + path; // remove additional "/"
+                } else if (pathPrefix.endsWith("/") || path.startsWith("/")) {
+                    fullPath = pathPrefix + path;
+
+                } else {
+                    fullPath = pathPrefix + "/" + path;
+                }
+            } else {
+                fullPath = path;
+            }
+
+            URIBuilder uriBuilder;
+            if (fullPath.endsWith("/businesses")) {
+                uriBuilder = new URIBuilder(fullPath + "/" + params.get("id"));
+            } else {
+
+                uriBuilder = new URIBuilder(fullPath);
+                for (Map.Entry<String, String> param : params.entrySet()) {
+                    uriBuilder.addParameter(param.getKey(), param.getValue());
+                }
+            }
+            return uriBuilder.build();
+
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+    public static HttpRequestBase createHttpRequest(String method, URI uri, HttpEntity entity, boolean compressionEnabled) {
+        switch (method.toUpperCase(Locale.ROOT)) {
+            case HttpDeleteWithEntity.METHOD_NAME:
+                return addRequestBody(new HttpDeleteWithEntity(uri), entity, compressionEnabled);
+            case HttpGetWithEntity.METHOD_NAME:
+                return addRequestBody(new HttpGetWithEntity(uri), entity, compressionEnabled);
+            case HttpHead.METHOD_NAME:
+                return addRequestBody(new HttpHead(uri), entity, compressionEnabled);
+            case HttpOptions.METHOD_NAME:
+                return addRequestBody(new HttpOptions(uri), entity, compressionEnabled);
+            case HttpPatch.METHOD_NAME:
+                return addRequestBody(new HttpPatch(uri), entity, compressionEnabled);
+            case HttpPost.METHOD_NAME:
+                HttpPost httpPost = new HttpPost(uri);
+                addRequestBody(httpPost, entity, compressionEnabled);
+                return httpPost;
+            case HttpPut.METHOD_NAME:
+                return addRequestBody(new HttpPut(uri), entity, compressionEnabled);
+            case HttpTrace.METHOD_NAME:
+                return addRequestBody(new HttpTrace(uri), entity, compressionEnabled);
+            default:
+                throw new UnsupportedOperationException("http method not supported: " + method);
+        }
+    }
+
+    private static HttpRequestBase addRequestBody(HttpRequestBase httpRequest, HttpEntity entity, boolean compressionEnabled) {
+        if (entity != null) {
+            if (httpRequest instanceof HttpEntityEnclosingRequestBase) {
+                if (compressionEnabled) {
+                    entity = new ContentCompressingEntity(entity);
+                }
+                ((HttpEntityEnclosingRequestBase) httpRequest).setEntity(entity);
+            } else {
+                throw new UnsupportedOperationException(httpRequest.getMethod() + " with body is not supported");
+            }
+        }
+        return httpRequest;
+    }
+
+    private static Set<Integer> getIgnoreErrorCodes(String ignoreString, String requestMethod) {
+        Set<Integer> ignoreErrorCodes;
+        if (ignoreString == null) {
+            if (HttpHead.METHOD_NAME.equals(requestMethod)) {
+                // 404 never causes error if returned for a HEAD request
+                ignoreErrorCodes = Collections.singleton(404);
+            } else {
+                ignoreErrorCodes = Collections.emptySet();
+            }
+        } else {
+            String[] ignoresArray = ignoreString.split(",");
+            ignoreErrorCodes = new HashSet<>();
+            if (HttpHead.METHOD_NAME.equals(requestMethod)) {
+                // 404 never causes error if returned for a HEAD request
+                ignoreErrorCodes.add(404);
+            }
+            for (String ignoreCode : ignoresArray) {
+                try {
+                    ignoreErrorCodes.add(Integer.valueOf(ignoreCode));
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("ignore value should be a number, found [" + ignoreString + "] instead", e);
+                }
+            }
+        }
+        return ignoreErrorCodes;
+    }
+
+    private static Exception extractAndWrapCause(Exception exception) {
+        if (exception instanceof InterruptedException) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("thread waiting for the response was interrupted", exception);
+        }
+        if (exception instanceof ExecutionException executionException) {
+            Throwable t = executionException.getCause() == null ? executionException : executionException.getCause();
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
+            exception = (Exception) t;
+        }
+        if (exception instanceof ConnectTimeoutException) {
+            ConnectTimeoutException e = new ConnectTimeoutException(exception.getMessage());
+            e.initCause(exception);
+            return e;
+        }
+        if (exception instanceof SocketTimeoutException) {
+            SocketTimeoutException e = new SocketTimeoutException(exception.getMessage());
+            e.initCause(exception);
+            return e;
+        }
+        if (exception instanceof ConnectionClosedException) {
+            ConnectionClosedException e = new ConnectionClosedException(exception.getMessage());
+            e.initCause(exception);
+            return e;
+        }
+        if (exception instanceof SSLHandshakeException) {
+            SSLHandshakeException e = new SSLHandshakeException(exception.getMessage());
+            e.initCause(exception);
+            return e;
+        }
+        if (exception instanceof ConnectException) {
+            ConnectException e = new ConnectException(exception.getMessage());
+            e.initCause(exception);
+            return e;
+        }
+        if (exception instanceof IOException) {
+            return new IOException(exception.getMessage(), exception);
+        }
+        if (exception instanceof RuntimeException) {
+            return new RuntimeException(exception.getMessage(), exception);
+        }
+        return new RuntimeException("error while performing request", exception);
+    }
+
     public HttpHost getHttpHost() {
         return this.httpHost;
     }
@@ -111,12 +274,10 @@ public class RestClient implements Closeable, RestClientInterface {
         return client.isRunning();
     }
 
-
     public Response performRequest(Request request) throws IOException {
         InternalRequest internalRequest = new InternalRequest(request);
         return performRequest(httpHost, internalRequest, null);
     }
-
 
     private Response performRequest(HttpHost httpHost, final InternalRequest request, Exception previousException)
             throws IOException {
@@ -151,7 +312,6 @@ public class RestClient implements Closeable, RestClientInterface {
         throw responseOrResponseException.responseException;
     }
 
-
     private ResponseOrResponseException convertResponse(InternalRequest request, HttpHost host, HttpResponse httpResponse) throws IOException {
         RequestLogger.logResponse(logger, request.httpRequest, host, httpResponse);
 
@@ -184,7 +344,6 @@ public class RestClient implements Closeable, RestClientInterface {
         throw responseException;
     }
 
-
     public Cancellable performRequestAsync(Request request, ResponseListener responseListener) {
         try {
             FailureTrackingResponseListener failureTrackingResponseListener = new FailureTrackingResponseListener(responseListener);
@@ -201,7 +360,6 @@ public class RestClient implements Closeable, RestClientInterface {
     public HttpHost httpHost() {
         return httpHost;
     }
-
 
     private void performRequestAsync(
             final HttpHost host,
@@ -255,61 +413,101 @@ public class RestClient implements Closeable, RestClientInterface {
         client.close();
     }
 
-    private static boolean isSuccessfulResponse(int statusCode) {
-        return statusCode < 300;
-    }
+    public static class RequestContext {
+        private final HttpHost httpHost;
+        private final HttpAsyncRequestProducer requestProducer;
+        private final HttpAsyncResponseConsumer<HttpResponse> asyncResponseConsumer;
 
-    private static boolean isRetryStatus(int statusCode) {
-        return switch (statusCode) {
-            case 502, 503, 504 -> true;
-            default -> false;
-        };
-    }
+        // Adaptor class that provides convenience type safe setters and getters for common HttpContext attributes used in the course of HTTP request execution.
+        private final HttpClientContext context;
 
-    private static void addSuppressedException(Exception suppressedException, Exception currentException) {
-        if (suppressedException != null && suppressedException != currentException) {
-            currentException.addSuppressed(suppressedException);
+        RequestContext(InternalRequest request, HttpHost host) {
+
+            this.httpHost = host;
+
+            this.requestProducer = HttpAsyncMethods.create(httpHost, request.httpRequest);
+
+            this.asyncResponseConsumer = request.request.getOptions()
+                    .getHttpAsyncResponseConsumerFactory()
+                    .createHttpAsyncResponseConsumer();
+
+            this.context = HttpClientContext.create();
+            context.setAuthCache(request.authCache);
         }
     }
 
+    static class FailureTrackingResponseListener {
+        private final ResponseListener responseListener;
+        private volatile Exception exception;
 
-    public static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
-        Objects.requireNonNull(path, "path must not be null");
+        FailureTrackingResponseListener(ResponseListener responseListener) {
+            this.responseListener = responseListener;
+        }
 
-        try {
-            String fullPath;
-            if (pathPrefix != null && !pathPrefix.isEmpty()) {
-                if (pathPrefix.endsWith("/") && path.startsWith("/")) {
+        /**
+         * Notifies the caller of a response through the wrapped listener
+         */
+        void onSuccess(Response response) {
+            responseListener.onSuccess(response);
+        }
 
-                    fullPath = pathPrefix.substring(0, pathPrefix.length() - 1) + path; // remove additional "/"
-                } else if (pathPrefix.endsWith("/") || path.startsWith("/")) {
-                    fullPath = pathPrefix + path;
+        /**
+         * Tracks one last definitive failure and returns to the caller by notifying the wrapped listener
+         */
+        void onDefinitiveFailure(Exception e) {
+            trackFailure(e);
+            responseListener.onFailure(this.exception);
+        }
 
-                } else {
-                    fullPath = pathPrefix + "/" + path;
-                }
-            } else {
-                fullPath = path;
-            }
-
-            URIBuilder uriBuilder;
-            if (fullPath.endsWith("/businesses")) {
-                uriBuilder = new URIBuilder(fullPath + "/" + params.get("id"));
-            }
-            else {
-
-                uriBuilder = new URIBuilder(fullPath);
-                for (Map.Entry<String, String> param : params.entrySet()) {
-                    uriBuilder.addParameter(param.getKey(), param.getValue());
-                }
-            }
-            return uriBuilder.build();
-
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
+        /**
+         * Tracks an exception, which caused a retry hence we should not return yet to the caller
+         */
+        void trackFailure(Exception e) {
+            addSuppressedException(this.exception, e);
+            this.exception = e;
         }
     }
 
+    private static class ResponseOrResponseException {
+        private final Response response;
+        private final ResponseException responseException;
+
+        ResponseOrResponseException(Response response) {
+            this.response = Objects.requireNonNull(response);
+            this.responseException = null;
+        }
+
+        ResponseOrResponseException(ResponseException responseException) {
+            this.responseException = Objects.requireNonNull(responseException);
+            this.response = null;
+        }
+    }
+
+    public static class ContentCompressingEntity extends GzipCompressingEntity {
+
+        public ContentCompressingEntity(HttpEntity entity) {
+            super(entity);
+        }
+
+        @Override
+        public InputStream getContent() throws IOException {
+            ByteArrayInputOutputStream out = new ByteArrayInputOutputStream(1024);
+            try (GZIPOutputStream gzipOut = new GZIPOutputStream(out)) {
+                wrappedEntity.writeTo(gzipOut);
+            }
+            return out.asInput();
+        }
+    }
+
+    private static class ByteArrayInputOutputStream extends ByteArrayOutputStream {
+        ByteArrayInputOutputStream(int size) {
+            super(size);
+        }
+
+        public InputStream asInput() {
+            return new ByteArrayInputStream(this.buf, 0, this.count);
+        }
+    }
 
     public class InternalRequest {
         private final Request request;
@@ -318,7 +516,6 @@ public class RestClient implements Closeable, RestClientInterface {
         private final AuthCache authCache;
         private final Cancellable cancellable;
         private final WarningsHandler warningsHandler;
-
 
 
         InternalRequest(Request request) {
@@ -367,7 +564,7 @@ public class RestClient implements Closeable, RestClientInterface {
 
             Header[] header = req.getHeaders("Accept");
 
-            if(header.length > 0) {
+            if (header.length > 0) {
                 req.removeHeader(Arrays.stream(req.getHeaders("Accept")).toList().get(0));
             }
 
@@ -384,217 +581,6 @@ public class RestClient implements Closeable, RestClientInterface {
             return new RequestContext(this, host);
         }
 
-    }
-
-    public static class RequestContext {
-        private final HttpHost httpHost;
-        private final HttpAsyncRequestProducer requestProducer;
-        private final HttpAsyncResponseConsumer<HttpResponse> asyncResponseConsumer;
-
-        // Adaptor class that provides convenience type safe setters and getters for common HttpContext attributes used in the course of HTTP request execution.
-        private final HttpClientContext context;
-
-        RequestContext(InternalRequest request, HttpHost host) {
-
-            this.httpHost = host;
-
-            this.requestProducer = HttpAsyncMethods.create(httpHost, request.httpRequest);
-
-            this.asyncResponseConsumer = request.request.getOptions()
-                    .getHttpAsyncResponseConsumerFactory()
-                    .createHttpAsyncResponseConsumer();
-
-            this.context = HttpClientContext.create();
-            context.setAuthCache(request.authCache);
-        }
-    }
-
-
-    public static HttpRequestBase createHttpRequest(String method, URI uri, HttpEntity entity, boolean compressionEnabled) {
-        switch (method.toUpperCase(Locale.ROOT)) {
-            case HttpDeleteWithEntity.METHOD_NAME:
-                return addRequestBody(new HttpDeleteWithEntity(uri), entity, compressionEnabled);
-            case HttpGetWithEntity.METHOD_NAME:
-                return addRequestBody(new HttpGetWithEntity(uri), entity, compressionEnabled);
-            case HttpHead.METHOD_NAME:
-                return addRequestBody(new HttpHead(uri), entity, compressionEnabled);
-            case HttpOptions.METHOD_NAME:
-                return addRequestBody(new HttpOptions(uri), entity, compressionEnabled);
-            case HttpPatch.METHOD_NAME:
-                return addRequestBody(new HttpPatch(uri), entity, compressionEnabled);
-            case HttpPost.METHOD_NAME:
-                HttpPost httpPost = new HttpPost(uri);
-                addRequestBody(httpPost, entity, compressionEnabled);
-                return httpPost;
-            case HttpPut.METHOD_NAME:
-                return addRequestBody(new HttpPut(uri), entity, compressionEnabled);
-            case HttpTrace.METHOD_NAME:
-                return addRequestBody(new HttpTrace(uri), entity, compressionEnabled);
-            default:
-                throw new UnsupportedOperationException("http method not supported: " + method);
-        }
-    }
-
-    private static HttpRequestBase addRequestBody(HttpRequestBase httpRequest, HttpEntity entity, boolean compressionEnabled) {
-        if (entity != null) {
-            if (httpRequest instanceof HttpEntityEnclosingRequestBase) {
-                if (compressionEnabled) {
-                    entity = new ContentCompressingEntity(entity);
-                }
-                ((HttpEntityEnclosingRequestBase) httpRequest).setEntity(entity);
-            } else {
-                throw new UnsupportedOperationException(httpRequest.getMethod() + " with body is not supported");
-            }
-        }
-        return httpRequest;
-    }
-
-
-    static class FailureTrackingResponseListener {
-        private final ResponseListener responseListener;
-        private volatile Exception exception;
-
-        FailureTrackingResponseListener(ResponseListener responseListener) {
-            this.responseListener = responseListener;
-        }
-
-        /**
-         * Notifies the caller of a response through the wrapped listener
-         */
-        void onSuccess(Response response) {
-            responseListener.onSuccess(response);
-        }
-
-        /**
-         * Tracks one last definitive failure and returns to the caller by notifying the wrapped listener
-         */
-        void onDefinitiveFailure(Exception e) {
-            trackFailure(e);
-            responseListener.onFailure(this.exception);
-        }
-
-        /**
-         * Tracks an exception, which caused a retry hence we should not return yet to the caller
-         */
-        void trackFailure(Exception e) {
-            addSuppressedException(this.exception, e);
-            this.exception = e;
-        }
-    }
-
-
-    private static Set<Integer> getIgnoreErrorCodes(String ignoreString, String requestMethod) {
-        Set<Integer> ignoreErrorCodes;
-        if (ignoreString == null) {
-            if (HttpHead.METHOD_NAME.equals(requestMethod)) {
-                // 404 never causes error if returned for a HEAD request
-                ignoreErrorCodes = Collections.singleton(404);
-            } else {
-                ignoreErrorCodes = Collections.emptySet();
-            }
-        } else {
-            String[] ignoresArray = ignoreString.split(",");
-            ignoreErrorCodes = new HashSet<>();
-            if (HttpHead.METHOD_NAME.equals(requestMethod)) {
-                // 404 never causes error if returned for a HEAD request
-                ignoreErrorCodes.add(404);
-            }
-            for (String ignoreCode : ignoresArray) {
-                try {
-                    ignoreErrorCodes.add(Integer.valueOf(ignoreCode));
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("ignore value should be a number, found [" + ignoreString + "] instead", e);
-                }
-            }
-        }
-        return ignoreErrorCodes;
-    }
-
-    private static class ResponseOrResponseException {
-        private final Response response;
-        private final ResponseException responseException;
-
-        ResponseOrResponseException(Response response) {
-            this.response = Objects.requireNonNull(response);
-            this.responseException = null;
-        }
-
-        ResponseOrResponseException(ResponseException responseException) {
-            this.responseException = Objects.requireNonNull(responseException);
-            this.response = null;
-        }
-    }
-
-    private static Exception extractAndWrapCause(Exception exception) {
-        if (exception instanceof InterruptedException) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("thread waiting for the response was interrupted", exception);
-        }
-        if (exception instanceof ExecutionException executionException) {
-            Throwable t = executionException.getCause() == null ? executionException : executionException.getCause();
-            if (t instanceof Error) {
-                throw (Error) t;
-            }
-            exception = (Exception) t;
-        }
-        if (exception instanceof ConnectTimeoutException) {
-            ConnectTimeoutException e = new ConnectTimeoutException(exception.getMessage());
-            e.initCause(exception);
-            return e;
-        }
-        if (exception instanceof SocketTimeoutException) {
-            SocketTimeoutException e = new SocketTimeoutException(exception.getMessage());
-            e.initCause(exception);
-            return e;
-        }
-        if (exception instanceof ConnectionClosedException) {
-            ConnectionClosedException e = new ConnectionClosedException(exception.getMessage());
-            e.initCause(exception);
-            return e;
-        }
-        if (exception instanceof SSLHandshakeException) {
-            SSLHandshakeException e = new SSLHandshakeException(exception.getMessage());
-            e.initCause(exception);
-            return e;
-        }
-        if (exception instanceof ConnectException) {
-            ConnectException e = new ConnectException(exception.getMessage());
-            e.initCause(exception);
-            return e;
-        }
-        if (exception instanceof IOException) {
-            return new IOException(exception.getMessage(), exception);
-        }
-        if (exception instanceof RuntimeException) {
-            return new RuntimeException(exception.getMessage(), exception);
-        }
-        return new RuntimeException("error while performing request", exception);
-    }
-
-    public static class ContentCompressingEntity extends GzipCompressingEntity {
-
-        public ContentCompressingEntity(HttpEntity entity) {
-            super(entity);
-        }
-
-        @Override
-        public InputStream getContent() throws IOException {
-            ByteArrayInputOutputStream out = new ByteArrayInputOutputStream(1024);
-            try (GZIPOutputStream gzipOut = new GZIPOutputStream(out)) {
-                wrappedEntity.writeTo(gzipOut);
-            }
-            return out.asInput();
-        }
-    }
-
-    private static class ByteArrayInputOutputStream extends ByteArrayOutputStream {
-        ByteArrayInputOutputStream(int size) {
-            super(size);
-        }
-
-        public InputStream asInput() {
-            return new ByteArrayInputStream(this.buf, 0, this.count);
-        }
     }
 }
 

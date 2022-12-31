@@ -9,11 +9,10 @@ import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
+import jakarta.json.stream.JsonGenerator;
 
-import jakarta.json.stream.*;
+import java.util.function.Function;
 
-
-import java.util.function.*;
 
 @JsonpDeserializable
 public class Region implements JsonpSerializable {

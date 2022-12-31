@@ -13,7 +13,6 @@ import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.yelpfusion.business.Coordinates;
 import io.github.stewseo.client.yelpfusion.business.Location;
 import io.github.stewseo.client.yelpfusion.categories.Category;
-
 import jakarta.json.stream.JsonGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

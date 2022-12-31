@@ -6,11 +6,11 @@ import io.github.stewseo.client.json.JsonEnum;
 import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
+import io.github.stewseo.client.json.JsonpSerializable;
+import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
-import io.github.stewseo.client.json.JsonpSerializable;
-import io.github.stewseo.client.json.JsonpUtils;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -25,19 +25,19 @@ public class Category implements JsonpSerializable {
                     Category::setupCategoriesDeserializer);
     private final String title;
     private final String alias;
-    @Nullable
+
     private final List<String> parent_aliases;
-    @Nullable
+
     private final List<String> country_whitelist;
-    @Nullable
+
     private final List<String> country_blacklist;
 
     private Category(Builder builder) {
         this.alias = builder.alias;
         this.title = builder.title;
-        this.parent_aliases = builder.parent_aliases;
-        this.country_blacklist = builder.country_blacklist;
-        this.country_whitelist = builder.country_whitelist;
+        this.parent_aliases = ApiTypeHelper.unmodifiable(builder.parent_aliases);
+        this.country_blacklist = ApiTypeHelper.unmodifiable(builder.country_blacklist);
+        this.country_whitelist = ApiTypeHelper.unmodifiable(builder.country_whitelist);
     }
 
     public static Category of(Function<Builder, ObjectBuilder<Category>> fn) {
@@ -47,32 +47,35 @@ public class Category implements JsonpSerializable {
     protected static void setupCategoriesDeserializer(ObjectDeserializer<Builder> op) {
         op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
         op.add(Builder::title, JsonpDeserializer.stringDeserializer(), "title");
-        op.add(Builder::parent_aliases, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "parent_aliases");
-        op.add(Builder::country_whitelist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "country_whitelist");
-        op.add(Builder::country_blacklist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "country_blacklist");
+        op.add(Builder::parent_aliases, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
+                "parent_aliases");
+        op.add(Builder::country_whitelist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
+                "country_whitelist");
+        op.add(Builder::country_blacklist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
+                "country_blacklist");
 
     }
 
-    public String alias() {
+    public final String alias() {
         return alias;
     }
 
-    private String title() {
+    public final String title() {
         return title;
     }
 
     @Nullable
-    public List<String> parent_aliases() {
+    public final List<String> parent_aliases() {
         return parent_aliases;
     }
 
     @Nullable
-    public List<String> country_whitelist() {
+    public final List<String> country_whitelist() {
         return country_whitelist;
     }
 
     @Nullable
-    public List<String> country_blacklist() {
+    public final List<String> country_blacklist() {
         return country_blacklist;
     }
 
@@ -128,7 +131,7 @@ public class Category implements JsonpSerializable {
     }
 
     @JsonpDeserializable
-    public static enum MappingProperties implements JsonEnum {
+    public enum MappingProperties implements JsonEnum {
 
         ALIAS("categories.alias.keyword"),
 
@@ -171,7 +174,7 @@ public class Category implements JsonpSerializable {
             return this;
         }
 
-        public final Builder parent_aliases(@Nullable List<String> values) {
+        public final Builder parent_aliases(List<String> values) {
             this.parent_aliases = _listAddAll(this.parent_aliases, values);
             return this;
         }

@@ -4,9 +4,9 @@ import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
+import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.client.json.JsonpUtils;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;

@@ -5,13 +5,13 @@ import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
-import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.transport.endpoints.SimpleEndpoint;
-import jakarta.json.stream.*;
+import io.github.stewseo.client.util.ObjectBuilder;
+import jakarta.json.stream.JsonGenerator;
 
+import java.util.HashMap;
+import java.util.function.Function;
 
-import java.util.*;
-import java.util.function.*;
 
 @JsonpDeserializable
 public class BusinessDetailsRequest extends RequestBase implements JsonpSerializable {
@@ -35,7 +35,8 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             // Request parameters
             request -> new HashMap<>(),
 
-            SimpleEndpoint.emptyMap(), false, BusinessDetailsResponse._DESERIALIZER); // Business Details endpoint accepts a business id path param and returns a Business with additional fields.
+            SimpleEndpoint.emptyMap(), false, BusinessDetailsResponse._DESERIALIZER);
+
     private final String id;
     private final String alias;
 

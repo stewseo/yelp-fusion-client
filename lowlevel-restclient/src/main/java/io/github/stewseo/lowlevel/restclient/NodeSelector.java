@@ -5,13 +5,6 @@ import java.util.Iterator;
 
 public interface NodeSelector {
 
-    void select(Iterable<Node> nodes);
-    /*
-     * We were fairly careful with our choice of Iterable here. The caller has
-     * a List but reordering the list is likely to break round-robin. Luckily
-     * Iterable doesn't allow any reordering.
-     */
-
     NodeSelector ANY = new NodeSelector() {
         @Override
         public void select(Iterable<Node> nodes) {
@@ -23,11 +16,15 @@ public interface NodeSelector {
             return "ANY";
         }
     };
-
+    /*
+     * We were fairly careful with our choice of Iterable here. The caller has
+     * a List but reordering the list is likely to break round-robin. Luckily
+     * Iterable doesn't allow any reordering.
+     */
     NodeSelector SKIP_DEDICATED_MASTERS = new NodeSelector() {
         @Override
         public void select(Iterable<Node> nodes) {
-            for (Iterator<Node> itr = nodes.iterator(); itr.hasNext();) {
+            for (Iterator<Node> itr = nodes.iterator(); itr.hasNext(); ) {
                 Node node = itr.next();
                 if (node.getRoles() == null) continue;
                 if (node.getRoles().isMasterEligible()
@@ -43,4 +40,6 @@ public interface NodeSelector {
             return "SKIP_DEDICATED_MASTERS";
         }
     };
+
+    void select(Iterable<Node> nodes);
 }

@@ -1,8 +1,8 @@
 package io.github.stewseo.client;
 
+import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpMapperBase;
-import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.transport.Transport;
 import io.github.stewseo.client.transport.TransportOptions;
 

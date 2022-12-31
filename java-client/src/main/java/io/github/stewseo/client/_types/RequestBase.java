@@ -2,9 +2,9 @@ package io.github.stewseo.client._types;
 
 
 import io.github.stewseo.client.json.JsonpSerializable;
-import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.transport.Endpoint;
+import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

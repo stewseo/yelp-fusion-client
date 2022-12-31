@@ -7,14 +7,14 @@ import com.brein.domain.results.temporaldataparts.BreinWeatherResult;
 
 public interface TemporalDataInterface {
 
-    public BreinTemporalDataResult temporalDataResult(String city);
+    BreinTemporalDataResult temporalDataResult(String city);
 
-    public BreinTemporalDataResult temporalDataResult(String city, String state, String country);
+    BreinTemporalDataResult temporalDataResult(String city, String state, String country);
 
-    public BreinHolidayResult holidayResult();
+    BreinHolidayResult holidayResult();
 
-    public BreinWeatherResult weatherResult();
+    BreinWeatherResult weatherResult();
 
-    public BreinLocationResult locationResult();
+    BreinLocationResult locationResult();
 
 }

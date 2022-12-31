@@ -1,15 +1,11 @@
 package io.github.stewseo.lowlevel.restclient;
 
 
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.HttpRequestBase;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CancellationException;
 
 public abstract class Cancellable {
-
-    public abstract void cancel();
-
-    abstract void runIfNotCancelled(Runnable runnable);
 
     static final Cancellable NO_OP = new Cancellable() {
         @Override
@@ -25,6 +21,14 @@ public abstract class Cancellable {
     static Cancellable fromRequest(HttpRequestBase httpRequest) {
         return new Cancellable.TestRequestCancelable(httpRequest);
     }
+
+    static CancellationException newCancellationException() {
+        return new CancellationException("request was cancelled");
+    }
+
+    public abstract void cancel();
+
+    abstract void runIfNotCancelled(Runnable runnable);
 
     private static class TestRequestCancelable extends Cancellable {
 
@@ -45,10 +49,6 @@ public abstract class Cancellable {
             }
             runnable.run();
         }
-    }
-
-    static CancellationException newCancellationException() {
-        return new CancellationException("request was cancelled");
     }
 }
 

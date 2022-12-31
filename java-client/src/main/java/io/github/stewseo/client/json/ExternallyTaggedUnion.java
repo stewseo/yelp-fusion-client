@@ -1,14 +1,5 @@
 package io.github.stewseo.client.json;
 
-import io.github.stewseo.client.json.JsonData;
-import io.github.stewseo.client.json.JsonEnum;
-import io.github.stewseo.client.json.JsonpDeserializer;
-import io.github.stewseo.client.json.JsonpDeserializerBase;
-import io.github.stewseo.client.json.JsonpMapper;
-import io.github.stewseo.client.json.JsonpMapperFeatures;
-import io.github.stewseo.client.json.JsonpMappingException;
-import io.github.stewseo.client.json.JsonpSerializable;
-import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.util.OpenTaggedUnion;
 import io.github.stewseo.client.util.TaggedUnion;
 import jakarta.json.stream.JsonGenerator;
@@ -212,7 +203,8 @@ public class ExternallyTaggedUnion {
         }
     }
 
-    public static class TypedKeysDeserializer<Union extends TaggedUnion<?, ?>> extends JsonpDeserializerBase<Map<String, Union>> {
+    public static class TypedKeysDeserializer<Union extends TaggedUnion<?, ?>>
+            extends JsonpDeserializerBase<Map<String, Union>> {
         Deserializer<Union, ?> deserializer;
 
         protected TypedKeysDeserializer(Deserializer<Union, ?> deser) {

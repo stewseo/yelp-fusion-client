@@ -2,11 +2,11 @@ package io.github.stewseo.client.yelpfusion.event;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.client.yelpfusion.json.YelpFusionJsonTestCase;
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.client.yelpfusion.events.Event;
 import io.github.stewseo.client.yelpfusion.events.EventSearchRequest;
 import io.github.stewseo.client.yelpfusion.events.EventSearchResponse;
+import io.github.stewseo.client.yelpfusion.json.YelpFusionJsonTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -10,11 +10,10 @@ import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
-
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 @SuppressWarnings("unused")

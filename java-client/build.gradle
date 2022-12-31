@@ -24,6 +24,7 @@ dependencies {
     api("org.slf4j:slf4j-api:${slf4jVersion}")
     api("ch.qos.logback:logback-classic:${logbackVersion}")
     api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+    implementation 'com.github.spotbugs:spotbugs-annotations:4.0.1'
 
     // testing
     testImplementation("org.eclipse:yasson:2.0.4") {

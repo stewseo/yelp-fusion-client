@@ -1,7 +1,6 @@
 package io.github.stewseo.client.yelpfusion.business.search;
 
 
-import io.github.stewseo.client._types.aggregations.Aggregate;
 import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
@@ -9,17 +8,13 @@ import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
-import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
-
 import io.github.stewseo.client.yelpfusion.business.Region;
-
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 

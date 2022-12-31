@@ -15,6 +15,7 @@ import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.categories.Category;
 
@@ -23,7 +24,6 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static io.github.stewseo.client.yelpfusion.categories.Category.MappingProperties.ALIAS;
-import static io.github.stewseo.client.yelpfusion.categories.Category.MappingProperties.PARENTS;
 
 public class ElasticsearchService {
 
@@ -40,11 +40,16 @@ public class ElasticsearchService {
     }
 
     public ElasticsearchService(ElasticsearchAsyncClient client, String index, Long timestamp) {
+
         this.asyncClient = client;
 
         this.index = index;
 
-        timestamp = getTimestamp(1L, SortOrder.Asc).get(0);
+        if (timestamp != null) {
+            this.timestamp = timestamp;
+        } else {
+            this.timestamp = getTimestamp(1L, SortOrder.Asc).get(0);
+        }
 
     }
 
@@ -223,6 +228,7 @@ public class ElasticsearchService {
 
     public int docsCount(String index) {
         try {
+
             return Integer.parseInt(Objects.requireNonNull(asyncClient.cat().count(c -> c
                             .index(index)
                     ).get()

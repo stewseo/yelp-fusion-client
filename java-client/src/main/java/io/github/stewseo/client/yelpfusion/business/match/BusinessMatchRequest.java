@@ -5,8 +5,8 @@ import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
-import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.transport.endpoints.SimpleEndpoint;
+import io.github.stewseo.client.util.ObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
@@ -69,7 +69,8 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
 
                 return params;
 
-            }, SimpleEndpoint.emptyMap(), false, BusinessMatchResponse._DESERIALIZER); // Business Details endpoint accepts a business id path param and returns a Business with additional fields.
+            }, SimpleEndpoint.emptyMap(), false, BusinessMatchResponse._DESERIALIZER);
+
     private final String name;
     private final String address1;
     private final String address2;

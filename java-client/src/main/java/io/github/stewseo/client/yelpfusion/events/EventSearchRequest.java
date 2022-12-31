@@ -3,10 +3,10 @@ package io.github.stewseo.client.yelpfusion.events;
 import co.elastic.clients.elasticsearch._types.RequestBase;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpSerializable;
-import io.github.stewseo.client.util.ApiTypeHelper;
-import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.transport.endpoints.SimpleEndpoint;
+import io.github.stewseo.client.util.ApiTypeHelper;
+import io.github.stewseo.client.util.ObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;

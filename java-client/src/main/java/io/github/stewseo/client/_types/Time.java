@@ -11,7 +11,6 @@ import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.ObjectBuilderBase;
 import io.github.stewseo.client.util.TaggedUnion;
 import io.github.stewseo.client.util.TaggedUnionUtils;
-
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;

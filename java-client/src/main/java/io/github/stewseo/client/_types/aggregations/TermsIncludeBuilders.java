@@ -23,8 +23,6 @@
 
 package io.github.stewseo.client._types.aggregations;
 
-import io.github.stewseo.client._types.aggregations.TermsInclude;
-
 /**
  * Builders for {@link TermsInclude} variants.
  * <p>

@@ -1,20 +1,19 @@
 package io.github.stewseo.lowlevel.restclient;
 
-import java.util.List;
 import com.carrotsearch.randomizedtesting.generators.RandomInts;
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import com.carrotsearch.randomizedtesting.generators.RandomStrings;
-
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 final class RestClientUtils {
 
-    private static final String[] HTTP_METHODS = new String[] { "DELETE", "HEAD", "GET", "OPTIONS", "PATCH", "POST", "PUT", "TRACE" };
+    private static final String[] HTTP_METHODS = new String[]{"DELETE", "HEAD", "GET", "OPTIONS", "PATCH", "POST", "PUT", "TRACE"};
     private static final List<Integer> ALL_STATUS_CODES;
     private static final List<Integer> OK_STATUS_CODES = Arrays.asList(200, 201);
     private static final List<Integer> ALL_ERROR_STATUS_CODES;

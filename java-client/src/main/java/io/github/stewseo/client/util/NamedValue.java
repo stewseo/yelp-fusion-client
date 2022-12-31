@@ -5,7 +5,6 @@ import io.github.stewseo.client.json.JsonpDeserializerBase;
 import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpMappingException;
 import io.github.stewseo.client.json.JsonpUtils;
-
 import jakarta.json.stream.JsonParser;
 
 import java.util.EnumSet;

@@ -10,7 +10,6 @@ import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
-import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
@@ -18,7 +17,7 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
     public static final JsonpDeserializer<BusinessMatchResponse> _DESERIALIZER =
             ObjectBuilderDeserializer.lazy(Builder::new, BusinessMatchResponse::setupAutoCompleteDeserializer);
-    private final List<BusinessMatch> businesses;
+    private final BusinessMatch businesses;
 
     private BusinessMatchResponse(Builder builder) {
         this.businesses = builder.businesses;
@@ -30,11 +29,11 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
     protected static void setupAutoCompleteDeserializer(ObjectDeserializer<Builder> op) {
 
-        op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(BusinessMatch._DESERIALIZER), "businesses");
+        op.add(Builder::businesses, BusinessMatch._DESERIALIZER, "businesses");
 
     }
 
-    public List<BusinessMatch> businesses() {
+    public final BusinessMatch businesses() {
         return businesses;
     }
 
@@ -50,28 +49,17 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
         if (this.businesses != null) {
             generator.writeKey("businesses");
-            generator.writeStartArray();
-            for (BusinessMatch item0 : businesses) {
-                item0.serialize(generator, mapper);
-            }
-            generator.writeEnd();
         }
-
     }
+
 
     public static class Builder extends WithJsonObjectBuilderBase<Builder>
             implements
             ObjectBuilder<BusinessMatchResponse> {
-        private List<BusinessMatch> businesses;
+        private BusinessMatch businesses;
 
-        public Builder businesses(List<BusinessMatch> businesses) {
-            this.businesses = _listAddAll(this.businesses, businesses);
-            ;
-            return this;
-        }
-
-        public Builder businesses(BusinessMatch business, BusinessMatch... businesses) {
-            this.businesses = _listAdd(this.businesses, business, businesses);
+        public final Builder businesses(BusinessMatch businesses) {
+            this.businesses = businesses;
             return this;
         }
 

@@ -9,7 +9,6 @@ import io.github.stewseo.client.json.SimpleJsonpMapper;
 import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.client.json.jsonb.JsonbJsonpMapper;
 import io.github.stewseo.client.yelpfusion.business.Business;
-
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -30,8 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
 

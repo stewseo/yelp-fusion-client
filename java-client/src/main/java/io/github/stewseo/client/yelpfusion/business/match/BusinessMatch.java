@@ -1,6 +1,5 @@
 package io.github.stewseo.client.yelpfusion.business.match;
 
-
 import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
@@ -120,8 +119,6 @@ public class BusinessMatch implements JsonpSerializable {
             generator.write(this.display);
         }
     }
-
-    // ------------------------------ Deserializer ------------------------------------ //
 
     @Override
     public String toString() {

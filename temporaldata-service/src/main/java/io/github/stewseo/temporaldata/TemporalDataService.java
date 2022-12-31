@@ -34,11 +34,11 @@ public class TemporalDataService implements TemporalDataInterface {
 
         LocalDateTime field1 = result.getEpochDateTime();
 
-        ZonedDateTime field2 =  result.getLocalDateTime();
+        ZonedDateTime field2 = result.getLocalDateTime();
 
-        BreinLocationResult field3 =  result.getLocation();
+        BreinLocationResult field3 = result.getLocation();
 
-        List<BreinEventResult> field4 =  result.getEvents();
+        List<BreinEventResult> field4 = result.getEvents();
 
         List<BreinHolidayResult> field5 = result.getHolidays();
 
@@ -61,11 +61,11 @@ public class TemporalDataService implements TemporalDataInterface {
 
         LocalDateTime field1 = result.getEpochDateTime();
 
-        ZonedDateTime field2 =  result.getLocalDateTime();
+        ZonedDateTime field2 = result.getLocalDateTime();
 
-        BreinLocationResult field3 =  result.getLocation();
+        BreinLocationResult field3 = result.getLocation();
 
-        List<BreinEventResult> field4 =  result.getEvents();
+        List<BreinEventResult> field4 = result.getEvents();
 
         List<BreinHolidayResult> field5 = result.getHolidays();
 

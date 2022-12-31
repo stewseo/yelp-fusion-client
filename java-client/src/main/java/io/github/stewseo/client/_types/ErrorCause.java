@@ -8,7 +8,6 @@ import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
-
 import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
@@ -30,7 +29,6 @@ public class ErrorCause implements JsonpSerializable {
 
     private final String stackTrace;
 
-
     private final ErrorCause causedBy;
 
     private final List<ErrorCause> rootCause;
@@ -42,7 +40,6 @@ public class ErrorCause implements JsonpSerializable {
     private ErrorCause(Builder builder) {
 
         this.metadata = ApiTypeHelper.unmodifiable(builder.metadata);
-
         this.type = builder.type;
         this.reason = builder.reason;
         this.stackTrace = builder.stackTrace;
@@ -56,21 +53,23 @@ public class ErrorCause implements JsonpSerializable {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setupErrorCauseDeserializer(ObjectDeserializer<Builder> op) {
+    protected static void setupErrorCauseDeserializer(ObjectDeserializer<ErrorCause.Builder> op) {
 
-        op.add(Builder::type, JsonpDeserializer.stringDeserializer(), "type");
-        op.add(Builder::reason, JsonpDeserializer.stringDeserializer(), "reason");
-        op.add(Builder::stackTrace, JsonpDeserializer.stringDeserializer(), "stack_trace");
-        op.add(Builder::causedBy, ErrorCause._DESERIALIZER, "caused_by");
-        op.add(Builder::rootCause, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "root_cause");
-        op.add(Builder::suppressed, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "suppressed");
+        op.add(ErrorCause.Builder::type, JsonpDeserializer.stringDeserializer(), "type");
+        op.add(ErrorCause.Builder::reason, JsonpDeserializer.stringDeserializer(), "reason");
+        op.add(ErrorCause.Builder::stackTrace, JsonpDeserializer.stringDeserializer(), "stack_trace");
+        op.add(ErrorCause.Builder::causedBy, ErrorCause._DESERIALIZER, "caused_by");
+        op.add(ErrorCause.Builder::rootCause, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "root_cause");
+        op.add(ErrorCause.Builder::suppressed, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "suppressed");
 
-        op.setUnknownFieldHandler((builder, name, parser, mapper) -> builder.metadata(name, JsonData._DESERIALIZER.deserialize(parser, mapper)));
+        op.setUnknownFieldHandler((builder, name, parser, mapper) -> {
+            builder.metadata(name, JsonData._DESERIALIZER.deserialize(parser, mapper));
+        });
         op.shortcutProperty("reason");
 
     }
 
-    private final Map<String, JsonData> metadata() {
+    public final Map<String, JsonData> metadata() {
         return this.metadata;
     }
 
@@ -103,6 +102,8 @@ public class ErrorCause implements JsonpSerializable {
         serializeInternal(generator, mapper);
         generator.writeEnd();
     }
+
+    // ---------------------------------------------------------------------------------------------
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
@@ -155,8 +156,6 @@ public class ErrorCause implements JsonpSerializable {
 
     }
 
-    // ---------------------------------------------------------------------------------------------
-
     @Override
     public String toString() {
         return JsonpUtils.toString(this);
@@ -200,7 +199,6 @@ public class ErrorCause implements JsonpSerializable {
             this.type = value;
             return this;
         }
-
 
         public final Builder reason(String value) {
             this.reason = value;
@@ -300,9 +298,10 @@ public class ErrorCause implements JsonpSerializable {
 
             return new ErrorCause(this);
         }
-    }    public static final JsonpDeserializer<ErrorCause> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            ErrorCause::setupErrorCauseDeserializer);
+    }
 
+    public static final JsonpDeserializer<ErrorCause> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            ErrorCause::setupErrorCauseDeserializer);
 
 
 }

@@ -4,9 +4,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
 
-
 import java.io.IOException;
-
 import java.util.Locale;
 
 public final class ResponseException extends IOException {

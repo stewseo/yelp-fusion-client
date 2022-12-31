@@ -11,11 +11,11 @@ import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.yelpfusion.categories.Category;
-import jakarta.json.stream.*;
+import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.*;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonpDeserializable
 public class Business implements JsonpSerializable {
@@ -42,9 +42,6 @@ public class Business implements JsonpSerializable {
     private final List<Category> categories;
     private final List<Attribute> attributes;
     private final List<SpecialHours> special_hours;
-
-
-    // ------------------------------ Constructor -------------------------------- //
     private final Messaging messaging;
 
     private Business(Builder builder) {
@@ -52,9 +49,7 @@ public class Business implements JsonpSerializable {
         this.alias = builder.alias;
         this.name = builder.name;
         this.location = builder.location;
-        this.attributes = builder.attributes;
         this.display_phone = builder.display_phone;
-        this.categories = builder.categories;
         this.coordinates = builder.coordinates;
         this.hours = builder.hours;
         this.image_url = builder.image_url;
@@ -67,8 +62,10 @@ public class Business implements JsonpSerializable {
         this.url = builder.url;
         this.rating = builder.rating;
         this.review_count = builder.review_count;
-        this.special_hours = builder.special_hours;
-        this.transactions = builder.transactions;
+        this.attributes = ApiTypeHelper.unmodifiable(builder.attributes);
+        this.categories = ApiTypeHelper.unmodifiable(builder.categories);
+        this.special_hours = ApiTypeHelper.unmodifiable(builder.special_hours);
+        this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
     }
 
     public static Business of(Function<Builder, ObjectBuilder<Business>> fn) {
@@ -101,19 +98,19 @@ public class Business implements JsonpSerializable {
     }
 
     // ------------------------------ Methods ------------------------------------ //
-    public String id() {
+    public final String id() {
         return id;
     }
 
-    public String alias() {
+    public final String alias() {
         return alias;
     }
 
-    public String name() {
+    public final String name() {
         return name;
     }
 
-    public String image_url() {
+    public final String image_url() {
         return image_url;
     }
 
@@ -141,7 +138,7 @@ public class Business implements JsonpSerializable {
         return review_count;
     }
 
-    public List<Category> categories() {
+    public final List<Category> categories() {
         return categories;
     }
 
@@ -149,7 +146,7 @@ public class Business implements JsonpSerializable {
         return rating;
     }
 
-    public Location location() {
+    public final Location location() {
         return location;
     }
 
@@ -311,7 +308,6 @@ public class Business implements JsonpSerializable {
         return JsonpUtils.toString(this);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Business> {
 
         private String id;
@@ -348,16 +344,17 @@ public class Business implements JsonpSerializable {
 
         private List<SpecialHours> special_hours;
 
+        @Nullable
         private List<Attribute> attributes;
 
         private Coordinates coordinates;
 
+        @Nullable
         private List<Category> categories;
 
         private Location location;
 
         private List<Hours> hours;
-
 
         private Messaging messaging;
 
@@ -490,7 +487,7 @@ public class Business implements JsonpSerializable {
             return this;
         }
 
-        public final Builder attributes(List<Attribute> value) {
+        public final Builder attributes(@Nullable List<Attribute> value) {
             this.attributes = _listAddAll(this.attributes, value);
             return this;
         }

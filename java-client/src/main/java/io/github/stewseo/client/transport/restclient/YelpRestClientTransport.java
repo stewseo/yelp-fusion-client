@@ -11,27 +11,23 @@ import io.github.stewseo.client.transport.JsonEndpoint;
 import io.github.stewseo.client.transport.TransportException;
 import io.github.stewseo.client.transport.TransportOptions;
 import io.github.stewseo.client.transport.YelpFusionTransport;
-import io.github.stewseo.client.util.ApiTypeHelper;
-import io.github.stewseo.client.util.MissingRequiredPropertyException;
-
 import io.github.stewseo.client.transport.endpoints.BinaryEndpoint;
 import io.github.stewseo.client.transport.endpoints.BooleanEndpoint;
 import io.github.stewseo.client.transport.endpoints.BooleanResponse;
-
+import io.github.stewseo.client.util.ApiTypeHelper;
+import io.github.stewseo.client.util.MissingRequiredPropertyException;
 import io.github.stewseo.lowlevel.restclient.Cancellable;
 import io.github.stewseo.lowlevel.restclient.Request;
 import io.github.stewseo.lowlevel.restclient.RequestOptions;
 import io.github.stewseo.lowlevel.restclient.Response;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
 import io.github.stewseo.lowlevel.restclient.ResponseListener;
-import io.github.stewseo.lowlevel.restclient.RestClient;
 import io.github.stewseo.lowlevel.restclient.RestClientInterface;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

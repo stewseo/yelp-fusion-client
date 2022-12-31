@@ -4,7 +4,9 @@ import io.github.stewseo.client.ApiClient;
 import io.github.stewseo.client._types.ErrorResponse;
 import io.github.stewseo.client.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.client.transport.JsonEndpoint;
+import io.github.stewseo.client.transport.TransportOptions;
 import io.github.stewseo.client.transport.YelpFusionTransport;
+import io.github.stewseo.client.transport.restclient.YelpRestClientTransport;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.yelpfusion.business.YelpFusionBusinessClient;
 import io.github.stewseo.client.yelpfusion.categories.YelpFusionCategoriesClient;
@@ -12,10 +14,6 @@ import io.github.stewseo.client.yelpfusion.events.YelpFusionEventsClient;
 import io.github.stewseo.client.yelpfusion.misc.AutoCompleteRequest;
 import io.github.stewseo.client.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.lowlevel.restclient.RestClient;
-import io.github.stewseo.client.transport.TransportOptions;
-import io.github.stewseo.client.transport.restclient.YelpRestClientTransport;
-
-
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;

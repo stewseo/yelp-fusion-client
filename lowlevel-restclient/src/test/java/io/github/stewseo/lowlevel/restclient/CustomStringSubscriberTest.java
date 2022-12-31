@@ -57,8 +57,9 @@ public class CustomStringSubscriberTest {
 
     static class StringSubscriber implements Flow.Subscriber<List<ByteBuffer>> {
 
-        Flow.Subscription subscription;
         final List<ByteBuffer> responseData = new ArrayList<>();
+        Flow.Subscription subscription;
+        private String body;
 
         @Override
         public void onSubscribe(Flow.Subscription subscription) {
@@ -78,8 +79,6 @@ public class CustomStringSubscriberTest {
             System.out.println("throwable: " + throwable);
         }
 
-        private String body;
-
         public String getBody() {
             return this.body;
         }
@@ -94,7 +93,7 @@ public class CustomStringSubscriberTest {
                 buffer.get(ba, offset, remaining);
                 offset += remaining;
             }
-            body = new String(ba);
+            body = new String(ba, StandardCharsets.UTF_8);
         }
     }
 }

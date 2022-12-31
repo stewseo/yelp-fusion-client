@@ -50,9 +50,11 @@ public class FieldValue implements TaggedUnion<FieldValue.Kind, Object>, JsonpSe
             }));
     private final Kind _kind;
     private final Object _value;
+
     private FieldValue(Builder builder) {
         this(builder._kind, builder._value);
     }
+
     private FieldValue(Kind kind, Object value) {
         this._kind = ApiTypeHelper.requireNonNull(kind, this, "<variant kind>");
         this._value = kind == Kind.Null ? null : ApiTypeHelper.requireNonNull(value, this, "<variant value>");

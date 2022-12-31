@@ -15,6 +15,32 @@ public class MapBuilder<K, V, B> implements ObjectBuilder<Map<K, V>> {
         this.builderCtor = builderCtor;
     }
 
+    public MapBuilder<K, V, B> put(K key, V value) {
+        map.put(key, value);
+        return this;
+    }
+
+    public MapBuilder<K, V, B> put(K key, Function<B, ObjectBuilder<V>> fn) {
+        return put(key, fn.apply(builderCtor.get()).build());
+    }
+
+    public MapBuilder<K, V, B> putAll(Map<? extends K, ? extends V> map) {
+        this.map.putAll(map);
+        return this;
+    }
+
+    public MapBuilder<K, V, B> putAll(Iterable<Map.Entry<? extends K, ? extends V>> entries) {
+        for (Map.Entry<? extends K, ? extends V> entry: entries) {
+            this.map.put(entry.getKey(), entry.getValue());
+        }
+        return this;
+    }
+
+    @Override
+    public Map<K, V> build() {
+        return map;
+    }
+
     public static <K, V> Map<K, V> of(K k1, V v1) {
         return Collections.singletonMap(k1, v1);
     }
@@ -36,40 +62,14 @@ public class MapBuilder<K, V, B> implements ObjectBuilder<Map<K, V>> {
     }
 
     private static <K, V> Map<K, V> makeMap(Object... values) {
-        Map<K, V> result = new HashMap<>(values.length / 2);
-        for (int i = 0; i < values.length; i += 2) {
+        Map<K, V> result = new HashMap<>(values.length/2);
+        for (int i = 0; i < values.length; i+=2) {
             @SuppressWarnings("unchecked")
-            K k = (K) values[i];
+            K k = (K)values[i];
             @SuppressWarnings("unchecked")
-            V v = (V) values[i + 1];
+            V v = (V)values[i+1];
             result.put(k, v);
         }
         return result;
-    }
-
-    public MapBuilder<K, V, B> put(K key, V value) {
-        map.put(key, value);
-        return this;
-    }
-
-    public MapBuilder<K, V, B> put(K key, Function<B, ObjectBuilder<V>> fn) {
-        return put(key, fn.apply(builderCtor.get()).build());
-    }
-
-    public MapBuilder<K, V, B> putAll(Map<? extends K, ? extends V> map) {
-        this.map.putAll(map);
-        return this;
-    }
-
-    public MapBuilder<K, V, B> putAll(Iterable<Map.Entry<? extends K, ? extends V>> entries) {
-        for (Map.Entry<? extends K, ? extends V> entry : entries) {
-            this.map.put(entry.getKey(), entry.getValue());
-        }
-        return this;
-    }
-
-    @Override
-    public Map<K, V> build() {
-        return map;
     }
 }

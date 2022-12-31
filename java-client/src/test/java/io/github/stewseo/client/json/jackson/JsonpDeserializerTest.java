@@ -2,7 +2,6 @@ package io.github.stewseo.client.json.jackson;
 
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,7 +175,7 @@ public class JsonpDeserializerTest extends YelpFusionTestCase {
                 buffer.get(ba, offset, remaining);
                 offset += remaining;
             }
-            body = new String(ba);
+            body = new String(ba, StandardCharsets.UTF_8);
         }
     }
 

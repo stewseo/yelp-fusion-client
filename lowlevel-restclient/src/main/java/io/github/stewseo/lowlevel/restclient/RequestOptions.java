@@ -23,8 +23,12 @@ import org.apache.http.Header;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.message.BasicHeader;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public final class RequestOptions {
     /**
@@ -97,6 +101,7 @@ public final class RequestOptions {
     /**
      * get RequestConfig, which can set socketTimeout, connectTimeout
      * and so on by request
+     *
      * @return RequestConfig
      */
     public RequestConfig getRequestConfig() {
@@ -239,6 +244,7 @@ public final class RequestOptions {
         /**
          * set RequestConfig, which can set socketTimeout, connectTimeout
          * and so on by request
+         *
          * @param requestConfig http client RequestConfig
          * @return Builder
          */

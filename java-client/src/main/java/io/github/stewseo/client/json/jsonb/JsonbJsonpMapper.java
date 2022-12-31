@@ -6,8 +6,6 @@ import io.github.stewseo.client.json.JsonpMapper;
 import io.github.stewseo.client.json.JsonpMapperBase;
 import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
-
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.spi.JsonbProvider;
 import jakarta.json.spi.JsonProvider;

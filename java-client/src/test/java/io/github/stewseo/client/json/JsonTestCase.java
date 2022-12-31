@@ -1,11 +1,5 @@
 package io.github.stewseo.client.json;
 
-import jakarta.json.spi.JsonProvider;
-import jakarta.json.stream.JsonGenerator;
-import jakarta.json.stream.JsonParser;
-
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.lang.reflect.Type;
 
 public interface JsonTestCase {
