@@ -62,10 +62,13 @@ public class RestClient implements Closeable, RestClientInterface {
     private final HttpHost httpHost;
 
     final List<Header> defaultHeaders;
+
     private final String pathPrefix;
 
     private final WarningsHandler warningsHandler;
+
     private final boolean compressionEnabled;
+
     private final boolean metaHeaderEnabled;
 
     RestClient(

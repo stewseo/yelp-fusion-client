@@ -1,6 +1,6 @@
 rootProject.name = 'yelp-fusion-client'
-include 'lowlevel-restclient'
-include 'temporaldata'
+include 'lowlevel-restclient', 'temporaldata', 'yelp-fusion'
+
 //List projects = [
 //        'lowlevel-restclient'
 //]
@@ -52,5 +52,5 @@ include 'temporaldata'
 //        addSubProjects('', extraProjectDir)
 //    }
 //}
-
+include 'yelp-fusion'
 

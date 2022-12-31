@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'yelpfusion.java-conventions'
 }
 
 group = 'io.github.stewseo'
