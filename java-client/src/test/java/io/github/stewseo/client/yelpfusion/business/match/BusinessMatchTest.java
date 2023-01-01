@@ -45,7 +45,7 @@ public class BusinessMatchTest extends YelpFusionTestCase {
     @Test
     public void businessMatchSendRequestASyncTest() throws Exception {
 
-        Location location = yelpFusionAsyncClient.businesses().businessMatch(m -> m
+        Location location = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessMatch(m -> m
                         .city("sf")
                         .name("Brenda's+French+Soul+Food")
                         .address1("625+polk+st")

@@ -7,8 +7,6 @@ import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.VersionInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -23,47 +21,10 @@ public final class RestClientBuilder {
     public static final int DEFAULT_SOCKET_TIMEOUT_MILLIS = 30000;
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
     public static final int DEFAULT_MAX_CONN_TOTAL = 30;
-    public static final String VERSION;
     private static final Header[] EMPTY_HEADERS = new Header[0];
     public static boolean userAgentEnable = true;
 
-    static {
-
-        // Never fail on unknown version, even if an environment messed up their classpath enough that we can't find it.
-        // Better have incomplete telemetry than crashing user applications.
-        String version = null;
-        try (InputStream is = RestClient.class.getResourceAsStream("version.properties")) {
-            if (is != null) {
-                Properties versions = new Properties();
-                versions.load(is);
-                version = versions.getProperty("elasticsearch-client");
-            }
-        } catch (IOException e) {
-            // Keep version unknown
-        }
-
-        if (version == null) {
-            version = ""; // unknown values are reported as empty strings in X-Elastic-Client-Meta
-        }
-
-        VERSION = version;
-
-        VersionInfo httpClientVersion = null;
-        try {
-
-            httpClientVersion = VersionInfo.loadVersionInfo(
-                    "org.apache.http.nio.client",
-                    HttpAsyncClientBuilder.class.getClassLoader()
-            );
-
-        } catch (Exception e) {
-            // Keep unknown
-        }
-
-    }
-
     private final HttpHost host;
-    Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
     private Header[] defaultHeaders = EMPTY_HEADERS;
     private HttpClientConfigCallback httpClientConfigCallback;
     private RequestConfigCallback requestConfigCallback;
@@ -206,10 +167,12 @@ public final class RestClientBuilder {
         }
     }
 
+    @FunctionalInterface
     public interface RequestConfigCallback {
         RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder);
     }
 
+    @FunctionalInterface
     public interface HttpClientConfigCallback {
         HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder);
     }

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
-@SuppressWarnings("ClassCanBeRecord")
 public class Version {
 
     public static final Version VERSION;
@@ -81,8 +80,7 @@ public class Version {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        if (!(other instanceof Version)) return false;
-        Version that = (Version) other;
+        if (!(other instanceof Version that)) return false;
         return (major == that.major &&
                 minor == that.minor &&
                 maintenance == that.maintenance &&

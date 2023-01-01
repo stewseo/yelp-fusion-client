@@ -12,6 +12,7 @@ import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
+import org.elasticsearch.client.RequestOptions;
 
 import java.util.HashMap;
 import java.util.List;

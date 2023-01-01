@@ -1,9 +1,8 @@
-package io.github.stewseo.client.connection;
+package io.github.stewseo.client.elasticsearch;
 
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import io.github.stewseo.client.elasticsearch.ElasticsearchService;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -13,17 +12,9 @@ import org.elasticsearch.client.RestClientBuilder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public abstract class ElasticsearchConnection {
+class ElasticsearchServiceCtx {
 
-    public static final String timestampPipeline = "timestamp-pipeline";
-
-    public static final String testIndex = "yelp-test-index";
-
-    public static String postalPipeline = "postal-lookup";
-
-    public static ElasticsearchService elasticSearchService;
-
-    public static ElasticsearchService createElasticsearchService() {
+    public static ElasticsearchAsyncClient createElasticsearchAsyncClient() {
 
         String host = "1ff0acb6626441789a7e846726159410.us-east-2.aws.elastic-cloud.com";
         int port = 443;
@@ -35,12 +26,11 @@ public abstract class ElasticsearchConnection {
 
         co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient, new co.elastic.clients.json.jackson.JacksonJsonpMapper());
 
-        ElasticsearchAsyncClient client = new ElasticsearchAsyncClient(transport);
+        return new ElasticsearchAsyncClient(transport);
 
-        return new ElasticsearchService(client);
     }
 
-    public static RestClient createRestClient(String host, int port, String scheme, String apiKeyId, String apiKeySecret) {
+    private static RestClient createRestClient(String host, int port, String scheme, String apiKeyId, String apiKeySecret) {
 
         String apiKeyIdAndSecret = apiKeyId + ":" + apiKeySecret;
 
@@ -55,10 +45,6 @@ public abstract class ElasticsearchConnection {
         builder.setDefaultHeaders(defaultHeaders);
 
         return builder.build();
-    }
-
-    public ElasticsearchService getElasticsearchService() {
-        return elasticSearchService;
     }
 
 }

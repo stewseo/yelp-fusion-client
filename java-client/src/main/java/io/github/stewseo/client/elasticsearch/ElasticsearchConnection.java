@@ -2,6 +2,7 @@ package io.github.stewseo.client.elasticsearch;
 
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -15,15 +16,7 @@ import java.util.Base64;
 // build all requests before transporting
 public class ElasticsearchConnection {
 
-    protected static final String timestampPipeline = "timestamp-pipeline";
-
-    protected static final String testIndex = "yelp-test-index";
-
-    protected static String postalPipeline = "postal-lookup";
-
-    protected static ElasticsearchService elasticSearchService;
-
-    public static void createElasticsearchService() {
+    public static ElasticsearchAsyncClient createElasticsearchAsyncClient() {
 
         String host = "1ff0acb6626441789a7e846726159410.us-east-2.aws.elastic-cloud.com";
         int port = 443;
@@ -36,9 +29,23 @@ public class ElasticsearchConnection {
         co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient,
                 new co.elastic.clients.json.jackson.JacksonJsonpMapper());
 
-        ElasticsearchAsyncClient client = new ElasticsearchAsyncClient(transport);
+        return new ElasticsearchAsyncClient(transport);
+    }
 
-        elasticSearchService = new ElasticsearchService(client);
+    public static ElasticsearchClient createElasticsearchClient() {
+
+        String host = "1ff0acb6626441789a7e846726159410.us-east-2.aws.elastic-cloud.com";
+        int port = 443;
+        String scheme = "https";
+        String apiKey = System.getenv("API_KEY_ID");
+        String apiKeySecret = System.getenv("API_KEY_SECRET");
+
+        org.elasticsearch.client.RestClient restClient = createRestClient(host, port, scheme, apiKey, apiKeySecret);
+
+        co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient,
+                new co.elastic.clients.json.jackson.JacksonJsonpMapper());
+
+        return new ElasticsearchClient(transport);
     }
 
     public static RestClient createRestClient(String host, int port, String scheme, String apiKeyId, String apiKeySecret) {
@@ -57,10 +64,5 @@ public class ElasticsearchConnection {
 
         return builder.build();
     }
-
-    protected ElasticsearchService getElasticsearchService() {
-        return elasticSearchService;
-    }
-
 }
 

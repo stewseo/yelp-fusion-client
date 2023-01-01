@@ -1,7 +1,6 @@
 package io.github.stewseo.client.yelpfusion.business.search;
 
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.client.connection.YelpFusionConnection;
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -22,8 +21,6 @@ public class BusinessSearchTest extends YelpFusionTestCase {
     @Test
     void businessSearchTest() throws Exception {
 
-        yelpFusionAsyncClient = YelpFusionConnection.createOrGetYelpFusionAsyncClient();
-
         String sort_by = "distance";
         String term = "restaurants";
         String categoryAlias = "pizza";
@@ -41,7 +38,7 @@ public class BusinessSearchTest extends YelpFusionTestCase {
             Integer offset = 0;
             int radius = 1610;
 
-            CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionAsyncClient.businesses().search(s -> s
+            CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().search(s -> s
                             .location(resultCity)
                             .coordinates(c -> c
                                     .latitude(latitude)

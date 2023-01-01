@@ -1,4 +1,4 @@
-package io.github.stewseo
+package io.github
 
 
 import org.gradle.testkit.runner.TaskOutcome
@@ -8,7 +8,7 @@ class LibraryPluginTest extends PluginTest {
     def setup() {
         buildFile << """
             plugins {
-               id 'yelpfusion.library-conventions'
+               id 'io.github.library-conventions'
             }
         """
     }
@@ -46,9 +46,9 @@ class LibraryPluginTest extends PluginTest {
             }
         """
 
-        new File(testProjectDir, 'src/main/java/io/github/stewseo').mkdirs()
-        new File(testProjectDir, 'src/main/java/io/github/stewseo/Util.java') << """
-            package io.github.stewseo;
+        new File(testProjectDir, 'src/main/java/io/github').mkdirs()
+        new File(testProjectDir, 'src/main/java/io/github/Util.java') << """
+            package io.github;
 //
 //            public class Util {
 //                public static void someUtil() {
@@ -62,7 +62,7 @@ class LibraryPluginTest extends PluginTest {
         then:
         result.task(":jar").outcome == TaskOutcome.SUCCESS
         result.task(":publishLibraryPublicationToTestRepoRepository").outcome == TaskOutcome.SUCCESS
-        new File($projectDirectory, 'build/local-repo/io/github/stewseo/test-library/0.1.0/test-library-0.1.0.jar').exists()
+        new File($projectDirectory, 'build/local-repo/io/github/test-library/0.1.0/test-library-0.1.0.jar').exists()
     }
 
     def "fails when no README exists"() {

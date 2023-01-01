@@ -1,4 +1,4 @@
-package io.github.stewseo
+package io.github
 
 import org.gradle.testkit.runner.GradleRunner
 import spock.lang.Specification

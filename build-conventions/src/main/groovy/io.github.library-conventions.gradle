@@ -1,11 +1,12 @@
 plugins {
-    id 'java-library'
     id 'maven-publish'
-    id 'org.java-conventions'
+    id 'io.github.java-conventions'
     id 'signing'
 }
 
-def readmeCheck = tasks.register('readmeCheck', io.github.stewseo.ReadmeVerificationTask) {
+group = 'io.github'
+
+def readmeCheck = tasks.register('readmeCheck', com.example.ReadmeVerificationTask) {
     // Expect the README in the project directory
     readme = layout.projectDirectory.file("README.md")
     // README must contain a Service API header
@@ -28,10 +29,4 @@ publishing {
             url 'build/local-repo'
         }
     }
-}
-
-dependencies {
-    testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 }

@@ -1,13 +1,11 @@
 package io.github.stewseo.client.yelpfusion.business.reviews;
 
-import io.github.stewseo.client.connection.YelpFusionConnection;
 import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,14 +30,11 @@ public class BusinessReviewsTest extends YelpFusionTestCase {
 
         ReviewsRequest request = ReviewsRequest.of(a -> a.id(id));
 
-        YelpFusionAsyncClient yelpFusionAsyncClient = YelpFusionConnection.createOrGetYelpFusionAsyncClient();
+        ReviewsResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessReviews(request).get();
 
-        ReviewsResponse response = yelpFusionAsyncClient.businesses().businessReviews(request).get();
-
-        testBusinessReviews(response.reviews().stream());
+        response.reviews().forEach(this::testBusinessReviews);
 
     }
-
 
     @Test
     public void businessReviewsByAliasTest() throws Exception {
@@ -48,20 +43,17 @@ public class BusinessReviewsTest extends YelpFusionTestCase {
 
         ReviewsRequest request = ReviewsRequest.of(a -> a.alias(alias));
 
-        yelpFusionAsyncClient = YelpFusionConnection.createOrGetYelpFusionAsyncClient();
+        ReviewsResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessReviews(request).get();
 
-        ReviewsResponse response = yelpFusionAsyncClient.businesses().businessReviews(request).get();
-
-        testBusinessReviews(response.reviews().stream());
+        response.reviews().forEach(this::testBusinessReviews);
 
     }
 
-    void testBusinessReviews(Stream<Review> reviewsStream) {
-        reviewsStream.forEach(review -> {
-            assertThat(review).isNotNull();
-            assertThat(review.id()).isNotNull();
-            assertThat(review.url()).isNotNull();
-            assertThat(review.rating()).isInstanceOf(Double.class);
-        });
+    void testBusinessReviews(Review review) {
+
+        assertThat(review).isNotNull();
+        assertThat(review.id()).isNotNull();
+        assertThat(review.url()).isNotNull();
+        assertThat(review.rating()).isInstanceOf(Double.class);
     }
 }

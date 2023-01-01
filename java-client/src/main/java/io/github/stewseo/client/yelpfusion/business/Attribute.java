@@ -15,18 +15,12 @@ import javax.annotation.Nullable;
 
 @JsonpDeserializable
 public class Attribute implements JsonpSerializable {
-    public static final JsonpDeserializer<Attribute> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new,
-                    Attribute::setupAttributesDeserializer);
+
     @Nullable
     private final String attribute;
 
     private Attribute(Builder builder) {
         this.attribute = builder.attribute;
-    }
-
-    protected static void setupAttributesDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::attribute, JsonpDeserializer.stringDeserializer(), "attribute");
     }
 
     public String attribute() {
@@ -61,4 +55,13 @@ public class Attribute implements JsonpSerializable {
             return new Attribute(this);
         }
     }
+
+    protected static void setupAttributesDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::attribute, JsonpDeserializer.stringDeserializer(), "attribute");
+    }
+
+
+    public static final JsonpDeserializer<Attribute> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new,
+                    Attribute::setupAttributesDeserializer);
 }

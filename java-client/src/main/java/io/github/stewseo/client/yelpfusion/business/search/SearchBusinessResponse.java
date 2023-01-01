@@ -8,6 +8,7 @@ import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
+import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.client.yelpfusion.business.Region;
@@ -21,8 +22,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class SearchBusinessResponse implements JsonpSerializable {
 
-    public static final JsonpDeserializer<SearchBusinessResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchBusinessResponse::setupBusinessSearchResponse_Deserializer);
     private final List<SearchBusiness> businesses;
     @Nullable
     private final Integer total;
@@ -30,16 +29,9 @@ public class SearchBusinessResponse implements JsonpSerializable {
     private final Region region;
 
     protected SearchBusinessResponse(Builder builder) {
-        this.businesses = builder.businesses;
+        this.businesses = ApiTypeHelper.unmodifiableRequired(builder.businesses, this, "businesses");
         this.total = builder.total;
         this.region = builder.region;
-    }
-
-    protected static void setupBusinessSearchResponse_Deserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::total, JsonpDeserializer.integerDeserializer(), "total");
-        op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(SearchBusiness._DESERIALIZER), "businesses");
-        op.add(Builder::region, Region._DESERIALIZER, "region");
-
     }
 
     public List<SearchBusiness> businesses() {
@@ -61,7 +53,8 @@ public class SearchBusinessResponse implements JsonpSerializable {
     }
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
-        if (this.businesses != null) {
+
+        if (ApiTypeHelper.isDefined(this.businesses)) {
             generator.writeKey("businesses");
             generator.writeStartArray();
             for (SearchBusiness business : businesses) {
@@ -129,5 +122,15 @@ public class SearchBusinessResponse implements JsonpSerializable {
         }
     }
 
+
+    public static final JsonpDeserializer<SearchBusinessResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            SearchBusinessResponse::setupBusinessSearchResponse_Deserializer);
+
+    protected static void setupBusinessSearchResponse_Deserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::total, JsonpDeserializer.integerDeserializer(), "total");
+        op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(SearchBusiness._DESERIALIZER), "businesses");
+        op.add(Builder::region, Region._DESERIALIZER, "region");
+
+    }
 
 }

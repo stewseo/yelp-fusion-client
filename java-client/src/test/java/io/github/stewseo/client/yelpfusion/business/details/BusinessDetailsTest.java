@@ -22,7 +22,7 @@ public class BusinessDetailsTest extends YelpFusionTestCase {
     @Test
     void indexBusinessDetailsTest() throws Exception {
 
-        CompletableFuture<List<SearchBusiness>> future = yelpFusionAsyncClient.businesses().search(s -> s
+        CompletableFuture<List<SearchBusiness>> future = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().search(s -> s
                                 .location("sf")
                                 .term("restaurants")
                                 .sort_by("review_count")
@@ -44,7 +44,7 @@ public class BusinessDetailsTest extends YelpFusionTestCase {
     private void businessDetails(String id) {
         CompletableFuture<Business> future;
         try {
-            future = yelpFusionAsyncClient.businesses().businessDetails(b -> b.id(id))
+            future = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessDetails(b -> b.id(id))
                     .whenComplete((response, exception) -> {
 
                         if (exception != null) {

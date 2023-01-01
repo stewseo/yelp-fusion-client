@@ -2,8 +2,6 @@ package io.github.stewseo.client.yelpfusion;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.client.connection.YelpFusionConnection;
-import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.yelpfusion.business.Business;
 import io.github.stewseo.client.yelpfusion.business.Coordinates;
 import io.github.stewseo.client.yelpfusion.business.Location;
@@ -12,7 +10,6 @@ import io.github.stewseo.client.yelpfusion.json.YelpFusionJsonTestCase;
 import io.github.stewseo.temporaldata.TemporalDataService;
 import org.junit.jupiter.api.BeforeAll;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -21,24 +18,29 @@ import java.util.stream.Stream;
 public abstract class YelpFusionTestCase {
 
     private static final String state = "CA";
+
     private static final String country = "USA";
-    public static YelpFusionAsyncClient yelpFusionAsyncClient;
-    public static YelpFusionJsonTestCase jsonTestCase;
+
+    public final YelpFusionServiceCtx yelpFusionServiceCtx;
+
+    public final YelpFusionJsonTestCase jsonTestCase;
+
     private static int numCities;
+
     private static List<BreinTemporalDataResult> list;
+
     private static TemporalDataService temporalDataService;
+
+    protected YelpFusionTestCase() {
+        yelpFusionServiceCtx = new YelpFusionServiceCtx();
+        jsonTestCase = new YelpFusionJsonTestCase();
+        temporalDataService = new TemporalDataService();
+
+    }
 
     @BeforeAll
     static void beforeAll() {
-
-        yelpFusionAsyncClient = YelpFusionConnection.createOrGetYelpFusionAsyncClient();
-
-        temporalDataService = new TemporalDataService();
-
-        jsonTestCase = new YelpFusionJsonTestCase();
-
         list = loadCaliforniaCities().toList();
-
         numCities = list.size();
     }
 
@@ -50,7 +52,7 @@ public abstract class YelpFusionTestCase {
     }
 
     public static BreinTemporalDataResult locationByCity(String city) {
-        //
+
         return temporalDataService.temporalDataResult(city);
     }
 
@@ -60,10 +62,6 @@ public abstract class YelpFusionTestCase {
     }
 
     public Stream<Business> generateBusinessInstances(int size) {
-
-        JsonpDeserializer<Business> businessJsonpDeserializer = Business._DESERIALIZER;
-
-        List<Business> businesses = new ArrayList<>();
 
         return IntStream.range(0, size).mapToObj(this::generateBusiness);
 

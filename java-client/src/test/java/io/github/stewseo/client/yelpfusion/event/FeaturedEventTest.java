@@ -25,7 +25,7 @@ public class FeaturedEventTest extends YelpFusionTestCase {
         System.out.println(location);
         try {
 
-            FeaturedEventResponse response = yelpFusionAsyncClient.events().featuredEvent(f -> f.location(location)).get();
+            FeaturedEventResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().events().featuredEvent(f -> f.location(location)).get();
 
             testFeaturedEvent(response.event());
 

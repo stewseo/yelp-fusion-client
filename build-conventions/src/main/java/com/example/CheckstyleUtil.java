@@ -1,4 +1,4 @@
-package io.github.stewseo;
+package com.example;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,17 +13,16 @@ import java.nio.charset.StandardCharsets;
 public abstract class CheckstyleUtil {
     public static String getCheckstyleConfig(String resourcePath) throws IOException {
 
-        InputStream in = CheckstyleUtil.class.getResourceAsStream(resourcePath);
+        InputStream in =  CheckstyleUtil.class.getResourceAsStream(resourcePath);
+
         StringBuilder sb = new StringBuilder();
-        if (in != null) {
-            try (Reader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                int c;
-                while ((c = reader.read()) != -1) {
-                    sb.append((char) c);
-                }
+
+        try (Reader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+            int c;
+            while ((c = reader.read()) != -1) {
+                sb.append((char) c);
             }
         }
         return sb.toString();
-
     }
 }

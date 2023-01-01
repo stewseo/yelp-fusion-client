@@ -1,4 +1,4 @@
-package io.github.stewseo;
+package com.example;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;

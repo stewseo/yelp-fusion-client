@@ -81,8 +81,8 @@ public class EventSearchTest extends YelpFusionTestCase {
         CompletableFuture<List<Event>> future = null;
 
         try {
-            // execute the request using the YelpFusionAsyncClient
-            future = yelpFusionAsyncClient.events()
+            // execute the request using the yelpFusionServiceCtx.getYelpFusionAsyncClient()
+            future = yelpFusionServiceCtx.getYelpFusionAsyncClient().events()
                     .search(eventSearchRequest)
                     .whenComplete((response, exception) -> {
 

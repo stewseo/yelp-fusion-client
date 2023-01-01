@@ -1,5 +1,7 @@
 package io.github.stewseo.client.util;
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.util.ApiTypeHelper;
 import io.github.stewseo.client.json.DelegatingDeserializer;
 import io.github.stewseo.client.json.DelegatingJsonpMapper;
 import io.github.stewseo.client.json.JsonData;
@@ -9,25 +11,22 @@ import io.github.stewseo.client.json.JsonpMapperBase;
 import io.github.stewseo.client.json.ObjectDeserializer;
 import io.github.stewseo.client.json.WithJson;
 import jakarta.json.stream.JsonParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase implements WithJson<B> {
-
-    private static final Logger logger = LoggerFactory.getLogger(WithJsonObjectBuilderBase.class);
 
     protected abstract B self();
 
     @Override
     public B withJson(JsonParser parser, JsonpMapper mapper) {
+
         JsonpDeserializer<?> classDeser = JsonpMapperBase.findDeserializer(this.getClass().getEnclosingClass());
+
         if (classDeser == null) {
             throw new IllegalArgumentException("Class " + this.getClass().getEnclosingClass() + " cannot be read from JSON");
         }
 
         // Generic parameters are always deserialized to JsonData unless the parent mapper can provide a deserializer
-        mapper = new WithJsonMapper(mapper);
+        mapper = new WithJsonObjectBuilderBase.WithJsonMapper(mapper);
 
         @SuppressWarnings("unchecked")
         ObjectDeserializer<B> builderDeser = (ObjectDeserializer<B>) DelegatingDeserializer.unwrap(classDeser);
@@ -42,7 +41,7 @@ public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase imp
         @Override
         public <T> T attribute(String name) {
             T attr = mapper.attribute(name);
-            if (attr == null && name.startsWith("co.elastic.clients:Deserializer")) {
+            if (attr == null && name.startsWith("io.github.stewseo:Deserializer")) {
                 @SuppressWarnings("unchecked")
                 T result = (T) JsonData._DESERIALIZER;
                 return result;
@@ -53,7 +52,7 @@ public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase imp
 
         @Override
         public <T> JsonpMapper withAttribute(String name, T value) {
-            return new WithJsonMapper(this.mapper.withAttribute(name, value));
+            return new WithJsonObjectBuilderBase.WithJsonMapper(this.mapper.withAttribute(name, value));
         }
     }
 }

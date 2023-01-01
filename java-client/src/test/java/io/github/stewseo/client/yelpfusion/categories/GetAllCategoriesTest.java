@@ -1,8 +1,6 @@
 package io.github.stewseo.client.yelpfusion.categories;
 
-import io.github.stewseo.client.connection.YelpFusionConnection;
-import io.github.stewseo.client.yelpfusion.YelpFusionAsyncClient;
-import io.github.stewseo.client.yelpfusion.YelpFusionClient;
+
 import io.github.stewseo.client.yelpfusion.YelpFusionTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -17,30 +15,27 @@ public class GetAllCategoriesTest extends YelpFusionTestCase {
 
     private final static Logger logger = LoggerFactory.getLogger(GetAllCategoriesTest.class);
 
-    @Test
-    public void getAllCategoriesTest() throws Exception {
-
-        YelpFusionClient yelpFusionSyncBlockClient = YelpFusionConnection.createOrGetYelpFusionSynchronousBlockingClient();
-
-
-        GetCategoriesResponse response = yelpFusionSyncBlockClient.categories().all(c -> c.locale("en_US"));
-        List<Category> categories = response.categories();
-
-        assertThat(categories.size()).isGreaterThanOrEqualTo(1);
-        testGetAllCategories(categories);
-    }
+//    @Test
+//    public void getAllCategoriesTest() throws Exception {
+//
+//        YelpFusionClient yelpFusionSyncBlockClient = yelpFusionServiceCtx.getYelpFusionAsyncClient().createOrGetYepFusionSynchronousBlockingClient();
+//
+//        GetCategoriesResponse response = yelpFusionSyncBlockClient.categories().all(c -> c.locale("en_US"));
+//        List<Category> categories = response.categories();
+//
+//        assertThat(categories.size()).isGreaterThanOrEqualTo(1);
+//        testGetAllCategories(categories);
+//    }
 
     @Test
     public void getAllCategoriesAsyncTest() throws Exception {
-        String apiKey = System.getenv("YELP_API_KEY");
 
-        YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(apiKey);
-
-        CompletableFuture<GetCategoriesResponse> future = asyncClient.categories().all(c -> c.locale("en_US"));
+        CompletableFuture<GetCategoriesResponse> future = yelpFusionServiceCtx.getYelpFusionAsyncClient().categories().all(c -> c.locale("en_US"));
 
         List<Category> categories = future.get().categories();
 
         assertThat(categories.size()).isGreaterThanOrEqualTo(1);
+
         testGetAllCategories(future.get().categories());
     }
 

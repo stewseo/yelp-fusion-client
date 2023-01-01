@@ -1,6 +1,7 @@
 package io.github.stewseo.client.yelpfusion.business;
 
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.stewseo.client.json.JsonpDeserializable;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
@@ -8,6 +9,7 @@ import io.github.stewseo.client.json.JsonpSerializable;
 import io.github.stewseo.client.json.JsonpUtils;
 import io.github.stewseo.client.json.ObjectBuilderDeserializer;
 import io.github.stewseo.client.json.ObjectDeserializer;
+import io.github.stewseo.client.util.ApiTypeHelper;
 import io.github.stewseo.client.util.ObjectBuilder;
 import io.github.stewseo.client.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
@@ -20,17 +22,21 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class Location implements JsonpSerializable {
 
-    public static final JsonpDeserializer<Location> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            Location::setupLocationDeserializer);
     private final String address1;
     @Nullable
     private final String address2;
+
     @Nullable
     private final String address3;
+
     private final String city;
+
     private final String zip_code;
+
     private final String country;
+
     private final String state;
+
     private final List<String> display_address;
 
     private Location(Builder builder) {
@@ -41,26 +47,13 @@ public class Location implements JsonpSerializable {
         this.country = builder.country;
         this.city = builder.city;
         this.state = builder.state;
-        this.display_address = builder.display_address;
+        this.display_address = ApiTypeHelper.unmodifiable(builder.display_address);
     }
 
     public static Location of(Function<Builder, ObjectBuilder<Location>> fn) {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setupLocationDeserializer(ObjectDeserializer<Builder> op) {
-
-        op.add(Builder::address1, JsonpDeserializer.stringDeserializer(), "address1");
-        op.add(Builder::address2, JsonpDeserializer.stringDeserializer(), "address2");
-        op.add(Builder::address3, JsonpDeserializer.stringDeserializer(), "address3");
-        op.add(Builder::city, JsonpDeserializer.stringDeserializer(), "city");
-        op.add(Builder::state, JsonpDeserializer.stringDeserializer(), "state");
-        op.add(Builder::zip_code, JsonpDeserializer.stringDeserializer(), "zip_code");
-        op.add(Builder::county, JsonpDeserializer.stringDeserializer(), "county");
-        op.add(Builder::country, JsonpDeserializer.stringDeserializer(), "country");
-        op.add(Builder::display_address, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "display_address");
-        op.add(Builder::cross_streets, JsonpDeserializer.stringDeserializer(), "cross_streets");
-    }
 
     public String address1() {
         return address1;
@@ -137,7 +130,7 @@ public class Location implements JsonpSerializable {
             generator.write(this.state);
         }
 
-        if (this.display_address != null) {
+        if (ApiTypeHelper.isDefined(this.display_address)) {
             generator.writeKey("display_address");
             generator.writeStartArray();
             for (String item0 : this.display_address) {
@@ -153,7 +146,6 @@ public class Location implements JsonpSerializable {
         return JsonpUtils.toString(this);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Location> {
 
         private String address1, address2, address3, city, county, cross_streets, state, zip_code, country;
@@ -166,7 +158,12 @@ public class Location implements JsonpSerializable {
         }
 
         public final Builder display_address(List<String> value) {
-            this.display_address = value;
+            this.display_address = _listAddAll(this.display_address, value);
+            return this;
+        }
+
+        public final Builder display_address(String value, String... values) {
+            this.display_address = _listAdd(this.display_address, value, values);
             return this;
         }
 
@@ -215,12 +212,27 @@ public class Location implements JsonpSerializable {
             return this;
         }
 
-
         public Location build() {
             _checkSingleUse();
             return new Location(this);
         }
     }
 
+    public static final JsonpDeserializer<Location> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            Location::setupLocationDeserializer);
+
+    protected static void setupLocationDeserializer(ObjectDeserializer<Builder> op) {
+
+        op.add(Builder::address1, JsonpDeserializer.stringDeserializer(), "address1");
+        op.add(Builder::address2, JsonpDeserializer.stringDeserializer(), "address2");
+        op.add(Builder::address3, JsonpDeserializer.stringDeserializer(), "address3");
+        op.add(Builder::city, JsonpDeserializer.stringDeserializer(), "city");
+        op.add(Builder::state, JsonpDeserializer.stringDeserializer(), "state");
+        op.add(Builder::zip_code, JsonpDeserializer.stringDeserializer(), "zip_code");
+        op.add(Builder::county, JsonpDeserializer.stringDeserializer(), "county");
+        op.add(Builder::country, JsonpDeserializer.stringDeserializer(), "country");
+        op.add(Builder::display_address, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "display_address");
+        op.add(Builder::cross_streets, JsonpDeserializer.stringDeserializer(), "cross_streets");
+    }
 }
 

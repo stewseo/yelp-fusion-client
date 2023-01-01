@@ -5,11 +5,9 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.client.connection.ElasticsearchConnection;
 import io.github.stewseo.client.elasticsearch.ElasticsearchTestCase;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -20,9 +18,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class TermsAggregationTest extends ElasticsearchTestCase {
 
     @Test
-    void storedFieldsTest() throws IOException {
+    void storedFieldsTest() {
         int size = 50;
-        ElasticsearchConnection.createElasticsearchService();
 
         try {
             SearchResponse<ObjectNode> respon = elasticsearchService.getAsyncClient().search(s -> s
@@ -66,7 +63,7 @@ public class TermsAggregationTest extends ElasticsearchTestCase {
     }
 
     @Test
-    void aggregationTest() throws Exception {
+    void aggregationTest() {
 
         List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(350, index);
 

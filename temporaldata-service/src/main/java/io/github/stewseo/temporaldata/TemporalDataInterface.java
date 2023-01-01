@@ -5,16 +5,18 @@ import com.brein.domain.results.temporaldataparts.BreinHolidayResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import com.brein.domain.results.temporaldataparts.BreinWeatherResult;
 
+import java.util.List;
+
 public interface TemporalDataInterface {
 
     BreinTemporalDataResult temporalDataResult(String city);
 
     BreinTemporalDataResult temporalDataResult(String city, String state, String country);
 
-    BreinHolidayResult holidayResult();
+    List<BreinHolidayResult> holidayResult(String city);
 
-    BreinWeatherResult weatherResult();
+    BreinWeatherResult weatherResult(String city);
 
-    BreinLocationResult locationResult();
+    BreinLocationResult locationResult(String city);
 
 }

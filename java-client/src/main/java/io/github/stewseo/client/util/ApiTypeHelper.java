@@ -1,8 +1,5 @@
 package io.github.stewseo.client.util;
 
-import co.elastic.clients.util.ObjectBuilderBase;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import javax.annotation.Nullable;
 import java.util.AbstractList;
 import java.util.AbstractMap;
@@ -19,7 +16,6 @@ public class ApiTypeHelper {
     //----- Required properties
 
     private static final ThreadLocal<Boolean> disableRequiredPropertiesCheck = new ThreadLocal<>();
-
 
     public static boolean requiredPropertiesCheckDisabled() {
         return disableRequiredPropertiesCheck.get() == Boolean.TRUE;

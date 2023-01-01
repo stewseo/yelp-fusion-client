@@ -1,4 +1,4 @@
-package io.github.stewseo
+package io.github
 
 
 import org.gradle.testkit.runner.TaskOutcome
@@ -8,16 +8,16 @@ class JavaConventionPluginTest extends PluginTest {
     def setup() {
         buildFile << """
             plugins {
-                id 'yelpfusion.java-conventions'
+                id 'io.github.java-conventions'
             }
         """
     }
 
     def "fails on checkstyle error"() {
         given:
-        new File(testProjectDir, 'src/main/java/io/github/stewseo').mkdirs()
-        new File(testProjectDir, 'src/main/java/io/github/stewseo/Foo.java') << """
-            package io.github.stewseo;
+        new File(testProjectDir, 'src/main/java/io/github').mkdirs()
+        new File(testProjectDir, 'src/main/java/io/github/Foo.java') << """
+            package io.github;
 
             import java.util.*;
 
@@ -63,7 +63,7 @@ class JavaConventionPluginTest extends PluginTest {
         given:
         new File(testProjectDir, 'src/main/java/io/github').mkdirs()
         new File(testProjectDir, 'src/main/java/io/github/Foo.java') << """
-            package io.github.stewseo;
+            package io.github;
 
             class Foo {
                 void bar() {
@@ -82,9 +82,9 @@ class JavaConventionPluginTest extends PluginTest {
 
     def "warns on deprecated API usage"() {
         given:
-        new File(testProjectDir, 'src/main/java/io/github/stewseo').mkdirs()
-        new File(testProjectDir, 'src/main/java/io/github/stewseo/Foo.java') << """
-            package io.github.stewseo;
+        new File(testProjectDir, 'src/main/java/io/github').mkdirs()
+        new File(testProjectDir, 'src/main/java/io/github/Foo.java') << """
+            package io.github;
 
             public class Foo {
                 @Deprecated
@@ -92,8 +92,8 @@ class JavaConventionPluginTest extends PluginTest {
             }
         """
 
-        new File(testProjectDir, 'src/main/java/io/github/stewseo/Bar.java') << """
-            package io.github.stewseo;
+        new File(testProjectDir, 'src/main/java/io/github/Bar.java') << """
+            package io.github;
 
             public class Bar {
                 public void bar() {

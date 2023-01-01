@@ -34,30 +34,19 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(YelpFusionJsonTestCase.class);
 
-    private static final int RAND = new Random().nextInt(100);
     static AtomicInteger count = new AtomicInteger(0);
+
     public final JsonpMapper mapper;
+
     private final Gson gson;
 
     public YelpFusionJsonTestCase() {
-        this(RAND);
+        this(new Random().nextInt(100));
     }
 
     protected YelpFusionJsonTestCase(int rand) {
         mapper = setupMapper(rand);
         gson = new Gson();
-    }
-
-    public static void assertGetterType(Class<?> expected, Class<?> clazz, String name) {
-        Method method;
-        try {
-            method = clazz.getMethod(name);
-        } catch (NoSuchMethodException e) {
-            fail("Getter '" + clazz.getName() + "." + name + "' doesn't exist");
-            return;
-        }
-
-        assertThat(expected).isSameAs(method.getReturnType());
     }
 
     private JsonpMapper setupMapper(int rand) {
@@ -84,6 +73,7 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
             }
         }
     }
+
 
     /**
      * @param business Business instance
@@ -170,9 +160,19 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
         return deserializer.deserialize(parser, mapper);
     }
 
-    private Stream<byte[]> testByteArray(String toJson, String businessToString) {
+    public static void assertGetterType(Class<?> expected, Class<?> clazz, String name) {
+        Method method;
+        try {
+            method = clazz.getMethod(name);
+        } catch (NoSuchMethodException e) {
+            fail("Getter '" + clazz.getName() + "." + name + "' doesn't exist");
+            return;
+        }
 
-        final TypeAdapter<Business> strictAdapter = new Gson().getAdapter(Business.class);
+        assertThat(expected).isSameAs(method.getReturnType());
+    }
+
+    private Stream<byte[]> testByteArray(String toJson, String businessToString) {
 
         if (!toJson.equals(businessToString)) {
             assertThat(toJson).isEqualTo(businessToString);

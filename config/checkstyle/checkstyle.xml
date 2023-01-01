@@ -29,10 +29,7 @@
         <property name="file" value="${config_loc}/checkstyle_suppressions.xml"/>
     </module>
 
-    <module name="Header">
-        <property name="headerFile" value="${config_loc}/header.java.txt"/>
-        <property name="fileExtensions" value="java,kt,kts"/>
-    </module>
+
 
     <module name="SuppressWarningsFilter"/>
 

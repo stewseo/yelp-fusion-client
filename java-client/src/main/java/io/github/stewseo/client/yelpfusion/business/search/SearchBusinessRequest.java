@@ -1,6 +1,7 @@
 package io.github.stewseo.client.yelpfusion.business.search;
 
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.client._types.RequestBase;
 import io.github.stewseo.client.json.JsonpDeserializer;
 import io.github.stewseo.client.json.JsonpMapper;
@@ -24,105 +25,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 // Build a BusinessSearchRequest for the business search endpoint
 public class SearchBusinessRequest extends RequestBase implements JsonpSerializable {
 
-    public static final JsonpDeserializer<SearchBusinessRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchBusinessRequest::setupSearchRequestDeserializer);
-    public static final SimpleEndpoint<SearchBusinessRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/search",
-            // Request method
-            request -> "GET",
-
-            // Request path
-            request -> "v3/businesses/search",
-            // Request parameters
-            request -> {
-                Map<String, String> parameters = new HashMap<>();
-
-                if (request.term != null) {
-                    request.term.forEach(term -> parameters.put("term", term));
-                }
-                if (request.location != null) {
-                    request.location.forEach(location -> parameters.put("location", location));
-                }
-                if (request.categories != null) {
-                    parameters.put("categories", request.categories.alias());
-                }
-                if (request.coordinates != null) {
-                    Double latitude = request.coordinates().latitude();
-                    if (latitude != null) {
-                        parameters.put("latitude", String.valueOf(latitude));
-                    }
-                    Double longitude = request.coordinates().longitude();
-                    if (longitude != null) {
-                        parameters.put("longitude", String.valueOf(longitude));
-                    }
-                }
-                if (request.radius != null) {
-                    parameters.put("radius", String.valueOf(request.radius));
-                }
-                if (request.locale != null) {
-                    parameters.put("locale", String.valueOf(request.locale));
-                }
-                if (request.limit != null) {
-                    parameters.put("limit", String.valueOf(request.limit));
-                }
-                if (request.offset != null) {
-                    parameters.put("offset", String.valueOf(request.offset));
-                }
-                if (request.sort_by != null) {
-                    parameters.put("sort_by", request.sort_by);
-                }
-                if (request.price != null) {
-                    parameters.put("price", request.price);
-                }
-                if (request.open_now != null) {
-                    parameters.put("open_now", String.valueOf(request.open_now));
-                }
-                if (request.open_at != null) {
-                    parameters.put("open_at", String.valueOf(request.open_at));
-                }
-                if (request.attributes != null) {
-                    request.attributes.forEach(attribute -> parameters.put("attributes", attribute.attribute()));
-                }
-
-                return parameters;
-            },
-            SimpleEndpoint.emptyMap(),
-            false,
-            SearchBusinessResponse._DESERIALIZER);
-    private static final Logger logger = LoggerFactory.getLogger(SearchBusinessRequest.class);
     @Nullable
     private final List<String> term;
+
     @Nullable
     private final List<String> location;
+
     @Nullable
     private final Integer radius;
+
     @Nullable
     private final Category categories;
+
     @Nullable
     private final String locale;
+
     @Nullable
     private final Integer limit;
+
     @Nullable
     private final Integer offset;
+
     private final Coordinates coordinates;
     @Nullable
     private final String sort_by;
+
     @Nullable
     private final String price;
+
     @Nullable
     private final Boolean open_now;
+
     @Nullable
     private final Integer open_at;
+
     @Nullable
     private final List<Attribute> attributes;
 
     private SearchBusinessRequest(Builder builder) {
-        this.term = builder.term;
-        this.location = builder.location;
+        this.term = ApiTypeHelper.unmodifiable(builder.term);
+        this.location = ApiTypeHelper.unmodifiable(builder.location);
         this.coordinates = builder.coordinates;
         this.radius = builder.radius;
         this.categories = builder.categories;
@@ -301,6 +249,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
 
         @Nullable
         private List<String> location;
+
         @Nullable
         private Coordinates coordinates;
 
@@ -340,13 +289,13 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         @Nullable
         private List<Attribute> attributes;
 
-        public final Builder term(@Nullable List<String> list) {
-            this.term = ObjectBuilderBase._listAddAll(this.term, list);
+        public final Builder term(@Nullable List<String> value) {
+            this.term = _listAddAll(this.term, value);
             return this;
         }
 
         public final Builder term(@Nullable String value, String... values) {
-            this.term = ObjectBuilderBase._listAdd(this.term, value, values);
+            this.term = _listAdd(this.term, value, values);
             return this;
         }
 
@@ -419,7 +368,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         }
 
         public final Builder attributes(@Nullable List<Attribute> list) {
-            this.attributes = ObjectBuilderBase._listAddAll(this.attributes, list);
+            this.attributes = _listAddAll(this.attributes, list);
             return this;
         }
 
@@ -440,5 +389,68 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         }
 
     }
+
+    public static final SimpleEndpoint<SearchBusinessRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/search",
+            // Request method
+            request -> "GET",
+
+            // Request path
+            request -> "v3/businesses/search",
+            // Request parameters
+            request -> {
+                Map<String, String> parameters = new HashMap<>();
+
+                if (request.term != null) {
+                    request.term.forEach(term -> parameters.put("term", term));
+                }
+                if (request.location != null) {
+                    request.location.forEach(location -> parameters.put("location", location));
+                }
+                if (request.categories != null) {
+                    parameters.put("categories", request.categories.alias());
+                }
+                if (request.coordinates != null) {
+                    Double latitude = request.coordinates().latitude();
+                    if (latitude != null) {
+                        parameters.put("latitude", String.valueOf(latitude));
+                    }
+                    Double longitude = request.coordinates().longitude();
+                    if (longitude != null) {
+                        parameters.put("longitude", String.valueOf(longitude));
+                    }
+                }
+                if (request.radius != null) {
+                    parameters.put("radius", String.valueOf(request.radius));
+                }
+                if (request.locale != null) {
+                    parameters.put("locale", String.valueOf(request.locale));
+                }
+                if (request.limit != null) {
+                    parameters.put("limit", String.valueOf(request.limit));
+                }
+                if (request.offset != null) {
+                    parameters.put("offset", String.valueOf(request.offset));
+                }
+                if (request.sort_by != null) {
+                    parameters.put("sort_by", request.sort_by);
+                }
+                if (request.price != null) {
+                    parameters.put("price", request.price);
+                }
+                if (request.open_now != null) {
+                    parameters.put("open_now", String.valueOf(request.open_now));
+                }
+                if (request.open_at != null) {
+                    parameters.put("open_at", String.valueOf(request.open_at));
+                }
+                if (request.attributes != null) {
+                    request.attributes.forEach(attribute -> parameters.put("attributes", attribute.attribute()));
+                }
+
+                return parameters;
+            },
+            SimpleEndpoint.emptyMap(),
+            false,
+            SearchBusinessResponse._DESERIALIZER);
 
 }

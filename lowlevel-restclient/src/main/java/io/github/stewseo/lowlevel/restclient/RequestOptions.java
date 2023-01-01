@@ -22,6 +22,7 @@ package io.github.stewseo.lowlevel.restclient;
 import org.apache.http.Header;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static  io.github.stewseo.lowlevel.restclient.HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory;
+
 public final class RequestOptions {
     /**
      * Default request options.
@@ -37,7 +40,7 @@ public final class RequestOptions {
     public static final RequestOptions DEFAULT = new Builder(
             Collections.emptyList(),
             Collections.emptyMap(),
-            HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory.DEFAULT,
+            HeapBufferedResponseConsumerFactory.DEFAULT,
             null,
             null
     ).build();
@@ -53,7 +56,7 @@ public final class RequestOptions {
     private final RequestConfig requestConfig;
 
     private RequestOptions(Builder builder) {
-        this.headers = List.copyOf(builder.headers);
+        this.headers = Collections.unmodifiableList(builder.headers);
         this.parameters = Collections.unmodifiableMap(builder.parameters);
         this.httpAsyncResponseConsumerFactory = builder.httpAsyncResponseConsumerFactory;
         this.warningsHandler = builder.warningsHandler;
@@ -218,7 +221,9 @@ public final class RequestOptions {
             return this.headers;
         }
 
-
+        /**
+         * Add the provided parameter to the request.
+         */
         public Builder addParameter(String key, String value) {
             Objects.requireNonNull(key, "parameter key cannot be null");
             Objects.requireNonNull(value, "parameter value cannot be null");

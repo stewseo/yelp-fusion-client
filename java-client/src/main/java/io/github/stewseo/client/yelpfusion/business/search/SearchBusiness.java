@@ -14,8 +14,6 @@ import io.github.stewseo.client.yelpfusion.business.Coordinates;
 import io.github.stewseo.client.yelpfusion.business.Location;
 import io.github.stewseo.client.yelpfusion.categories.Category;
 import jakarta.json.stream.JsonGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.function.Function;
@@ -23,11 +21,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class SearchBusiness implements JsonpSerializable {
 
-    public static final JsonpDeserializer<SearchBusiness> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchBusiness::setUpBusinessDeserializer);
-
-    // ------------------------------ Fields ------------------------------------ //
-    private static final Logger logger = LoggerFactory.getLogger(SearchBusiness.class);
     private final String id;
     private final String alias;
     private final String name;
@@ -45,7 +38,6 @@ public class SearchBusiness implements JsonpSerializable {
     private final Location location;
     private final List<Category> categories;
 
-    // ------------------------------ Constructor -------------------------------- //
     private SearchBusiness(Builder builder) {
         this.id = builder.id;
         this.alias = builder.alias;
@@ -61,40 +53,14 @@ public class SearchBusiness implements JsonpSerializable {
         this.review_count = builder.review_count;
         this.location = builder.location;
         this.coordinates = builder.coordinates;
-        this.categories = builder.categories;
-        this.transactions = builder.transactions;
+        this.categories = ApiTypeHelper.unmodifiable(builder.categories);
+        this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
     }
 
     public static SearchBusiness of(Function<Builder, ObjectBuilder<SearchBusiness>> fn) {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setUpBusinessDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::id, JsonpDeserializer.stringDeserializer(), "id");
-        op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
-        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
-        op.add(Builder::image_url, JsonpDeserializer.stringDeserializer(), "image_url");
-        op.add(Builder::phone, JsonpDeserializer.stringDeserializer(), "phone");
-        op.add(Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
-        op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
-        op.add(Builder::url, JsonpDeserializer.stringDeserializer(), "url");
-
-        op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
-
-        op.add(Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
-        op.add(Builder::distance, JsonpDeserializer.doubleDeserializer(), "distance");
-
-        op.add(Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
-
-        op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
-
-        op.add(Builder::location, Location._DESERIALIZER, "location");
-        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
-        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
-
-    }
-
-    // ------------------------------ Getters ------------------------------------ //
     public String id() {
         return id;
     }
@@ -118,8 +84,6 @@ public class SearchBusiness implements JsonpSerializable {
     public String url() {
         return url;
     }
-
-    ;
 
     public Boolean is_closed() {
         return is_closed;
@@ -259,7 +223,7 @@ public class SearchBusiness implements JsonpSerializable {
     // ---------------------------------------------- Builder ---------------------------------- //
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<SearchBusiness> {
-        // ---------------------------------------------- Builder Fields ---------------------------------- //
+
         private String id;
         private String alias;
         private String display_phone;
@@ -394,5 +358,32 @@ public class SearchBusiness implements JsonpSerializable {
         }
     }
 
+    protected static void setUpBusinessDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::id, JsonpDeserializer.stringDeserializer(), "id");
+        op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
+        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
+        op.add(Builder::image_url, JsonpDeserializer.stringDeserializer(), "image_url");
+        op.add(Builder::phone, JsonpDeserializer.stringDeserializer(), "phone");
+        op.add(Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
+        op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
+        op.add(Builder::url, JsonpDeserializer.stringDeserializer(), "url");
 
+        op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
+
+        op.add(Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
+        op.add(Builder::distance, JsonpDeserializer.doubleDeserializer(), "distance");
+
+        op.add(Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
+
+        op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
+
+        op.add(Builder::location, Location._DESERIALIZER, "location");
+        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
+        op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
+
+    }
+
+
+    public static final JsonpDeserializer<SearchBusiness> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            SearchBusiness::setUpBusinessDeserializer);
 }

@@ -56,7 +56,7 @@ public class ExtendedBounds<T> implements JsonpSerializable {
      */
     public static final JsonpDeserializer<ExtendedBounds<Object>> _DESERIALIZER = JsonpDeserializer
             .lazy(() -> createExtendedBoundsDeserializer(
-                    new NamedDeserializer<>("co.elastic.clients:Deserializer:_types.aggregations.T")));
+                    new NamedDeserializer<>("io.github.stewseo:Deserializer:_types.aggregations.T")));
     private final T max;
     private final T min;
 
