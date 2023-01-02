@@ -19,11 +19,7 @@ public abstract class CheckstyleUtil {
 
     public static String getCheckstyleConfig(String resourcePath) throws IOException {
 
-        System.out.println(cyan("----------------------- resourcePath: " + resourcePath));
-
-        InputStream in = new FileInputStream(resourcePath);  // name – the system-dependent file name.
-
-//        InputStream in =  CheckstyleUtil.class.getResourceAsStream(resourcePath);
+        InputStream in = new FileInputStream(resourcePath);
 
         StringBuilder sb = new StringBuilder();
 
@@ -33,7 +29,6 @@ public abstract class CheckstyleUtil {
                 sb.append((char) c);
             }
         }
-        System.out.println(sb.toString());
         return sb.toString();
     }
 }

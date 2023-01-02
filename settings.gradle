@@ -1,3 +1,7 @@
+plugins {
+    id("com.gradle.enterprise") version("3.7.2")
+}
+
 rootProject.name = 'yelp-fusion-client'
 
 include 'lowlevel-restclient', 'client-yelpfusion', 'temporaldata-service'
@@ -13,6 +17,13 @@ dependencyResolutionManagement {
         buildLibs {
             from(files("gradle/build.versions.toml"))
         }
+    }
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
     }
 }
 
