@@ -17,7 +17,6 @@ plugins {
 
 group = 'io.github.stewseo'
 version = PROJECT_VERSION
-println version
 
 /*****************************************************************************
  *         java                                                             *
@@ -32,7 +31,7 @@ tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
         languageVersion = JavaLanguageVersion.of(17)
     }
-    // Enable deprecation messages when compiling Java code
+    // Enable/Disable deprecation messages when compiling Java code
     options.compilerArgs << '-Xlint:none'
     options.encoding = 'UTF-8'
     if (it.name == 'classesJava17') {
@@ -55,23 +54,27 @@ checkstyle {
  *****************************************************************************/
 
 spotbugs {
+
     ignoreFailures = false
     showStackTraces = true
     showProgress = false
-    reportLevel = 'default'
-    effort = 'default'
+    reportLevel = 'low'
+
+    // adjusts internal flags of SpotBugs to reduce computation cost by lowering the prediction. min, max, more, max
+    effort = 'more'
 //    visitors = [ 'FindSqlInjection', 'SwitchFallthrough' ]
 //    omitVisitors = [ 'FindNonShortCircuit' ]
     reportsDir = file("$buildDir/reports/spotbugs")
-//    includeFilter = file('spotbugs-include.xml')
+    includeFilter = file('../config/spotbugs/spotbugs-include.xml')
     excludeFilter = file('../config/spotbugs/spotbugs-exclude.xml')
 //    onlyAnalyze = ['io.*.*.temporaldata.service.*', 'io.github.stewseo.lowlevel.restclient.*']
     projectName = name
     release = version
-//    extraArgs = [ '-nested:false' ]
+    extraArgs = [ '-nested:false' ]
     jvmArgs = [ '-Duser.language=ja' ]
     maxHeapSize = '512m'
 }
+
 
 spotbugsMain {
     reports {
@@ -82,6 +85,7 @@ spotbugsMain {
         }
     }
 }
+
 spotbugsTest {
     reports {
         html {

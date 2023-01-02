@@ -1,11 +1,11 @@
 // plugin versions, set plugin dependencies, plugin publishing configuration
 plugins {
     id 'groovy-gradle-plugin'
-    id 'maven-publish'
+//    id 'maven-publish'
 }
 
+group = GROUP
 version = PROJECT_VERSION
-//version = file("../config/version.txt").text.trim()
 
 repositories {
     gradlePluginPortal() // so that external plugins can be resolved in dependencies section
@@ -31,7 +31,7 @@ dependencies {
 //publishing {
 //    repositories {
 //        maven {
-//            // change to point to your repo, e.g. http://my.org/repo
+//            // change to point to your repo, e.g. http://stewseo.github.io/repo
 //            url = layout.buildDirectory.dir("repo")
 //        }
 //    }

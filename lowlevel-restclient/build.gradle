@@ -33,15 +33,15 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+/*****************************************************************************
+ *         :lowlevel-restclient dependencies                         *
+ *****************************************************************************/
+
 ext {
     mockitoCoreVersion = '4.4.0'
     byteBuddyVersion = '1.12.9'
     objenesis = '3.2'
 }
-
-/*****************************************************************************
- *         :lowlevel-restclient dependencies                         *
- *****************************************************************************/
 
 dependencies {
 
@@ -72,9 +72,9 @@ tasks.register('lowlevel-restclient-print-test') {
  *****************************************************************************/
 
 test {
-    filter {
-        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
-    }
+//    filter {
+//        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
+//    }
 }
 
 /*****************************************************************************
