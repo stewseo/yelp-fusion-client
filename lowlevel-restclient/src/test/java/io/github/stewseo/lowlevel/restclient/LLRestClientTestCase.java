@@ -18,8 +18,6 @@ public abstract class LLRestClientTestCase {
     // connect to host for each
     private static RestClient restClient;
 
-    private static Process process;
-
     public static void connect() {
         String yelpFusionHost = "api.yelp.com";
         int port = 443;
@@ -64,10 +62,6 @@ public abstract class LLRestClientTestCase {
             return "/" + requestLine.getUri();
         }
         return requestLine.getUri();
-    }
-
-    public void testResponseCode(Response response) {
-
     }
 
 }

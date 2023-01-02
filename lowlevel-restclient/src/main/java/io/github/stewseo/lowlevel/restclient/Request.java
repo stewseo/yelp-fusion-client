@@ -12,10 +12,11 @@ import java.util.Objects;
 import static java.util.Collections.unmodifiableMap;
 
 public final class Request {
+
     private final String method;
+
     private final String endpoint;
     private final Map<String, String> parameters = new HashMap<>();
-
     private HttpEntity entity;
     private RequestOptions options = RequestOptions.DEFAULT;
 

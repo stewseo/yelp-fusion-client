@@ -118,7 +118,7 @@ public class RestClient implements Closeable, RestClientInterface {
         }
     }
 
-    public static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
+    static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
         Objects.requireNonNull(path, "path must not be null");
 
         try {
@@ -154,7 +154,7 @@ public class RestClient implements Closeable, RestClientInterface {
         }
     }
 
-    public static HttpRequestBase createHttpRequest(String method, URI uri, HttpEntity entity, boolean compressionEnabled) {
+    private static HttpRequestBase createHttpRequest(String method, URI uri, HttpEntity entity, boolean compressionEnabled) {
         switch (method.toUpperCase(Locale.ROOT)) {
             case HttpDeleteWithEntity.METHOD_NAME:
                 return addRequestBody(new HttpDeleteWithEntity(uri), entity, compressionEnabled);
@@ -279,7 +279,7 @@ public class RestClient implements Closeable, RestClientInterface {
         return performRequest(httpHost, internalRequest, null);
     }
 
-    private Response performRequest(HttpHost httpHost, final InternalRequest request, Exception previousException)
+    private Response performRequest(final HttpHost httpHost, final InternalRequest request, Exception previousException)
             throws IOException {
 
         RequestContext context = request.createContextForNextAttempt(httpHost);
@@ -313,11 +313,13 @@ public class RestClient implements Closeable, RestClientInterface {
     }
 
     private ResponseOrResponseException convertResponse(InternalRequest request, HttpHost host, HttpResponse httpResponse) throws IOException {
+
         RequestLogger.logResponse(logger, request.httpRequest, host, httpResponse);
 
         int statusCode = httpResponse.getStatusLine().getStatusCode();
 
         HttpEntity entity = httpResponse.getEntity();
+
         if (entity != null) {
             Header header = entity.getContentEncoding();
             if (header != null && "gzip".equals(header.getValue())) {

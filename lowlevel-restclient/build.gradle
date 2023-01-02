@@ -1,65 +1,85 @@
+/*****************************************************************************
+ *         plugins                                                      *
+ *****************************************************************************/
+
 plugins {
-    id 'io.github.java-conventions'
+    id 'io.github.stewseo.java-conventions'
 }
 
 group = 'io.github.stewseo'
-version = '1.0.7'
+
+/*****************************************************************************
+ *         java                                                             *
+ *****************************************************************************/
 
 java {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
-}
-
-repositories {
-    mavenCentral()
-}
-
-ext {
-    randomizedRunnerVersion = '2.8.1'
-    jUnit4Version = '4.13.2'
-    hamcrestVersion = '2.2'
-}
-
-
-dependencies {
-    // apache commons
-//    api("commons-io:commons-io:${commonsioVersion}")
-//    api("commons-codec:commons-codec:${commonscodecVersion}")
-//
-//    // apache http components
-//    api "org.apache.httpcomponents:httpclient:${httpclientVersion}"
-//    api "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
-//    api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
-//    api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
-
-//    // loggers
-//    api("org.slf4j:slf4j-api:${slf4jVersion}")
-//    api("ch.qos.logback:logback-classic:${logbackVersion}")
-//    api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
-//    configurations.all {
-//        exclude group: "commons-logging", module: "commons-logging"
-//    }
-
-    api "com.carrotsearch.randomizedtesting:randomizedtesting-runner:${slf4jVersion}"
-    api "junit:junit:${jUnit4Version}"
-    api "org.hamcrest:hamcrest:${hamcrestVersion}"
-
-    // mockito
-    api 'org.mockito:mockito-core:4.4.0'
-    api 'net.bytebuddy:byte-buddy:1.12.9'
-    api 'org.objenesis:objenesis:3.2'
-
+    withJavadocJar()
+    withSourcesJar()
 }
 
 jar {
-    archiveFileName = 'lowlevel-restclient.jar'
-//    archiveVersion = '1.0.7'
+    archiveFileName.set('lowlevel-restclient')
+    archiveVersion.set(version)
+
+    manifest {
+        attributes("Implementation-Title": archiveFileName,
+                "Implementation-Version": archiveVersion)
+    }
+
     from {
         configurations.compileClasspath.filter { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+ext {
+    mockitoCoreVersion = '4.4.0'
+    byteBuddyVersion = '1.12.9'
+    objenesis = '3.2'
+}
+
+/*****************************************************************************
+ *         :lowlevel-restclient dependencies                         *
+ *****************************************************************************/
+
+dependencies {
+
+    // apache http components
+    api "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    api "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
+    api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
+    api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
+
+    implementation "com.carrotsearch.randomizedtesting:randomizedtesting-runner:${slf4jVersion}"
+    implementation "junit:junit:${jUnit4Version}"
+    implementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+
+    // mockito
+    implementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    implementation "net.bytebuddy:byte-buddy:${byteBuddyVersion}"
+    implementation "org.objenesis:objenesis:${objenesis}"
+}
+
+tasks.register('lowlevel-restclient-print-test') {
+    doLast {
+        println 'lowlevel-restclient print test' + ', rootProject.path: ' + rootProject.path + ' project path: ' + project.path
+    }
+}
+
+/*****************************************************************************
+ *         testing                                                         *
+ *****************************************************************************/
+
+test {
+    filter {
+        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
+    }
+}
+
+/*****************************************************************************
+ *         publishing                                                       *
+ *****************************************************************************/
 
 
 

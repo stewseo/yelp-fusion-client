@@ -1,0 +1,226 @@
+/*****************************************************************************
+ *         plugins                                                          *
+ *****************************************************************************/
+
+plugins {
+    id 'java-library'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'idea'
+    id 'com.github.dawnwords.jacoco.badge'
+    id 'com.github.spotbugs'
+}
+
+/*****************************************************************************
+ *         all java projects                                                 *
+ *****************************************************************************/
+
+group = 'io.github.stewseo'
+version = PROJECT_VERSION
+
+
+/*****************************************************************************
+ *         java                                                             *
+ *****************************************************************************/
+
+java {
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+// Enable deprecation messages when compiling Java code
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
+/*****************************************************************************
+ *         checkstyle                                                       *
+ *****************************************************************************/
+
+// No Warnings
+checkstyle {
+    config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig(CHECKSTYLE_CONFIG))
+    maxWarnings = 0
+}
+
+/*****************************************************************************
+ *         spot bugs                                                        *
+ *****************************************************************************/
+
+spotbugs {
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = false
+    reportLevel = 'default'
+    effort = 'default'
+//    visitors = [ 'FindSqlInjection', 'SwitchFallthrough' ]
+//    omitVisitors = [ 'FindNonShortCircuit' ]
+    reportsDir = file("$buildDir/reports/spotbugs")
+//    includeFilter = file('spotbugs-include.xml')
+    excludeFilter = file('../config/spotbugs/spotbugs-exclude.xml')
+//    onlyAnalyze = ['io.*.*.temporaldata.service.*', 'io.github.stewseo.lowlevel.restclient.*']
+    projectName = name
+    release = version
+    extraArgs = [ '-nested:false' ]
+    jvmArgs = [ '-Duser.language=ja' ]
+    maxHeapSize = '512m'
+}
+
+spotbugsMain {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+spotbugsTest {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/test/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+
+/*****************************************************************************
+ *         code coverage                                                     *
+ *****************************************************************************/
+
+jacoco {
+    toolVersion = "0.8.8"
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+jacocoTestReport {
+    reports {
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+    dependsOn test // tests are required to run before generating the report
+}
+
+jacocoBadgeGenSetting {
+    jacocoReportPath  "$buildDir/customJacocoReportDir/test/jacocoTestReport.xml"
+    readmePath "../README.md"
+    // since v0.2.0, percentage limitation (0-100) for different type of coverage
+    limit = ['instruction': 0, 'branch': 0, 'line': 0, 'method': 0, 'class': 0]
+}
+//task versionTxt()  {
+//    doLast {
+//        new File(rootProjectDir, "/config/version.txt").text = """
+//Version: $version
+//Revision: ${grgit.head().abbreviatedId}
+//Buildtime: ${new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())}
+//Application-name: yelp-fusion-client
+//"""
+//    }
+//}
+
+//// Do not generate reports for individual projects
+//tasks.named("jacocoTestReport") {
+//    enabled = false
+//}
+//
+//// Share sources output folder with other projects for aggregated JaCoCo reports
+//configurations.create('transitiveSourceOutputsElements') {
+//    visible = false
+//    canBeResolved = false
+//    canBeConsumed = true
+//    extendsFrom(configurations.implementation)
+//    attributes {
+//        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+//        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+//        attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'source-output-folders'))
+//    }
+//    // Use main.output if you have groovy, scala or kotlin other than java in your project
+//    sourceSets.main.output.classesDirs.forEach {
+//        outgoing.artifact(it)
+//    }
+//}
+//
+//// Share sources folder with other projects for aggregated JaCoCo reports
+//configurations.create('transitiveSourcesElements') {
+//    visible = false
+//    canBeResolved = false
+//    canBeConsumed = true
+//    extendsFrom(configurations.implementation)
+//    attributes {
+//        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+//        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+//        attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'source-folders'))
+//    }
+//    sourceSets.main.output.classesDirs.forEach {
+//        outgoing.artifact(it)
+//    }
+//}
+//
+//// Share the coverage data to be aggregated for the whole product
+//configurations.create('coverageDataElements') {
+//    visible = false
+//    canBeResolved = false
+//    canBeConsumed = true
+//    extendsFrom(configurations.implementation)
+//    attributes {
+//        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+//        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+//        attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'jacoco-coverage-data'))
+//    }
+//    // This will cause the test task to run if the coverage data is requested by the aggregation task
+//    outgoing.artifact(tasks.named("test").map { task ->
+//        task.extensions.getByType(JacocoTaskExtension).destinationFile
+//    })
+//}
+//
+
+
+/*****************************************************************************
+ *         java-conventions  dependencies                                   *
+ *****************************************************************************/
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    // commons
+    commonscodecVersion = '1.11'
+    commonsioVersion = '2.4'
+    commonsloggingVersion = '1.2'
+
+    // http components
+    httpasyncclientVersion = '4.1.5'
+    httpcoreVersion = '4.4.12'
+    httpclientVersion = '4.5.10'
+
+    // logging
+    slf4jVersion = '2.0.4'
+    logbackVersion = '1.4.1'
+
+    // testing
+    randomizedRunnerVersion = '2.8.1'
+    jUnit4Version = '4.13.2'
+    hamcrestVersion = '2.2'
+
+    jUnitVersion = "5.9.0"
+    assertJVersion = "3.23.1"
+}
+
+dependencies {
+
+    api("commons-io:commons-io:${commonsioVersion}")
+    api("commons-codec:commons-codec:${commonscodecVersion}")
+
+    api("org.slf4j:slf4j-api:${slf4jVersion}")
+    api("ch.qos.logback:logback-classic:${logbackVersion}")
+    api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+
+    configurations.all {
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+}

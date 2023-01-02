@@ -63,14 +63,12 @@ public final class RequestOptions {
         this.requestConfig = builder.requestConfig;
     }
 
-
     /**
      * Create a builder that contains these options but can be modified.
      */
     public Builder toBuilder() {
         return new Builder(headers, parameters, httpAsyncResponseConsumerFactory, warningsHandler, requestConfig);
     }
-
 
     /**
      * Headers to attach to the request.

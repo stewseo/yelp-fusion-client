@@ -69,7 +69,7 @@ public class EsRestClientTest extends RestClientTestCase {
         for (int i = 0; i < runs; i++) {
             Iterable<Node> selectedNodes = EsRestClient.selectNodes(
                     nodeTuple,
-                    Collections.<HttpHost, DeadHostState>emptyMap(),
+                    Collections.emptyMap(),
                     lastNodeIndex,
                     NodeSelector.ANY
             );
@@ -190,7 +190,7 @@ public class EsRestClientTest extends RestClientTestCase {
             assertEquals("nodes must not be null or empty", e.getMessage());
         }
         try (EsRestClient EsRestClient = createEsRestClient()) {
-            EsRestClient.setNodes(Collections.<Node>emptyList());
+            EsRestClient.setNodes(Collections.emptyList());
             fail("setNodes should have failed");
         } catch (IllegalArgumentException e) {
             assertEquals("nodes must not be null or empty", e.getMessage());

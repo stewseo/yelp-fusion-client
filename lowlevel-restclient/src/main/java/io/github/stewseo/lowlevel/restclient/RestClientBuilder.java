@@ -22,15 +22,17 @@ public final class RestClientBuilder {
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
     public static final int DEFAULT_MAX_CONN_TOTAL = 30;
     private static final Header[] EMPTY_HEADERS = new Header[0];
-    public static boolean userAgentEnable = true;
 
+    public static boolean userAgentEnable = true;
     private final HttpHost host;
     private Header[] defaultHeaders = EMPTY_HEADERS;
     private HttpClientConfigCallback httpClientConfigCallback;
     private RequestConfigCallback requestConfigCallback;
     private String pathPrefix;
     private boolean strictDeprecationMode = false;
+
     private boolean compressionEnabled = false;
+
     private boolean metaHeaderEnabled = true;
 
     RestClientBuilder(String apiKey) {

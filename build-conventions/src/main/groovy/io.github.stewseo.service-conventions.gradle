@@ -1,0 +1,29 @@
+//plugins {
+//    id 'io.github.stewseo.java-conventions'
+//}
+//
+//def integrationTest = sourceSets.create('integrationTest')
+//
+//configurations[integrationTest.implementationConfigurationName].extendsFrom(configurations.testImplementation)
+//configurations[integrationTest.runtimeOnlyConfigurationName].extendsFrom(configurations.testRuntimeOnly)
+//
+//def integrationTestTask = tasks.register('integrationTest', Test) {
+//    testClassesDirs = integrationTest.output.classesDirs
+//    classpath = integrationTest.runtimeClasspath
+//
+//    shouldRunAfter(tasks.named('test'))
+//}
+//
+//dependencies {
+//    integrationTestImplementation project
+//}
+//
+//// The organization requires additional documentation in the README for this project
+//def readmeCheck = tasks.register('readmeCheck', com.example.ReadmeVerificationTask) {
+//    // Expect the README in the project directory
+//    readme = layout.projectDirectory.file("README.md")
+//    // README must contain a Service API header
+//    readmePatterns = ['^## Service API$']
+//}
+//
+//tasks.named('check') { dependsOn(integrationTestTask, readmeCheck) }

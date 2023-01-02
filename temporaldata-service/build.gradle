@@ -1,6 +1,49 @@
+/*****************************************************************************
+ *         plugins                                                      *
+ *****************************************************************************/
+
 plugins {
-    id 'io.github.java-conventions'
+    id 'io.github.stewseo.java-conventions'
 }
+
+/*****************************************************************************
+ *         java                                                             *
+ *****************************************************************************/
+
+group = 'io.github.stewseo'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.register('temporaldata-service-print-test') {
+    doLast {
+        println 'temporaldata-service print test' + ', rootProject.path: ' + rootProject.path + ' project path: ' + project.path
+        println 'archiveFileName: ' + archiveFileName + ' archiveVersion: ' + archiveVersion
+    }
+}
+
+jar {
+
+    archiveFileName.set('temporaldata-service')
+    archiveVersion.set(version)
+
+    manifest {
+        attributes("Implementation-Title": archiveFileName,
+                "Implementation-Version": archiveVersion)
+    }
+
+    from {
+        configurations.compileClasspath.filter { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+/*****************************************************************************
+ *         :temporaldata-service dependencies                         *
+ *****************************************************************************/
 
 dependencies {
     api 'com.breinify:brein-api-library-java:2.2.0'
@@ -9,11 +52,16 @@ dependencies {
     api 'com.sun.jersey:jersey-client:1.19.4'
 }
 
-jar {
-    archiveFileName = 'temporaldata-service.jar'
-    from {
-        configurations.compileClasspath.filter { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+/*****************************************************************************
+ *         :testing                                                         *
+ *****************************************************************************/
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+test {
+    filter {
+        excludeTestsMatching "io.*.*.temporaldata-service.*"
+    }
 }
+
+/*****************************************************************************
+ *         publishing                                                       *
+ *****************************************************************************/

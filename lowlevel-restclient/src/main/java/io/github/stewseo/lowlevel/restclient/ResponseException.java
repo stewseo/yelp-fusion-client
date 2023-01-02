@@ -42,7 +42,7 @@ public final class ResponseException extends IOException {
     }
 
     /**
-     * Returns the {@link org.elasticsearch.client.Response} that caused this exception to be thrown.
+     * Returns the {@link io.github.stewseo.lowlevel.restclient.Response} that caused this exception to be thrown.
      */
     public Response getResponse() {
         return response;

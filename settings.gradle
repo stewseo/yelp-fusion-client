@@ -1,6 +1,6 @@
 rootProject.name = 'yelp-fusion-client'
 
-include 'lowlevel-restclient', 'java-client', 'temporaldata-service'
+include 'lowlevel-restclient', 'client-yelpfusion', 'temporaldata-service'
 
 includeBuild 'build-conventions'
 
