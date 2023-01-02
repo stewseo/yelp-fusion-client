@@ -14,62 +14,6 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class BusinessMatchRequest extends RequestBase implements JsonpSerializable {
-    public static final SimpleEndpoint<BusinessMatchRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/matches",
-
-            // Request method
-            request -> "GET",
-
-            request -> "v3/businesses/matches",
-
-            // Request path
-            request -> {
-                HashMap<String, String> params = new HashMap<>();
-                if (request.name() != null) {
-                    params.put("name", request.name());
-                }
-                if (request.address1() != null) {
-                    params.put("address1", request.address1());
-                }
-                if (request.address2() != null) {
-                    params.put("address2", request.address2());
-                }
-                if (request.address3() != null) {
-                    params.put("address3", request.address3());
-                }
-                if (request.city() != null) {
-                    params.put("city", request.city());
-                }
-                if (request.country() != null) {
-                    params.put("country", request.country());
-                }
-                if (request.state() != null) {
-                    params.put("state", request.state());
-                }
-
-                if (request.postal_code() != null) {
-                    params.put("postal_code", request.postal_code());
-                }
-                if (request.latitude() != null) {
-                    params.put("latitude", String.valueOf(request.latitude()));
-                }
-                if (request.longitude() != null) {
-                    params.put("longitude", String.valueOf(request.longitude()));
-                }
-
-                if (request.phone() != null) {
-                    params.put("phone", String.valueOf(request.phone()));
-                }
-                if (request.limit() != null) {
-                    params.put("limit", String.valueOf(request.limit()));
-                }
-
-                if (request.match_threshold() != null) {
-                    params.put("match_threshold", String.valueOf(request.match_threshold()));
-                }
-
-                return params;
-
-            }, SimpleEndpoint.emptyMap(), false, BusinessMatchResponse._DESERIALIZER);
 
     private final String name;
     private final String address1;
@@ -105,55 +49,55 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
         return fn.apply(new Builder()).build();
     }
 
-    public String name() {
+    public final String name() {
         return name;
     }
 
-    public String address1() {
+    public final String address1() {
         return address1;
     }
 
-    public String address2() {
+    public final String address2() {
         return address2;
     }
 
-    public String address3() {
+    public final String address3() {
         return address3;
     }
 
-    public String city() {
+    public final String city() {
         return city;
     }
 
-    public String state() {
+    public final String state() {
         return state;
     }
 
-    public String country() {
+    public final String country() {
         return country;
     }
 
-    public String postal_code() {
+    public final String postal_code() {
         return postal_code;
     }
 
-    public Double latitude() {
+    public final Double latitude() {
         return latitude;
     }
 
-    public Double longitude() {
+    public final Double longitude() {
         return longitude;
     }
 
-    public String phone() {
+    public final String phone() {
         return phone;
     }
 
-    public Integer limit() {
+    public final Integer limit() {
         return limit;
     }
 
-    public String match_threshold() {
+    public final String match_threshold() {
         return match_threshold;
     }
 
@@ -287,7 +231,7 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
         }
 
         public final Builder phone(String phone) {
-            this.postal_code = phone;
+            this.phone = phone;
             return this;
         }
 
@@ -317,6 +261,60 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
             return new BusinessMatchRequest(this);
         }
     }
+
+    public static final SimpleEndpoint<BusinessMatchRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/matches",
+
+            // Request method
+            request -> "GET",
+
+            request -> "v3/businesses/matches",
+
+            // Request path
+            request -> {
+                HashMap<String, String> params = new HashMap<>();
+                if (request.name() != null) {
+                    params.put("name", request.name());
+                }
+                if (request.address1() != null) {
+                    params.put("address1", request.address1());
+                }
+                if (request.address2() != null) {
+                    params.put("address2", request.address2());
+                }
+                if (request.address3() != null) {
+                    params.put("address3", request.address3());
+                }
+                if (request.city() != null) {
+                    params.put("city", request.city());
+                }
+                if (request.country() != null) {
+                    params.put("country", request.country());
+                }
+                if (request.state() != null) {
+                    params.put("state", request.state());
+                }
+
+                if (request.latitude() != null) {
+                    params.put("latitude", String.valueOf(request.latitude()));
+                }
+                if (request.longitude() != null) {
+                    params.put("longitude", String.valueOf(request.longitude()));
+                }
+
+                if (request.phone() != null) {
+                    params.put("phone", String.valueOf(request.phone()));
+                }
+                if (request.limit() != null) {
+                    params.put("limit", String.valueOf(request.limit()));
+                }
+
+                if (request.match_threshold() != null) {
+                    params.put("match_threshold", String.valueOf(request.match_threshold()));
+                }
+
+                return params;
+
+            }, SimpleEndpoint.emptyMap(), false, BusinessMatchResponse._DESERIALIZER);
 
 
 }

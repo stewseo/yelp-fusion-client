@@ -27,3 +27,35 @@
 //}
 //
 //tasks.named('check') { dependsOn(integrationTestTask, readmeCheck) }
+//
+//task printRootProjectName {
+//    doLast {
+//        println 'printRootProjectName: ' + project.findProperty("PROJECT_VERSION").name
+//    }
+//}
+//
+//javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+//
+//task printPathToCheckstyleConfigThrowsIfNotPresent {
+//    doLast {
+//        println 'findProperty("CHECKSTYLE_CONFIG"): ' + findProperty("CHECKSTYLE_CONFIG")
+//    }
+//}
+//
+//task printGroovyDynamicNamePathToCheckstyleConfig {
+//    doLast{
+//        println 'Groovy dynamic name: ' + CHECKSTYLE_CONFIG
+//    }
+//}
+//
+//task printPropertiesPathToCheckstyleConfig {
+//    doLast {
+//        println 'Map<String, ?> of project properties: ' + properties['CHECKSTYLE_CONFIG']
+//    }
+//}
+//
+//task printProjectPropertyPathToCheckstyleConfig {
+//    doLast {
+//        println 'Accessing the value of a project property: ' + findProperty('CHECKSTYLE_CONFIG')
+//    }
+//}

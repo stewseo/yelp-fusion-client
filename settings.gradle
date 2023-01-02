@@ -8,10 +8,6 @@ include 'lowlevel-restclient', 'client-yelpfusion', 'temporaldata-service'
 
 includeBuild 'build-conventions'
 
-//List projects = [
-//        'lowlevel-restclient', 'java-client', 'temporaldata-service'
-//]
-
 dependencyResolutionManagement {
     versionCatalogs {
         buildLibs {
@@ -26,6 +22,11 @@ gradleEnterprise {
         termsOfServiceAgree = "yes"
     }
 }
+
+
+//List projects = [
+//        'lowlevel-restclient', 'java-client', 'temporaldata-service'
+//]
 
 /**
  * Iterates over sub directories, looking for build.gradle, and adds a project if found

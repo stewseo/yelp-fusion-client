@@ -1,8 +1,9 @@
 package io.github.stewseo.lowlevel.restclient;
 
-import com.carrotsearch.randomizedtesting.generators.RandomInts;
+import com.carrotsearch.randomizedtesting.generators.RandomNumbers;
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import com.carrotsearch.randomizedtesting.generators.RandomStrings;
+
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
@@ -17,8 +18,8 @@ final class RestClientUtils {
     private static final List<Integer> ALL_STATUS_CODES;
     private static final List<Integer> OK_STATUS_CODES = Arrays.asList(200, 201);
     private static final List<Integer> ALL_ERROR_STATUS_CODES;
-    private static List<Integer> ERROR_NO_RETRY_STATUS_CODES = Arrays.asList(400, 401, 403, 404, 405, 500);
-    private static List<Integer> ERROR_RETRY_STATUS_CODES = Arrays.asList(502, 503, 504);
+    private static final List<Integer> ERROR_NO_RETRY_STATUS_CODES = Arrays.asList(400, 401, 403, 404, 405, 500);
+    private static final List<Integer> ERROR_RETRY_STATUS_CODES = Arrays.asList(502, 503, 504);
 
     static {
         ALL_ERROR_STATUS_CODES = new ArrayList<>(ERROR_RETRY_STATUS_CODES);
@@ -73,7 +74,7 @@ final class RestClientUtils {
      * we test also support for multiple headers with same key and different values.
      */
     static Header[] randomHeaders(Random random, final String baseName) {
-        int numHeaders = RandomInts.randomIntBetween(random, 0, 5);
+        int numHeaders = RandomNumbers.randomIntBetween(random, 0, 5);
         final Header[] headers = new Header[numHeaders];
         for (int i = 0; i < numHeaders; i++) {
             String headerName = baseName;

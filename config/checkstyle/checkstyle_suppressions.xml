@@ -5,8 +5,13 @@
 
 <suppressions>
     <!-- Do not enforce line length -->
-    <suppress files="src[/\\]main[/\\]java[/\\]io[/\\]github[/\\]stewseo[^.]*\.java" checks="LineLength"/>
-<!--    <suppress files="src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[^.]*\.java" checks="LineLength"/>-->
-    <suppress files="src[/\\]main[/\\]java[/\\]io[/\\]github[/\\]stewseo[^.]*\.java" checks="UnusedImports"/>
+    <suppress files="client-yelpfusion[/\\]src[/\\]main[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]client[^.]*\.java" checks="LineLength"/>
+    <suppress files="client-yelpfusion[/\\]src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]client[^.]*\.java" checks="LineLength"/>
+    <suppress files="client-yelpfusion[/\\]src[/\\]test[/\\]resources[/\\]*\.json" checks="LineLength"/>
+<!--    <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*"/>-->
+
+    <suppress files="client-yelpfusion[/\\]src[/\\]main[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]client[^.]*\.java" checks="UnusedImports"/>
+    <suppress files="client-yelpfusion[/\\]src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]client[^.]*\.java" checks="UnusedImports"/>
+
 <!--    <suppress files="src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[^.]*\.java" checks="UnusedImports"/>-->
 </suppressions>

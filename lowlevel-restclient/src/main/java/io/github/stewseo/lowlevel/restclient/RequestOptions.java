@@ -22,7 +22,6 @@ package io.github.stewseo.lowlevel.restclient;
 import org.apache.http.Header;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static  io.github.stewseo.lowlevel.restclient.HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory;
+import static io.github.stewseo.lowlevel.restclient.HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory;
 
 public final class RequestOptions {
     /**

@@ -14,9 +14,6 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class BusinessMatchResponse implements JsonpSerializable {
-
-    public static final JsonpDeserializer<BusinessMatchResponse> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new, BusinessMatchResponse::setupAutoCompleteDeserializer);
     private final BusinessMatch businesses;
 
     private BusinessMatchResponse(Builder builder) {
@@ -25,12 +22,6 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
     public static BusinessMatchResponse of(Function<Builder, ObjectBuilder<BusinessMatchResponse>> fn) {
         return fn.apply(new Builder()).build();
-    }
-
-    protected static void setupAutoCompleteDeserializer(ObjectDeserializer<Builder> op) {
-
-        op.add(Builder::businesses, BusinessMatch._DESERIALIZER, "businesses");
-
     }
 
     public final BusinessMatch businesses() {
@@ -72,5 +63,14 @@ public class BusinessMatchResponse implements JsonpSerializable {
             _checkSingleUse();
             return new BusinessMatchResponse(this);
         }
+    }
+
+    public static final JsonpDeserializer<BusinessMatchResponse> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new, BusinessMatchResponse::setupBusinessResponseDeserializer);
+
+    protected static void setupBusinessResponseDeserializer(ObjectDeserializer<Builder> op) {
+
+        op.add(Builder::businesses, BusinessMatch._DESERIALIZER, "businesses");
+
     }
 }

@@ -51,7 +51,7 @@ dependencies {
     api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
     api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
 
-    implementation "com.carrotsearch.randomizedtesting:randomizedtesting-runner:${slf4jVersion}"
+    implementation "com.carrotsearch.randomizedtesting:randomizedtesting-runner:${randomizedRunnerVersion}"
     implementation "junit:junit:${jUnit4Version}"
     implementation "org.hamcrest:hamcrest:${hamcrestVersion}"
 

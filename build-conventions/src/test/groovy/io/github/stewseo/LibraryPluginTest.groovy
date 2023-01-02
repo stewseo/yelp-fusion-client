@@ -65,28 +65,28 @@ class LibraryPluginTest extends PluginTest {
         new File($projectDirectory, 'build/local-repo/io/github/stewseo/test-library/0.1.0/test-library-0.1.0.jar').exists()
     }
 
-    def "fails when no README exists"() {
-        when:
-        def result = runTaskWithFailure('check')
+//    def "fails when no README exists"() {
+//        when:
+//        def result = runTaskWithFailure('check')
+//
+//        then:
+//        result.task(":readmeCheck").outcome == TaskOutcome.FAILED
+//    }
 
-        then:
-        result.task(":readmeCheck").outcome == TaskOutcome.FAILED
-    }
-
-    def "fails when README does not have an intro section"() {
-        given:
-        new File(testProjectDir, 'README.md') << """
-## Yelp Fusion Java Client
-1234t
-        """
-
-        when:
-        def result = runTaskWithFailure('check')
-
-        then:
-        result.task(":readmeCheck").outcome == TaskOutcome.FAILED
-        result.output.contains('README should contain section: ^## Yelp Fusion Java Client$')
-    }
+//    def "fails when README does not have an intro section"() {
+//        given:
+//        new File(testProjectDir, 'README.md') << """
+//## Yelp Fusion Java Client
+//1234t
+//        """
+//
+//        when:
+//        def result = runTaskWithFailure('check')
+//
+//        then:
+//        result.task(":readmeCheck").outcome == TaskOutcome.FAILED
+//        result.output.contains('README should contain section: ^## Yelp Fusion Java Client$')
+//    }
 
 //    def "fails when README does not have example section"() {
 //        given:

@@ -4,16 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
 
-    <!--Full exclusion filter file to match all classes generated from Groovy source files-->
-<!--    <Match>-->
-<!--        <Source name="~.*\.groovy" />-->
-<!--    </Match>-->
-
-    <!--Full exclusion filter file to match all classes generated from Java source files-->
-<!--    <Match>-->
-<!--        <Source name="~.*\.java" />-->
-<!--    </Match>-->
-
     <!-- match bug categories MALICIOUS_CODE, MT_CORRECTNESS in all restclient packages -->
     <Match>
         <Package name="~.*\.restclient" />
@@ -33,6 +23,17 @@
 <!--    <Match>-->
 <!--        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE,-->
 <!--        MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"-->
+
+    <!--Full exclusion filter file to match all classes generated from Groovy source files-->
+    <!--    <Match>-->
+    <!--        <Source name="~.*\.groovy" />-->
+    <!--    </Match>-->
+
+    <!--Full exclusion filter file to match all classes generated from Java source files-->
+    <!--    <Match>-->
+    <!--        <Source name="~.*\.java" />-->
+    <!--    </Match>-->
+    
 <!--        />-->
 <!--    </Match>-->
 </FindBugsFilter>

@@ -24,12 +24,17 @@ import java.util.function.Supplier;
 
 import static io.github.stewseo.lowlevel.restclient.EsRestClient.NodeTuple;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 public class EsRestClientTest extends RestClientTestCase {
 
     private static List<Node> randomNodes() {
