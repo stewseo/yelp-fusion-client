@@ -24,11 +24,10 @@ import java.util.function.Supplier;
 
 import static io.github.stewseo.lowlevel.restclient.EsRestClient.NodeTuple;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -107,7 +106,7 @@ public class EsRestClientTest extends RestClientTestCase {
     public void testPerformAsyncWithUnsupportedMethod() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         try (EsRestClient EsRestClient = createEsRestClient()) {
-            EsRestClient.performRequestAsync(new Request("unsupported", randomAsciiOfLength(5)), new ResponseListener() {
+            EsRestClient.performRequestAsync(new Request("unsupported", randomAsciiAlphanumOfLength(5)), new ResponseListener() {
                 @Override
                 public void onSuccess(Response response) {
                     throw new UnsupportedOperationException("onSuccess cannot be called when using a mocked http client");
@@ -116,7 +115,7 @@ public class EsRestClientTest extends RestClientTestCase {
                 @Override
                 public void onFailure(Exception exception) {
                     try {
-                        assertThat(exception, instanceOf(UnsupportedOperationException.class));
+                        assertThat(exception).isInstanceOf(UnsupportedOperationException.class);
                         assertEquals("http method not supported: unsupported", exception.getMessage());
                     } finally {
                         latch.countDown();
@@ -139,7 +138,7 @@ public class EsRestClientTest extends RestClientTestCase {
                 @Override
                 public void onFailure(Exception exception) {
                     try {
-                        assertThat(exception, instanceOf(IllegalArgumentException.class));
+                        assertThat(exception).isInstanceOf(IllegalArgumentException.class);
                         assertEquals("Expected scheme name at index 0: ::http:///", exception.getMessage());
                     } finally {
                         latch.countDown();
@@ -188,26 +187,29 @@ public class EsRestClientTest extends RestClientTestCase {
     }
 
     public void testSetNodesWrongArguments() throws IOException {
-        try (EsRestClient EsRestClient = createEsRestClient()) {
-            EsRestClient.setNodes(null);
+        try (EsRestClient esRestClient = createEsRestClient()) {
+            esRestClient.setNodes(null);
             fail("setNodes should have failed");
         } catch (IllegalArgumentException e) {
             assertEquals("nodes must not be null or empty", e.getMessage());
         }
-        try (EsRestClient EsRestClient = createEsRestClient()) {
-            EsRestClient.setNodes(Collections.emptyList());
+        try (EsRestClient esRestClient = createEsRestClient()) {
+            esRestClient.setNodes(Collections.emptyList());
             fail("setNodes should have failed");
         } catch (IllegalArgumentException e) {
             assertEquals("nodes must not be null or empty", e.getMessage());
         }
-        try (EsRestClient EsRestClient = createEsRestClient()) {
-            EsRestClient.setNodes(Collections.singletonList((Node) null));
+
+        try (EsRestClient esRestClient = createEsRestClient()) {
+
+            esRestClient.setNodes(Collections.singletonList((Node) null));
             fail("setNodes should have failed");
         } catch (NullPointerException e) {
             assertEquals("node cannot be null", e.getMessage());
         }
-        try (EsRestClient EsRestClient = createEsRestClient()) {
-            EsRestClient.setNodes(Arrays.asList(new Node(new HttpHost("localhost", 9200)), null, new Node(new HttpHost("localhost", 9201))));
+        try (EsRestClient esRestClient = createEsRestClient()) {
+
+            esRestClient.setNodes(Arrays.asList(new Node(new HttpHost("localhost", 9200)), null, new Node(new HttpHost("localhost", 9201))));
             fail("setNodes should have failed");
         } catch (NullPointerException e) {
             assertEquals("node cannot be null", e.getMessage());

@@ -3,69 +3,51 @@
  *****************************************************************************/
 
 plugins {
-    id 'io.github.stewseo.java-conventions'
+    id 'java-conventions'
 }
 
-group = 'io.github.stewseo'
 
 /*****************************************************************************
  *         java                                                             *
  *****************************************************************************/
+
 
 java {
     withJavadocJar()
     withSourcesJar()
 }
 
-jar {
-    archiveFileName.set('lowlevel-restclient')
-    archiveVersion.set(version)
-
-    manifest {
-        attributes("Implementation-Title": archiveFileName,
-                "Implementation-Version": archiveVersion)
-    }
-
-    from {
-        configurations.compileClasspath.filter { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
 /*****************************************************************************
  *         :lowlevel-restclient dependencies                         *
  *****************************************************************************/
 
-ext {
-    mockitoCoreVersion = '4.4.0'
-    byteBuddyVersion = '1.12.9'
-    objenesis = '3.2'
-}
-
 dependencies {
 
-    // apache http components
-    api "org.apache.httpcomponents:httpclient:${httpclientVersion}"
-    api "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
-    api "org.apache.httpcomponents:httpasyncclient:${httpasyncclientVersion}"
-    api "org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}"
+    api buildLibs.commons.codec
+    api 'commons-io:commons-io:2.11.0'
 
-    implementation "com.carrotsearch.randomizedtesting:randomizedtesting-runner:${randomizedRunnerVersion}"
-    implementation "junit:junit:${jUnit4Version}"
-    implementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+    api buildLibs.httpclient
+    api buildLibs.httpcore
+    api buildLibs.httpasyncclient
+
+    // logging
+    api buildLibs.logback.classic
+    api buildLibs.slf4j.api
+    api buildLibs.slf4j.jclover
+
+    testImplementation buildLibs.junit.vintage
+
+    implementation buildLibs.junit4
+    implementation buildLibs.hamcrest
 
     // mockito
-    implementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-    implementation "net.bytebuddy:byte-buddy:${byteBuddyVersion}"
-    implementation "org.objenesis:objenesis:${objenesis}"
+    implementation buildLibs.mockito.core
+
+    implementation buildLibs.bytebuddy
+    implementation buildLibs.objenesis
+    implementation buildLibs.randomizedtesting.runner
 }
 
-tasks.register('lowlevel-restclient-print-test') {
-    doLast {
-        println 'lowlevel-restclient print test' + ', rootProject.path: ' + rootProject.path + ' project path: ' + project.path
-    }
-}
 
 /*****************************************************************************
  *         testing                                                         *
@@ -73,7 +55,7 @@ tasks.register('lowlevel-restclient-print-test') {
 
 test {
 //    filter {
-//        excludeTestsMatching "io.*.*.lowlevel.restclient.*"
+//        excludeTestsMatching "io.*.*.lowlevel.restclient.CustomStringSubscriberTest"
 //    }
 }
 

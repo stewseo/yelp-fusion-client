@@ -1,8 +1,8 @@
 package io.github.stewseo.lowlevel.restclient;
 
+import io.github.stewseo.lowlevel.restclient.HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory;
 import org.apache.http.Header;
 import org.apache.http.client.config.RequestConfig;
-import io.github.stewseo.lowlevel.restclient.HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,9 +16,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class RequestOptionsTests extends RestClientTestCase {
 
@@ -180,12 +177,9 @@ public class RequestOptionsTests extends RestClientTestCase {
                     return mutant.build();
                 }
                 case 2 -> {
-                    mutant.setWarningsHandler(new WarningsHandler() {
-                        @Override
-                        public boolean warningsShouldFailRequest(List<String> warnings) {
-                            fail("never called");
-                            return false;
-                        }
+                    mutant.setWarningsHandler(warnings -> {
+                        fail("never called");
+                        return false;
                     });
                     return mutant.build();
                 }

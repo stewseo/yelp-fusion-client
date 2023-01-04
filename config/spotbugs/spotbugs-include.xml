@@ -4,36 +4,25 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
 
-    <!-- match bug categories MALICIOUS_CODE, MT_CORRECTNESS in all restclient packages -->
-    <Match>
-        <Package name="~.*\.restclient" />
-        <Bug category="MALICIOUS_CODE, MT_CORRECTNESS"/>
-    </Match>
-
-    <!-- match MALICIOUS_CODE and MT_CORRECTNESS warnings in business package hierarchy -->
-    <Match>
-        <Package name="~io\.github\.stewseo\.client\.yelpfusion\.business.*" />
-        <Bug category="BAD_PRACTICE, MALICIOUS_CODE, MT_CORRECTNESS"/>
-    </Match>
-
 <!--    <Match>-->
-<!--        <Bug code="EI2, EI, DLS, UuF, Nm, Np, UrF, MS, RC, UPM" />-->
+<!--        <Confidence value= "1" />-->
 <!--    </Match>-->
 
 <!--    <Match>-->
-<!--        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE,-->
-<!--        MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"-->
+<!--        <Rank value= "1" />-->
+<!--    </Match>-->
 
-    <!--Full exclusion filter file to match all classes generated from Groovy source files-->
-    <!--    <Match>-->
-    <!--        <Source name="~.*\.groovy" />-->
-    <!--    </Match>-->
+    <Match>
+        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE, MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"/>
+    </Match>
 
-    <!--Full exclusion filter file to match all classes generated from Java source files-->
-    <!--    <Match>-->
-    <!--        <Source name="~.*\.java" />-->
-    <!--    </Match>-->
-    
-<!--        />-->
+<!--    <Match>-->
+<!--        <Class name="io.github.stewseo.clients.yelpfusion.YelpFusionTestCase" />-->
+<!--        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE, MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"/>-->
+<!--    </Match>-->
+
+<!--    <Match>-->
+<!--        <Class name="~.*\.YelpFusionTestCase$" />-->
+<!--        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE, MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"/>-->
 <!--    </Match>-->
 </FindBugsFilter>

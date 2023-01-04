@@ -3,43 +3,18 @@
  *****************************************************************************/
 
 plugins {
-    id 'io.github.stewseo.java-conventions'
+    id 'java-conventions'
 }
 
 /*****************************************************************************
  *         java                                                             *
  *****************************************************************************/
 
-group = 'io.github.stewseo'
-
 java {
     withJavadocJar()
     withSourcesJar()
 }
 
-tasks.register('temporaldata-service-print-test') {
-    doLast {
-        println 'temporaldata-service print test' + ', rootProject.path: ' + rootProject.path + ' project path: ' + project.path
-        println 'archiveFileName: ' + archiveFileName + ' archiveVersion: ' + archiveVersion
-    }
-}
-
-jar {
-
-    archiveFileName.set('temporaldata-service')
-    archiveVersion.set(version)
-
-    manifest {
-        attributes("Implementation-Title": archiveFileName,
-                "Implementation-Version": archiveVersion)
-    }
-
-    from {
-        configurations.compileClasspath.filter { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
 
 /*****************************************************************************
  *         :temporaldata-service dependencies                         *
@@ -53,14 +28,14 @@ dependencies {
 }
 
 /*****************************************************************************
- *         :testing                                                         *
+ *         testing                                                         *
  *****************************************************************************/
 
-test {
-    filter {
-        excludeTestsMatching "io.*.*.temporaldata-service.*"
-    }
-}
+//test {
+//    filter {
+//        excludeTestsMatching "io.*.*.temporaldata-service.*"
+//    }
+//}
 
 /*****************************************************************************
  *         publishing                                                       *

@@ -4,38 +4,19 @@ plugins {
 //    id 'maven-publish'
 }
 
-group = GROUP
-version = PROJECT_VERSION
+group = 'io.github.stewseo'
 
 repositories {
     gradlePluginPortal() // so that external plugins can be resolved in dependencies section
 }
 
-ext {
-    slf4jVersion = '2.0.4'
-    logbackVersion = '1.4.1'
-}
-
 dependencies {
-    implementation "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730"
+    implementation buildLibs.sonar.source
     implementation "com.github.dawnwords:jacoco-badge-gradle-plugin:0.2.4"
     implementation "com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.13"
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     testImplementation 'org.spockframework:spock-core'
 }
-
-//publishing {
-//    repositories {
-//        maven {
-//            // change to point to your repo, e.g. http://stewseo.github.io/repo
-//            url = layout.buildDirectory.dir("repo")
-//        }
-//    }
-//}
-//
-//tasks.named('publish') {
-//    dependsOn('check')
-//}
 
 tasks.named('test') {
     useJUnitPlatform()

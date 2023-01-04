@@ -1,0 +1,124 @@
+/*****************************************************************************
+ *         plugins                                                      *
+ *****************************************************************************/
+
+plugins {
+    id 'library-conventions'
+    id 'com.avast.gradle.docker-compose' version '0.14.3'
+}
+
+/*****************************************************************************
+ *         java                                                             *
+ *****************************************************************************/
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+}
+
+/*****************************************************************************
+ *         :java-client dependencies                         *
+ *****************************************************************************/
+
+dependencies {
+
+    api project(":lowlevel-restclient")
+    api project(":temporaldata-service")
+
+    implementation buildLibs.elasticsearch.java
+
+    api buildLibs.jakarta.json.processing
+    api buildLibs.jakarta.json.bind
+    api buildLibs.jackson.core
+    api buildLibs.jackson.databind
+    api buildLibs.eclipse.parsson
+
+    api 'gg.jte:jte:2.2.3'
+
+    // testing
+    testImplementation("org.eclipse:yasson:2.0.4") {
+        // Exclude Glassfish as we use Parsson (basically Glassfish renamed in the Jakarta namespace).
+        exclude(group: "org.glassfish", module: "jakarta.json")
+    }
+
+    testImplementation("io.github.classgraph:classgraph:4.8.147")
+}
+
+/*****************************************************************************
+ *         :testing                                                         *
+ *****************************************************************************/
+
+test {
+//    filter {
+//        excludeTestsMatching "io.github.stewseo.clients.yelpfusion.business.*"
+//    }
+}
+
+/*****************************************************************************
+ *         publishing                                                       *
+ *****************************************************************************/
+
+publishing {
+    repositories {
+        maven {
+            name = "ossrh"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = findProperty('ossrhUsername')
+                password = findProperty('ossrhPassword')
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom.withXml {
+                Node pomNode = asNode()
+                pomNode.dependencies.'*'.findAll() {
+                    it.artifactId.text() == 'elasticsearch-java'
+                }.each() {
+                    it.parent().remove(it)
+                }
+            }
+
+            pom {
+                name = 'YelpFusionJavaClient'
+                artifactId = 'yelp-fusion-client'
+                setGroupId "io.github.stewseo"
+                packaging = 'jar'
+                description = 'java client that provides strongly typed requests and responses for all Yelp Fusion APIS. Handles http transport concerns, serializing to JSON and deserializing from JSON.'
+                url = 'https://github.com/stewseo/yelp-fusion-client'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/stewseo/yelp-fusion-client.git'
+                    developerConnection = 'scm:git:ssh://github.com/stewseo/stewseo.github.io.git'
+                    url = 'https://github.com/stewseo/yelp-fusion-client.git'
+                }
+                developers {
+                    developer {
+                        id = 'stewseo'
+                        name = 'Stew seo'
+                        email = 'stewart.s.seo@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+

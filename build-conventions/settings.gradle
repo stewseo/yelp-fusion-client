@@ -1,10 +1,6 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven {
-            // replace the path with the actual path to the repository
-            url = uri('~/.m2/repository/convention-plugins/build/repo')
-        }
     }
 }
 
