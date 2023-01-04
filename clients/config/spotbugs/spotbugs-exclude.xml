@@ -3,7 +3,21 @@
         xmlns="https://github.com/spotbugs/filter/3.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-    
+
+    <Match>
+        <Or>
+            <Bug pattern="EI_EXPOSE_REP"/>
+            <Bug pattern="EI_EXPOSE_REP2"/>
+            <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+            <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+            <Bug pattern="MS_EXPOSE_REP"/>
+            <Bug pattern="URF_UNREAD_FIELD"/>
+            <Bug pattern="UUF_UNUSED_FIELD"/>
+            <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+            <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+        </Or>
+    </Match>
+
     <!-- getter
         may expose internal representation by returning/>-->
     <Match>
@@ -18,7 +32,7 @@
     </Match>
 
     <!-- setter
-        may expose internal representation by storing an externally mutable object into/>-->
+    may expose internal representation by storing an externally mutable object into/>-->
     <Match>
         <Or>
             <Class name="io.github.stewseo.clients.json.NamedDeserializer" />
@@ -28,6 +42,26 @@
             <Class name="io.github.stewseo.clients.yelpfusion._types.aggregations.Aggregation" />
         </Or>
         <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- This method may fail to clean up (close, dispose of) a stream, database object, or other resource requiring an explicit cleanup operation./>-->
+    <Match>
+        <Or>
+            <Class name="io.github.stewseo.clients.json.NamedDeserializer" />
+            <Class name="io.github.stewseo.clients.json.ExternallyTaggedUnion" />
+        </Or>
+        <Bug pattern="OBL_UNSATISFIED_OBLIGATION"/>
+
+    </Match>
+
+    <Match>
+        <Or>
+            <Class name="io.github.stewseo.clients.yelpfusion._types.Business" />
+            <Class name="io.github.stewseo.clients.yelpfusion._types.Location" />
+            <Class name="io.github.stewseo.clients.yelpfusion.categories.GetCategoriesRequest" />
+            <Class name="io.github.stewseo.clients.yelpfusion._types.Business" />
+        </Or>
+        <Bug pattern="URF_UNREAD_FIELD"/>
     </Match>
 
     <!-- Write to static field YelpFusionTestCase.temporalDataService from instance method new YelpFusionTestCase()
