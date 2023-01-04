@@ -34,12 +34,8 @@ public class JsonpSerializeTest extends YelpFusionTestCase {
 
         logger.info("testing {} instances of Business", size);
 
-        JsonpDeserializer<Business> businessJsonpDeserializer = Business._DESERIALIZER;
-
-        List<String> list = List.of("San Francisco", "Oakland", "Carmel", "Napa", "Los Angeles", "San Diego");
-
-        int max = list.size();
         String state = "CA";
+
         String country = "USA";
 
         final Stream<TestBusiness> businesses = generateBusinessInstances(size);

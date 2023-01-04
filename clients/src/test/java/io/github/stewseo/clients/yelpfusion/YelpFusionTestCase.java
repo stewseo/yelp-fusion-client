@@ -35,13 +35,16 @@ public abstract class YelpFusionTestCase {
         yelpFusionServiceCtx = new YelpFusionServiceCtx();
         jsonTestCase = new YelpFusionJsonTestCase();
         temporalDataService = new TemporalDataService();
-    }
-
-    @BeforeAll
-    static void beforeAll() {
         list = loadCaliforniaCities().toList();
         numCities = list.size();
     }
+
+//    @BeforeAll
+//    static void beforeAll() {
+//        list = loadCaliforniaCities().toList();
+//        numCities = list.size();
+//        temporalDataService = new TemporalDataService();
+//    }
 
     private static Stream<BreinTemporalDataResult> loadCaliforniaCities() {
 

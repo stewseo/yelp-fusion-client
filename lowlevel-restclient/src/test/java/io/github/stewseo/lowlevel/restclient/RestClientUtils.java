@@ -3,7 +3,6 @@ package io.github.stewseo.lowlevel.restclient;
 import com.carrotsearch.randomizedtesting.generators.RandomNumbers;
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import com.carrotsearch.randomizedtesting.generators.RandomStrings;
-
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
@@ -82,7 +81,7 @@ final class RestClientUtils {
             if (random.nextBoolean()) {
                 headerName = headerName + i;
             }
-            headers[i] = new BasicHeader(headerName, RandomStrings.randomAsciiOfLengthBetween(random, 3, 10));
+            headers[i] = new BasicHeader(headerName, RandomStrings.randomAsciiAlphanumOfLengthBetween(random, 3, 10));
         }
         return headers;
     }
