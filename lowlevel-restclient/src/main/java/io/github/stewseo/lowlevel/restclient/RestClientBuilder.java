@@ -6,75 +6,30 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.util.VersionInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
-import java.util.Properties;
 
 public final class RestClientBuilder {
 
-    Logger logger = LoggerFactory.getLogger(RestClientBuilder.class);
     public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 1000;
     public static final int DEFAULT_SOCKET_TIMEOUT_MILLIS = 30000;
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
     public static final int DEFAULT_MAX_CONN_TOTAL = 30;
-
-    public static final String VERSION;
-
     private static final Header[] EMPTY_HEADERS = new Header[0];
 
+    public static boolean userAgentEnable = true;
     private final HttpHost host;
     private Header[] defaultHeaders = EMPTY_HEADERS;
     private HttpClientConfigCallback httpClientConfigCallback;
     private RequestConfigCallback requestConfigCallback;
     private String pathPrefix;
     private boolean strictDeprecationMode = false;
+
     private boolean compressionEnabled = false;
+
     private boolean metaHeaderEnabled = true;
-
-    public static boolean userAgentEnable = true;
-
-
-    static {
-
-        // Never fail on unknown version, even if an environment messed up their classpath enough that we can't find it.
-        // Better have incomplete telemetry than crashing user applications.
-        String version = null;
-        try (InputStream is = RestClient.class.getResourceAsStream("version.properties")) {
-            if (is != null) {
-                Properties versions = new Properties();
-                versions.load(is);
-                version = versions.getProperty("elasticsearch-client");
-            }
-        } catch (IOException e) {
-            // Keep version unknown
-        }
-
-        if (version == null) {
-            version = ""; // unknown values are reported as empty strings in X-Elastic-Client-Meta
-        }
-
-        VERSION = version;
-
-        VersionInfo httpClientVersion = null;
-        try {
-
-            httpClientVersion = VersionInfo.loadVersionInfo(
-                    "org.apache.http.nio.client",
-                    HttpAsyncClientBuilder.class.getClassLoader()
-            );
-
-        } catch (Exception e) {
-            // Keep unknown
-        }
-
-    }
 
     RestClientBuilder(String apiKey) {
         if (apiKey == null) {
@@ -87,11 +42,35 @@ public final class RestClientBuilder {
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + apiKey)};
         setDefaultHeaders(defaultHeaders);
     }
+
     RestClientBuilder(HttpHost host) {
         if (host == null) {
             throw new IllegalArgumentException("host must not be null");
         }
         this.host = host;
+    }
+
+    public static String cleanPathPrefix(String pathPrefix) {
+        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
+
+        if (pathPrefix.isEmpty()) {
+            throw new IllegalArgumentException("pathPrefix must not be empty");
+        }
+
+        String cleanPathPrefix = pathPrefix;
+        if (!cleanPathPrefix.startsWith("/")) {
+            cleanPathPrefix = "/" + cleanPathPrefix;
+        }
+
+        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
+        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
+            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
+
+            if (cleanPathPrefix.endsWith("/")) {
+                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
+            }
+        }
+        return cleanPathPrefix;
     }
 
     public RestClientBuilder setDefaultHeaders(Header[] defaultHeaders) {
@@ -119,30 +98,6 @@ public final class RestClientBuilder {
         this.pathPrefix = cleanPathPrefix(pathPrefix);
         return this;
     }
-
-    public static String cleanPathPrefix(String pathPrefix) {
-        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
-
-        if (pathPrefix.isEmpty()) {
-            throw new IllegalArgumentException("pathPrefix must not be empty");
-        }
-
-        String cleanPathPrefix = pathPrefix;
-        if (!cleanPathPrefix.startsWith("/")) {
-            cleanPathPrefix = "/" + cleanPathPrefix;
-        }
-
-        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
-        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
-            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
-
-            if (cleanPathPrefix.endsWith("/")) {
-                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
-            }
-        }
-        return cleanPathPrefix;
-    }
-
 
     public RestClientBuilder setStrictDeprecationMode(boolean strictDeprecationMode) {
         this.strictDeprecationMode = strictDeprecationMode;
@@ -210,10 +165,12 @@ public final class RestClientBuilder {
         }
     }
 
+    @FunctionalInterface
     public interface RequestConfigCallback {
         RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder);
     }
 
+    @FunctionalInterface
     public interface HttpClientConfigCallback {
         HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder);
     }

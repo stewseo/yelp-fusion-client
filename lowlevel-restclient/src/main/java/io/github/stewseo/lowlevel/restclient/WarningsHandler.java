@@ -4,8 +4,6 @@ import java.util.List;
 
 public interface WarningsHandler {
 
-    boolean warningsShouldFailRequest(List<String> warnings);
-
     WarningsHandler PERMISSIVE = new WarningsHandler() {
         @Override
         public boolean warningsShouldFailRequest(List<String> warnings) {
@@ -28,5 +26,7 @@ public interface WarningsHandler {
             return "strict";
         }
     };
+
+    boolean warningsShouldFailRequest(List<String> warnings);
 }
 

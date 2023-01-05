@@ -5,6 +5,8 @@
 build
 build/build
 */build/
+out/
+*/out/
 
 gradle/
 gradlew*
@@ -20,11 +22,23 @@ gradlew*
 *-cs-cleanup.xml
 *-cs-formatter.xml
 .checkstyle
+
+# intellij files
+build-idea/
 .idea/
+
 *.iml
 *.ipr
 *.iws
 *.gpg
 *.pub
 
-images/*
+# include shared intellij config
+#!.idea/eclipseCodeFormatter.xml
+#!.idea/externalDependencies.xml
+#!.idea/inspectionProfiles/Project_Default.xml
+#!.idea/runConfigurations/Debug_Elasticsearch.xml
+#!.idea/scopes/x_pack.xml
+
+# These files are generated in the main tree by IntelliJ
+benchmarks/src/main/generated/*

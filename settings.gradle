@@ -1,8 +1,31 @@
+plugins {
+    id("com.gradle.enterprise") version("3.7.2")
+}
+
 rootProject.name = 'yelp-fusion-client'
-include 'lowlevel-restclient'
-include 'temporaldata'
+
+include 'lowlevel-restclient', 'clients', 'temporaldata-service'
+
+includeBuild 'build-conventions'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        buildLibs {
+            from(files("gradle/build.versions.toml"))
+        }
+    }
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
+
+
 //List projects = [
-//        'lowlevel-restclient'
+//        'lowlevel-restclient', 'java-client', 'temporaldata-service'
 //]
 
 /**
@@ -11,6 +34,7 @@ include 'temporaldata'
  * of the dir hierarchy to have a build.gradle. Otherwise we would have to iterate
  * all files/directories in the source tree to find all projects.
  */
+
 //void addSubProjects(String path, File dir) {
 //    if (!dir.isDirectory()) return;
 //    if (dir.name == 'buildSrc') return;
@@ -20,37 +44,17 @@ include 'temporaldata'
 //    final String projectName = "${path}:${dir.name}"
 //
 //    include projectName
-//    if (path.isEmpty() || path.startsWith(':example-plugins')) {
-//        project(projectName).projectDir = dir
-//    }
 //    for (File subdir : dir.listFiles()) {
 //        addSubProjects(projectName, subdir)
 //    }
 //}
 
-//addSubProjects('', new File(rootProject.projectDir, 'libs'))
-//addSubProjects('', new File(rootProject.projectDir, 'plugins'))
-//addSubProjects('test', new File(rootProject.projectDir, 'test/external-modules'))
-
 //include projects.toArray(new String[0])
 
-//project(":example").children.each { libsProject ->
-//    libsProject.name = "name-${libsProject.name}"
-//    libsProject.children.each { lp ->
-//        lp.name = lp.name  // for :libs:elasticsearch-x-content:impl
-//    }
-//}
-//
-//project(":test:external-modules").children.each { testProject ->
-//    testProject.name = "test-${testProject.name}"
-//}
-
-// look for extra plugins
 //File extraProjects = new File(rootProject.projectDir.parentFile, "${rootProject.projectDir.name}-extra")
 //if (extraProjects.exists()) {
 //    for (File extraProjectDir : extraProjects.listFiles()) {
 //        addSubProjects('', extraProjectDir)
 //    }
 //}
-
 

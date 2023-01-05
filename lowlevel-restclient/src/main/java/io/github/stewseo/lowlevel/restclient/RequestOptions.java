@@ -23,8 +23,14 @@ import org.apache.http.Header;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.message.BasicHeader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+import static io.github.stewseo.lowlevel.restclient.HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory;
 
 public final class RequestOptions {
     /**
@@ -33,7 +39,7 @@ public final class RequestOptions {
     public static final RequestOptions DEFAULT = new Builder(
             Collections.emptyList(),
             Collections.emptyMap(),
-            HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory.DEFAULT,
+            HeapBufferedResponseConsumerFactory.DEFAULT,
             null,
             null
     ).build();
@@ -49,13 +55,12 @@ public final class RequestOptions {
     private final RequestConfig requestConfig;
 
     private RequestOptions(Builder builder) {
-        this.headers = List.copyOf(builder.headers);
+        this.headers = Collections.unmodifiableList(builder.headers);
         this.parameters = Collections.unmodifiableMap(builder.parameters);
         this.httpAsyncResponseConsumerFactory = builder.httpAsyncResponseConsumerFactory;
         this.warningsHandler = builder.warningsHandler;
         this.requestConfig = builder.requestConfig;
     }
-
 
     /**
      * Create a builder that contains these options but can be modified.
@@ -63,7 +68,6 @@ public final class RequestOptions {
     public Builder toBuilder() {
         return new Builder(headers, parameters, httpAsyncResponseConsumerFactory, warningsHandler, requestConfig);
     }
-
 
     /**
      * Headers to attach to the request.
@@ -97,6 +101,7 @@ public final class RequestOptions {
     /**
      * get RequestConfig, which can set socketTimeout, connectTimeout
      * and so on by request
+     *
      * @return RequestConfig
      */
     public RequestConfig getRequestConfig() {
@@ -213,7 +218,9 @@ public final class RequestOptions {
             return this.headers;
         }
 
-
+        /**
+         * Add the provided parameter to the request.
+         */
         public Builder addParameter(String key, String value) {
             Objects.requireNonNull(key, "parameter key cannot be null");
             Objects.requireNonNull(value, "parameter value cannot be null");
@@ -239,6 +246,7 @@ public final class RequestOptions {
         /**
          * set RequestConfig, which can set socketTimeout, connectTimeout
          * and so on by request
+         *
          * @param requestConfig http client RequestConfig
          * @return Builder
          */

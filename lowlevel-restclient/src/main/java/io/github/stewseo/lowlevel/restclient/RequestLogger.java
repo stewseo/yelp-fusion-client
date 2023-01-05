@@ -3,7 +3,12 @@ package io.github.stewseo.lowlevel.restclient;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.RequestLine;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -30,7 +35,7 @@ public class RequestLogger {
      */
     static void logFailedRequest(Log logger, HttpUriRequest request, Node node, Exception e) {
 
-        if(tracer.isTraceEnabled()) {
+        if (tracer.isTraceEnabled()) {
             String traceReq;
 
             try {
@@ -43,15 +48,14 @@ public class RequestLogger {
                 tracer.trace(PrintUtils.tracer("Direct children of the process: " + process.children()));
 
 
-                try(BufferedReader errorReader = process.errorReader())
-                {
-                    if(errorReader.ready()) {
+                try (BufferedReader errorReader = process.errorReader()) {
+                    if (errorReader.ready()) {
                         tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
                     }
                 }
 
                 InputStream inputStream = process.getInputStream();
-                if(inputStream.available() != 0) {
+                if (inputStream.available() != 0) {
                     String response = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                     tracer.trace(PrintUtils.tracer("cURL response: " + response));
                 }
@@ -64,7 +68,7 @@ public class RequestLogger {
             }
         }
 
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug(PrintUtils.debug("request [" + request.getMethod() + " " + node.getHost() + getUri(request.getRequestLine()) + "] failed"), e);
 
             String traceReq;
@@ -75,12 +79,13 @@ public class RequestLogger {
 
     static void logFailedRequest(Logger logger, HttpUriRequest request, Node node, Exception e) {
 
-        if(tracer.isTraceEnabled()) {
+        if (tracer.isTraceEnabled()) {
             tracer.trace(PrintUtils.tracer("Logging Failed Request: " + request.getRequestLine()));
         }
 
-        if(logger.isDebugEnabled()) {
-            logger.debug(PrintUtils.debug("request [" + request.getMethod() + " " + node.getHost() + getUri(request.getRequestLine()) + "] failed"), e.getCause());
+        if (logger.isDebugEnabled()) {
+            logger.debug(PrintUtils.debug("request [" + request.getMethod() + " " + node.getHost()
+                    + getUri(request.getRequestLine()) + "] failed"), e.getCause());
 
             String traceReq;
 
@@ -94,15 +99,14 @@ public class RequestLogger {
                 tracer.trace(PrintUtils.tracer("Direct children of the process: " + process.children()));
 
 
-                try(BufferedReader errorReader = process.errorReader())
-                {
-                    if(errorReader.ready()) {
+                try (BufferedReader errorReader = process.errorReader()) {
+                    if (errorReader.ready()) {
                         tracer.trace(PrintUtils.tracer("errorReader: " + errorReader.readLine()));
                     }
                 }
 
                 InputStream inputStream = process.getInputStream();
-                if(inputStream.available() != 0) {
+                if (inputStream.available() != 0) {
                     String response = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                     tracer.trace(PrintUtils.tracer("cURL response: " + response));
                 }
@@ -157,6 +161,7 @@ public class RequestLogger {
             tracer.trace(requestLine + '\n' + responseLine);
         }
     }
+
     static void logResponse(Logger logger, HttpUriRequest request, HttpHost host, HttpResponse httpResponse) {
         if (logger.isDebugEnabled()) {
             logger.debug(
@@ -196,6 +201,7 @@ public class RequestLogger {
             tracer.trace(requestLine + '\n' + responseLine);
         }
     }
+
     static String buildWarningMessage(HttpUriRequest request, HttpHost host, Header[] warnings) {
         StringBuilder message = new StringBuilder("request [").append(request.getMethod())
                 .append(" ")

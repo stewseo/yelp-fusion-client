@@ -4,9 +4,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
 
-
 import java.io.IOException;
-
 import java.util.Locale;
 
 public final class ResponseException extends IOException {
@@ -44,7 +42,7 @@ public final class ResponseException extends IOException {
     }
 
     /**
-     * Returns the {@link org.elasticsearch.client.Response} that caused this exception to be thrown.
+     * Returns the {@link io.github.stewseo.lowlevel.restclient.Response} that caused this exception to be thrown.
      */
     public Response getResponse() {
         return response;
