@@ -23,6 +23,7 @@ public class FieldValue implements TaggedUnion<FieldValue.Kind, Object>, JsonpSe
     public static final FieldValue NULL = new FieldValue(Kind.Null, null);
     public static final FieldValue TRUE = new FieldValue(Kind.Boolean, Boolean.TRUE);
     public static final FieldValue FALSE = new FieldValue(Kind.Boolean, Boolean.FALSE);
+
     public static final JsonpDeserializer<FieldValue> _DESERIALIZER = JsonpDeserializer
             .lazy(() -> JsonpDeserializer.of(EnumSet.of(JsonParser.Event.VALUE_STRING, JsonParser.Event.VALUE_NUMBER,
                     JsonParser.Event.VALUE_NULL, JsonParser.Event.VALUE_TRUE, JsonParser.Event.VALUE_FALSE,
@@ -207,24 +208,13 @@ public class FieldValue implements TaggedUnion<FieldValue.Kind, Object>, JsonpSe
     @Override
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         switch (_kind) {
-            case Double:
-                generator.write(((Double) this._value));
-                break;
-            case Long:
-                generator.write(((Long) this._value));
-                break;
-            case Boolean:
-                generator.write(((Boolean) this._value));
-                break;
-            case String:
-                generator.write(((String) this._value));
-                break;
-            case Null:
-                generator.writeNull();
-                break;
-            case Any:
-                ((JsonData) this._value).serialize(generator, mapper);
-                break;
+            case Double -> generator.write(((Double) this._value));
+            case Long -> generator.write(((Long) this._value));
+            case Boolean -> generator.write(((Boolean) this._value));
+            case String -> generator.write(((String) this._value));
+            case Null -> generator.writeNull();
+            case Any -> ((JsonData) this._value).serialize(generator, mapper);
+            default -> System.out.println("should not get here");
         }
     }
 

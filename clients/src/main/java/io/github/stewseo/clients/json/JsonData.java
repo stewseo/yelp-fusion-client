@@ -58,27 +58,24 @@ public interface JsonData extends JsonpSerializable {
      * Creates a raw JSON value from a reader.
      */
     static JsonData from(Reader json) {
-        try {
+
         JsonProvider provider = JsonpUtils.provider();
-        JsonParser parser = provider.createParser(json);
+        try (JsonParser parser = provider.createParser(json)) {
             parser.next();
             return new JsonDataImpl(parser.getValue(), null);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
+
     }
 
     /**
      * Creates a raw JSON value from an input stream.
      */
     static JsonData from(InputStream json) {
-        try {
-            JsonProvider provider = JsonpUtils.provider();
-            JsonParser parser = provider.createParser(json);
+
+        JsonProvider provider = JsonpUtils.provider();
+        try (JsonParser parser = provider.createParser(json)) {
             parser.next();
             return new JsonDataImpl(parser.getValue(), null);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 

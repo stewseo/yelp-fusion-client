@@ -16,9 +16,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class Term implements JsonpSerializable {
 
-    public static final JsonpDeserializer<Term> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new,
-                    Term::setupTermDeserializer);
     private final String text;
 
     private Term(Builder builder) {
@@ -72,4 +69,8 @@ public class Term implements JsonpSerializable {
             return new Term(this);
         }
     }
+
+    public static final JsonpDeserializer<Term> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new,
+                    Term::setupTermDeserializer);
 }

@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion;
 
-import io.github.stewseo.clients.yelpfusion.business.YelpFusionBusinessClient;
+import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessClient;
 import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesClient;
 import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;

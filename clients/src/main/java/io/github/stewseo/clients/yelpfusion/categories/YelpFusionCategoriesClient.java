@@ -6,6 +6,10 @@ import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasRequest;
+import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasResponse;
+import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesRequest;
+import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesResponse;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -24,32 +28,32 @@ public class YelpFusionCategoriesClient extends ApiClient<YelpFusionTransport, Y
         return new YelpFusionCategoriesClient(this.transport, transportOptions);
     }
 
-    public GetCategoriesResponse all(GetCategoriesRequest request) throws Exception {
+    public CategoriesResponse all(CategoriesRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<GetCategoriesRequest, GetCategoriesResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<GetCategoriesRequest, GetCategoriesResponse, ErrorResponse>) GetCategoriesRequest._ENDPOINT;
+        JsonEndpoint<CategoriesRequest, CategoriesResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<CategoriesRequest, CategoriesResponse, ErrorResponse>) CategoriesRequest._ENDPOINT;
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final GetCategoriesResponse all(
-            Function<GetCategoriesRequest.Builder, ObjectBuilder<GetCategoriesRequest>> fn)
+    public final CategoriesResponse all(
+            Function<CategoriesRequest.Builder, ObjectBuilder<CategoriesRequest>> fn)
             throws Exception {
-        return all(fn.apply(new GetCategoriesRequest.Builder()).build());
+        return all(fn.apply(new CategoriesRequest.Builder()).build());
     }
 
-    public GetCategoriesAliasResponse alias(GetCategoriesAliasRequest request) throws Exception {
+    public CategoriesAliasResponse alias(CategoriesAliasRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<GetCategoriesAliasRequest, GetCategoriesAliasResponse, ErrorResponse> endpoint =
+        JsonEndpoint<CategoriesAliasRequest, CategoriesAliasResponse, ErrorResponse> endpoint =
 
-                (JsonEndpoint<GetCategoriesAliasRequest, GetCategoriesAliasResponse, ErrorResponse>) GetCategoriesAliasRequest._ENDPOINT;
+                (JsonEndpoint<CategoriesAliasRequest, CategoriesAliasResponse, ErrorResponse>) CategoriesAliasRequest._ENDPOINT;
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final GetCategoriesAliasResponse alias(
-            Function<GetCategoriesAliasRequest.Builder, ObjectBuilder<GetCategoriesAliasRequest>> fn)
+    public final CategoriesAliasResponse alias(
+            Function<CategoriesAliasRequest.Builder, ObjectBuilder<CategoriesAliasRequest>> fn)
             throws Exception {
 
-        return alias(fn.apply(new GetCategoriesAliasRequest.Builder()).build());
+        return alias(fn.apply(new CategoriesAliasRequest.Builder()).build());
     }
 
 }

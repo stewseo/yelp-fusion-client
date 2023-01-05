@@ -16,7 +16,7 @@ class ElasticsearchServiceCtx {
 
     public static ElasticsearchAsyncClient createElasticsearchAsyncClient() {
 
-        String host = "1ff0acb6626441789a7e846726159410.us-east-2.aws.elastic-cloud.com";
+        String host = "my-deployment-2896ab.es.us-west-1.aws.found.io";
         int port = 443;
         String scheme = "https";
         String apiKey = System.getenv("API_KEY_ID");

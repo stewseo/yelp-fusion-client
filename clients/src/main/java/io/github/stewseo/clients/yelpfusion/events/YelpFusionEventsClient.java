@@ -6,6 +6,10 @@ import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventRequest;
+import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventResponse;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -25,18 +29,18 @@ public class YelpFusionEventsClient extends ApiClient<YelpFusionTransport, YelpF
         return new YelpFusionEventsClient(this.transport, transportOptions);
     }
 
-    public EventSearchResponse search(EventSearchRequest request) throws Exception {
+    public SearchEventsResponse search(SearchEventsRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<EventSearchRequest, EventSearchResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<EventSearchRequest, EventSearchResponse, ErrorResponse>) EventSearchRequest._ENDPOINT;
+        JsonEndpoint<SearchEventsRequest, SearchEventsResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchEventsRequest, SearchEventsResponse, ErrorResponse>) SearchEventsRequest._ENDPOINT;
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
-    public final EventSearchResponse search(
-            Function<EventSearchRequest.Builder, ObjectBuilder<EventSearchRequest>> fn)
+    public final SearchEventsResponse search(
+            Function<SearchEventsRequest.Builder, ObjectBuilder<SearchEventsRequest>> fn)
             throws Exception {
 
-        return search(fn.apply(new EventSearchRequest.Builder()).build());
+        return search(fn.apply(new SearchEventsRequest.Builder()).build());
     }
 
     public FeaturedEventResponse featured(FeaturedEventRequest request) throws Exception {

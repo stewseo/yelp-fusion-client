@@ -6,6 +6,7 @@ import io.github.stewseo.clients.json.JsonpDeserializable;
 
 @JsonpDeserializable
 public enum GeoOrientation implements JsonEnum {
+
     Right("right", "RIGHT", "counterclockwise", "ccw"),
 
     Left("left", "LEFT", "clockwise", "cw"),

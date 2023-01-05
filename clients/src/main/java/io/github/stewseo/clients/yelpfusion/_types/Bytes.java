@@ -5,6 +5,7 @@ import io.github.stewseo.clients.json.JsonpDeserializable;
 
 @JsonpDeserializable
 public enum Bytes implements JsonEnum {
+
     Bytes("b"),
 
     KiloBytes("kb"),

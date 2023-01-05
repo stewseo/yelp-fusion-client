@@ -20,10 +20,8 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class Category implements JsonpSerializable {
 
-    public static final JsonpDeserializer<Category> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new,
-                    Category::setupCategoriesDeserializer);
     private final String title;
+
     private final String alias;
 
     private final List<String> parent_aliases;
@@ -44,18 +42,6 @@ public class Category implements JsonpSerializable {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setupCategoriesDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
-        op.add(Builder::title, JsonpDeserializer.stringDeserializer(), "title");
-        op.add(Builder::parent_aliases, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
-                "parent_aliases");
-        op.add(Builder::country_whitelist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
-                "country_whitelist");
-        op.add(Builder::country_blacklist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
-                "country_blacklist");
-
-    }
-
     public final String alias() {
         return alias;
     }
@@ -63,6 +49,7 @@ public class Category implements JsonpSerializable {
     public final String title() {
         return title;
     }
+
 
     @Nullable
     public final List<String> parent_aliases() {
@@ -170,8 +157,8 @@ public class Category implements JsonpSerializable {
             return this;
         }
 
-        public final Builder title(String title) {
-            this.title = title;
+        public final Builder title(String value) {
+            this.title = value;
             return this;
         }
 
@@ -215,6 +202,21 @@ public class Category implements JsonpSerializable {
 
             return new Category(this);
         }
+    }
+
+    public static final JsonpDeserializer<Category> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new,
+                    Category::setupCategoriesDeserializer);
+
+    protected static void setupCategoriesDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::alias, JsonpDeserializer.stringDeserializer(), "alias");
+        op.add(Builder::title, JsonpDeserializer.stringDeserializer(), "title");
+        op.add(Builder::parent_aliases, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
+                "parent_aliases");
+        op.add(Builder::country_whitelist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
+                "country_whitelist");
+        op.add(Builder::country_blacklist, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()),
+                "country_blacklist");
     }
 
 }

@@ -7,9 +7,7 @@ import java.util.List;
 
 public abstract class ElasticsearchTestCase {
 
-    public static final String TIMESTAMP_PIPELINE = "timestamp-pipeline";
-
-    public static final String INDEX_NYC = "yelp-businesses-restaurants-nyc";
+    public static final String INDEX_NYC = "yelp-fusion-businesses-restaurants-sf";
 
     public final ElasticsearchService elasticsearchService;
 
@@ -21,15 +19,7 @@ public abstract class ElasticsearchTestCase {
     public String index;
 
     public ElasticsearchTestCase() {
-        this(null);
-    }
-
-    public ElasticsearchTestCase(String index) {
-        if (index == null) {
-            index = INDEX_NYC;
-        } else {
-            this.index = index;
-        }
+        index = INDEX_NYC;
         ElasticsearchAsyncClient asyncClient = ElasticsearchServiceCtx.createElasticsearchAsyncClient();
         elasticsearchService = new ElasticsearchService(asyncClient);
     }

@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json.jackson;
 
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import java.util.concurrent.Flow;
 public class JsonpDeserializerTest extends YelpFusionTestCase {
     private static final Logger logger = LoggerFactory.getLogger(JsonpDeserializerTest.class);
     private static final String reqLine = "http://api.yelp.com/v3/businesses/search?" +
-            "location=sf&limit=50&term=restaurants&latitude=38.2142&longitude=-122.1429&all=";
+            "location=sf&limit=50&term=restaurants&latitude=38.2142&longitude=-122.1429";
     static int nbThreads = Thread.getAllStackTraces().keySet().size();
     static int nbNew = 0;
     static int nbRunning = 0;

@@ -53,9 +53,11 @@ dependencies {
  *****************************************************************************/
 
 test {
+    useJUnitPlatform()
 //    filter {
 //        excludeTestsMatching "io.github.stewseo.clients.yelpfusion.business.*"
 //    }
+
 }
 
 /*****************************************************************************

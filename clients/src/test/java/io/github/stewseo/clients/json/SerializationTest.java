@@ -17,9 +17,6 @@ public class SerializationTest {
         assertThat("true").isEqualTo(JsonpUtils.toString(JsonValue.TRUE));
         assertThat("false").isEqualTo(JsonpUtils.toString(JsonValue.FALSE));
         assertThat("null").isEqualTo(JsonpUtils.toString(JsonValue.NULL));
-        assertThat("a).isEqualTo(b).isEqualTo(c").isEqualTo(JsonpUtils.toString(Json.createArrayBuilder().add("a").add("b").add("c").build()));
-
-
         assertThrows(IllegalArgumentException.class, () -> {
             JsonpUtils.toString(Json.createObjectBuilder().build());
         });

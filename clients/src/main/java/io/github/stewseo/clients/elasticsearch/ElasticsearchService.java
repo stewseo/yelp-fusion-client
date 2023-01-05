@@ -15,8 +15,8 @@ import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.clients.yelpfusion._types.Business;
 import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 
 import java.util.List;
 import java.util.Objects;
@@ -107,9 +107,9 @@ public class ElasticsearchService {
      * @param type Integer size number of docs to return
      * @return Returns documents that match the provided Category.MappingProperties type value. The provided text is analyzed before matching.
      */
-    public SearchResponse<Business> occurences(Category.MappingProperties type, String searchText,
-                                               int size,
-                                               String rangeQueryField, long timestamp) {
+    public SearchResponse<BusinessDetails> occurences(Category.MappingProperties type, String searchText,
+                                                      int size,
+                                                      String rangeQueryField, long timestamp) {
 
         Query byCategory = MatchQuery.of(m -> m
                 .field(type.jsonValue())
@@ -130,7 +130,7 @@ public class ElasticsearchService {
                                     )
                             )
                             .size(size),
-                    Business.class // Using Void will ignore any document in the response.
+                    BusinessDetails.class // Using Void will ignore any document in the response.
             ).get();
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);

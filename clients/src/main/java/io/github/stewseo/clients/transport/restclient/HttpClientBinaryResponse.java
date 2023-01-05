@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 class HttpClientBinaryResponse implements BinaryResponse {
+
     private final HttpEntity entity;
+
     private boolean consumed = false;
 
     HttpClientBinaryResponse(HttpEntity entity) {

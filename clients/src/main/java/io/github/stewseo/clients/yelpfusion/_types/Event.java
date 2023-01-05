@@ -62,31 +62,6 @@ public class Event implements JsonpSerializable {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setUpEventDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::category, JsonpDeserializer.stringDeserializer(), "category");
-        op.add(Builder::description, JsonpDeserializer.stringDeserializer(), "description");
-        op.add(Builder::event_site_url, JsonpDeserializer.stringDeserializer(), "event_site_url");
-        op.add(Builder::id, JsonpDeserializer.stringDeserializer(), "id");
-        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
-        op.add(Builder::tickets_url, JsonpDeserializer.stringDeserializer(), "tickets_url");
-        op.add(Builder::time_end, JsonpDeserializer.stringDeserializer(), "time_end");
-        op.add(Builder::time_start, JsonpDeserializer.stringDeserializer(), "time_start");
-
-        op.add(Builder::is_canceled, JsonpDeserializer.booleanDeserializer(), "is_canceled");
-        op.add(Builder::is_free, JsonpDeserializer.booleanDeserializer(), "is_free");
-        op.add(Builder::is_official, JsonpDeserializer.booleanDeserializer(), "is_official");
-
-        op.add(Builder::attending_count, JsonpDeserializer.integerDeserializer(), "attending_count");
-        op.add(Builder::interested_count, JsonpDeserializer.integerDeserializer(), "interested_count");
-
-        op.add(Builder::cost, JsonpDeserializer.doubleDeserializer(), "cost");
-        op.add(Builder::cost_max, JsonpDeserializer.doubleDeserializer(), "cost_max");
-        op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
-        op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
-
-        op.add(Builder::location, Location._DESERIALIZER, "location");
-    }
-
     public final String category() {
         return category;
     }
@@ -372,16 +347,43 @@ public class Event implements JsonpSerializable {
         }
 
         @Override
-        protected Builder self() {
+        protected final Builder self() {
             return this;
         }
 
-        public Event build() {
+        public final Event build() {
             _checkSingleUse();
             return new Event(this);
         }
     }
 
+
     public static final JsonpDeserializer<Event> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             Event::setUpEventDeserializer);
+
+    protected static void setUpEventDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::category, JsonpDeserializer.stringDeserializer(), "category");
+        op.add(Builder::description, JsonpDeserializer.stringDeserializer(), "description");
+        op.add(Builder::event_site_url, JsonpDeserializer.stringDeserializer(), "event_site_url");
+        op.add(Builder::id, JsonpDeserializer.stringDeserializer(), "id");
+        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
+        op.add(Builder::tickets_url, JsonpDeserializer.stringDeserializer(), "tickets_url");
+        op.add(Builder::time_end, JsonpDeserializer.stringDeserializer(), "time_end");
+        op.add(Builder::time_start, JsonpDeserializer.stringDeserializer(), "time_start");
+
+        op.add(Builder::is_canceled, JsonpDeserializer.booleanDeserializer(), "is_canceled");
+        op.add(Builder::is_free, JsonpDeserializer.booleanDeserializer(), "is_free");
+        op.add(Builder::is_official, JsonpDeserializer.booleanDeserializer(), "is_official");
+
+        op.add(Builder::attending_count, JsonpDeserializer.integerDeserializer(), "attending_count");
+        op.add(Builder::interested_count, JsonpDeserializer.integerDeserializer(), "interested_count");
+
+        op.add(Builder::cost, JsonpDeserializer.doubleDeserializer(), "cost");
+        op.add(Builder::cost_max, JsonpDeserializer.doubleDeserializer(), "cost_max");
+        op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
+        op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
+
+        op.add(Builder::location, Location._DESERIALIZER, "location");
+    }
+
 }

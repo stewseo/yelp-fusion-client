@@ -6,6 +6,10 @@ import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventRequest;
+import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventResponse;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -39,16 +43,16 @@ public class YelpFusionEventsAsyncClient extends ApiClient<YelpFusionTransport, 
         return featuredEvent(fn.apply(new FeaturedEventRequest.Builder()).build());
     }
 
-    public CompletableFuture<EventSearchResponse> search(EventSearchRequest request) throws Exception {
+    public CompletableFuture<SearchEventsResponse> search(SearchEventsRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<EventSearchRequest, EventSearchResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<EventSearchRequest, EventSearchResponse, ErrorResponse>) EventSearchRequest._ENDPOINT;
+        JsonEndpoint<SearchEventsRequest, SearchEventsResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchEventsRequest, SearchEventsResponse, ErrorResponse>) SearchEventsRequest._ENDPOINT;
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final CompletableFuture<EventSearchResponse> search(
-            Function<EventSearchRequest.Builder, ObjectBuilder<EventSearchRequest>> fn)
+    public final CompletableFuture<SearchEventsResponse> search(
+            Function<SearchEventsRequest.Builder, ObjectBuilder<SearchEventsRequest>> fn)
             throws Exception {
-        return search(fn.apply(new EventSearchRequest.Builder()).build());
+        return search(fn.apply(new SearchEventsRequest.Builder()).build());
     }
 }

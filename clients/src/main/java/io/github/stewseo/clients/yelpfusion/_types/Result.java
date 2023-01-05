@@ -6,6 +6,7 @@ import io.github.stewseo.clients.json.JsonpDeserializable;
 
 @JsonpDeserializable
 public enum Result implements JsonEnum {
+
     Created("created"),
 
     Updated("updated"),

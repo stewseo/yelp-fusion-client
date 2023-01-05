@@ -1,8 +1,8 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import co.elastic.clients.json.JsonEnum;
-import co.elastic.clients.json.JsonpDeserializable;
-import co.elastic.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.JsonEnum;
+import io.github.stewseo.clients.json.JsonpDeserializable;
+import io.github.stewseo.clients.json.JsonpMapper;
 import jakarta.json.stream.JsonGenerator;
 
 @JsonpDeserializable
@@ -14,8 +14,6 @@ public enum Refresh implements JsonEnum {
     WaitFor("wait_for"),
     ;
 
-    public static final Deserializer<Refresh> _DESERIALIZER = new Deserializer.AllowingBooleans<>(
-            Refresh.values());
     private final String jsonValue;
 
     Refresh(String jsonValue) {
@@ -28,6 +26,7 @@ public enum Refresh implements JsonEnum {
 
     @Override
     public void serialize(JsonGenerator generator, JsonpMapper params) {
+
         if (this == Refresh.True) {
             generator.write(true);
         } else if (this == Refresh.False) {
@@ -36,4 +35,7 @@ public enum Refresh implements JsonEnum {
             generator.write(jsonValue());
         }
     }
+
+    public static final Deserializer<Refresh> _DESERIALIZER = new Deserializer.AllowingBooleans<>(
+            Refresh.values());
 }

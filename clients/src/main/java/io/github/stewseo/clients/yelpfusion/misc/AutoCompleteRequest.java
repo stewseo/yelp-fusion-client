@@ -18,7 +18,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class AutoCompleteRequest extends RequestBase implements JsonpSerializable {
 
-
     private final String text;
     private final Double latitude;
     private final Double longitude;

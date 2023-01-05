@@ -120,7 +120,6 @@ public class User implements JsonpSerializable {
             _checkSingleUse();
             return new User(this);
         }
-
     }
 
 }

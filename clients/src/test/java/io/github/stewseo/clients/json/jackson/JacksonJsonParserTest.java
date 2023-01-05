@@ -8,7 +8,6 @@ import java.io.StringReader;
 
 public class JacksonJsonParserTest extends Assertions {
 
-
     private static final String json = "{ 'foo': 'fooValue', 'bar': { 'baz': 1}, 'quux': [true] }".replace('\'', '"');
 
     @Test
