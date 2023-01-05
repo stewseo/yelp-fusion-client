@@ -3,8 +3,8 @@ package io.github.stewseo.clients.transport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.github.stewseo.clients.yelpfusion.business.details.BusinessDetailsResponse;
-import io.github.stewseo.clients.yelpfusion.business.search.SearchBusinessResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import org.apache.http.Header;

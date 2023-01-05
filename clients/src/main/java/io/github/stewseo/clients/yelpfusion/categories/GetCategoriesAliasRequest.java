@@ -26,6 +26,7 @@ public class GetCategoriesAliasRequest extends RequestBase implements JsonpSeria
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
+
         generator.writeStartObject();
         if (this.alias != null) {
             generator.writeKey("alias");

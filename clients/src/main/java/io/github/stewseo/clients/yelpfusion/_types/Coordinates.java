@@ -62,11 +62,10 @@ public class Coordinates implements JsonpSerializable {
     }
 
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Coordinates> {
-        private Double latitude;
-        private Double longitude;
 
-        public Builder() {
-        }
+        private Double latitude;
+
+        private Double longitude;
 
         public final Builder latitude(Double value) {
             this.latitude = value;
@@ -77,6 +76,7 @@ public class Coordinates implements JsonpSerializable {
             this.longitude = value;
             return this;
         }
+
 
         @Override
         protected Builder self() {

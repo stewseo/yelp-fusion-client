@@ -16,7 +16,6 @@ import java.util.List;
 
 @JsonpDeserializable
 public class Hours implements JsonpSerializable {
-
     private final List<Open> open;
     private final String hours_type;
     private final Boolean is_open_now;

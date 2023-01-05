@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.events;
 
-import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;

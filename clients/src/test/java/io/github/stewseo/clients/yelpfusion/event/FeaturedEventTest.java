@@ -3,7 +3,7 @@ package io.github.stewseo.clients.yelpfusion.event;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
-import io.github.stewseo.clients.yelpfusion._types.Event;
+import io.github.stewseo.clients.yelpfusion.events.Event;
 import io.github.stewseo.clients.yelpfusion.events.FeaturedEventResponse;
 import org.junit.jupiter.api.Test;
 

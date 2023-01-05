@@ -1,9 +1,10 @@
 package io.github.stewseo.clients.yelpfusion.business.search;
 
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.clients.yelpfusion._types.SearchBusiness;
-import io.github.stewseo.clients.yelpfusion._types.SearchBusinessRegion;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusiness;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRegion;
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

@@ -11,6 +11,7 @@ import jakarta.json.stream.JsonGenerator;
 
 
 public abstract class AcknowledgedResponseBase implements AcknowledgedResponse, JsonpSerializable {
+
     private final boolean acknowledged;
 
     // ---------------------------------------------------------------------------------------------

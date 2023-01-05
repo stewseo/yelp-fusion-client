@@ -1,9 +1,7 @@
 package io.github.stewseo.clients.util;
 
+import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import io.github.stewseo.clients.yelpfusion._types.SortOrder;
-import io.github.stewseo.clients.yelpfusion._types.aggregations.Aggregation;
-import io.github.stewseo.clients.yelpfusion._types.aggregations.HistogramAggregation;
-import io.github.stewseo.clients.yelpfusion._types.aggregations.TermsAggregation;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import org.junit.jupiter.api.Test;
@@ -16,78 +14,20 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class NamedValueTest extends YelpFusionTestCase {
 
-
     @Test
-    public void testTermAggregation() {
+    public void namedValueTest() {
 
         String json = "{\"order\":[{\"a\":\"asc\"},{\"b\":\"desc\"}]}";
 
-        TermsAggregation ta = TermsAggregation.of(b -> b
-                .order(NamedValue.of("a", SortOrder.Asc))
-                .order(NamedValue.of("b", SortOrder.Desc)
-                )
-        );
+        NamedValue<SortOrder> namedValueAsc = NamedValue.of("a", SortOrder.Asc);
 
-        System.out.println(ta);
+        NamedValue<SortOrder> namedValueDesc = NamedValue.of("b", SortOrder.Desc);
 
-        ta = jsonTestCase.checkJsonRoundtrip(ta, json);
+        assertThat(namedValueAsc.name()).isEqualTo("a");
+        assertThat(namedValueAsc.value()).isEqualTo(SortOrder.Asc);
 
-        List<NamedValue<SortOrder>> sortedNameValues = ta.order();
-        assertThat(sortedNameValues.size()).isEqualTo(2);
-
-        NamedValue<SortOrder> namedValueA = sortedNameValues.get(0);
-        NamedValue<SortOrder> namedValueB = sortedNameValues.get(1);
-
-        assertThat(namedValueA.name()).isEqualTo("a");
-        assertThat(namedValueA.value()).isEqualTo(SortOrder.Asc);
-
-        assertThat(namedValueB.name()).isEqualTo("b");
-        assertThat(namedValueB.value()).isEqualTo(SortOrder.Desc);
+        assertThat(namedValueDesc.name()).isEqualTo("b");
+        assertThat(namedValueDesc.value()).isEqualTo(SortOrder.Desc);
     }
 
-    @Test
-    public void histogramAggregationTest() {
-
-        HistogramAggregation histogramAggregation = HistogramAggregation.of(h -> h // <3>
-                .field("price")
-                .interval(50.0)
-        );
-
-        String field = histogramAggregation.field();
-        Double interval = histogramAggregation.interval();
-
-        assertThat(field).isEqualTo("price");
-        assertThat(interval).isEqualTo(50.0);
-
-//        List<HistogramBucket> buckets = response.aggregations()
-//                .get("histogram")
-//                .histogram()
-//                .buckets().array();
-
-//        for (HistogramBucket bucket: buckets) {
-//        }
-
-    }
-
-    @Test
-    public void customAggregationTest() {
-
-        Map<String, Object> params = new HashMap<>(); // <1>
-        params.put("interval", 10);
-        params.put("scale", "log");
-        params.put("origin", List.of(145.0, 12.5, 1649.0));
-
-        Aggregation customAggregation = Aggregation.of(a -> a
-                ._custom("sphere-distance", params));
-
-        boolean isCustom = customAggregation._isCustom();
-        assertThat(isCustom).isTrue();
-
-        JsonData jsonData = customAggregation._custom();
-        assertThat(jsonData.toString()).isEqualTo("{origin=[145.0, 12.5, 1649.0], scale=log, interval=10}");
-
-        String customKind = customAggregation._customKind();
-        assertThat(customKind).isEqualTo("sphere-distance");
-
-    }
 }

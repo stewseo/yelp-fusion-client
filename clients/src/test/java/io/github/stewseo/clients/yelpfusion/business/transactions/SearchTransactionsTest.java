@@ -3,8 +3,9 @@ package io.github.stewseo.clients.yelpfusion.business.transactions;
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
-import io.github.stewseo.clients.yelpfusion._types.SearchBusiness;
-import org.assertj.core.api.Assertions;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusiness;
+import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionResponse;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,9 +1,10 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
 
-
 public class BusinessBuilders {
+
     private BusinessBuilders() {
+
     }
 
     /**

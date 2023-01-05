@@ -2,7 +2,9 @@ package io.github.stewseo.clients.yelpfusion.business.match;
 
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
-import io.github.stewseo.clients.yelpfusion._types.BusinessMatch;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

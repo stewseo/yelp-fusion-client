@@ -40,6 +40,12 @@ public class GetAllCategoriesTest extends YelpFusionTestCase {
     public void testGetAllCategories(List<Category> categories) {
 
         assertThat(categories.size()).isEqualTo(1295);
+        Category category = categories.get(0);
+        assertThat(category.title()).isNotNull();
+        assertThat(category.alias()).isNotNull();
+        assertThat(category.parent_aliases()).isNotNull();
+        assertThat(category.country_blacklist()).isNotNull();
+        assertThat(category.country_whitelist()).isNotNull();
     }
 
 
