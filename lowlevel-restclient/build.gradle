@@ -11,14 +11,12 @@ plugins {
  *         java                                                             *
  *****************************************************************************/
 
-
-java {
-    withJavadocJar()
-    withSourcesJar()
+javadoc {
+    source = sourceSets.main.allJava
 }
 
 /*****************************************************************************
- *         :lowlevel-restclient dependencies                         *
+ *         :lowlevel-restclient dependencies                            *
  *****************************************************************************/
 
 dependencies {
@@ -52,13 +50,6 @@ dependencies {
 /*****************************************************************************
  *         testing                                                         *
  *****************************************************************************/
-
-test {
-//    filter {
-//        excludeTestsMatching "io.*.*.lowlevel.restclient.CustomStringSubscriberTest"
-//    }
-    useJUnitPlatform()
-}
 
 /*****************************************************************************
  *         publishing                                                       *

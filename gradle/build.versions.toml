@@ -1,0 +1,58 @@
+[versions]
+jackson = "2.13.2"
+junit5 = "5.9.0"
+spock = "2.1-groovy-3.0"
+jakartaJsonP = "2.0.1"
+jakartaJsonB = "2.0.0"
+slf4j = "2.0.4"
+commonsio = "2.11.0"
+
+[libraries]
+
+commmons-io =  { group = "commons-io", name = "commons-io", version.ref = "commonsio" }
+commons-codec = "commons-codec:commons-codec:1.11"
+forbiddenApis = "de.thetaphi:forbiddenapis:3.4"
+httpcore = "org.apache.httpcomponents:httpcore:4.4.12"
+httpcore-nio = "org.apache.httpcomponents:httpcore-nio:4.4.12"
+httpclient = "org.apache.httpcomponents:httpclient:4.5.10"
+httpasyncclient = "org.apache.httpcomponents:httpasyncclient:4.1.5"
+ggjte = "gg.jte:jte:2.2.3"
+jackson-core = { group = "com.fasterxml.jackson.core", name = "jackson-core", version.ref = "jackson" }
+jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
+jakarta-json-processing = { group = "jakarta.json", name = "jakarta.json-api", version.ref = "jakartaJsonP" }
+jakarta-json-bind = { group = "jakarta.json.bind", name = "jakarta.json.bind-api", version.ref = "jakartaJsonB" }
+eclipse-parsson = "org.eclipse.parsson:parsson:1.0.0"
+eclipse-yasson = "org.eclipse:yasson:2.0.4"
+junit4 = "junit:junit:4.13.2"
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
+junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit5" }
+assertJ = "org.assertj:assertj-core:3.23.1"
+hamcrest = "org.hamcrest:hamcrest:2.2"
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+slf4j-jclover = { group = "org.slf4j", name = "jcl-over-slf4j", version.ref = "slf4j" }
+logback-classic = "ch.qos.logback:logback-classic:1.4.1"
+maven-model = "org.apache.maven:maven-model:3.8.4"
+mockito-core = "org.mockito:mockito-core:4.4.0"
+spock-core = { group = "org.spockframework", name = "spock-core", version.ref = "spock" }
+bytebuddy = "net.bytebuddy:byte-buddy:1.12.10"
+elasticsearch-java = "co.elastic.clients:elasticsearch-java:8.5.3"
+classgraph = "io.github.classgraph:classgraph:4.8.147"
+javax-annotation-api = "javax.annotation:javax.annotation-api:1.3.2"
+brein-api-java = "com.breinify:brein-api-library-java:2.2.0"
+brein-time-utilities = "com.breinify:brein-time-utilities:1.8.0"
+unirest = "com.mashape.unirest:unirest-java:1.4.9"
+jerseyclient = "com.sun.jersey:jersey-client:1.19.4"
+spotbugs = "com.github.spotbugs:spotbugs-annotations:4.0.1"
+objenesis = "org.objenesis:objenesis:3.2"
+randomizedtesting-runner = "com.carrotsearch.randomizedtesting:randomizedtesting-runner:2.8.1"
+sonar-source = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730"
+docker-compose = "com.avast.gradle:gradle-docker-compose-plugin:0.14.13"
+
+#junit-platform = { group = "org.junit", name = "junit-bom", version.ref = "junit5" }
+#spock-platform = { group = "org.spockframework", name = "spock-bom", version.ref = "spock" }
+#jackson-dataformat-yaml = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version.ref = "jackson" }
+#jackson-platform = { group = "com.fasterxml.jackson", name = "jackson-bom", version.ref = "jackson" }
+#idea-ext = "gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.1.4"
+#checkstyle = "com.puppycrawl.tools:checkstyle:10.3"
+#spotless-plugin = "com.diffplug.spotless:spotless-plugin-gradle:6.11.0"

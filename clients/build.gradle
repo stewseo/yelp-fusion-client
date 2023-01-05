@@ -11,17 +11,12 @@ plugins {
  *         java                                                             *
  *****************************************************************************/
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 javadoc {
     source = sourceSets.main.allJava
 }
 
 /*****************************************************************************
- *         :java-client dependencies                         *
+ *         :clients dependencies                                            *
  *****************************************************************************/
 
 dependencies {
@@ -37,28 +32,19 @@ dependencies {
     api buildLibs.jackson.databind
     api buildLibs.eclipse.parsson
 
-    api 'gg.jte:jte:2.2.3'
+    api buildLibs.ggjte
 
-    // testing
+    testImplementation buildLibs.classgraph
+
     testImplementation("org.eclipse:yasson:2.0.4") {
         // Exclude Glassfish as we use Parsson (basically Glassfish renamed in the Jakarta namespace).
         exclude(group: "org.glassfish", module: "jakarta.json")
     }
-
-    testImplementation("io.github.classgraph:classgraph:4.8.147")
 }
 
 /*****************************************************************************
  *         :testing                                                         *
  *****************************************************************************/
-
-test {
-    useJUnitPlatform()
-//    filter {
-//        excludeTestsMatching "io.github.stewseo.clients.yelpfusion.business.*"
-//    }
-
-}
 
 /*****************************************************************************
  *         publishing                                                       *
@@ -80,15 +66,6 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
-
-            pom.withXml {
-                Node pomNode = asNode()
-                pomNode.dependencies.'*'.findAll() {
-                    it.artifactId.text() == 'elasticsearch-java'
-                }.each() {
-                    it.parent().remove(it)
-                }
-            }
 
             pom {
                 name = 'YelpFusionJavaClient'

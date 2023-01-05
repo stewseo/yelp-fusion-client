@@ -10,32 +10,20 @@ plugins {
  *         java                                                             *
  *****************************************************************************/
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
-
 /*****************************************************************************
- *         :temporaldata-service dependencies                         *
+ *         :temporaldata-service dependencies                               *
  *****************************************************************************/
 
 dependencies {
-    api 'com.breinify:brein-api-library-java:2.2.0'
-    api 'com.breinify:brein-time-utilities:1.8.0'
-    api 'com.mashape.unirest:unirest-java:1.4.9'
-    api 'com.sun.jersey:jersey-client:1.19.4'
+    api buildLibs.brein.time.utilities
+    api buildLibs.brein.api.java
+    api buildLibs.unirest
+    api buildLibs.jerseyclient
 }
 
 /*****************************************************************************
  *         testing                                                         *
  *****************************************************************************/
-
-//test {
-//    filter {
-//        excludeTestsMatching "io.*.*.temporaldata-service.*"
-//    }
-//}
 
 /*****************************************************************************
  *         publishing                                                       *
