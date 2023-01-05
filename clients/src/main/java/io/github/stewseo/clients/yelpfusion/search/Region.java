@@ -1,4 +1,4 @@
-//package io.github.stewseo.client.yelpfusion.search;
+e//package io.github.stewseo.client.yelpfusion.search;
 //
 //import io.github.stewseo.client.json.JsonpDeserializable;
 //import io.github.stewseo.client.json.JsonpDeserializer;

@@ -125,6 +125,16 @@ public class EventSearchTest extends YelpFusionTestCase {
 
         assertThat(event.category()).isNotNull();
 
+        assertThat(event.tickets_url()).isNotNull();
+
+        assertThat(event.cost()).isNotNull();
+
+        assertThat(event.cost_max()).isNotNull();
+
+        assertThat(event.is_canceled()).isNotNull();
+
+        assertThat(event.is_free()).isNotNull();
+
         assertThat(event.event_site_url().length()).isGreaterThanOrEqualTo(validNumChars);
 
         return jsonTestCase.assertIsValidJson(event);

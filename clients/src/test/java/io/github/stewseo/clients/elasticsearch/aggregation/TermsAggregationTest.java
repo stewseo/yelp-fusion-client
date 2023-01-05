@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types.aggregation;
+package io.github.stewseo.clients.elasticsearch.aggregation;
 
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch.core.SearchResponse;

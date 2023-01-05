@@ -19,8 +19,9 @@ public class AutoCompleteTest extends YelpFusionTestCase {
 
     @Test
     public void autoCompleteTest() throws Exception {
-        String apiKey = System.getenv("YELP_API_KEY");
-        YelpFusionClient client = YelpFusionClient.createClient(apiKey);
+
+        YelpFusionClient client = YelpFusionClient.createClient(System.getenv("YELP_API_KEY"));
+
         AutoCompleteResponse response = client.autocomplete(a -> a.text("sush"));
 
 
