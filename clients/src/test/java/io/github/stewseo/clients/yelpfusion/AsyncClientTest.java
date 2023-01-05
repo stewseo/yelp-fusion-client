@@ -10,6 +10,7 @@ public class AsyncClientTest {
 
     @Test
     public void asyncClientTest() throws Exception {
+
         String apiKey = System.getenv("YELP_API_KEY");
 
         // Asynchronous non-blocking client

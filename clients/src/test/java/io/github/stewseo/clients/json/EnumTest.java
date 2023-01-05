@@ -4,7 +4,7 @@ package io.github.stewseo.clients.json;
 import io.github.stewseo.clients.yelpfusion._types.Bytes;
 import io.github.stewseo.clients.yelpfusion._types.GeoOrientation;
 import io.github.stewseo.clients.yelpfusion._types.Refresh;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,9 @@ public class EnumTest extends YelpFusionTestCase {
 
     @Test
     public void testEnumWithAliases() {
+
         assertThat("left").isEqualTo(GeoOrientation.Left.jsonValue());
+
         assertThat(GeoOrientation.Left.aliases()).isNotNull();
 
         final Stream<String> stream = Stream.of("right", "RIGHT", "counterclockwise", "ccw");
@@ -38,7 +40,7 @@ public class EnumTest extends YelpFusionTestCase {
     @Test
     public void testBooleanEnum() {
         // Quoted value
-        AssertionsForClassTypes.assertThat(Refresh.WaitFor).isEqualTo(jsonTestCase.checkJsonRoundtrip(Refresh.WaitFor, "\"WaitFor\""));
+        assertThat(Refresh.WaitFor).isEqualTo(jsonTestCase.checkJsonRoundtrip(Refresh.WaitFor, "\"WaitFor\""));
 
         // Unquoted boolean values
         assertThat(Refresh.True).isEqualTo(jsonTestCase.checkJsonRoundtrip(Refresh.True, "\"True\""));

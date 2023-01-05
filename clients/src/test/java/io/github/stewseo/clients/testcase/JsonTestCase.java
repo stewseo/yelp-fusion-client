@@ -1,4 +1,7 @@
-package io.github.stewseo.clients.json;
+package io.github.stewseo.clients.testcase;
+
+import io.github.stewseo.clients.json.JsonpDeserializer;
+import io.github.stewseo.clients.json.JsonpMapper;
 
 import java.lang.reflect.Type;
 

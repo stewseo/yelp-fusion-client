@@ -1,9 +1,8 @@
-package io.github.stewseo.clients.yelpfusion.json;
+package io.github.stewseo.clients.testcase;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import io.github.stewseo.clients.yelpfusion._types.Business;
-import io.github.stewseo.clients.json.JsonTestCase;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.SimpleJsonpMapper;
@@ -41,6 +40,7 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
     private final Gson gson;
 
     private static final int RAND = ThreadLocalRandom.current().nextInt(0, 100);
+
     public YelpFusionJsonTestCase() {
         this(RAND);
     }
@@ -90,10 +90,12 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
         // assert that expected data as input stream
         // is equal to actual data as input stream
         String toJson = gson.toJson(business);
+
         testByteArray(toJson, businessToString);
     }
 
     public <T> int assertIsValidJson(T json) {
+
         String actualJsonString = json.toString();
 
         // assert that business to String is valid JSON
@@ -173,10 +175,9 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
         assertThat(expected).isSameAs(method.getReturnType());
     }
 
-    private Stream<byte[]> testByteArray(String toJson, String businessToString) {
+    private void testByteArray(String toJson, String businessToString) {
 
         if (!toJson.equals(businessToString)) {
-            assertThat(toJson).isEqualTo(businessToString);
             toJson = replaceInvalidJsonCharacters(toJson);
             businessToString = replaceInvalidJsonCharacters(businessToString);
         }
@@ -184,7 +185,8 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
 
         final byte[] toJsonToByteArray = toJson.getBytes(StandardCharsets.UTF_8);
         final byte[] businessToStringToByteArray = businessToString.getBytes(StandardCharsets.UTF_8);
-        return Stream.of(toJsonToByteArray, businessToStringToByteArray);
+
+        assertThat(toJsonToByteArray).isEqualTo(businessToStringToByteArray);
     }
 
     private Stream<InputStream> testInputStream(String expectedJsonString, String actualJsonString) {
@@ -206,7 +208,7 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
     }
 
     private String replaceInvalidJsonCharacters(String jsonString) {
-        String validJson = "[^a-zA-Z0-9,{}:\"\n]";
+        String validJson = "[^a-zA-Z0-9,{}:\"\n\\s]";
         return jsonString.replaceAll(validJson, "");
 
     }

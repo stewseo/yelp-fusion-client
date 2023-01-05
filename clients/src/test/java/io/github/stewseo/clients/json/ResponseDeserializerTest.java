@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion._types.Business;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.JsonEndpoint;

@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.business.details;
 
 import io.github.stewseo.clients.yelpfusion._types.Business;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion._types.SearchBusiness;
 import io.github.stewseo.clients.yelpfusion.business.search.SearchBusinessResponse;
 import org.junit.jupiter.api.Test;

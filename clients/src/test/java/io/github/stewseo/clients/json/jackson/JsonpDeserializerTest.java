@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json.jackson;
 
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.lowlevel.restclient.PrintUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,7 +3,7 @@ package io.github.stewseo.clients.yelpfusion.business.search;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import io.github.stewseo.clients.yelpfusion._types.SearchBusiness;
 import io.github.stewseo.clients.yelpfusion._types.SearchBusinessRegion;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -16,30 +16,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BusinessSearchTest extends YelpFusionTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(BusinessSearchTest.class);
-
-    private static final String indexNyc = "yelp-businesses-restaurants-nyc";
     static int minNumChars = 5;
 
-    // index results from BusinessSearch Endpoint
     @Test
     void businessSearchTest() throws Exception {
 
         String sort_by = "distance";
         String term = "restaurants";
         String categoryAlias = "pizza";
+        int limit = 50;
+        Integer offset = 0;
+        int radius = 1610;
 
         getStreamOfTemporalData().forEach(breinTemporalDataResult -> {
 
-            // only works for cities in California, use Brein TemporalData API for non-CA locations
             BreinLocationResult locationResult = breinTemporalDataResult.getLocation();
 
             Double latitude = locationResult.getLat();
             Double longitude = locationResult.getLon();
             String resultCity = locationResult.getCity();
-            System.out.println(resultCity);
-            int limit = 50;
-            Integer offset = 0;
-            int radius = 1610;
 
             CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().search(s -> s
                             .location(resultCity)
@@ -66,8 +61,6 @@ public class BusinessSearchTest extends YelpFusionTestCase {
 
                 }
             });
-
-            int numberOfDependents = searchBusinessResponse.getNumberOfDependents();
 
             try {
 

@@ -16,8 +16,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class FeaturedEventResponse implements JsonpSerializable {
 
-    //----------------------------- deserialize -----------------------------------//
-    public static final JsonpDeserializer<FeaturedEventResponse> _DESERIALIZER = createFeaturedEventResponseDeserializer();
     //----------------------------- class fields -----------------------------------//
     private final String business_id;
 
@@ -76,29 +74,33 @@ public class FeaturedEventResponse implements JsonpSerializable {
         private Event event;
 
         //----------------------------- setters -----------------------------------//
-        public Builder business_id(String value) {
+        public final Builder business_id(String value) {
             this.business_id = value;
             return this;
         }
 
-        public Builder event(Event value) {
+        public final Builder event(Event value) {
             this.event = value;
             return this;
         }
 
         @Override
-        protected Builder self() {
+        protected final Builder self() {
             return this;
         }
 
         @Override
-        public FeaturedEventResponse build() {
+        public final FeaturedEventResponse build() {
             _checkSingleUse();
             return new FeaturedEventResponse(this);
         }
     }
 
+    //----------------------------- deserialize -----------------------------------//
+    public static final JsonpDeserializer<FeaturedEventResponse> _DESERIALIZER = createFeaturedEventResponseDeserializer();
+
     protected static JsonpDeserializer<FeaturedEventResponse> createFeaturedEventResponseDeserializer() {
+
         JsonpDeserializer<List<Event>> valueDeserializer = JsonpDeserializer
                 .arrayDeserializer(Event._DESERIALIZER);
 

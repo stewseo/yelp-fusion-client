@@ -3,8 +3,7 @@ package io.github.stewseo.clients.util;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch.watcher.Condition;
 import co.elastic.clients.elasticsearch.watcher.ConditionOp;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
-import io.github.stewseo.clients.yelpfusion.json.YelpFusionJsonTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionJsonTestCase;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

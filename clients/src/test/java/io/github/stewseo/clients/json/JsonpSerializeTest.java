@@ -1,13 +1,12 @@
-package io.github.stewseo.clients.yelpfusion.json;
+package io.github.stewseo.clients.json;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import io.github.stewseo.clients.yelpfusion._types.Business;
 import io.github.stewseo.clients._types.TestBusiness;
-import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

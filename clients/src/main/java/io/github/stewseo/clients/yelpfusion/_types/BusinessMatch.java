@@ -32,7 +32,6 @@ public class BusinessMatch implements JsonpSerializable {
         this.location = builder.location;
         this.phone = builder.phone;
         this.display = builder.display;
-
     }
 
     public static BusinessMatch of(Function<Builder, ObjectBuilder<BusinessMatch>> fn) {

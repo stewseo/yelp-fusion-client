@@ -1,4 +1,4 @@
-package io.github.stewseo.clients.yelpfusion;
+package io.github.stewseo.clients.testcase;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
@@ -6,9 +6,7 @@ import io.github.stewseo.clients._types.TestBusiness;
 import io.github.stewseo.clients._types.TestCategory;
 import io.github.stewseo.clients._types.TestCoordinates;
 import io.github.stewseo.clients._types.TestLocation;
-import io.github.stewseo.clients.yelpfusion.json.YelpFusionJsonTestCase;
 import io.github.stewseo.temporaldata.service.TemporalDataService;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -39,13 +37,6 @@ public abstract class YelpFusionTestCase {
         numCities = list.size();
     }
 
-//    @BeforeAll
-//    static void beforeAll() {
-//        list = loadCaliforniaCities().toList();
-//        numCities = list.size();
-//        temporalDataService = new TemporalDataService();
-//    }
-
     private static Stream<BreinTemporalDataResult> loadCaliforniaCities() {
 
         return Stream.of("San Francisco", "Oakland", "San Jose", "Carmel", "Monterey", "Napa", "Sonoma", "Los Angeles", "San Diego", "Santa Barbara")
@@ -58,15 +49,9 @@ public abstract class YelpFusionTestCase {
         return temporalDataService.temporalDataResult(city);
     }
 
-    public static BreinTemporalDataResult locationByCity(String city, String state, String country) {
-
-        return temporalDataService.temporalDataResult(city, state, country);
-    }
-
     public Stream<TestBusiness> generateBusinessInstances(int size) {
 
         return IntStream.range(0, size).mapToObj(this::generateBusiness);
-
     }
 
     public TestBusiness generateBusiness(int i) {

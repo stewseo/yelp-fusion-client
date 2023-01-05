@@ -1,8 +1,9 @@
-package io.github.stewseo.clients.yelpfusion;
+package io.github.stewseo.clients.testcase;
 
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.transport.restclient.YelpRestClientTransport;
+import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -14,11 +15,11 @@ public class YelpFusionServiceCtx {
 
     private final YelpFusionAsyncClient yelpFusionAsyncClient;
 
-    public YelpFusionServiceCtx() {
+    protected YelpFusionServiceCtx() {
         this(createTransport());
     }
 
-    public YelpFusionServiceCtx(YelpFusionTransport yelpFusionTransport) {
+    protected YelpFusionServiceCtx(YelpFusionTransport yelpFusionTransport) {
         this.yelpFusionAsyncClient = new YelpFusionAsyncClient(yelpFusionTransport);
     }
 

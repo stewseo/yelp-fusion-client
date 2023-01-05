@@ -99,57 +99,55 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
     }
 
-    public List<String> term() {
+    public final List<String> term() {
         return this.term;
     }
 
-    public List<String> location() {
+    public final List<String> location() {
         return this.location;
     }
 
-    public Integer radius() {
+    public final Integer radius() {
         return this.radius;
     }
 
-    public Category categories() {
+    public final Category categories() {
         return this.categories;
     }
 
-    public Coordinates coordinates() {
+    public final Coordinates coordinates() {
         return this.coordinates;
     }
 
-    public String locale() {
+    public final String locale() {
         return this.locale;
     }
 
-    public Integer limit() {
+    public final Integer limit() {
         return this.limit;
     }
 
-    public Integer offset() {
+    public final Integer offset() {
         return this.offset;
     }
 
-    public String sort_by() {
+    public final String sort_by() {
         return this.sort_by;
     }
 
-    public Boolean open_now() {
+    public final Boolean open_now() {
         return this.open_now;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
-    public Integer open_at() {
+    public final Integer open_at() {
         return this.open_at;
     }
 
-    public String price() {
+    public final String price() {
         return this.price;
     }
 
-    public List<Attribute> attributes() {
+    public final List<Attribute> attributes() {
         return this.attributes;
     }
 

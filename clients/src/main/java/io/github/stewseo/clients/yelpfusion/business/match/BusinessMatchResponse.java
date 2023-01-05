@@ -1,5 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.business.match;
 
+import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.yelpfusion._types.BusinessMatch;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
@@ -11,11 +13,13 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
+import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
 public class BusinessMatchResponse implements JsonpSerializable {
-    private final BusinessMatch businesses;
+    
+    private final List<BusinessMatch> businesses;
 
     private BusinessMatchResponse(Builder builder) {
         this.businesses = builder.businesses;
@@ -25,7 +29,7 @@ public class BusinessMatchResponse implements JsonpSerializable {
         return fn.apply(new Builder()).build();
     }
 
-    public final BusinessMatch businesses() {
+    public final List<BusinessMatch> businesses() {
         return businesses;
     }
 
@@ -39,18 +43,25 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
-        if (this.businesses != null) {
+        if (ApiTypeHelper.isDefined(this.businesses)) {
             generator.writeKey("businesses");
+            generator.writeStartArray();
+            for(BusinessMatch item0: businesses) {
+                item0.serialize(generator, mapper);
+            }
+            generator.writeEnd();
         }
     }
 
-
+    public String toString() {
+        return JsonpUtils.toString(this);
+    }
     public static class Builder extends WithJsonObjectBuilderBase<Builder>
             implements
             ObjectBuilder<BusinessMatchResponse> {
-        private BusinessMatch businesses;
+        private List<BusinessMatch> businesses;
 
-        public final Builder businesses(BusinessMatch businesses) {
+        public final Builder businesses(List<BusinessMatch> businesses) {
             this.businesses = businesses;
             return this;
         }
@@ -71,7 +82,7 @@ public class BusinessMatchResponse implements JsonpSerializable {
 
     protected static void setupBusinessResponseDeserializer(ObjectDeserializer<Builder> op) {
 
-        op.add(Builder::businesses, BusinessMatch._DESERIALIZER, "businesses");
+        op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(BusinessMatch._DESERIALIZER), "businesses");
 
     }
 }

@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.yelpfusion.json.YelpFusionJsonTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionJsonTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

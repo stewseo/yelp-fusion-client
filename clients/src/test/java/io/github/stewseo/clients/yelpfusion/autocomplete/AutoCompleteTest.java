@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.autocomplete;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

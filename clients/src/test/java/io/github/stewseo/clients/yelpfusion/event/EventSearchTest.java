@@ -2,11 +2,10 @@ package io.github.stewseo.clients.yelpfusion.event;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTestCase;
+import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion.events.EventSearchRequest;
 import io.github.stewseo.clients.yelpfusion.events.EventSearchResponse;
-import io.github.stewseo.clients.yelpfusion.json.YelpFusionJsonTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +38,15 @@ public class EventSearchTest extends YelpFusionTestCase {
     //                        "\"is_official\":false," +
     //                        "\"latitude\":37.78574," +
     //                        "\"longitude\":-122.40255}"
+
     private static final int validNumChars = 10;
+
     private static final Pattern timeStampPattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+
     static int maxRadius = 40000;
-    YelpFusionJsonTestCase testJson = getTestJson();
 
     // test results from endpoint: https://docs.developer.yelp.com/reference/v3_events_search
+
     @Test
     public void eventSearchTest() throws Exception {
 
@@ -125,13 +127,7 @@ public class EventSearchTest extends YelpFusionTestCase {
 
         assertThat(event.event_site_url().length()).isGreaterThanOrEqualTo(validNumChars);
 
-        return assertIsValidJson(event);
-
-    }
-
-    private int assertIsValidJson(Event event) {
-
-        return testJson.assertIsValidJson(event);
+        return jsonTestCase.assertIsValidJson(event);
 
     }
 }

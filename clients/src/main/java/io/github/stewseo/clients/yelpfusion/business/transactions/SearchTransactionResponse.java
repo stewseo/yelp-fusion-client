@@ -11,6 +11,7 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 
 import io.github.stewseo.clients.yelpfusion._types.SearchBusiness;
+import io.github.stewseo.clients.yelpfusion.business.search.SearchBusinessRequest;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -30,6 +31,7 @@ public class SearchTransactionResponse implements JsonpSerializable {
         this.total = builder.total;
         this.region = builder.region;
     }
+
 
     public final List<SearchBusiness> businesses() {
         return this.businesses;
