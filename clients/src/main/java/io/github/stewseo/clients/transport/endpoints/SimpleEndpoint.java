@@ -50,7 +50,6 @@ public class SimpleEndpoint<RequestT, ResponseT> extends EndpointBase<RequestT, 
     public <NewResponseT> SimpleEndpoint<RequestT, NewResponseT> withResponseDeserializer(
             JsonpDeserializer<NewResponseT> newResponseParser
     ) {
-        System.out.println("id: " + id + " method: " + method + " request URL: " + requestUrl + " queryParms: " + queryParameters);
         return new SimpleEndpoint<>(
                 id,
                 method,

@@ -195,6 +195,12 @@ public class JsonpUtils {
         return toString(value, ToStringMapper.INSTANCE, sb).toString();
     }
 
+    public static String typedKeysToString(JsonpSerializable value) {
+        StringBuilder sb = new StringBuilder(value.getClass().getSimpleName()).append(": ");
+        return toString(value, ToStringMapper.INSTANCE, sb).toString();
+    }
+
+
     public static void maxToStringLength(int length) {
         MAX_TO_STRING_LENGTH = length;
     }

@@ -17,7 +17,7 @@
     </Match>
 
 <!--    <Match>-->
-<!--        <Class name="io.github.stewseo.clients.testcase.YelpFusionTestCase" />-->
+<!--        <Class name="io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase" />-->
 <!--        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE, MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"/>-->
 <!--    </Match>-->
 

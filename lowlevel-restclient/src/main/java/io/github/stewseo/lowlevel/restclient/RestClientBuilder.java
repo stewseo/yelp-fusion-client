@@ -125,8 +125,7 @@ public final class RestClientBuilder {
                 host,
                 pathPrefix,
                 strictDeprecationMode,
-                compressionEnabled,
-                metaHeaderEnabled
+                compressionEnabled
         );
 
         httpClient.start();

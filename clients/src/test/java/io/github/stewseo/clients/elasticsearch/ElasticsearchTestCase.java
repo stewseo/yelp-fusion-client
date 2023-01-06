@@ -33,33 +33,4 @@ public abstract class ElasticsearchTestCase {
 
         return elasticsearchService.termsAggregationByCategory(numCategoriesWithParentRestaurant);
     }
-
-//    private void loadCategoriesMap() {
-//
-//        String timestamp = String.valueOf(elasticsearchService.getTimestamp(1L, SortOrder.Asc));
-//
-//        assertThat(timestamp).isEqualTo("2022-11-10T07:16:35.187452598Z");
-//
-//        setOfBusinessIds = new HashSet<>();
-//
-//        int iterations = (int) Math.ceil((double) docsCount / 10000);
-//
-//        for (int j = 0; j < iterations; j++) {
-//
-//            List<Hit<ObjectNode>> nodes = elasticsearchService.getBusinessIdsWithTimestamps(timestamp);
-//
-//            for (int i = 0; i < nodes.size(); i++) {
-//                JsonNode sourceNode = nodes.get(i).source();
-//
-//                if (sourceNode != null) {
-//                    setOfBusinessIds.add(sourceNode.get("id").asText());
-//                    if (i + 1 == nodes.size()) {
-//                        timestamp = sourceNode.get("timestamp").asText();
-//                    }
-//
-//                }
-//
-//            }
-//        }
-//    }
 }

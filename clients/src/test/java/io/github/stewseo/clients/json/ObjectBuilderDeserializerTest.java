@@ -1,12 +1,12 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.testcase.YelpFusionJsonTestCase;
+import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
-public class ObjectBuilderDeserializerTest extends YelpFusionJsonTestCase {
+public class ObjectBuilderDeserializerTest extends TestJson {
 
     @Test
     public void testNullObjectValue() {

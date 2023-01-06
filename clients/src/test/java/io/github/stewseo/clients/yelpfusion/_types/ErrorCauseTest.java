@@ -3,7 +3,7 @@ package io.github.stewseo.clients.yelpfusion._types;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.testcase.YelpFusionJsonTestCase;
+import io.github.stewseo.clients.json.testcases.TestJson;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ErrorCauseTest extends YelpFusionJsonTestCase {
+class ErrorCauseTest extends TestJson {
 
    private final ErrorCause errorCause = ErrorCause.of(e -> e
             .metadata(Map.of("string", JsonData.of("jsonData")))
@@ -39,6 +39,7 @@ class ErrorCauseTest extends YelpFusionJsonTestCase {
         ErrorCause rootCause = ErrorCause.of(error -> error.rootCause(errorCause));
         assertThat(rootCause).isNotNull();
     }
+
     private final String expectedJson = "{\"string\":\"jsonData\",\"type\":\"type\",\"reason\":\"reason\",\"stack_trace\":\"stacktrace\"}";
 
     @Test

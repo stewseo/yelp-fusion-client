@@ -115,12 +115,6 @@ public class ExternallyTaggedUnion {
         generator.writeEnd();
     }
 
-    /**
-     * Serialize a map of externally tagged union objects, without the enclosing start/end object.
-     * <p>
-     * If {@link JsonpMapperFeatures#SERIALIZE_TYPED_KEYS} is <code>true</code> (the default), the typed keys encoding
-     * (<code>type#name</code>) is used.
-     */
     public static <T extends JsonpSerializable & TaggedUnion<? extends JsonEnum, ?>> void serializeTypedKeysInner(
             Map<String, T> map, JsonGenerator generator, JsonpMapper mapper
     ) {

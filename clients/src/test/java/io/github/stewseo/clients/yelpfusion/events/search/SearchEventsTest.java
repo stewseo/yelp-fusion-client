@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.events.search;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class SearchEventsTest extends YelpFusionTestCase {
+public class SearchEventsTest extends FunctionalTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchEventsTest.class);
 
@@ -116,7 +116,7 @@ public class SearchEventsTest extends YelpFusionTestCase {
 
         assertThat(event.event_site_url().length()).isGreaterThanOrEqualTo(validNumChars);
 
-        return jsonTestCase.assertIsValidJson(event);
+        return testJson.assertIsValidJson(event);
 
     }
 }

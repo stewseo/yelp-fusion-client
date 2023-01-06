@@ -1,4 +1,4 @@
-package io.github.stewseo.clients.testcase;
+package io.github.stewseo.clients.yelpfusion.testcases;
 
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.YelpFusionTransport;

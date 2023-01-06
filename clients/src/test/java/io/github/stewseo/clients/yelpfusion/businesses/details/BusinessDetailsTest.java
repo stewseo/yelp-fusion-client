@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BusinessDetailsTest extends YelpFusionTestCase {
+public class BusinessDetailsTest extends FunctionalTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(BusinessDetailsTest.class);
 

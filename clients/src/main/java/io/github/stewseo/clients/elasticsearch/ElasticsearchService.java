@@ -26,28 +26,12 @@ public class ElasticsearchService {
 
     int MAX_RESULTS = 10000;
 
-    private String index;
-
     private long timestamp;
 
-    private ElasticsearchAsyncClient asyncClient;
+    private final ElasticsearchAsyncClient asyncClient;
 
     public ElasticsearchService(ElasticsearchAsyncClient client) {
         this.asyncClient = client;
-    }
-
-    public ElasticsearchService(ElasticsearchAsyncClient client, String index, Long timestamp) {
-
-        this.asyncClient = client;
-
-        this.index = index;
-
-
-        if (timestamp != null) {
-            this.timestamp = timestamp;
-        } else {
-            this.timestamp = getTimestamp(1L, SortOrder.Asc).get(0);
-        }
     }
 
     public ElasticsearchAsyncClient getAsyncClient() {
@@ -65,7 +49,7 @@ public class ElasticsearchService {
         SortOptions sortOptions = buildSortOptions(field, sortOrder);
 
         try {
-            List<ObjectNode> list = asyncClient.search(s -> s
+            return asyncClient.search(s -> s
                                     .index("yelp-businesses-restaurants-nyc")
                                     .query(q -> q
                                             .bool(b -> b
@@ -84,15 +68,8 @@ public class ElasticsearchService {
                     .stream()
                     .filter(hit -> hit.source() != null)
                     .map(Hit::source)
+                    .map(source -> Long.parseLong(source.toString()))
                     .toList();
-
-            for (ObjectNode source : list) {
-                System.out.println(source);
-            }
-
-            List<Long> longList = list.stream().map(e -> Long.parseLong(e.toString())).toList();
-
-            return longList;
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -103,20 +80,14 @@ public class ElasticsearchService {
         return timestamp;
     }
 
-    /**
-     * @param type Integer size number of docs to return
-     * @return Returns documents that match the provided Category.MappingProperties type value. The provided text is analyzed before matching.
-     */
-    public SearchResponse<BusinessDetails> occurences(Category.MappingProperties type, String searchText,
-                                                      int size,
-                                                      String rangeQueryField, long timestamp) {
 
-        Query byCategory = MatchQuery.of(m -> m
-                .field(type.jsonValue())
-                .query(searchText)
-        )._toQuery();
+    public SearchResponse<BusinessDetails> occurences(String index, int size,
+                                                      MatchQuery matchQuery,
+                                                      RangeQuery rangeQuery
+    ) {
 
-        Query byTimestamp = buildRangeQuery(rangeQueryField, timestamp)._toQuery();
+        Query byCategory = matchQuery._toQuery();
+        Query byTimestamp = rangeQuery._toQuery();
 
         SearchResponse<JsonData> response = null;
 
@@ -162,7 +133,7 @@ public class ElasticsearchService {
                             ),
                     Void.class // Using Void will ignore any document in the response.
             ).get();
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -189,7 +160,10 @@ public class ElasticsearchService {
                 .gte(JsonData.of(timestampRange))
         )._toQuery();
 
-        SourceFilter sourceFilter = buildSourceFilter("id", "timestamp");
+        SourceFilter sourceFilter = SourceFilter.of(source -> source
+                .includes("id")
+                .includes("timestamp")
+        );
 
         SortOptions sortOptions = SortOptions.of(options -> options
                 .field(f -> f
@@ -200,6 +174,7 @@ public class ElasticsearchService {
         SearchResponse<ObjectNode> response;
 
         List<Hit<ObjectNode>> nodes;
+
         try {
             response = asyncClient.search(s -> s
                             .index("yelp-businesses-restaurants-nyc")
@@ -220,6 +195,7 @@ public class ElasticsearchService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return response.hits().hits();
     }
 
@@ -262,12 +238,6 @@ public class ElasticsearchService {
         return SourceFilter.of(source -> source
                 .includes(field));
 
-    }
-
-    private SourceFilter buildSourceFilter(String field1, String field2) {
-        return SourceFilter.of(source -> source
-                .includes(field1)
-                .includes(field2));
     }
 
     private SortOptions buildSortOptions(String field, SortOrder sortOrder) {

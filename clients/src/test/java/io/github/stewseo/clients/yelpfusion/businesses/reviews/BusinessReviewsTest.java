@@ -1,11 +1,11 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessReviewsTest extends YelpFusionTestCase {
+public class BusinessReviewsTest extends FunctionalTestCase {
 
     final BusinessReviewsRequest request = BusinessReviewsRequest.of(a -> a.id("brendas-french-soul-food-san-francisco"));
 

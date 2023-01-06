@@ -98,23 +98,15 @@ public class FieldValue implements TaggedUnion<FieldValue.Kind, Object>, JsonpSe
     }
 
     public String _toJsonString() {
-        switch (_kind) {
-            case Double:
-                return String.valueOf(this.doubleValue());
-            case Long:
-                return String.valueOf(this.longValue());
-            case Boolean:
-                return String.valueOf(this.booleanValue());
-            case String:
-                return this.stringValue();
-            case Null:
-                return "null";
-            case Any:
-                throw new IllegalStateException("Composite field value cannot be formatted as a string");
-
-            default:
-                throw new IllegalStateException("Unknown kind " + _kind);
-        }
+        return switch (_kind) {
+            case Double -> String.valueOf(this.doubleValue());
+            case Long -> String.valueOf(this.longValue());
+            case Boolean -> String.valueOf(this.booleanValue());
+            case String -> this.stringValue();
+            case Null -> "null";
+            case Any -> throw new IllegalStateException("Composite field value cannot be formatted as a string");
+            default -> throw new IllegalStateException("Unknown kind " + _kind);
+        };
     }
 
     /**

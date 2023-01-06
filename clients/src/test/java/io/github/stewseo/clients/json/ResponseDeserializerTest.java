@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ResponseDeserializerTest extends YelpFusionTestCase {
+public class ResponseDeserializerTest extends FunctionalTestCase {
 
     final String json = "{\"id\": \"wu3w6IlUct9OvYmYXDMGJA\", " +
             "\"alias\": \"huitlacoche-taqueria-restaurant-ridgewood-2\", " +
@@ -56,6 +56,7 @@ public class ResponseDeserializerTest extends YelpFusionTestCase {
         BusinessDetails business = response.result();
 
         assertThat(business.id()).isEqualTo("wu3w6IlUct9OvYmYXDMGJA");
+
         assertThat(business.alias()).isEqualTo("huitlacoche-taqueria-restaurant-ridgewood-2");
 
     }

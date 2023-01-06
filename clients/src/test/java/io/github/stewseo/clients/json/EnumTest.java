@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.json;
 
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion._types.Bytes;
 import io.github.stewseo.clients.yelpfusion._types.GeoOrientation;
 import io.github.stewseo.clients.yelpfusion._types.Refresh;
@@ -12,7 +12,8 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class EnumTest extends YelpFusionTestCase {
+public class EnumTest extends TestJson {
+
 
     @Test
     public void testSimpleEnum() {
@@ -49,17 +50,16 @@ public class EnumTest extends YelpFusionTestCase {
     public void testBooleanEnum() {
 
         // Quoted value
-        assertThat(Refresh.WaitFor).isEqualTo(jsonTestCase.checkJsonRoundtrip(Refresh.WaitFor, "\"wait_for\""));
+        assertThat(Refresh.WaitFor).isEqualTo(checkJsonRoundtrip(Refresh.WaitFor, "\"wait_for\""));
 
         // Unquoted boolean values
-        assertThat(Refresh.True).isEqualTo(jsonTestCase.checkJsonRoundtrip(Refresh.True, "true"));
+        assertThat(Refresh.True).isEqualTo(checkJsonRoundtrip(Refresh.True, "true"));
 
-        assertThat(Refresh.False).isEqualTo(jsonTestCase.checkJsonRoundtrip(Refresh.False, "false"));
+        assertThat(Refresh.False).isEqualTo(checkJsonRoundtrip(Refresh.False, "false"));
 
         // True/False as strings
-        assertThat(Refresh.True).isEqualTo(jsonTestCase.fromJson("true", Refresh.class));
+        assertThat(Refresh.True).isEqualTo(fromJson("true", Refresh.class));
 
-        assertThat(Refresh.False).isEqualTo(jsonTestCase.fromJson("false", Refresh.class));
+        assertThat(Refresh.False).isEqualTo(fromJson("false", Refresh.class));
     }
-
 }

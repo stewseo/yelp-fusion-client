@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.testcase.YelpFusionJsonTestCase;
+import io.github.stewseo.clients.json.testcases.TestJson;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class DateTimeTest extends YelpFusionJsonTestCase {
+public class DateTimeTest extends TestJson {
 
     long millis = 1643822172348L;
     String millisJson = "1643822172348";

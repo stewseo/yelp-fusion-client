@@ -8,8 +8,11 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 public class JsonpMappingException extends JsonParsingException {
+
     private static final Pattern identifier = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9]*");
+
     private final LinkedList<Object> path = new LinkedList<>();
+
     private Object ref;
 
     public JsonpMappingException(String message, JsonLocation location) {

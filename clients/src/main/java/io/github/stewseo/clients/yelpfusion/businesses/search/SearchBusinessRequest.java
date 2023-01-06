@@ -83,22 +83,6 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
-
-        op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
-        op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
-        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
-        op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
-        op.add(Builder::categories, Category._DESERIALIZER, "categories");
-        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
-        op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
-        op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
-        op.add(Builder::sort_by, JsonpDeserializer.stringDeserializer(), "sort_by");
-        op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
-        op.add(Builder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
-        op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
-    }
-
     public final List<String> term() {
         return this.term;
     }
@@ -445,5 +429,21 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             SimpleEndpoint.emptyMap(),
             false,
             SearchBusinessResponse._DESERIALIZER);
+
+    protected static void setupSearchBusinessRequestDeserializer(ObjectDeserializer<Builder> op) {
+
+        op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
+        op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
+        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
+        op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
+        op.add(Builder::categories, Category._DESERIALIZER, "categories");
+        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
+        op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
+        op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
+        op.add(Builder::sort_by, JsonpDeserializer.stringDeserializer(), "sort_by");
+        op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
+        op.add(Builder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
+        op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
+    }
 
 }

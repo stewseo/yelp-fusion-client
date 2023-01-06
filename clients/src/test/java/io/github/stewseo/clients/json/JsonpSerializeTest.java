@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class JsonpSerializeTest extends YelpFusionTestCase {
+public class JsonpSerializeTest extends FunctionalTestCase {
 
     int size = 10;
 

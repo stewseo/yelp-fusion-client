@@ -1,12 +1,10 @@
-package io.github.stewseo.clients.testcase;
+package io.github.stewseo.clients.json.testcases;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.SimpleJsonpMapper;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
@@ -27,10 +25,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
-
+public class TestJson extends Assertions {
 
     static AtomicInteger count = new AtomicInteger(0);
+
 
     public final JsonpMapper mapper;
 
@@ -38,57 +36,15 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
 
     private static final int RAND = ThreadLocalRandom.current().nextInt(0, 100);
 
-    public YelpFusionJsonTestCase() {
+    public TestJson() {
         this(RAND);
     }
 
-    protected YelpFusionJsonTestCase(int rand) {
-        mapper = setupMapper(rand);
+    protected TestJson(int rand) {
+
+        mapper = new JacksonJsonpMapper();
+
         gson = new Gson();
-    }
-
-    private JsonpMapper setupMapper(int rand) {
-        // Randomly choose json-b or jackson
-        switch (rand % 3) {
-            case 0 -> {
-                return new JsonbJsonpMapper() {
-                    @Override
-                    public boolean ignoreUnknownFields() {
-                        return false;
-                    }
-                };
-            }
-            case 1 -> {
-                return new JacksonJsonpMapper() {
-                    @Override
-                    public boolean ignoreUnknownFields() {
-                        return false;
-                    }
-                };
-            }
-            default -> {
-                return SimpleJsonpMapper.INSTANCE_REJECT_UNKNOWN_FIELDS;
-            }
-        }
-    }
-
-
-    /**
-     * @param business Business instance
-     * @link <a href="https://www.baeldung.com/java-validate-json-string">...</a>
-     */
-    public void testSerializeToJSON(BusinessDetails business) {
-
-        String businessToString = business.toString();
-
-        boolean validJsonByGson = isValidJson(businessToString);
-        assertTrue(validJsonByGson);
-
-        // assert that expected data as input stream
-        // is equal to actual data as input stream
-        String toJson = gson.toJson(business);
-
-        testByteArray(toJson, businessToString);
     }
 
     public <T> int assertIsValidJson(T json) {
@@ -139,7 +95,6 @@ public class YelpFusionJsonTestCase extends Assertions implements JsonTestCase {
         return fromJson(expectedJson, (Class<T>) value.getClass());
     }
 
-    @Override
     public boolean isValidJson(String json) {
 
         final TypeAdapter<BusinessDetails> strictAdapter = gson.getAdapter(BusinessDetails.class);

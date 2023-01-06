@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
@@ -9,12 +9,12 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class JsonpDeserializerTest extends YelpFusionTestCase {
+public class JsonpDeserializerTest extends FunctionalTestCase {
 
     @Test
     public void testNullStringInArray() {
         JsonpDeserializer<List<String>> deser = JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer());
-        JsonpMapper mapper = jsonTestCase.mapper;
+        JsonpMapper mapper = testJson.mapper;
         JsonParser parser = mapper.jsonProvider().createParser(new StringReader("[\"a\", null, \"b\"]"));
         List<String> list = deser.deserialize(parser, mapper);
 

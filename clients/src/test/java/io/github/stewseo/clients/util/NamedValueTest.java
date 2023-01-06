@@ -1,18 +1,12 @@
 package io.github.stewseo.clients.util;
 
-import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion._types.SortOrder;
-import io.github.stewseo.clients.json.JsonData;
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class NamedValueTest extends YelpFusionTestCase {
+class NamedValueTest extends FunctionalTestCase {
 
     @Test
     public void namedValueTest() {

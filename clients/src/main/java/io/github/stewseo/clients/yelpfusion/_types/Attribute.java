@@ -9,9 +9,12 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.ObjectBuilderBase;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
 import jakarta.json.stream.JsonGenerator;
+import org.w3c.dom.Attr;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
 @JsonpDeserializable
 public class Attribute implements JsonpSerializable {
@@ -21,6 +24,10 @@ public class Attribute implements JsonpSerializable {
 
     private Attribute(Builder builder) {
         this.attribute = builder.attribute;
+    }
+
+    public static Attribute of(Function<Attribute.Builder, ObjectBuilder<Attribute>> fn) {
+        return fn.apply(new Attribute.Builder()).build();
     }
 
     public String attribute() {

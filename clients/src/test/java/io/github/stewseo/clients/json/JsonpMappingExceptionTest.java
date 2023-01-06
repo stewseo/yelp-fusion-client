@@ -1,93 +1,79 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.testcase.YelpFusionJsonTestCase;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.util.MissingRequiredPropertyException;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+public class JsonpMappingExceptionTest extends TestJson {
 
-public class JsonpMappingExceptionTest extends YelpFusionJsonTestCase {
+    private final String json = "{" +
+            "   \"id\":\"KscSF2Bnwa_wlg1MbdFjvQ\"," +
+            "   \"alias\":\"tre-sorelle-new-york\"," +
+            "   \"name\":\"Tre Sorelle\"," +
+            "   \"image_url\":\"https://s3-media4.fl.yelpcdn.com/bphoto/A8tp7PU_6SaKi3G2AP83WQ/o.jpg\"," +
+            "   \"url\":\"https://www.yelp.com/biz/tre-sorelle-new-york?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw\"," +
+            "   \"phone\":\"+12126191080\"," +
+            "   \"price\":\"$$\"," +
+            "   \"display_phone\":\"(212) 619-1080\"," +
+            "   \"is_closed\":false," +
+            "   \"distance\":78.46171453078941," +
+            "   \"rating\":3.5," +
+            "   \"review_count\":186," +
+            "   \"invalid_field\":\"invalid\"," +
+            "   \"transactions\":[\"delivery\",\"pickup\"]," +
+
+            "   \"location\":{" +
+            "       \"address1\":\"61 Reade St\",\"address2\":\"\",\"address3\":\"\",\"city\":\"New York\"," +
+            "       \"zip_code\":\"10007\",\"country\":\"US\",\"state\":\"NY\",\"display_address\":[\"61 Reade St\",\"New York, NY 10007\"]}," +
+            "   \"coordinates\":{\"latitude\":40.7149022072554,\"longitude\":-74.0064939111471}," +
+            "   \"categories\":" +
+            "       [" +
+            "           {\"" +
+            "               alias\":\"italian\",\"title\":\"Italian\"" +
+            "           }," +
+            "           {\"" +
+            "               alias\":\"pizza\",\"title\":\"Pizza\"" +
+            "           }" +
+            "   ]" +
+            "}";
+
 
     @Test
     public void testObjectAndArrayPath() {
 
-        String json = "{" +
-                "  \"took\" : 9," +
-                "  \"timed_out\" : false," +
-                "  \"_shards\" : {" +
-                "    \"total\" : 1," +
-                "    \"successful\" : 1," +
-                "    \"skipped\" : 0," +
-                "    \"failed\" : 0" +
-                "  }," +
-                "  \"hits\" : {" +
-                "    \"total\" : {" +
-                "      \"value\" : 1," +
-                "      \"relation\" : \"eq\"" +
-                "    }," +
-                "    \"max_score\" : 1.0," +
-                "    \"hits\" : [" +
-                "      {" +
-                "        \"_index\" : \"test\"," +
-                "        \"_id\" : \"8aSerXUBs1w7Wkuj31zd\"," +
-                "        \"_score\" : \"1.0\"," +
-                "        \"_source\" : {" +
-                "          \"foo\" : \"bar\"" +
-                "        }" +
-                "      }," +
-                "      {" +
-                "        \"_index\" : \"test\"," +
-                "        \"_id\" : \"8aSerXUBs1w7Wkuj31zd\"," +
-                "        \"_score\" : \"abc\"," + // <====== error here
-                "        \"_source\" : {" +
-                "          \"foo\" : \"bar\"" +
-                "        }" +
-                "      }" +
-                "    ]" +
-                "  }" +
-                "}";
-
         JsonpMappingException e = assertThrows(JsonpMappingException.class, () -> {
             // withJson() will read values of the generic parameter type as JsonData
-            SearchBusinessResponse.of(b -> b
+            SearchBusinessResult.of(b -> b
                     .withJson(new StringReader(json))
             );
         });
 
-        assertTrue(e.getMessage().contains("io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse"));
-        assertTrue(e.getMessage().contains("Unknown field 'took'"));
+        assertTrue(e.getMessage().contains("io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult"));
+
+        assertTrue(e.getMessage().contains("Unknown field 'invalid_field'"));
 
         // check path
-        assertEquals("took", e.path());
+        assertEquals("invalid_field", e.path());
     }
 
     @Test
-    public void testLookAhead() {
-
-        String json =
-                "{" +
-                        "  \"properties\": { " +
-                        "    \"foo-bar\": {" +
-                        "        \"type\": \"text\"," +
-                        "        \"baz\": false" +
-                        "    }" +
-                        "  }" +
-                        "}";
+    public void testMissingPropertiesException() {
 
         // Error deserializing co.elastic.clients.elasticsearch._types.mapping.TextProperty:
         // Unknown field 'baz' (JSON path: properties['foo-bar'].baz) (in object at line no=1, column no=36, offset=35)
 
-        JsonpMappingException e = assertThrows(JsonpMappingException.class, () -> fromJson(json, SearchBusinessResult.class));
+        MissingRequiredPropertyException e = assertThrows(MissingRequiredPropertyException.class, () -> fromJson(json, SearchBusinessResponse.class));
 
-        assertThat("properties").isEqualTo(e.path());
+        assertThat("businesses").isEqualTo(e.getPropertyName());
 
         String msg = e.getMessage();
-        assertTrue(msg.contains("Unknown field 'properties'"));
-        // Check look ahead position (see JsonpUtils.lookAheadFieldValue)
-        assertTrue(msg.contains("(line no=1"));
+
+        assertThat(msg).contains("Missing required property 'SearchBusinessResponse");
     }
 }

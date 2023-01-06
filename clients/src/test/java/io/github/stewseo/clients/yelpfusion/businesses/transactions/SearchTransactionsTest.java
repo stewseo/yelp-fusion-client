@@ -1,15 +1,14 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SearchTransactionsTest extends YelpFusionTestCase {
+public class SearchTransactionsTest extends FunctionalTestCase {
 
     private final SearchTransactionRequest searchTransactionRequest = SearchTransactionRequest.of(s -> s
             .location("sf")

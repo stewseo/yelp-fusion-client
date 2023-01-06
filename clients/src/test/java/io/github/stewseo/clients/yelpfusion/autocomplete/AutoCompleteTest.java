@@ -1,25 +1,19 @@
 package io.github.stewseo.clients.yelpfusion.autocomplete;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
-import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Term;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AutoCompleteTest extends YelpFusionTestCase {
+public class AutoCompleteTest extends FunctionalTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(AutoCompleteTest.class);
 

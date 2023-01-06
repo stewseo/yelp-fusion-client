@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Center;
 import org.assertj.core.api.Assertions;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SearchBusinessTest extends YelpFusionTestCase {
+public class SearchBusinessTest extends FunctionalTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchBusinessTest.class);
 
@@ -95,8 +95,9 @@ public class SearchBusinessTest extends YelpFusionTestCase {
 
         assertThat(resp.total()).isInstanceOf(Integer.class);
 
-        Assertions.assertThat(center.latitude()).isInstanceOf(Double.class);
-        Assertions.assertThat(center.longitude()).isInstanceOf(Double.class);
+        assertThat(center.latitude()).isInstanceOf(Double.class);
+
+        assertThat(center.longitude()).isInstanceOf(Double.class);
 
         resp.businesses().forEach(this::testSearchBusiness);
     }

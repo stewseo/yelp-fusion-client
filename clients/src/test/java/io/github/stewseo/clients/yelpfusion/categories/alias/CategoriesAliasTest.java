@@ -14,6 +14,7 @@ public class CategoriesAliasTest {
 
     private final CategoriesAliasRequest categoriesAliasRequest = CategoriesAliasRequest.of(c -> c
             .alias("sushi"));
+
     @Test
     public void testCategoriesAliasEndpoint() {
 

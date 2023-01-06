@@ -1,7 +1,8 @@
-package io.github.stewseo.clients.testcase;
+package io.github.stewseo.clients.yelpfusion.testcases;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
+import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Coordinates;
 import io.github.stewseo.clients.yelpfusion._types.Location;
@@ -13,15 +14,17 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public abstract class YelpFusionTestCase {
+// generates instances of YelpFusionResult and TemporalDataResult
+public abstract class FunctionalTestCase {
 
     private static final String state = "CA";
 
     private static final String country = "USA";
 
+
     public final YelpFusionServiceCtx yelpFusionServiceCtx;
 
-    public final YelpFusionJsonTestCase jsonTestCase;
+    public final TestJson testJson;
 
     private static int numCities;
 
@@ -29,9 +32,9 @@ public abstract class YelpFusionTestCase {
 
     private static TemporalDataService temporalDataService;
 
-    protected YelpFusionTestCase() {
+    protected FunctionalTestCase() {
         yelpFusionServiceCtx = new YelpFusionServiceCtx();
-        jsonTestCase = new YelpFusionJsonTestCase();
+        testJson = new TestJson();
         temporalDataService = new TemporalDataService();
         list = loadCaliforniaCities().toList();
         numCities = list.size();
@@ -40,7 +43,7 @@ public abstract class YelpFusionTestCase {
     private static Stream<BreinTemporalDataResult> loadCaliforniaCities() {
 
         return Stream.of("San Francisco", "Oakland", "San Jose", "Carmel", "Monterey", "Napa", "Sonoma", "Los Angeles", "San Diego", "Santa Barbara")
-                .map(YelpFusionTestCase::locationByCity);
+                .map(FunctionalTestCase::locationByCity);
 
     }
 
@@ -97,7 +100,7 @@ public abstract class YelpFusionTestCase {
         // largest cities in the US
         final Stream<String> cities = Stream.of("NYC", "Las Vegas", "Honolulu", "Phoenix", "San Antonio", "Dallas", "Chicago", "Portland", "Minneapolis", "Seattle", "New Orleans", "Boston", "Philadelphia", "Miami");
 
-        return Stream.concat(cities, citiesInCa).map(YelpFusionTestCase::locationByCity);
+        return Stream.concat(cities, citiesInCa).map(FunctionalTestCase::locationByCity);
 
     }
 

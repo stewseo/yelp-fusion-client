@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessMatchTest extends YelpFusionTestCase {
+public class BusinessMatchTest extends FunctionalTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(BusinessMatchTest.class);
 
@@ -20,6 +20,7 @@ public class BusinessMatchTest extends YelpFusionTestCase {
             .address1("625+polk+st")
             .state("ca")
             .country("US")
+            .postal_code("94115")
             .match_threshold("none")
     );
 

@@ -11,14 +11,14 @@ import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.indices.PutIndicesSettingsRequest;
 import co.elastic.clients.json.JsonData;
-import io.github.stewseo.clients.testcase.YelpFusionTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class WithJsonTest extends YelpFusionTestCase {
+public class WithJsonTest extends FunctionalTestCase {
 
     @Test
     public void testRequestWithGenericValueBody() {

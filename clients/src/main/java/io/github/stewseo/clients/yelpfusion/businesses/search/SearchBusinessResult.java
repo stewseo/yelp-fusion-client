@@ -16,6 +16,7 @@ import io.github.stewseo.clients.yelpfusion._types.Location;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 @JsonpDeserializable

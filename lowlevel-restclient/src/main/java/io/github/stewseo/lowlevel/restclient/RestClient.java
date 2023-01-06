@@ -67,16 +67,13 @@ public class RestClient implements Closeable, RestClientInterface {
 
     private final boolean compressionEnabled;
 
-    private final boolean metaHeaderEnabled;
-
     RestClient(
             CloseableHttpAsyncClient client,
             Header[] defaultHeaders,
             HttpHost httpHost,
             String pathPrefix,
             boolean strictDeprecationMode,
-            boolean compressionEnabled,
-            boolean metaHeaderEnabled
+            boolean compressionEnabled
     ) {
         this.client = client;
         this.defaultHeaders = Collections.unmodifiableList(Arrays.asList(defaultHeaders));
@@ -84,7 +81,6 @@ public class RestClient implements Closeable, RestClientInterface {
         this.pathPrefix = pathPrefix;
         this.warningsHandler = strictDeprecationMode ? WarningsHandler.STRICT : WarningsHandler.PERMISSIVE;
         this.compressionEnabled = compressionEnabled;
-        this.metaHeaderEnabled = metaHeaderEnabled;
     }
 
     public static RestClientBuilder builder(String apiKey) {
@@ -110,12 +106,6 @@ public class RestClient implements Closeable, RestClientInterface {
             case 502, 503, 504 -> true;
             default -> false;
         };
-    }
-
-    private static void addSuppressedException(Exception suppressedException, Exception currentException) {
-        if (suppressedException != null && suppressedException != currentException) {
-            currentException.addSuppressed(suppressedException);
-        }
     }
 
     static URI buildUri(String pathPrefix, String path, Map<String, String> params) {
@@ -276,10 +266,10 @@ public class RestClient implements Closeable, RestClientInterface {
 
     public Response performRequest(Request request) throws IOException {
         InternalRequest internalRequest = new InternalRequest(request);
-        return performRequest(httpHost, internalRequest, null);
+        return performRequest(httpHost, internalRequest);
     }
 
-    private Response performRequest(final HttpHost httpHost, final InternalRequest request, Exception previousException)
+    private Response performRequest(final HttpHost httpHost, final InternalRequest request)
             throws IOException {
 
         RequestContext context = request.createContextForNextAttempt(httpHost);
@@ -291,7 +281,6 @@ public class RestClient implements Closeable, RestClientInterface {
         } catch (Exception e) {
             RequestLogger.logFailedRequest(logger, request.httpRequest, httpHost, e);
             Exception cause = extractAndWrapCause(e);
-            addSuppressedException(previousException, cause);
             if (cause instanceof IOException) {
                 throw (IOException) cause;
             }
@@ -306,8 +295,6 @@ public class RestClient implements Closeable, RestClientInterface {
         if (responseOrResponseException.responseException == null) {
             return responseOrResponseException.response;
         }
-
-        addSuppressedException(previousException, responseOrResponseException.responseException);
 
         throw responseOrResponseException.responseException;
     }
@@ -465,7 +452,6 @@ public class RestClient implements Closeable, RestClientInterface {
          * Tracks an exception, which caused a retry hence we should not return yet to the caller
          */
         void trackFailure(Exception e) {
-            addSuppressedException(this.exception, e);
             this.exception = e;
         }
     }
