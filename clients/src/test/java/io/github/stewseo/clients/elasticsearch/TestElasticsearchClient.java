@@ -29,7 +29,6 @@ public class TestElasticsearchClient extends ApiClient<ElasticsearchTransport, T
 //        co.elastic.clients.transport.ElasticsearchTransport trans = new RestClientTransport(restClient, new JacksonJsonpMapper());
 //
 //        elasticsearchClient = new ElasticsearchClient(trans, null);
-
     }
 
     public TestElasticsearchClient(ElasticsearchTransport transport, @Nullable TransportOptions transportOptions) {

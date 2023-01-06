@@ -13,6 +13,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetAllCategoriesTest extends YelpFusionTestCase {
 
+    private final CategoriesRequest categoriesRequest = CategoriesRequest.of(c -> c
+            .all(1)
+            .locale("us_En"));
+    @Test
+    public void testCategoriesEndpoint() {
+
+        assertThat("v3/categories")
+                .isEqualTo(CategoriesRequest._ENDPOINT.requestUrl(categoriesRequest));
+
+    }
+
     @Test
     public void getAllCategoriesTest() throws Exception {
 

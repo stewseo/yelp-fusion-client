@@ -18,7 +18,7 @@ plugins {
  *****************************************************************************/
 
 group = 'io.github.stewseo'
-version = '1.7.4'
+version = '1.7.5'
 
 /*****************************************************************************
  *         packaging                                                         *
@@ -33,7 +33,7 @@ java {
 
 jar {
 
-    archiveFileName.set(project.name)
+    archiveFileName.set(project.name + ".jar")
     archiveVersion.set(version)
 
     manifest {
@@ -127,7 +127,6 @@ dependencies {
     configurations.all {
         exclude group: "commons-logging", module: "commons-logging"
     }
-
 
     compileOnly buildLibs.spotbugs
     compileOnly buildLibs.javax.annotation.api

@@ -12,17 +12,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CategoriesAliasTest {
     private static final Logger logger = LoggerFactory.getLogger(CategoriesAliasTest.class);
 
+    private final CategoriesAliasRequest categoriesAliasRequest = CategoriesAliasRequest.of(c -> c
+            .alias("sushi"));
+    @Test
+    public void testCategoriesAliasEndpoint() {
+
+        assertThat("v3/categories/sushi")
+                .isEqualTo(CategoriesAliasRequest._ENDPOINT.requestUrl(categoriesAliasRequest));
+
+    }
+
     @Test
     void categoriesAliasTest() throws Exception {
 
         // Specify the Yelp category alias
         YelpFusionClient client = YelpFusionClient.createClient(System.getenv("YELP_API_KEY"));
 
-        CategoriesAliasResponse getCategoriesAliasResponse = client.categories().alias(c -> c.alias("sushi"));
+        CategoriesAliasResponse getCategoriesAliasResponse = client.categories().alias(categoriesAliasRequest);
 
         testCategoriesResponse(getCategoriesAliasResponse);
 
-        Category category = getCategoriesAliasResponse.category();
     }
 
     @Test
@@ -30,18 +39,16 @@ public class CategoriesAliasTest {
 
         YelpFusionAsyncClient asyncClient = YelpFusionAsyncClient.createAsyncClient(System.getenv("YELP_API_KEY"));
 
-        CategoriesAliasResponse getCategoriesAliasResponse = asyncClient.categories().categoriesAlias(c -> c.alias("sushi"))
+        asyncClient.categories().categoriesAlias(categoriesAliasRequest)
                 .whenComplete((response, exception) -> {
                     if (exception != null) {
                         logger.error("Failed", exception);
                     } else {
+                        testCategoriesResponse(response);
                         logger.info("Successful");
                     }
                 }).get();
 
-        testCategoriesResponse(getCategoriesAliasResponse);
-
-        Category category = getCategoriesAliasResponse.category();
     }
 
     private void testCategoriesResponse(CategoriesAliasResponse getCategoriesAliasResponse) {

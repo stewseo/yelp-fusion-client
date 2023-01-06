@@ -68,4 +68,12 @@ public class BusinessMatchTest extends YelpFusionTestCase {
 
         assertThat(businessMatchResponse).isNotNull();
     }
+    @Test
+    public void testBusinessMatchEndpoint() {
+
+        assertThat("v3/businesses/matches")
+                .isEqualTo(BusinessMatchRequest._ENDPOINT.requestUrl(businessMatchRequest));
+
+    }
+
 }

@@ -1,8 +1,6 @@
 package io.github.stewseo.clients.transport.restclient;
 
 
-import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
-import io.github.stewseo.clients.yelpfusion._types.YelpFusionException;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.NdJsonpSerializable;
@@ -16,6 +14,8 @@ import io.github.stewseo.clients.transport.endpoints.BooleanEndpoint;
 import io.github.stewseo.clients.transport.endpoints.BooleanResponse;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.MissingRequiredPropertyException;
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+import io.github.stewseo.clients.yelpfusion._types.YelpFusionException;
 import io.github.stewseo.lowlevel.restclient.Cancellable;
 import io.github.stewseo.lowlevel.restclient.Request;
 import io.github.stewseo.lowlevel.restclient.RequestOptions;
@@ -28,8 +28,6 @@ import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
@@ -42,16 +40,15 @@ import java.util.concurrent.CompletableFuture;
 
 public class YelpRestClientTransport implements YelpFusionTransport {
 
-    private static final Logger logger = LoggerFactory.getLogger(YelpRestClientTransport.class);
     private final RestClientInterface restClientInterface;
     private final JsonpMapper mapper;
     private final YelpRestTransportOptions transportOptions;
-    private co.elastic.clients.json.JsonpMapper esMapper;
+
+    private JsonpMapper esMapper;
 
     public YelpRestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper, TransportOptions options) { // TransportOptions
         this.restClientInterface = restClientInterface;
         this.mapper = mapper;
-        String optionsString = null;
         if (options == null) {
             transportOptions = YelpRestTransportOptions.initialOptions();
         } else {

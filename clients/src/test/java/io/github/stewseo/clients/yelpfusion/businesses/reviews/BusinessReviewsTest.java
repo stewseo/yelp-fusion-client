@@ -1,27 +1,23 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BusinessReviewsTest extends YelpFusionTestCase {
 
-    private static final Logger logger = LoggerFactory.getLogger(BusinessReviewsTest.class);
+    final BusinessReviewsRequest request = BusinessReviewsRequest.of(a -> a.id("brendas-french-soul-food-san-francisco"));
 
-    // "id": "V7lXZKBDzScDeGB8JmnzSA",
-    // "alias": "katzs-delicatessen-new-york",
+    @Test
+    public void testBusinessReviewsEndpoint() {
+
+        assertThat("v3/businesses/brendas-french-soul-food-san-francisco/reviews")
+                .isEqualTo(BusinessReviewsRequest._ENDPOINT.requestUrl(request));
+    }
 
     @Test
     public void businessReviewsByIdTest() throws Exception {
-
-        final String id = "V7lXZKBDzScDeGB8JmnzSA";
-
-        final BusinessReviewsRequest request = BusinessReviewsRequest.of(a -> a.id(id));
 
         BusinessReviewsResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessReviews(request).get();
 
@@ -31,10 +27,6 @@ public class BusinessReviewsTest extends YelpFusionTestCase {
 
     @Test
     public void businessReviewsByAliasTest() throws Exception {
-
-        String alias = "katzs-delicatessen-new-york";
-
-        BusinessReviewsRequest request = BusinessReviewsRequest.of(a -> a.alias(alias));
 
         BusinessReviewsResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessReviews(request).get();
 

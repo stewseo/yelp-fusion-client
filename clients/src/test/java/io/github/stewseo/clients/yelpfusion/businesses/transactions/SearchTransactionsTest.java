@@ -3,6 +3,7 @@ package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 import io.github.stewseo.clients.testcase.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,14 @@ public class SearchTransactionsTest extends YelpFusionTestCase {
             .transaction_type("delivery")
             .categories("restaurants")
             .price(1));
+
+    @Test
+    public void testSearchTransactionsEndpoint() {
+
+        assertThat("v3/transactions/delivery/search")
+                .isEqualTo(SearchTransactionRequest._ENDPOINT.requestUrl(searchTransactionRequest));
+
+    }
 
     @Test
     void searchTransactionsTest() throws Exception {

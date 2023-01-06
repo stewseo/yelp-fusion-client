@@ -110,7 +110,6 @@ public class ErrorCause implements JsonpSerializable {
         for (Map.Entry<String, JsonData> item0 : this.metadata.entrySet()) {
             generator.writeKey(item0.getKey());
             item0.getValue().serialize(generator, mapper);
-
         }
 
         if (this.type != null) {

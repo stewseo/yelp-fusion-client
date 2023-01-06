@@ -11,7 +11,6 @@ public abstract class ElasticsearchTestCase {
 
     public final ElasticsearchService elasticsearchService;
 
-
     public List<StringTermsBucket> termsAggregationByCategory;
 
     public static int docsCount;

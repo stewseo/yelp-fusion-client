@@ -64,14 +64,14 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifact sourcesJar
-            artifact javadocJar
+//            artifact sourcesJar
+//            artifact javadocJar
 
             pom {
-                name = 'YelpFusionJavaClient'
-                artifactId = 'yelp-fusion-client'
-                setGroupId "io.github.stewseo"
-                packaging = 'jar'
+                name = POM_NAME
+                artifactId = POM_ARTIFACT_ID
+                setGroupId POM_GROUP_ID
+                packaging = POM_PACKAGING
                 description = 'java client that provides strongly typed requests and responses for all Yelp Fusion APIS. Handles http transport concerns, serializing to JSON and deserializing from JSON.'
                 url = 'https://github.com/stewseo/yelp-fusion-client'
                 licenses {
@@ -81,15 +81,15 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/stewseo/yelp-fusion-client.git'
-                    developerConnection = 'scm:git:ssh://github.com/stewseo/stewseo.github.io.git'
-                    url = 'https://github.com/stewseo/yelp-fusion-client.git'
+                    connection = POM_SCM_DEV_CONNECTION
+                    developerConnection = POM_SCM_DEV_CONNECTION
+                    url = POM_SCM_URL
                 }
                 developers {
                     developer {
-                        id = 'stewseo'
-                        name = 'Stew seo'
-                        email = 'stewart.s.seo@gmail.com'
+                        id = DEV_ID
+                        name = DEV_NAME
+                        email = DEV_EMAIL
                     }
                 }
             }
