@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetAllCategoriesTest extends FunctionalTestCase {
+public class CategoriesTest extends FunctionalTestCase {
 
     private final CategoriesRequest categoriesRequest = CategoriesRequest.of(c -> c
             .all(1)

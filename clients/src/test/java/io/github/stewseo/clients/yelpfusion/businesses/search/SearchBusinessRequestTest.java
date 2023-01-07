@@ -1,22 +1,25 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.EndpointTestCase;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
+import java.io.StringWriter;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchBusinessRequestTest implements RequestTestCase<SearchBusinessRequest> {
+class SearchBusinessRequestTest extends YelpFusionRequestTestCase<SearchBusinessRequest> {
 
     private final String price = "price";
 
+    private final double latitude = 39.0, longitude = -122.0;
     private final int open_at = 1;
-
     private final boolean open_now = true;
 
     private final Coordinates coordinates = Coordinates.of(c -> c
@@ -50,6 +53,12 @@ class SearchBusinessRequestTest implements RequestTestCase<SearchBusinessRequest
     public Endpoint<SearchBusinessRequest, ?, ?> endpoint() {
         return SearchBusinessRequest._ENDPOINT;
     }
+
+    @Override
+    public JsonGenerator generator() {
+        return mapper.jsonProvider().createGenerator(new StringWriter());
+    }
+
     @Test
     public void testOf() {
         assertThat(searchBusinessRequest.locale()).isEqualTo(locale);
@@ -70,19 +79,16 @@ class SearchBusinessRequestTest implements RequestTestCase<SearchBusinessRequest
         assertThat(searchBusinessRequest.attributes()).isEqualTo(attributes);
     }
 
-    private final String expected = "{" +
-            "\"term\":[\"term\"]," +
-            "\"location\":[\"location\"]," +
-            "\"categories\":{\"alias\":\"alias\"},\"coordinates\":{\"latitude\":44.0,\"longitude\":-122.0},\"radius\":20000," +
-            "\"offset\":5," +
-            "\"sort_by\":\"sort_by\"," +
-            "\"limit\":50,\"open_at\":1," +
-            "\"price\":\"price\"," +
-            "\"attributes\":[{\"attributes\":\"attribute\"}]}";
+    private final String expected = "" +
+            "{\"term\":[\"term\"],\"location\":[\"location\"]," +
+            "\"categories\":{\"alias\":\"alias\"},\"coordinates\":{\"latitude\":39.0,\"longitude\":-122.0}," +
+            "\"radius\":20000,\"offset\":5,\"sort_by\":\"sort_by\",\"limit\":50," +
+            "\"open_at\":1,\"price\":\"price\",\"attributes\":[{\"attributes\":\"attribute\"}]}";
 
     @Test
     public void testSerialize() {
-        assertThat(searchBusinessRequest.toString()).isEqualTo(expected);
+        JsonGenerator generator = generator();
+
         searchBusinessRequest.serialize(generator, mapper);
 
         assertThat(searchBusinessRequest.toString()).isEqualTo(expected);
@@ -90,7 +96,7 @@ class SearchBusinessRequestTest implements RequestTestCase<SearchBusinessRequest
 
     @Test
     public void testSerializeInternal() {
-
+        JsonGenerator generator = generator();
         generator.writeStartObject();
         searchBusinessRequest.serializeInternal(generator, mapper);
         generator.writeEnd();

@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
+import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
@@ -18,6 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
+@JsonpDeserializable
 public class SearchTransactionResponse implements JsonpSerializable {
 
     private final List<SearchBusinessResult> businesses;

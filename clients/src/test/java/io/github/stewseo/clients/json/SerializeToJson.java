@@ -1,14 +1,11 @@
 package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.JsonTestCase;
+import io.github.stewseo.clients.json.testcases.ToJson;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
-import java.io.StringWriter;
-
 public interface SerializeToJson extends JsonTestCase {
-
-    JsonGenerator generator = mapper.jsonProvider().createGenerator(new StringWriter());
 
     // test instantiating objects using Builder setters
     @Test
@@ -21,5 +18,7 @@ public interface SerializeToJson extends JsonTestCase {
     //  test object's serializeInternal methods
     @Test
     void testSerializeInternal();
+
+    JsonGenerator generator();
 
 }

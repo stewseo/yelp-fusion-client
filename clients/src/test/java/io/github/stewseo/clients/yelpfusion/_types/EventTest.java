@@ -1,10 +1,18 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion.testcases.ResultTestCase;
+import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonParser;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EventTest {
+class EventTest implements ResultTestCase {
 
     private final Integer attending_count = 1, interested_count = 1;
 
@@ -38,8 +46,9 @@ class EventTest {
             .time_start(time_start)
             .image_url(image_url));
 
-    @Test
-    void setUpEventDeserializer() {
+    @Override
+    public JsonGenerator generator() {
+        return mapper.jsonProvider().createGenerator(new StringWriter());
     }
 
     @Test
@@ -62,13 +71,58 @@ class EventTest {
         assertThat(event.image_url()).isEqualTo(image_url);
     }
 
+    private final String expected = "{" +
+            "\"category\":\"category\"," +
+            "\"description\":\"description\"," +
+            "\"event_site_url\":\"event_site_url\"," +
+            "\"id\":\"id\"," +
+            "\"name\":\"name\"," +
+            "\"tickets_url\":\"tickets_url\"," +
+            "\"image_url\":\"image_url\"," +
+            "\"time_end\":\"time_end\"," +
+            "\"time_start\":\"time_start\"," +
+            "\"attending_count\":1,\"interested_count\":1," +
+            "\"is_canceled\":true," +
+            "\"is_free\":true," +
+            "\"is_official\":true," +
+            "\"cost\":1.0,\"cost_max\":1.0," +
+            "\"latitude\":1.0,\"longitude\":1.0,\"location\":{\"city\":\"San Francisco\"}}";
+
     @Test
     public void testSerialize() {
-
+        JsonGenerator generator = generator();
+        event.serialize(generator, mapper);
+        assertThat(event.toString()).isEqualTo(expected);
     }
 
     @Test
     public void testSerializeInternal() {
+        JsonGenerator generator = generator();
+        generator.writeStartObject();
+        event.serializeInternal(generator, mapper);
+        generator.writeEnd().close();
+        assertThat(event).isNotNull();
+    }
 
+    @Override
+    public JsonParser parser() {
+        InputStream content = IOUtils.toInputStream(event.toString(), StandardCharsets.UTF_8);
+        return mapper.jsonProvider().createParser(content);
+    }
+    @Test
+    public void testDeserialize() {
+        assertThat(Event._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
+
+    }
+
+    @Test
+    public void testDeserializer() {
+        InputStream content = IOUtils.toInputStream(event.toString(), StandardCharsets.UTF_8);
+
+        JsonParser parser = mapper.jsonProvider().createParser(content);
+
+        Event searchBusinessRes = Event._DESERIALIZER.deserialize(parser, mapper);
+
+        assertThat(searchBusinessRes).isNotNull();
     }
 }

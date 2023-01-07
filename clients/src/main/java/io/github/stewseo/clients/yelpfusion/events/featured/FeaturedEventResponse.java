@@ -5,12 +5,13 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
+import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import jakarta.json.stream.JsonGenerator;
 
-import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
@@ -97,15 +98,13 @@ public class FeaturedEventResponse implements JsonpSerializable {
     }
 
     //----------------------------- deserialize -----------------------------------//
-    public static final JsonpDeserializer<FeaturedEventResponse> _DESERIALIZER = createFeaturedEventResponseDeserializer();
 
-    protected static JsonpDeserializer<FeaturedEventResponse> createFeaturedEventResponseDeserializer() {
+    public static final JsonpDeserializer<FeaturedEventResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            FeaturedEventResponse::setFeaturedEventsResponseDeserializer);
 
-        JsonpDeserializer<List<Event>> valueDeserializer = JsonpDeserializer
-                .arrayDeserializer(Event._DESERIALIZER);
-
-        return JsonpDeserializer.of(valueDeserializer.acceptedEvents(), (parser, mapper, event) -> new Builder()
-                .event(valueDeserializer.deserialize(parser, mapper, event).get(0)).build());
+    protected static void setFeaturedEventsResponseDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::event, Event._DESERIALIZER, "event");
+        op.add(Builder::business_id, JsonpDeserializer.stringDeserializer(), "business_id");
     }
 
 }

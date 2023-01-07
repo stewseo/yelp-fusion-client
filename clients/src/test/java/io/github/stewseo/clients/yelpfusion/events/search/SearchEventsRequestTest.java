@@ -1,15 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
+import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
-import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
+import java.io.StringWriter;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchEventsRequestTest extends FunctionalTestCase implements RequestTestCase<SearchEventsRequest> {
+class SearchEventsRequestTest extends YelpFusionRequestTestCase<SearchEventsRequest> {
 
     private final String sort_on = "sort_on";
 
@@ -18,6 +21,8 @@ class SearchEventsRequestTest extends FunctionalTestCase implements RequestTestC
     private final boolean is_free = true;
 
     private final List<String> excludedEvents = List.of("excludedEvent1", "excludedEvent2"), categories = List.of("categories");
+
+    JsonpMapper mapper = new JacksonJsonpMapper();
 
     private final SearchEventsRequest searchEventsRequest = SearchEventsRequest.of(e -> e
             .locale(locale)
@@ -42,6 +47,12 @@ class SearchEventsRequestTest extends FunctionalTestCase implements RequestTestC
 
         return SearchEventsRequest._ENDPOINT;
     }
+
+    @Override
+    public JsonGenerator generator() {
+        return mapper.jsonProvider().createGenerator(new StringWriter());
+    }
+
     @Test
     public void testOf() {
 
@@ -77,7 +88,7 @@ class SearchEventsRequestTest extends FunctionalTestCase implements RequestTestC
 
     @Test
     public void testSerialize() {
-
+        JsonGenerator generator = generator();
         searchEventsRequest.serialize(generator, mapper);
 
         assertThat(searchEventsRequest.toString()).isEqualTo(expected);
@@ -85,7 +96,7 @@ class SearchEventsRequestTest extends FunctionalTestCase implements RequestTestC
 
     @Test
     public void testSerializeInternal() {
-
+        JsonGenerator generator = generator();
         generator.writeStartObject();
         searchEventsRequest.serializeInternal(generator, mapper);
         generator.writeEnd();

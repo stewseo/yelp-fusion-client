@@ -10,7 +10,10 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.User;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import jakarta.json.stream.JsonGenerator;
+
+import java.util.function.Function;
 
 @JsonpDeserializable
 public class BusinessReview implements JsonpSerializable {
@@ -32,28 +35,32 @@ public class BusinessReview implements JsonpSerializable {
         this.user = builder.user;
     }
 
+    public static BusinessReview of(Function<BusinessReview.Builder, ObjectBuilder<BusinessReview>> fn) {
+        return fn.apply(new BusinessReview.Builder()).build();
+    }
+
     // getters
-    public String id() {
+    public final String id() {
         return id;
     }
 
-    public String text() {
+    public final String text() {
         return text;
     }
 
-    public String url() {
+    public final String url() {
         return url;
     }
 
-    public Double rating() {
+    public final Double rating() {
         return rating;
     }
 
-    public String time_created() {
+    public final String time_created() {
         return time_created;
     }
 
-    public User user() {
+    public final User user() {
         return user;
     }
 

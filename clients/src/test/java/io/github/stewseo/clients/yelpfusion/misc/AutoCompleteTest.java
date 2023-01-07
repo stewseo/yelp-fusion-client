@@ -1,10 +1,8 @@
-package io.github.stewseo.clients.yelpfusion.autocomplete;
+package io.github.stewseo.clients.yelpfusion.misc;
 
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
-import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

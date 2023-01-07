@@ -18,9 +18,14 @@ class UnionDeserializerTest implements DeserializeFromJson {
         assertThat(propertyJsonpDeserializer.nativeEvents().toString()).isEqualTo("[VALUE_STRING]");
     }
 
+    @Override
+    public JsonParser parser() {
+        return null;
+    }
     @Test
-    void acceptedEvents() {
+    public void testDeserializer() {
         assertThat(propertyJsonpDeserializer.acceptedEvents().toString()).isEqualTo("[VALUE_STRING]");
+
     }
 
     @Test

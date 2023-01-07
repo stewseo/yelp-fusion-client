@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
+import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import io.github.stewseo.clients.json.JsonpDeserializer;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@JsonpDeserializable
 public class SearchTransactionRequest extends RequestBase implements JsonpSerializable {
 
     public static final JsonpDeserializer<SearchTransactionRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,

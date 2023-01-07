@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 // generates instances of YelpFusionResult and TemporalDataResult
 public abstract class FunctionalTestCase {
 
+
     private static final String state = "CA";
 
     private static final String country = "USA";

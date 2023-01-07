@@ -49,11 +49,27 @@ public class FeaturedEventRequest extends RequestBase implements JsonpSerializab
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
+        serializeInternal(generator, mapper);
+        generator.writeEnd();
+    }
+
+    protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if (this.location != null) {
             generator.writeKey("location");
             generator.write(this.location);
         }
-        generator.writeEnd();
+        if (this.latitude != null) {
+            generator.writeKey("latitude");
+            generator.write(this.latitude);
+        }
+        if (this.longitude != null) {
+            generator.writeKey("longitude");
+            generator.write(this.longitude);
+        }
+        if (this.locale != null) {
+            generator.writeKey("locale");
+            generator.write(this.locale);
+        }
     }
 
     @Override
@@ -61,10 +77,6 @@ public class FeaturedEventRequest extends RequestBase implements JsonpSerializab
         return JsonpUtils.toString(this);
     }
 
-    // getters
-    // create with Function
-    // serialize
-    // Builder
     public static class Builder extends AbstractBuilder<Builder>
             implements
             ObjectBuilder<FeaturedEventRequest> {
