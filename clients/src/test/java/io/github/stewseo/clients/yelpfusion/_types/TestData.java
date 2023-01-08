@@ -19,13 +19,9 @@ public class TestData {
     public static final int RADIUS = 20000;
     public static final int PRICE = 3;
     public static final int OPEN_AT = 1;
-
     public static final double LATITUDE = 37.7829;
     public static final double LONGITUDE = -122.4189;
-
     public static final boolean OPEN_NOW = true;
-
-
     public static final List<Attribute> ATTRIBUTES = List.of(Attribute.of(a -> a.attribute("attribute")));
 
     public static final Event EVENT = Event.of(e -> e

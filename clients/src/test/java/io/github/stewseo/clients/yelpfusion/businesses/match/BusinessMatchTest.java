@@ -41,7 +41,7 @@ public class BusinessMatchTest extends FunctionalTestCase {
     @Test
     public void businessMatchSendRequestASyncTest() throws Exception {
 
-        yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessMatch(businessMatchRequest
+        yelpFusionService.yelpFusionAsyncClient().businesses().businessMatch(businessMatchRequest
                 ).whenComplete((response, exception) -> {
                     if (exception != null) {
                         logger.error("no businesses matched : ", exception);

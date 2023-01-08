@@ -7,6 +7,7 @@ import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Coordinates;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
+import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTestService;
 import io.github.stewseo.temporaldata.service.TemporalDataService;
 
 import java.util.List;
@@ -22,8 +23,7 @@ public abstract class FunctionalTestCase {
 
     private static final String country = "USA";
 
-
-    public final YelpFusionServiceCtx yelpFusionServiceCtx;
+    public final YelpFusionTestService yelpFusionService;
 
     public final TestJson testJson;
 
@@ -34,7 +34,7 @@ public abstract class FunctionalTestCase {
     private static TemporalDataService temporalDataService;
 
     protected FunctionalTestCase() {
-        yelpFusionServiceCtx = new YelpFusionServiceCtx();
+        yelpFusionService = new YelpFusionTestService();
         testJson = new TestJson();
         temporalDataService = new TemporalDataService();
         list = loadCaliforniaCities().toList();

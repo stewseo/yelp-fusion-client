@@ -44,8 +44,8 @@ public class SearchBusinessTest extends FunctionalTestCase {
 
             SearchBusinessRequest searchBusinessRequest = buildSearchBusinessRequest(locationResult);
 
-            CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionServiceCtx
-                    .getYelpFusionAsyncClient()
+            CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionService
+                    .yelpFusionAsyncClient()
                     .businesses()
                     .search(searchBusinessRequest
                             ,

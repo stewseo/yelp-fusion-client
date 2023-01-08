@@ -52,7 +52,7 @@ public class AutoCompleteTest extends FunctionalTestCase {
     @Test
     public void testAutoCompleteAsyncClient() throws Exception {
 
-        yelpFusionServiceCtx.getYelpFusionAsyncClient().autocomplete(autoCompleteRequest)
+        yelpFusionService.yelpFusionAsyncClient().autocomplete(autoCompleteRequest)
                 .whenComplete((response, exception) -> {
                     if (exception != null) {
                         logger.error("Failed " + exception);
@@ -73,7 +73,7 @@ public class AutoCompleteTest extends FunctionalTestCase {
 
         testAutocompleteResponse(autoCompleteResponse);
 
-        yelpFusionServiceCtx.getYelpFusionAsyncClient().autocomplete(autoCompleteRequest)
+        yelpFusionService.yelpFusionAsyncClient().autocomplete(autoCompleteRequest)
                 .whenComplete((response, exception) -> {
                     if (exception != null) {
                         logger.error("Failed " + exception);

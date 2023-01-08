@@ -63,7 +63,7 @@ public class SearchEventsTest extends FunctionalTestCase {
 
         try {
             // execute the request using the yelpFusionServiceCtx.getYelpFusionAsyncClient()
-            future = yelpFusionServiceCtx.getYelpFusionAsyncClient().events()
+            future = yelpFusionService.yelpFusionAsyncClient().events()
                     .search(eventSearchRequest)
                     .whenComplete((response, exception) -> {
 

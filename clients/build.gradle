@@ -21,8 +21,11 @@ javadoc {
 
 dependencies {
 
-    api project(":lowlevel-restclient")
-    api project(":temporaldata-service")
+    api files("../lib/lowlevel-restclient.jar")
+    api files("../lib/temporaldata-service.jar")
+
+//    api project(":lowlevel-restclient")
+//    api project(":temporaldata-service")
 
     implementation buildLibs.elasticsearch.java
 
@@ -48,9 +51,11 @@ dependencies {
 
 test {
     filter {
-        excludeTestsMatching "io.github.stewseo.clients.json.*"
-        excludeTestsMatching "io.github.stewseo.clients.elasticsearch.*"
-        excludeTestsMatching "io.github.stewseo.clients.util.*"
+//        excludeTestsMatching "io.github.stewseo.clients.json.*"
+//        excludeTestsMatching "io.github.stewseo.clients.elasticsearch.*"
+//        excludeTestsMatching "io.github.stewseo.clients.util.*"
+//        excludeTestsMatching "io.github.stewseo.clients.yelpfusion.*"
+
     }
 }
 

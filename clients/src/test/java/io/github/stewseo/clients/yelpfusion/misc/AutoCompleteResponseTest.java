@@ -105,11 +105,6 @@ public class AutoCompleteResponseTest extends YelpFusionResponseTestCase<AutoCom
     }
 
     @Test
-    public void testBuildWithJson() {
-
-    }
-
-    @Test
     public void testBuilder() {
 
         AutoCompleteResponse.Builder builder = new AutoCompleteResponse.Builder().terms(Term.of(t->t.text("termValue")));

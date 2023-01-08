@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 
 public class DateTimeTest extends TestJson {
@@ -120,6 +121,9 @@ public class DateTimeTest extends TestJson {
 
     @Test
     void ofEpochMilli() {
+        DateTime dateTime = DateTime.ofEpochMilli(1L);
+        DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().toFormatter();
+        dateTime = DateTime.ofEpochMilli(1L, dateTimeFormatter);
     }
 
     @Test

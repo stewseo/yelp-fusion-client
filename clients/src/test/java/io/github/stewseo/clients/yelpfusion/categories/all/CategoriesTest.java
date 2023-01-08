@@ -40,7 +40,7 @@ public class CategoriesTest extends FunctionalTestCase {
     @Test
     public void getAllCategoriesAsyncTest() throws Exception {
 
-        CompletableFuture<CategoriesResponse> future = yelpFusionServiceCtx.getYelpFusionAsyncClient().categories().all(c -> c.locale("en_US"));
+        CompletableFuture<CategoriesResponse> future = yelpFusionService.yelpFusionAsyncClient().categories().all(c -> c.locale("en_US"));
 
         List<Category> categories = future.get().categories();
 

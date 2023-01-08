@@ -62,7 +62,7 @@ public class BusinessDetailsTest extends FunctionalTestCase {
         CompletableFuture<BusinessDetails> future;
 
         try {
-            future = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessDetails(b -> b.id(id))
+            future = yelpFusionService.yelpFusionAsyncClient().businesses().businessDetails(b -> b.id(id))
                     .whenComplete((response, exception) -> {
 
                         if (exception != null) {

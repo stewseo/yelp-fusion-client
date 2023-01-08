@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 public class ListBuilder<T, B> implements ObjectBuilder<List<T>> {
 
     private final List<T> list = new ArrayList<>();
+
     private final Supplier<B> builderCtor;
 
     public static <T, B extends ObjectBuilder<T>> ListBuilder<T, B> of(Supplier<B> builderCtor) {

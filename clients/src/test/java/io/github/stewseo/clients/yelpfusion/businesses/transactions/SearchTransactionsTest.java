@@ -39,7 +39,7 @@ public class SearchTransactionsTest extends FunctionalTestCase {
     @Test
     void searchTransactionsAsyncTest() throws Exception {
 
-        YelpFusionAsyncClient asyncClient = yelpFusionServiceCtx.getYelpFusionAsyncClient();
+        YelpFusionAsyncClient asyncClient = yelpFusionService.yelpFusionAsyncClient();
 
         SearchTransactionResponse searchTransactionResponse = asyncClient.businesses()
                 .searchTransaction(searchTransactionRequest).get();

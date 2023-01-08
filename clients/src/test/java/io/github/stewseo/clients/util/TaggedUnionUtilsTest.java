@@ -4,21 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WithJsonObjectBuilderBaseTest {
+class TaggedUnionUtilsTest {
 
     @Test
-    void self() {
+    void get() {
     }
 
     @Test
-    void withJson() {
-    }
-
-    @Test
-    void testSelf() {
-    }
-
-    @Test
-    void testWithJson() {
+    void ndJsonIterator() {
     }
 }

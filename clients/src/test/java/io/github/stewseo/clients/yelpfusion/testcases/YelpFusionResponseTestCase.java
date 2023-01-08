@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.testcases;
 
-import io.github.stewseo.clients.json.jackson.JacksonMapperTest;
 import io.github.stewseo.clients.json.testcases.TestJson;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
@@ -19,8 +18,6 @@ public abstract class YelpFusionResponseTestCase<ResponseT> implements ResponseT
     public JsonGenerator generator() {
         return mapper.jsonProvider().createGenerator(new StringWriter());
     }
-
-    public abstract void testBuildWithJson();
 
     public abstract void testBuilder();
 }

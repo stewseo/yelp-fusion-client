@@ -19,7 +19,7 @@ public class BusinessReviewsTest extends FunctionalTestCase {
     @Test
     public void businessReviewsByIdTest() throws Exception {
 
-        BusinessReviewsResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessReviews(request).get();
+        BusinessReviewsResponse response = yelpFusionService.yelpFusionAsyncClient().businesses().businessReviews(request).get();
 
         response.reviews().forEach(this::testBusinessReviews);
 
@@ -28,7 +28,7 @@ public class BusinessReviewsTest extends FunctionalTestCase {
     @Test
     public void businessReviewsByAliasTest() throws Exception {
 
-        BusinessReviewsResponse response = yelpFusionServiceCtx.getYelpFusionAsyncClient().businesses().businessReviews(request).get();
+        BusinessReviewsResponse response = yelpFusionService.yelpFusionAsyncClient().businesses().businessReviews(request).get();
 
         response.reviews().forEach(this::testBusinessReviews);
 

@@ -24,4 +24,20 @@ class PairTest extends TestJson {
         assertEquals(ConditionOp.Eq, c.compare().value().key());
         assertEquals("bar", c.compare().value().value().stringValue());
     }
+
+    @Test
+    void of() {
+    }
+
+    @Test
+    void deserializer() {
+    }
+
+    @Test
+    void key() {
+    }
+
+    @Test
+    void value() {
+    }
 }
