@@ -60,8 +60,6 @@ public class AutoCompleteResponse implements JsonpSerializable {
     }
 
 
-    // ------------------------------ Builder ------------------------------------ //
-
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
         if (ApiTypeHelper.isDefined(this.categories)) {

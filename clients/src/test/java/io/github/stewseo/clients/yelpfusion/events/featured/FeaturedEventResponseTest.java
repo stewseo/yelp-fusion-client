@@ -1,12 +1,9 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
-import io.github.stewseo.clients.json.LazyDeserializer;
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
@@ -14,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+
+import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class FeaturedEventResponseTest extends YelpFusionResponseTestCase<FeaturedEventResponse> {
@@ -27,7 +26,7 @@ public class FeaturedEventResponseTest extends YelpFusionResponseTestCase<Featur
     @Override
     public FeaturedEventResponse of() {
         return FeaturedEventResponse.of(fr -> fr
-                .business_id(id)
+                .business_id(ID)
                 .event(Event.of(e -> e
                         .name("featuredEvent")))
         );
@@ -76,4 +75,23 @@ public class FeaturedEventResponseTest extends YelpFusionResponseTestCase<Featur
 
     }
 
+    @Test
+    public void testBuildWithJson() {
+
+    }
+
+    @Test
+    public void testBuilder() {
+
+        FeaturedEventResponse.Builder builder = new FeaturedEventResponse.Builder().event(Event.of(e-> e.name("nameValue")));
+
+        FeaturedEventResponse.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+
+        FeaturedEventResponse searchBusinessReq = builder.build();
+
+        assertThat(searchBusinessReq.toString()).isEqualTo("{\"event\":{\"name\":\"nameValue\"}}");
+    }
 }

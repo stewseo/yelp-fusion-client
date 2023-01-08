@@ -1,19 +1,20 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 
-import io.github.stewseo.clients.yelpfusion._types.Attribute;
-import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.ObjectBuilderBase;
+import io.github.stewseo.clients.yelpfusion._types.Attribute;
+import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -430,14 +431,20 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             false,
             SearchBusinessResponse._DESERIALIZER);
 
+    public static final JsonpDeserializer<SearchBusinessRequest> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(SearchBusinessRequest.Builder::new,
+            SearchBusinessRequest::setupSearchBusinessRequestDeserializer);
+
+
     protected static void setupSearchBusinessRequestDeserializer(ObjectDeserializer<Builder> op) {
 
         op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
-        op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
+        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
+
+        op.add(Builder::location, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "location");
         op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
         op.add(Builder::categories, Category._DESERIALIZER, "categories");
-        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
         op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
         op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
         op.add(Builder::sort_by, JsonpDeserializer.stringDeserializer(), "sort_by");

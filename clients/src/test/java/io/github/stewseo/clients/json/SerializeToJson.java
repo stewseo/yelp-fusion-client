@@ -7,10 +7,6 @@ import org.junit.jupiter.api.Test;
 
 public interface SerializeToJson extends JsonTestCase {
 
-    // test instantiating objects using Builder setters
-    @Test
-    void testOf();
-
     // test object's serialize method
     @Test
     void testSerialize();

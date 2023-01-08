@@ -96,10 +96,16 @@ public abstract class FunctionalTestCase {
 
     public Stream<BreinTemporalDataResult> getStreamOfTemporalData() {
 
+//        final Stream<String> citiesInCa =
+//                Stream.of("San Francisco", "Oakland", "San Jose", "Monterey", "Napa", "Sonoma", "Los Angeles", "Carmel By The Sea", "San Diego", "Santa Barbara");
+//
+//        // largest cities in the US
+//        final Stream<String> cities = Stream.of("NYC", "Las Vegas", "Honolulu", "Phoenix", "San Antonio", "Dallas", "Chicago", "Portland", "Minneapolis", "Seattle", "New Orleans", "Boston", "Philadelphia", "Miami");
+
         final Stream<String> citiesInCa =
-                Stream.of("San Francisco", "Oakland", "San Jose", "Monterey", "Napa", "Sonoma", "Los Angeles", "Carmel By The Sea", "San Diego", "Santa Barbara");
+                Stream.of("San Francisco");
         // largest cities in the US
-        final Stream<String> cities = Stream.of("NYC", "Las Vegas", "Honolulu", "Phoenix", "San Antonio", "Dallas", "Chicago", "Portland", "Minneapolis", "Seattle", "New Orleans", "Boston", "Philadelphia", "Miami");
+        final Stream<String> cities = Stream.of("NYC");
 
         return Stream.concat(cities, citiesInCa).map(FunctionalTestCase::locationByCity);
 

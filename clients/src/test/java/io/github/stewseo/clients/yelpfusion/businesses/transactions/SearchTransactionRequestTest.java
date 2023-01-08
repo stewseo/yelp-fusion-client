@@ -1,49 +1,59 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
 import io.github.stewseo.clients.json.DeserializeFromJson;
+import io.github.stewseo.clients.json.JsonpDeserializer;
+import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.PRICE;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.TERM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTransactionRequest>
-        implements DeserializeFromJson {
+class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTransactionRequest> implements DeserializeFromJson{
 
     private final String category = "category";
-    private final SearchTransactionRequest searchTransactionRequest = SearchTransactionRequest.of(s -> s
-            .transaction_type("transactionType")
-            .categories(String.valueOf(category))
-            .latitude(latitude)
-            .longitude(longitude)
-            .location(location)
-            .term(term)
-            .price(price)
-    );
+    private final String location = "locationValue";
+    private final SearchTransactionRequest searchTransactionRequest = of();
+
+    @Override
+    public SearchTransactionRequest of() {
+
+        return SearchTransactionRequest.of(s -> s
+                .transaction_type("transactionType")
+                .categories(category)
+                .latitude(LATITUDE)
+                .longitude(LONGITUDE)
+                .location(location)
+                .term(TERM)
+                .price(PRICE)
+        );
+
+    }
+
 
     @Test
     public void testOf() {
         assertThat(searchTransactionRequest.transaction_type()).isEqualTo("transactionType");
         assertThat(searchTransactionRequest.categories()).isEqualTo(category);
         assertThat(searchTransactionRequest.location()).isEqualTo(location);
-        assertThat(searchTransactionRequest.term()).isEqualTo(term);
+        assertThat(searchTransactionRequest.price()).isEqualTo(PRICE);
+        assertThat(searchTransactionRequest.term()).isEqualTo(TERM);
     }
 
     private final JsonGenerator generator = generator();
-    String expected = "{\"categories\":\"category\"," +
-            "\"term\":\"term\"," +
-            "\"transaction_type\":\"transactionType\"," +
-            "\"latitude\":44.0,\"longitude\":-122.0," +
-            "\"price\":3}";
+
+    String expected = "{\"categories\":\"category\",\"term\":\"term\",\"transaction_type\":\"transactionType\",\"latitude\":37.7829,\"longitude\":-122.4189,\"price\":3}";
 
     @Test
     public void testSerialize() {
@@ -59,6 +69,12 @@ class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTrans
         assertThat(searchTransactionRequest.toString()).isEqualTo(expected);
     }
 
+    @Override
+    public Endpoint<SearchTransactionRequest, ?, ?> endpoint() {
+
+        return SearchTransactionRequest._ENDPOINT;
+    }
+
     @Test
     public void testEndpoint() {
 
@@ -69,7 +85,7 @@ class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTrans
         assertThat(endpoint().requestUrl(searchTransactionRequest)).isEqualTo("v3/transactions/transactionType/search");
 
         assertThat(endpoint().queryParameters(searchTransactionRequest).values().toString())
-                .isEqualTo("[3, 44.0, term, location, category, transactionType, -122.0]");
+                .isEqualTo("[3, 37.7829, term, locationValue, category, transactionType, -122.4189]");
 
         assertThat(endpoint().isError(200)).isFalse();
         assertThat(endpoint().headers(searchTransactionRequest).toString()).isEqualTo("{}");
@@ -77,15 +93,8 @@ class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTrans
 
     }
 
-
     @Test
     public void testDeserialize() {
-        assertThat(SearchTransactionRequest._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
-
-    }
-
-    @Test
-    public void testDeserializer() {
 
         JsonParser parser = parser();
 
@@ -94,15 +103,44 @@ class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTrans
         assertThat(searchBusinessRes).isNotNull();
     }
 
+    @Test
+    public void testDeserializer() {
+
+        assertThat(SearchTransactionRequest._DESERIALIZER.toString())
+                .contains("io.github.stewseo.clients.json.LazyDeserializer");
+
+        SearchTransactionRequest.Builder builder = new SearchTransactionRequest.Builder()
+                .categories(category)
+                .latitude(LATITUDE)
+                .location(location)
+                .term(TERM)
+                .price(PRICE);
+
+        JsonpDeserializer<SearchTransactionRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(
+                SearchTransactionRequest.Builder::new,
+                SearchTransactionRequest::setupSearchRequestDeserializer);
+
+        assertThat(_DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
+    }
+
     @Override
     public JsonParser parser() {
         InputStream content = IOUtils.toInputStream(searchTransactionRequest.toString(), StandardCharsets.UTF_8);
         return mapper.jsonProvider().createParser(content);
     }
 
-    @Override
-    public Endpoint<SearchTransactionRequest, ?, ?> endpoint() {
+    @Test
+    public void testBuilder() {
 
-        return SearchTransactionRequest._ENDPOINT;
+        SearchTransactionRequest.Builder builder = new SearchTransactionRequest.Builder().term("termValue");
+
+        SearchTransactionRequest.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        SearchTransactionRequest searchTransactionReq = builder.build();
+
+        assertThat(searchTransactionReq.toString()).isEqualTo("{\"term\":\"termValue\"}");
     }
+
 }

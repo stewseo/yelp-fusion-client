@@ -1,15 +1,15 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
 import io.github.stewseo.clients.json.JsonpDeserializable;
-import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
+import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -20,62 +20,14 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class SearchTransactionRequest extends RequestBase implements JsonpSerializable {
 
-    public static final JsonpDeserializer<SearchTransactionRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchTransactionRequest::setupSearchRequestDeserializer);
-
-    // endpoint
-    public static final SimpleEndpoint<SearchTransactionRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/transactions",
-            // Request method
-            request -> "GET",
-            // Request path
-            request -> {
-                if (request.transaction_type != null) {
-                    return "v3/transactions" + "/" + request.transaction_type + "/search";
-                }
-                throw SimpleEndpoint.noPathTemplateFound("path");
-            },
-            // Request parameters
-            request -> {
-
-                Map<String, String> parameters = new HashMap<>();
-
-                if (request.transaction_type != null) {
-                    parameters.put("transaction_type", request.transaction_type);
-                }
-                if (request.term != null) {
-                    parameters.put("term", request.term);
-                }
-                if (request.location != null) {
-                    parameters.put("location", request.location);
-                }
-                if (request.categories != null) {
-                    parameters.put("categories", request.categories);
-                }
-                if (request.price != null) {
-                    parameters.put("price", String.valueOf(request.price));
-                }
-                if (request.latitude != null) {
-                    parameters.put("latitude", String.valueOf(request.latitude));
-                }
-                if (request.longitude != null) {
-                    parameters.put("longitude", String.valueOf(request.longitude));
-                }
-
-                return parameters;
-            },
-            SimpleEndpoint.emptyMap(),
-            false,
-            SearchTransactionResponse._DESERIALIZER);
-    // fields
     private final String transaction_type;
     private final Double latitude;
     private final Double longitude;
     private final String location;
     private final String term;
     private final String categories;
-    private Integer price;
+    private final Integer price;
 
-    // constructor
     private SearchTransactionRequest(Builder builder) {
 
         this.transaction_type = builder.transaction_type;
@@ -87,54 +39,37 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
         this.price = builder.price;
     }
 
-    // accepts:
-    // a Builder
-    // an ObjectBuilder<SearchTransactionsRequest>
-    // returns a SearchTransactionsRequest
     public static SearchTransactionRequest of(Function<Builder, ObjectBuilder<SearchTransactionRequest>> fn) {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::transaction_type, JsonpDeserializer.stringDeserializer(), "transaction_type");
-        op.add(Builder::categories, JsonpDeserializer.stringDeserializer(), "categories");
-        op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
-        op.add(Builder::price, JsonpDeserializer.integerDeserializer(), "price");
-        op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
-        op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
-    }
-
-    // getters
-    public String transaction_type() {
+    public final String transaction_type() {
         return transaction_type;
     }
 
-    public Double latitude() {
+    public final Double latitude() {
         return latitude;
     }
 
-    public Double longitude() {
+    public final Double longitude() {
         return longitude;
     }
 
-    // serialize
-
-    public String location() {
+    public final String location() {
         return location;
     }
 
-    public String term() {
+    public final String term() {
         return term;
     }
 
-
-    // builder
+    public final Integer price() {
+        return this.price;
+    }
 
     public String categories() {
         return categories;
     }
-
-    // deserializer
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
@@ -234,6 +169,63 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
         }
     }
 
+
+    public static final JsonpDeserializer<SearchTransactionRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            SearchTransactionRequest::setupSearchRequestDeserializer);
+
+    protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::transaction_type, JsonpDeserializer.stringDeserializer(), "transaction_type");
+        op.add(Builder::categories, JsonpDeserializer.stringDeserializer(), "categories");
+        op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
+        op.add(Builder::price, JsonpDeserializer.integerDeserializer(), "price");
+        op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
+        op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
+    }
+
+
+    // endpoint
+    public static final SimpleEndpoint<SearchTransactionRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/transactions",
+            // Request method
+            request -> "GET",
+            // Request path
+            request -> {
+                if (request.transaction_type != null) {
+                    return "v3/transactions" + "/" + request.transaction_type + "/search";
+                }
+                throw SimpleEndpoint.noPathTemplateFound("path");
+            },
+            // Request parameters
+            request -> {
+
+                Map<String, String> parameters = new HashMap<>();
+
+                if (request.transaction_type != null) {
+                    parameters.put("transaction_type", request.transaction_type);
+                }
+                if (request.term != null) {
+                    parameters.put("term", request.term);
+                }
+                if (request.location != null) {
+                    parameters.put("location", request.location);
+                }
+                if (request.categories != null) {
+                    parameters.put("categories", request.categories);
+                }
+                if (request.price != null) {
+                    parameters.put("price", String.valueOf(request.price));
+                }
+                if (request.latitude != null) {
+                    parameters.put("latitude", String.valueOf(request.latitude));
+                }
+                if (request.longitude != null) {
+                    parameters.put("longitude", String.valueOf(request.longitude));
+                }
+
+                return parameters;
+            },
+            SimpleEndpoint.emptyMap(),
+            false,
+            SearchTransactionResponse._DESERIALIZER);
 }
 
 

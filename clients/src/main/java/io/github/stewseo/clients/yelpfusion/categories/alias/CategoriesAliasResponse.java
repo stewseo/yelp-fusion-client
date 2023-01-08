@@ -28,12 +28,17 @@ public class CategoriesAliasResponse extends RequestBase implements JsonpSeriali
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeKey("category");
         generator.writeStartObject();
+        serializeInternal(generator, mapper);
+        generator.writeEnd();
+    }
+
+    protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
+
         if (this.category != null) {
+            generator.writeKey("category");
             this.category.serialize(generator, mapper);
         }
-        generator.writeEnd();
     }
 
     @Override

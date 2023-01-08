@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 class BusinessReviewsResponseTest extends YelpFusionResponseTestCase<BusinessReviewsResponse> {
 
     private final List<BusinessReview> businessReview = List.of(BusinessReview.of(br -> br.id("idValue")));
@@ -26,7 +26,7 @@ class BusinessReviewsResponseTest extends YelpFusionResponseTestCase<BusinessRev
         return BusinessReviewsResponse.of(b -> b
                 .reviews(businessReview)
                 .possible_languages(List.of(possibleLanguages))
-                .total(total)
+                .total(TOTAL)
         );
     }
 
@@ -39,7 +39,7 @@ class BusinessReviewsResponseTest extends YelpFusionResponseTestCase<BusinessRev
     public void testOf() {
         assertThat(businessReviewsResponse.reviews()).isEqualTo(businessReview);
         assertThat(businessReviewsResponse.possible_languages().get(0)).isEqualTo(possibleLanguages);
-        assertThat(businessReviewsResponse.total()).isEqualTo(total);
+        assertThat(businessReviewsResponse.total()).isEqualTo(TOTAL);
     }
 
     @Test
@@ -78,4 +78,22 @@ class BusinessReviewsResponseTest extends YelpFusionResponseTestCase<BusinessRev
         return jsonProvider().createParser(content);
     }
 
+    @Test
+    public void testBuildWithJson() {
+
+    }
+
+    @Test
+    public void testBuilder() {
+
+        BusinessReviewsResponse.Builder builder = new BusinessReviewsResponse.Builder().reviews(BusinessReview.of(t->t.id("idValue")));
+
+        BusinessReviewsResponse.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        BusinessReviewsResponse searchBusinessReq = builder.build();
+
+        assertThat(searchBusinessReq.toString()).isEqualTo("{\"reviews\":[{\"id\":\"idValue\"}]}");
+    }
 }

@@ -1,12 +1,13 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.ingest.GetPipelineRequest;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
-import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.function.Function;
 public class BusinessDetailsRequest extends RequestBase implements JsonpSerializable {
 
     private final String id;
+
     private final String alias;
 
     private BusinessDetailsRequest(Builder builder) {
@@ -48,11 +50,10 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             generator.writeKey("id");
             generator.write(this.id);
         }
-    }
-
-    @Override
-    public String toString() {
-        return JsonpUtils.toString(this);
+        if (this.alias != null) {
+            generator.writeKey("alias");
+            generator.write(this.alias);
+        }
     }
 
     public static class Builder extends AbstractBuilder<Builder>
@@ -105,5 +106,6 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             request -> new HashMap<>(),
 
             SimpleEndpoint.emptyMap(), false, BusinessDetailsResponse._DESERIALIZER);
+
 
 }

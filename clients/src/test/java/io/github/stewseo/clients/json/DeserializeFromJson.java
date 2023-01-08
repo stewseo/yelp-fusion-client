@@ -12,6 +12,7 @@ public interface DeserializeFromJson extends JsonTestCase {
 
     @Test
     void testDeserializer();
+
     @Test
     void testDeserialize();
 

@@ -15,7 +15,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class BusinessDetailsResponse implements JsonpSerializable {
 
-    public static final JsonpDeserializer<BusinessDetailsResponse> _DESERIALIZER = createBusinessDetailsResponse_Deserializer();
     // ------------------------------ Fields ------------------------------------ //
     private final BusinessDetails result;
 
@@ -28,25 +27,26 @@ public class BusinessDetailsResponse implements JsonpSerializable {
         return fn.apply(new Builder()).build();
     }
 
-    protected static JsonpDeserializer<BusinessDetailsResponse> createBusinessDetailsResponse_Deserializer() {
-        JsonpDeserializer<BusinessDetails> valueDeserializer = BusinessDetails._DESERIALIZER;
-
-        return JsonpDeserializer.of(valueDeserializer.acceptedEvents(), (parser, mapper, event) -> new Builder()
-                .result(valueDeserializer.deserialize(parser, mapper, event)).build());
-    }
-
     // ------------------------------ Methods ------------------------------------ //
     public final BusinessDetails result() {
         return this.result;
     }
 
 
-    // ------------------------------ Builder ------------------------------------ //
+    // ------------------------------ Serialize ------------------------------------ //
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeKey("businesses");
-        this.result.serialize(generator, mapper);
+        generator.writeStartObject();
+        serializeInternal(generator, mapper);
         generator.writeEnd();
+    }
+
+    protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
+
+        if(this.result != null) {
+            generator.writeKey("businesses");
+            this.result.serialize(generator, mapper);
+        }
     }
 
     // ------------------------------ Deserializer ------------------------------------ //
@@ -89,4 +89,15 @@ public class BusinessDetailsResponse implements JsonpSerializable {
             return new BusinessDetailsResponse(this);
         }
     }
+
+
+    public static final JsonpDeserializer<BusinessDetailsResponse> _DESERIALIZER = createBusinessDetailsResponse_Deserializer();
+
+    protected static JsonpDeserializer<BusinessDetailsResponse> createBusinessDetailsResponse_Deserializer() {
+        JsonpDeserializer<BusinessDetails> valueDeserializer = BusinessDetails._DESERIALIZER;
+
+        return JsonpDeserializer.of(valueDeserializer.acceptedEvents(), (parser, mapper, event) -> new Builder()
+                .result(valueDeserializer.deserialize(parser, mapper, event)).build());
+    }
+
 }

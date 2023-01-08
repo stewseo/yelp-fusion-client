@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;

@@ -69,4 +69,12 @@ class BusinessMatchResponseTest extends YelpFusionResponseTestCase<BusinessMatch
         assertThat(businessMatchRes).isNotNull();
     }
 
+    @Override
+    public void testBuildWithJson() {
+
+    }
+    @Test
+    public void testBuilder() {
+
+    }
 }

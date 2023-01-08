@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation buildLibs.sonar.source
-    implementation "com.github.dawnwords:jacoco-badge-gradle-plugin:0.2.4"
+    implementation buildLibs.jacoco.badge
     implementation "com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.13"
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     testImplementation 'org.spockframework:spock-core'

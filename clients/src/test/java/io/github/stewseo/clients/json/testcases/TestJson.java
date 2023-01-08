@@ -19,18 +19,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class TestJson extends Assertions implements ToJson, FromJson {
 
-    static AtomicInteger count = new AtomicInteger(0);
-
     public final JsonpMapper mapper;
-    private static final int RAND = ThreadLocalRandom.current().nextInt(0, 100);
 
     public TestJson() {
-        this(RAND);
-    }
-
-    protected TestJson(int rand) {
-
-        mapper = new JacksonJsonpMapper();
+        this.mapper = new JacksonJsonpMapper();
     }
 
     public <T> String toJson(T value) {
@@ -71,7 +63,6 @@ public class TestJson extends Assertions implements ToJson, FromJson {
     public <T> T fromJson(String json, Type type) {
         return fromJson(json, type, mapper);
     }
-
 
     @SuppressWarnings("unchecked")
     public <T> T checkJsonRoundtrip(T value, String expectedJson) {

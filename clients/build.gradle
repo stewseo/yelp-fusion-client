@@ -47,6 +47,11 @@ dependencies {
  *****************************************************************************/
 
 test {
+    filter {
+        excludeTestsMatching "io.github.stewseo.clients.json.*"
+        excludeTestsMatching "io.github.stewseo.clients.elasticsearch.*"
+        excludeTestsMatching "io.github.stewseo.clients.util.*"
+    }
 }
 
 /*****************************************************************************

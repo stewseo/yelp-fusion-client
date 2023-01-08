@@ -83,7 +83,7 @@ public class SearchEventsResponse extends RequestBase implements JsonpSerializab
             return this;
         }
 
-        public final Builder categories(Function<Event.Builder, ObjectBuilder<Event>> fn) {
+        public final Builder events(Function<Event.Builder, ObjectBuilder<Event>> fn) {
             return events(fn.apply(new Event.Builder()).build());
         }
 

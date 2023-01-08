@@ -117,4 +117,76 @@ public class DateTimeTest extends TestJson {
         assertEquals(millis, DateTime.of(millisJson).toZonedDateTime().toInstant().toEpochMilli());
 
     }
+
+    @Test
+    void ofEpochMilli() {
+    }
+
+    @Test
+    void testOfEpochMilli() {
+    }
+
+    @Test
+    void of() {
+    }
+
+    @Test
+    void testOf() {
+    }
+
+    @Test
+    void testOf1() {
+    }
+
+    @Test
+    void testOf2() {
+    }
+
+    @Test
+    void getString() {
+    }
+
+    @Test
+    void getFormatter() {
+    }
+
+    @Test
+    void toInstant() {
+    }
+
+    @Test
+    void testToInstant() {
+    }
+
+    @Test
+    void toZonedDateTime() {
+    }
+
+    @Test
+    void testToZonedDateTime() {
+    }
+
+    @Test
+    void toEpochMilli() {
+    }
+
+    @Test
+    void testToEpochMilli() {
+    }
+
+    @Test
+    void serialize() {
+    }
+
+    @Test
+    void testEquals() {
+    }
+
+    @Test
+    void testHashCode() {
+    }
+
+    @Test
+    void testToString() {
+    }
 }

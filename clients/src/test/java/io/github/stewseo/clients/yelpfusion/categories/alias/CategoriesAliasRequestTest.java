@@ -5,23 +5,29 @@ import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.ALIAS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class CategoriesAliasRequestTest extends YelpFusionRequestTestCase<CategoriesAliasRequest> {
 
 
-    private final CategoriesAliasRequest categoriesAliasRequest = CategoriesAliasRequest.of(b -> b
-            .alias(alias)
-    );
+    private final CategoriesAliasRequest categoriesAliasRequest = of();
 
     @Override
     public Endpoint<CategoriesAliasRequest, ?, ?> endpoint() {
         return CategoriesAliasRequest._ENDPOINT;
     }
 
+    @Override
+    public CategoriesAliasRequest of() {
+        return CategoriesAliasRequest.of(b -> b
+                .alias(ALIAS)
+        );
+    }
+
     @Test
     public void testOf() {
-        assertThat(categoriesAliasRequest.alias()).isEqualTo(alias);
+        assertThat(categoriesAliasRequest.alias()).isEqualTo(ALIAS);
     }
 
     private final String expected = "{\"alias\":\"alias\"}";
@@ -48,7 +54,7 @@ class CategoriesAliasRequestTest extends YelpFusionRequestTestCase<CategoriesAli
 
         assertThat(endpoint().id()).isEqualTo("v3/categories");
 
-        assertThat(endpoint().requestUrl(categoriesAliasRequest)).isEqualTo("v3/categories/" + alias);
+        assertThat(endpoint().requestUrl(categoriesAliasRequest)).isEqualTo("v3/categories/" + ALIAS);
 
         assertThat(endpoint().hasRequestBody()).isFalse();
 
@@ -58,5 +64,18 @@ class CategoriesAliasRequestTest extends YelpFusionRequestTestCase<CategoriesAli
         assertThat(endpoint().headers(categoriesAliasRequest).toString()).isEqualTo("{}");
         assertThat(endpoint().method(categoriesAliasRequest)).isEqualTo("GET");
 
+    }
+
+    @Test
+    public void testBuilder() {
+        CategoriesAliasRequest.Builder builder = new CategoriesAliasRequest.Builder().alias("aliasValue");
+
+        CategoriesAliasRequest.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        CategoriesAliasRequest categoriesAliasReq = builder.build();
+
+        assertThat(categoriesAliasReq.toString()).isEqualTo("{\"alias\":\"aliasValue\"}");
     }
 }

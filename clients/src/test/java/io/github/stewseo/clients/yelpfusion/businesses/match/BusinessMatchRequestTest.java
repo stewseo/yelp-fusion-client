@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
@@ -12,22 +13,22 @@ public class BusinessMatchRequestTest extends YelpFusionRequestTestCase<Business
     private final String city = "sf", name = "Brenda's+French+Soul+Food", phone = "4151111111",
             address1="625+polk+st", state="ca", country="US", postal_code="94111", match_threshold="none";
 
-    private final BusinessMatchRequest businessMatchRequest = BusinessMatchRequest.of(b -> b
-            .city(city)
-            .name(name)
-            .phone(phone)
-            .address1(address1)
-            .address2(null)
-            .address3(null)
-            .state(state)
-            .country(country)
-            .postal_code(postal_code)
-            .match_threshold(match_threshold)
-    );
+    private final BusinessMatchRequest businessMatchRequest = of();
 
     @Override
-    public Endpoint<BusinessMatchRequest, ?, ?> endpoint() {
-        return BusinessMatchRequest._ENDPOINT;
+    public BusinessMatchRequest of() {
+        return BusinessMatchRequest.of(b -> b
+                .city(city)
+                .name(name)
+                .phone(phone)
+                .address1(address1)
+                .address2(null)
+                .address3(null)
+                .state(state)
+                .country(country)
+                .postal_code(postal_code)
+                .match_threshold(match_threshold)
+        );
     }
 
     @Test
@@ -44,15 +45,14 @@ public class BusinessMatchRequestTest extends YelpFusionRequestTestCase<Business
 
     }
 
-    private final String expected = "{" +
-            "\"name\":\"Brenda's+French+Soul+Food\"," +
+    private final String expected = "" +
+            "BusinessMatchRequest: GET v3/businesses/matches?" +
+            "country=US&match_threshold=none&city=sf&phone=4151111111&address1=625%2Bpolk%2Bst&" +
+            "name=Brenda%27s%2BFrench%2BSoul%2BFood&state=ca " +
+            "{\"name\":\"Brenda's+French+Soul+Food\"," +
             "\"address1\":\"625+polk+st\"," +
-            "\"city\":\"sf\"," +
-            "\"state\":\"ca\"," +
-            "\"country\":\"US\"," +
-            "\"postal_code\":\"94111\"," +
-            "\"phone\":\"4151111111\"," +
-            "\"match_threshold\":\"none\"}";
+            "\"city\":\"sf\",\"state\":\"ca\",\"country\":\"US\",\"postal_code\":\"94111\"," +
+            "\"phone\":\"4151111111\",\"match_threshold\":\"none\"}";
 
     private final JsonGenerator generator = generator();
 
@@ -70,6 +70,10 @@ public class BusinessMatchRequestTest extends YelpFusionRequestTestCase<Business
         assertThat(businessMatchRequest.toString()).isEqualTo(expected);
     }
 
+    @Override
+    public Endpoint<BusinessMatchRequest, ?, ?> endpoint() {
+        return BusinessMatchRequest._ENDPOINT;
+    }
 
     @Test
     public void testEndpoint() {
@@ -86,6 +90,20 @@ public class BusinessMatchRequestTest extends YelpFusionRequestTestCase<Business
         assertThat(endpoint().isError(200)).isFalse();
         assertThat(endpoint().headers(businessMatchRequest).toString()).isEqualTo("{}");
         assertThat(endpoint().method(businessMatchRequest)).isEqualTo("GET");
+
+    }
+
+    @Test
+    public void testBuilder() {
+        BusinessMatchRequest.Builder builder = new BusinessMatchRequest.Builder().name("nameValue");
+
+        BusinessMatchRequest.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        BusinessMatchRequest businessMatchReq = builder.build();
+
+        assertThat(businessMatchReq.toString()).isEqualTo("BusinessMatchRequest: GET v3/businesses/matches?name=nameValue {\"name\":\"nameValue\"}");
 
     }
 }
