@@ -1,5 +1,8 @@
-package io.github.stewseo.clients.yelpfusion.businesses.reviews;
+package io.github.stewseo.clients.functional;
 
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReview;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 

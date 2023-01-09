@@ -1,8 +1,10 @@
-package io.github.stewseo.clients.yelpfusion.categories.all;
+package io.github.stewseo.clients.functional;
 
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesRequest;
+import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 

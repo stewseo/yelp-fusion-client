@@ -1,5 +1,8 @@
-package io.github.stewseo.clients.yelpfusion.businesses.match;
+package io.github.stewseo.clients.functional;
 
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import org.junit.jupiter.api.Test;

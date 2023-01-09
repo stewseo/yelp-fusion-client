@@ -1,5 +1,7 @@
-package io.github.stewseo.clients.yelpfusion.businesses.transactions;
+package io.github.stewseo.clients.functional;
 
+import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;

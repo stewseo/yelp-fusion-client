@@ -322,12 +322,11 @@ public class BusinessDetails implements JsonpSerializable {
 
         private List<SpecialHours> special_hours;
 
-        @Nullable
         private List<Attribute> attributes;
 
         private Coordinates coordinates;
 
-        @Nullable
+
         private List<Category> categories;
 
         private Location location;

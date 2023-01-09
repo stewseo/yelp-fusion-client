@@ -3,18 +3,17 @@ package io.github.stewseo.clients.util;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static io.github.stewseo.clients.util.ApiTypeHelper.DisabledChecksHandle;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ApiTypeHelperTest {
 
     @Test
-    void DANGEROUS_disableRequiredPropertiesCheck() {
+    void testDANGEROUS_disableRequiredPropertiesCheck() {
 
         assertThat(ApiTypeHelper.requiredPropertiesCheckDisabled()).isFalse();
 
@@ -30,7 +29,7 @@ class ApiTypeHelperTest {
     }
 
     @Test
-    void requireNonNull() {
+    void testRequireNonNull() {
 
         BusinessDetails businessDetails = BusinessDetails.of(b -> b.id("id"));
 
@@ -40,48 +39,35 @@ class ApiTypeHelperTest {
     }
 
     @Test
-    void undefinedList() {
-
-        assertThrows(IndexOutOfBoundsException.class,
-                () -> System.out.println(ApiTypeHelper.undefinedList().get(0))
-                );
-
-    }
-
-    @Test
-    void isDefined() {
-
+    void testIsDefined() {
         assertThrows(org.opentest4j.AssertionFailedError.class,
                 () -> assertThat(ApiTypeHelper.isDefined(List.of("value1"))).isFalse()
         );
-    }
+        boolean isDefined = ApiTypeHelper.isDefined(ApiTypeHelper.undefinedMap());
+        assertThat(isDefined).isFalse();
 
-    @Test
-    void unmodifiable() {
-        assertThrows(java.lang.AssertionError.class,
-                () -> assertThat(ApiTypeHelper.unmodifiable(List.of("value1"))).isNotInstanceOf(List.class)
-        );
-    }
-
-    @Test
-    void unmodifiableRequired() {
-
-        ApiTypeHelper.unmodifiableRequired(List.of("t"), this, "name");
-    }
-
-    @Test
-    void undefinedMap() {
-    }
-
-    @Test
-    void testIsDefined() {
+        isDefined = ApiTypeHelper.isDefined(ApiTypeHelper.undefinedList());
+        assertThat(isDefined).isFalse();
     }
 
     @Test
     void testUnmodifiable() {
+        assertThrows(java.lang.AssertionError.class,
+                () -> assertThat(ApiTypeHelper.unmodifiable(List.of("value1"))).isNotInstanceOf(List.class)
+        );
+        assertThat(ApiTypeHelper.unmodifiable(ApiTypeHelper.undefinedMap())).isNotNull();
+        assertThat(ApiTypeHelper.unmodifiable(ApiTypeHelper.undefinedList())).isNotNull();
+
     }
 
     @Test
     void testUnmodifiableRequired() {
+
+        assertThrows(MissingRequiredPropertyException.class,
+                () -> ApiTypeHelper.unmodifiableRequired(ApiTypeHelper.undefinedList(), this, "listName")
+        );
+        assertThrows(MissingRequiredPropertyException.class,
+                () -> ApiTypeHelper.unmodifiableRequired(ApiTypeHelper.undefinedMap(), this, "mapName"));
+
     }
 }

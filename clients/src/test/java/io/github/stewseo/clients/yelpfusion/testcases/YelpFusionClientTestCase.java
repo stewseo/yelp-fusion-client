@@ -8,14 +8,19 @@ import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTranspor
 public abstract class YelpFusionClientTestCase {
 
     private final RestClientTransport restClientTransport;
+    private final String apiKey;
 
     public YelpFusionClientTestCase() {
         YelpFusionTransportCtx transportCtx = new YelpFusionTransportCtx();
         restClientTransport = (RestClientTransport) transportCtx.getTransport();
+        apiKey = System.getenv("YELP_API_KEY");
     }
 
     public RestClientTransport restClientTransport() {
         return restClientTransport;
     }
 
+    public String getApiKey() {
+        return this.apiKey;
+    }
 }

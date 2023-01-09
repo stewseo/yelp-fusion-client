@@ -1,6 +1,9 @@
-package io.github.stewseo.clients.yelpfusion.businesses.search;
+package io.github.stewseo.clients.functional;
 
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Center;

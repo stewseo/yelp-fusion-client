@@ -1,8 +1,10 @@
-package io.github.stewseo.clients.yelpfusion.events.search;
+package io.github.stewseo.clients.functional;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import io.github.stewseo.clients.yelpfusion._types.Event;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

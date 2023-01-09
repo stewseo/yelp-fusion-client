@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.MAX_RESULTS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class TermsAggregationTest extends ElasticsearchTestCase {
@@ -43,7 +44,7 @@ public class TermsAggregationTest extends ElasticsearchTestCase {
 
             long countScoreGreaterThan = hitsHits.stream().map(Hit::score).filter(Objects::nonNull).filter(inRange).count();
 
-            assertThat(countScoreGreaterThan).isEqualTo(0);
+            assertThat(countScoreGreaterThan).isEqualTo(50L);
 
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -53,14 +54,14 @@ public class TermsAggregationTest extends ElasticsearchTestCase {
     @Test
     void termsAggregationTest() {
 
-        List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(350, index);
-        assertThat(buckets.size()).isEqualTo(0);
+        List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(MAX_RESULTS, index);
+        assertThat(buckets.size()).isEqualTo(222);
     }
 
     @Test
     void docsCountTest() {
         int count = elasticsearchService.docsCount(index);
-        assertThat(count).isGreaterThanOrEqualTo(0);
+        assertThat(count).isEqualTo(3697);
     }
 
 }

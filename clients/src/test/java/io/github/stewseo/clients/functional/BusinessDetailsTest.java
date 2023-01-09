@@ -1,9 +1,13 @@
-package io.github.stewseo.clients.yelpfusion.businesses.details;
+package io.github.stewseo.clients.functional;
 
-import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
+import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessAsyncClient;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,9 +64,11 @@ public class BusinessDetailsTest extends FunctionalTestCase {
     void testAsyncClient() throws Exception {
 
         CompletableFuture<BusinessDetails> future;
-
+        YelpFusionBusinessAsyncClient yelpFusionBusinessAsyncClient = yelpFusionService.yelpFusionAsyncClient().businesses();
         try {
-            future = yelpFusionService.yelpFusionAsyncClient().businesses().businessDetails(b -> b.id(id))
+
+            future = yelpFusionBusinessAsyncClient.businessDetails(b -> b.id(id)
+            )
                     .whenComplete((response, exception) -> {
 
                         if (exception != null) {

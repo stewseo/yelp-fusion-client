@@ -16,8 +16,9 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 public class JacksonJsonpParser implements JsonParser {
-
     private static final EnumMap<JsonToken, Event> tokenToEvent;
+
+
 
     static {
         tokenToEvent = new EnumMap<>(JsonToken.class);
@@ -35,6 +36,7 @@ public class JacksonJsonpParser implements JsonParser {
         // No equivalent for
         // - VALUE_EMBEDDED_OBJECT
         // - NOT_AVAILABLE
+
     }
 
     private final com.fasterxml.jackson.core.JsonParser parser;
@@ -250,7 +252,6 @@ public class JacksonJsonpParser implements JsonParser {
                 switch (token) {
                     case START_ARRAY -> depth++;
                     case END_ARRAY -> depth--;
-                    default -> System.out.println("skipArray default");
                 }
             } while(!(token == JsonToken.END_ARRAY && depth == 0));
         } catch (IOException e) {

@@ -29,6 +29,20 @@ public class AutoCompleteRequestTest
     }
 
     @Test
+    public void testBuilder() {
+
+        AutoCompleteRequest.Builder builder = new AutoCompleteRequest.Builder().text("textValue");
+
+        AutoCompleteRequest.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        AutoCompleteRequest searchBusinessReq = builder.build();
+
+        assertThat(searchBusinessReq.toString()).isEqualTo("{\"text\":\"textValue\"}");
+    }
+
+    @Test
     public void testOf() {
         assertThat(autoCompleteRequest.text()).isEqualTo(text);
         assertThat(autoCompleteRequest.locale()).isEqualTo(LOCALE);
@@ -68,20 +82,6 @@ public class AutoCompleteRequestTest
         assertThat("GET").isEqualTo(autoCompleteEndpoint.method(autoCompleteRequest));
         assertThat(autoCompleteEndpoint.isError(200)).isFalse();
 
-    }
-
-    @Test
-    public void testBuilder() {
-
-        AutoCompleteRequest.Builder builder = new AutoCompleteRequest.Builder().text("textValue");
-
-        AutoCompleteRequest.Builder self = builder.self();
-
-        assertThat(self).isEqualTo(builder);
-
-        AutoCompleteRequest searchBusinessReq = builder.build();
-
-        assertThat(searchBusinessReq.toString()).isEqualTo("{\"text\":\"textValue\"}");
     }
 
     public JsonParser parser() {

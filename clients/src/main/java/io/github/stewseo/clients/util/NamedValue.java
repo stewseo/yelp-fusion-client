@@ -25,6 +25,7 @@ public class NamedValue<T> {
     }
 
     public static <T> JsonpDeserializer<NamedValue<T>> deserializer(Supplier<JsonpDeserializer<T>> valueParserBuilder) {
+
         return deserializer(valueParserBuilder.get());
     }
 

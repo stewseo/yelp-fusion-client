@@ -1,14 +1,18 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
-import io.github.stewseo.clients.yelpfusion._types.Event;
-
 import java.util.List;
 
 public class TestData {
+    public static final String INDEX_SF_RESTAURANTS = "yelp-fusion-businesses-restaurants-sf";
+
+    public static final String INDEX_SEARCH_SF_RESTAURANTS = "yelp-fusion-businesses-restaurants-sf-s";
+
+    public static final String TIMESTAMP_PIPELINE = "timestamp-pipeline";
+
+    public static final String FIELD_TIMESTAMP = "timestamp";
 
     public static final String ID = "id";
+
     public static final String LOCALE = "en_US";
     public static final String SORT_BY = "sort_by";
     public static final String ALIAS = "alias";
@@ -23,6 +27,7 @@ public class TestData {
     public static final int RADIUS = 20000;
     public static final int PRICE = 3;
     public static final int OPEN_AT = 1;
+    public static final int MAX_RESULTS = 10000;
 
     public static final double DISTANCE = 1;
 

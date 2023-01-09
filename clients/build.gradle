@@ -21,11 +21,11 @@ javadoc {
 
 dependencies {
 
-    api files("../lib/lowlevel-restclient.jar")
-    api files("../lib/temporaldata-service.jar")
+//    api files("../lib/lowlevel-restclient.jar")
+//    api files("../lib/temporaldata-service.jar")
 
-//    api project(":lowlevel-restclient")
-//    api project(":temporaldata-service")
+    api project(":lowlevel-restclient")
+    api project(":temporaldata-service")
 
     implementation buildLibs.elasticsearch.java
 
@@ -51,11 +51,7 @@ dependencies {
 
 test {
     filter {
-//        excludeTestsMatching "io.github.stewseo.clients.json.*"
-//        excludeTestsMatching "io.github.stewseo.clients.elasticsearch.*"
-//        excludeTestsMatching "io.github.stewseo.clients.util.*"
-//        excludeTestsMatching "io.github.stewseo.clients.yelpfusion.*"
-
+        excludeTestsMatching "io.github.stewseo.clients.functional.*"
     }
 }
 
@@ -77,22 +73,22 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-//            artifact sourcesJar
-//            artifact javadocJar
 
             pom {
                 name = POM_NAME
                 artifactId = POM_ARTIFACT_ID
                 setGroupId POM_GROUP_ID
                 packaging = POM_PACKAGING
-                description = 'java client that provides strongly typed requests and responses for all Yelp Fusion APIS. Handles http transport concerns, serializing to JSON and deserializing from JSON.'
+                description = POM_DESCRIPTION
                 url = 'https://github.com/stewseo/yelp-fusion-client'
+
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0'
+                        name = LICENSE_NAME
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
+
                 scm {
                     connection = POM_SCM_DEV_CONNECTION
                     developerConnection = POM_SCM_DEV_CONNECTION

@@ -8,6 +8,7 @@ class WithJsonObjectBuilderBaseTest {
 
     @Test
     void self() {
+
     }
 
     @Test

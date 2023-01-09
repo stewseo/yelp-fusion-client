@@ -1,7 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.ingest.GetPipelineRequest;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;

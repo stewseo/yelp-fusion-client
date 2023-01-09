@@ -1,7 +1,10 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.JsonpSerializable;
+import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
@@ -9,8 +12,10 @@ import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
-public class Messaging {
+@JsonpDeserializable
+public class Messaging implements JsonpSerializable {
 
     @Nullable
     private final String url;
@@ -20,6 +25,10 @@ public class Messaging {
     private Messaging(Builder builder) {
         this.url = builder.url;
         this.use_case_text = builder.use_case_text;
+    }
+
+    public static Messaging of(Function<Messaging.Builder, ObjectBuilder<Messaging>> fn) {
+        return fn.apply(new Messaging.Builder()).build();
     }
 
     public final String url() {
@@ -48,6 +57,9 @@ public class Messaging {
         }
     }
 
+    public String toString() {
+        return JsonpUtils.toString(this);
+    }
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Messaging> {
         @Nullable
         private String use_case_text;

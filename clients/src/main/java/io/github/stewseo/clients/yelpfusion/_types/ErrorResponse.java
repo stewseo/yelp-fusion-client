@@ -16,11 +16,6 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class ErrorResponse implements JsonpSerializable {
-    /**
-     * Json deserializer for {@link ErrorResponse}
-     */
-    public static final JsonpDeserializer<ErrorResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            ErrorResponse::setupErrorResponseDeserializer);
     private final ErrorCause error;
 
     // ---------------------------------------------------------------------------------------------
@@ -37,12 +32,6 @@ public class ErrorResponse implements JsonpSerializable {
         return fn.apply(new Builder()).build();
     }
 
-    protected static void setupErrorResponseDeserializer(ObjectDeserializer<Builder> op) {
-
-        op.add(Builder::error, ErrorCause._DESERIALIZER, "error");
-        op.add(Builder::status, JsonpDeserializer.integerDeserializer(), "status");
-
-    }
 
     public final ErrorCause error() {
         return this.error;
@@ -121,4 +110,16 @@ public class ErrorResponse implements JsonpSerializable {
         }
     }
 
+    /**
+     * Json deserializer for {@link ErrorResponse}
+     */
+    public static final JsonpDeserializer<ErrorResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            ErrorResponse::setupErrorResponseDeserializer);
+
+    protected static void setupErrorResponseDeserializer(ObjectDeserializer<Builder> op) {
+
+        op.add(Builder::error, ErrorCause._DESERIALIZER, "error");
+        op.add(Builder::status, JsonpDeserializer.integerDeserializer(), "status");
+
+    }
 }

@@ -38,7 +38,7 @@ public class ElasticsearchService {
         return asyncClient;
     }
 
-    public List<Long> getTimestamp(Long timestamp, SortOrder sortOrder) {
+    public List<Long> getTimestamp(Long timestamp, String index, SortOrder sortOrder) {
 
         String field = "timestamp";
 
@@ -50,7 +50,7 @@ public class ElasticsearchService {
 
         try {
             return asyncClient.search(s -> s
-                                    .index("yelp-businesses-restaurants-nyc")
+                                    .index(index)
                                     .query(q -> q
                                             .bool(b -> b
                                                     .must(byTimestamp) // greater than or equal to range parameter
@@ -72,6 +72,7 @@ public class ElasticsearchService {
                     .toList();
 
         } catch (Exception e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
     }
@@ -87,6 +88,7 @@ public class ElasticsearchService {
     ) {
 
         Query byCategory = matchQuery._toQuery();
+
         Query byTimestamp = rangeQuery._toQuery();
 
         SearchResponse<JsonData> response = null;
@@ -104,6 +106,7 @@ public class ElasticsearchService {
                     BusinessDetails.class // Using Void will ignore any document in the response.
             ).get();
         } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
     }
@@ -153,7 +156,7 @@ public class ElasticsearchService {
 
 
     // return all business ids up to 10k, starting at specified timestamp.
-    public List<Hit<ObjectNode>> getBusinessIdsWithTimestamps(String timestampRange) {
+    public List<Hit<ObjectNode>> searchWithRangeQuery(String timestampRange) {
 
         Query byTimestamp = RangeQuery.of(r -> r
                 .field("timestamp")

@@ -12,12 +12,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
         implements RequestTestCase<BusinessDetailsRequest> {
-    private final BusinessDetailsRequest businessDetailsRequest = of();
 
-    @Override
-    public Endpoint<BusinessDetailsRequest, ?, ?> endpoint() {
-        return BusinessDetailsRequest._ENDPOINT;
-    }
+    private final BusinessDetailsRequest businessDetailsRequest = of();
 
     public BusinessDetailsRequest of() {
         return BusinessDetailsRequest.of(b -> b
@@ -25,6 +21,22 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
                 .alias(ALIAS)
         );
     }
+
+    @Test
+    public void testBuilder() {
+
+        BusinessDetailsRequest.Builder builder = new BusinessDetailsRequest.Builder().id("idValue");
+
+        BusinessDetailsRequest.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        BusinessDetailsRequest searchBusinessReq = builder.build();
+
+        assertThat(searchBusinessReq.toString()).isEqualTo("BusinessDetailsRequest: GET v3/businesses/idValue {\"id\":\"idValue\"}");
+
+    }
+
     @Test
     public void testOf() {
         assertThat(businessDetailsRequest.id()).isEqualTo(ID);
@@ -48,56 +60,47 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
         assertThat(businessDetailsRequest.toString()).isEqualTo(expected);
     }
 
+    @Override
+    public Endpoint<BusinessDetailsRequest, ?, ?> endpoint() {
+        return BusinessDetailsRequest._ENDPOINT;
+    }
+
     @Test
     public void testEndpoint() {
 
-        testEndpointWithAliasPathParam(businessDetailsRequest);
+        Endpoint<BusinessDetailsRequest, ?, ?> endpoint = endpoint();
 
-        testEndpointWithIdPathParam(BusinessDetailsRequest.of(b -> b
+        testEndpointWithAliasPathParam(endpoint, businessDetailsRequest);
+
+        testEndpointWithIdPathParam(endpoint, BusinessDetailsRequest.of(b -> b
                 .alias(ALIAS)
                 .id(ID)
         ));
-
     }
 
     private final String basePath = "v3/businesses";
 
-    private void testEndpointWithIdPathParam(BusinessDetailsRequest businessDetailsRequest) {
+    private void testEndpointWithIdPathParam(Endpoint<BusinessDetailsRequest, ?, ?> endpoint, BusinessDetailsRequest businessDetailsRequest) {
 
-        assertThat(endpoint().id()).isEqualTo(basePath);
+        assertThat(endpoint.id()).isEqualTo(basePath);
 
-        assertThat(endpoint().requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + ALIAS);
+        assertThat(endpoint.requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + ALIAS);
 
-        assertThat(endpoint().hasRequestBody()).isFalse();
+        assertThat(endpoint.hasRequestBody()).isFalse();
 
-        assertThat(endpoint().queryParameters(businessDetailsRequest).values().size()).isEqualTo(0);
+        assertThat(endpoint.queryParameters(businessDetailsRequest).values().size()).isEqualTo(0);
 
-        assertThat(endpoint().isError(200)).isFalse();
-        assertThat(endpoint().headers(businessDetailsRequest).toString()).isEqualTo("{}");
-        assertThat(endpoint().method(businessDetailsRequest)).isEqualTo("GET");
+        assertThat(endpoint.isError(200)).isFalse();
+        assertThat(endpoint.headers(businessDetailsRequest).toString()).isEqualTo("{}");
+        assertThat(endpoint.method(businessDetailsRequest)).isEqualTo("GET");
     }
 
-    private void testEndpointWithAliasPathParam(BusinessDetailsRequest businessDetailsRequest) {
+    private void testEndpointWithAliasPathParam(Endpoint<BusinessDetailsRequest, ?, ?> endpoint, BusinessDetailsRequest businessDetailsRequest) {
 
-        assertThat(endpoint().id()).isEqualTo(basePath);
+        assertThat(endpoint.id()).isEqualTo(basePath);
 
-        assertThat(endpoint().requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + ALIAS);
-
-        BusinessDetailsRequest req = new BusinessDetailsRequest.Builder().build();
-    }
-
-    @Test
-    public void testBuilder() {
-
-        BusinessDetailsRequest.Builder builder = new BusinessDetailsRequest.Builder().id("idValue");
-
-        BusinessDetailsRequest.Builder self = builder.self();
-
-        assertThat(self).isEqualTo(builder);
-
-        BusinessDetailsRequest searchBusinessReq = builder.build();
-
-        assertThat(searchBusinessReq.toString()).isEqualTo("BusinessDetailsRequest: GET v3/businesses/idValue {\"id\":\"idValue\"}");
+        assertThat(endpoint.requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + ALIAS);
 
     }
+
 }

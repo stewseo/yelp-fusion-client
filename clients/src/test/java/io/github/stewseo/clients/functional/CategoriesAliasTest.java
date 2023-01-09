@@ -1,8 +1,10 @@
-package io.github.stewseo.clients.yelpfusion.categories.alias;
+package io.github.stewseo.clients.functional;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasRequest;
+import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

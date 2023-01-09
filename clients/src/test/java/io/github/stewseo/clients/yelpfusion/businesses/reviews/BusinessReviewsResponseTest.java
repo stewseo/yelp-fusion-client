@@ -3,12 +3,9 @@ package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;

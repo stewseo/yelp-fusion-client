@@ -95,9 +95,15 @@ jacoco {
 }
 
 sonarqube {
+
     properties {
-        property 'sonar.host.url', 'http://localhost:9000'
+        property "sonar.projectKey", "stewseo_yelp-fusion-client"
+        property "sonar.organization", "2babyotters"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.login", System.getenv("SONAR_TOKEN")
     }
+
+//    property 'sonar.host.url', 'http://localhost:9000'
 }
 
 test.finalizedBy jacocoTestReport

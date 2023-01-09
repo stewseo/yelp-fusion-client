@@ -1,5 +1,7 @@
-package io.github.stewseo.clients.yelpfusion.misc;
+package io.github.stewseo.clients.functional;
 
+import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
+import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
