@@ -6,7 +6,7 @@ import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion._types.Region;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +22,7 @@ import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
-class SearchTransactionResponseTest extends YelpFusionResponseTestCase<SearchTransactionResponse> {
+class SearchTransactionResponseTest extends ModelTestCase<SearchTransactionResponse> {
 
     private final SearchTransactionResponse searchTransactionsResponse = of();
     private final List<SearchBusinessResult> searchBusinessResults = List.of(SearchBusinessResult.of(b -> b.id(ID)));
@@ -94,15 +94,9 @@ class SearchTransactionResponseTest extends YelpFusionResponseTestCase<SearchTra
         assertThat(_DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
     }
 
-    @Override
     public JsonParser parser() {
         InputStream content = IOUtils.toInputStream(searchTransactionsResponse.toString(), StandardCharsets.UTF_8);
         return mapper.jsonProvider().createParser(content);
-    }
-
-    @Test
-    public void testBuildWithJson() {
-        
     }
 
     @Test

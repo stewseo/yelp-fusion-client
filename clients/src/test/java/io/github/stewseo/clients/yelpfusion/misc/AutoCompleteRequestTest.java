@@ -1,29 +1,31 @@
 package io.github.stewseo.clients.yelpfusion.misc;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AutoCompleteRequestTest extends YelpFusionRequestTestCase<AutoCompleteRequest> {
+public class AutoCompleteRequestTest
+        extends ModelTestCase<AutoCompleteRequest>
+        implements RequestTestCase<AutoCompleteRequest> {
 
     private final String text = "text";
 
     private final AutoCompleteRequest autoCompleteRequest = of();
 
-    @Override
     public AutoCompleteRequest of() {
         return AutoCompleteRequest.of(a -> a
                 .text(text)
                 .locale(LOCALE)
                 .latitude(LATITUDE)
                 .longitude(LONGITUDE));
-
     }
 
     @Test
@@ -34,7 +36,7 @@ public class AutoCompleteRequestTest extends YelpFusionRequestTestCase<AutoCompl
         assertThat(autoCompleteRequest.longitude()).isEqualTo(LONGITUDE);
     }
 
-    private final String expected = "{\"text\":\"text\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"locale\"}";
+    private final String expected = "{\"text\":\"text\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\"}";
 
     @Test
     public void testSerialize() {
@@ -70,6 +72,7 @@ public class AutoCompleteRequestTest extends YelpFusionRequestTestCase<AutoCompl
 
     @Test
     public void testBuilder() {
+
         AutoCompleteRequest.Builder builder = new AutoCompleteRequest.Builder().text("textValue");
 
         AutoCompleteRequest.Builder self = builder.self();
@@ -79,5 +82,9 @@ public class AutoCompleteRequestTest extends YelpFusionRequestTestCase<AutoCompl
         AutoCompleteRequest searchBusinessReq = builder.build();
 
         assertThat(searchBusinessReq.toString()).isEqualTo("{\"text\":\"textValue\"}");
+    }
+
+    public JsonParser parser() {
+        return parser(autoCompleteRequest);
     }
 }

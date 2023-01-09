@@ -26,17 +26,17 @@ class YelpRestTransportOptionsTest {
     @Test
     void of() throws IOException {
 
-        final YelpRestClientTransport trsp = new YelpRestClientTransport(
+        final RestClientTransport trsp = new RestClientTransport(
                 restClient, new JsonbJsonpMapper());
 
         final YelpFusionClient client = new YelpFusionClient(trsp);
 
-        YelpRestTransportOptions yelpRestTransportOptions = YelpRestTransportOptions.of(client._transportOptions());
+        RestClientOptions restClientOptions = RestClientOptions.of(client._transportOptions());
 
-        assertThat(yelpRestTransportOptions).isNotNull();
+        assertThat(restClientOptions).isNotNull();
     }
 
-    private final TransportOptions transportOptions = YelpRestTransportOptions.initialOptions();
+    private final TransportOptions transportOptions = RestClientOptions.initialOptions();
 
     @Test
     void initialOptions() {

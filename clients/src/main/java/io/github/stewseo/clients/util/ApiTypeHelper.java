@@ -38,7 +38,7 @@ public class ApiTypeHelper {
      * This can lead properties expected to be always present to be {@code null}, or have the default value for primitive types.
      * <p>
      * This can be used as a workaround for properties that are erroneously marked as required. If you have to use it, please file a
-     * bug at https://github.com/elastic/elasticsearch-java/issues to report the offending property.
+     * bug at <a href="https://github.com/elastic/elasticsearch-java/issues">...</a> to report the offending property.
      * <p>
      * The result of this method is an {@link AutoCloseable} handle that can be used in try-with-resource blocks to precisely
      * limit the scope where checks are disabled.

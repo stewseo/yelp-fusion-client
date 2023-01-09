@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-class BusinessReviewsResponseTest extends YelpFusionResponseTestCase<BusinessReviewsResponse> {
+class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse> {
 
     private final List<BusinessReview> businessReview = List.of(BusinessReview.of(br -> br.id("idValue")));
 
@@ -72,10 +72,8 @@ class BusinessReviewsResponseTest extends YelpFusionResponseTestCase<BusinessRev
         assertThat(businessMatchRes.toString()).isEqualTo(expected);
     }
 
-    @Override
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(businessReviewsResponse.toString(), StandardCharsets.UTF_8);
-        return jsonProvider().createParser(content);
+        return parser(businessReviewsResponse);
     }
 
     @Test

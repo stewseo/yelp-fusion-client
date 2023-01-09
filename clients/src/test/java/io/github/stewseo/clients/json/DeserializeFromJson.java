@@ -10,12 +10,11 @@ import java.io.StringReader;
 
 public interface DeserializeFromJson extends JsonTestCase {
 
+    JsonParser parser();
+
     @Test
     void testDeserializer();
 
     @Test
     void testDeserialize();
-
-    JsonParser parser();
-
 }

@@ -38,26 +38,27 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 
-public class YelpRestClientTransport implements YelpFusionTransport {
+public class RestClientTransport implements YelpFusionTransport {
 
     private final RestClientInterface restClientInterface;
     private final JsonpMapper mapper;
-    private final YelpRestTransportOptions transportOptions;
+
+    private final RestClientOptions transportOptions;
 
     private JsonpMapper esMapper;
 
-    public YelpRestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper, TransportOptions options) { // TransportOptions
+    public RestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper, TransportOptions options) { // TransportOptions
         this.restClientInterface = restClientInterface;
         this.mapper = mapper;
         if (options == null) {
-            transportOptions = YelpRestTransportOptions.initialOptions();
+            transportOptions = RestClientOptions.initialOptions();
         } else {
-            transportOptions = YelpRestTransportOptions.of(options);
+            transportOptions = RestClientOptions.of(options);
         }
 
     }
 
-    public YelpRestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper) throws IOException {
+    public RestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper) throws IOException {
         this(restClientInterface, mapper, null);
     }
 
@@ -130,7 +131,7 @@ public class YelpRestClientTransport implements YelpFusionTransport {
 
         if (options != null) {
             RequestOptions restOptions =
-                    YelpRestTransportOptions.of(options).restClientRequestOptions();
+                    RestClientOptions.of(options).restClientRequestOptions();
             clientReq.setOptions(restOptions);
         }
 

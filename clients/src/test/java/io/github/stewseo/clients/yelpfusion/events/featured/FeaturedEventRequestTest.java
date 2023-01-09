@@ -1,18 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
-
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class FeaturedEventRequestTest extends YelpFusionRequestTestCase<FeaturedEventRequest> {
+class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>
+        implements RequestTestCase<FeaturedEventRequest> {
 
     private final FeaturedEventRequest featuredEventRequest = of();
 
@@ -43,7 +43,7 @@ class FeaturedEventRequestTest extends YelpFusionRequestTestCase<FeaturedEventRe
     }
 
     private final String expected =
-            "{\"location\":\"locationValue\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"locale\"}";
+            "{\"location\":\"locationValue\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\"}";
 
     private final JsonGenerator generator = generator();
 

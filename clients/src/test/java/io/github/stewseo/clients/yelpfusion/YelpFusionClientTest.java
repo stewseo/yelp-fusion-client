@@ -2,8 +2,8 @@ package io.github.stewseo.clients.yelpfusion;
 
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
-import io.github.stewseo.clients.transport.restclient.YelpRestClientTransport;
-import io.github.stewseo.clients.transport.restclient.YelpRestTransportOptions;
+import io.github.stewseo.clients.transport.restclient.RestClientOptions;
+import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessClient;
 import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesClient;
 import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
@@ -37,7 +37,7 @@ class YelpFusionClientTest {
                 .setDefaultHeaders(defaultHeader)
                 .build();
 
-        return new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
+        return new RestClientTransport(restClient, new JacksonJsonpMapper());
     }
 
     @Test
@@ -49,7 +49,7 @@ class YelpFusionClientTest {
     @Test
     void withTransportOptions() throws IOException {
 
-        YelpRestTransportOptions transportOptions = new YelpRestTransportOptions(RequestOptions.DEFAULT);
+        RestClientOptions transportOptions = new RestClientOptions(RequestOptions.DEFAULT);
 
         YelpFusionClient client = new YelpFusionClient(transport()).withTransportOptions(transportOptions);
         assertThat(client._transportOptions()).isNotNull();

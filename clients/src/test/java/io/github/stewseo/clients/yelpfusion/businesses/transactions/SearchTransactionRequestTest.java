@@ -5,14 +5,11 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
@@ -20,13 +17,13 @@ import static io.github.stewseo.clients.yelpfusion._types.TestData.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.TERM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTransactionRequest> implements DeserializeFromJson{
+class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionRequest>
+        implements RequestTestCase<SearchTransactionRequest>, DeserializeFromJson {
 
     private final String category = "category";
     private final String location = "locationValue";
     private final SearchTransactionRequest searchTransactionRequest = of();
 
-    @Override
     public SearchTransactionRequest of() {
 
         return SearchTransactionRequest.of(s -> s
@@ -125,8 +122,7 @@ class SearchTransactionRequestTest extends YelpFusionRequestTestCase<SearchTrans
 
     @Override
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(searchTransactionRequest.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return parser(searchTransactionRequest);
     }
 
     @Test

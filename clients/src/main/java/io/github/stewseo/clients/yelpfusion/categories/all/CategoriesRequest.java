@@ -15,28 +15,11 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class CategoriesRequest extends RequestBase implements JsonpSerializable {
 
-    public static final SimpleEndpoint<CategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",
-            // Request method
-            request -> "GET",
-
-            request -> "v3/categories",
-
-            // Request path
-            request -> {
-                HashMap<String, String> params = new HashMap<>();
-                if (request.locale() != null) {
-                    params.put("locale", request.locale());
-                }
-                return params;
-
-            }, SimpleEndpoint.emptyMap(), false, CategoriesResponse._DESERIALIZER);
     private final String locale;
 
     private CategoriesRequest(Builder builder) {
         this.locale = builder.locale;
     }
-
-
 
     public static CategoriesRequest of(Function<Builder, ObjectBuilder<CategoriesRequest>> fn) {
         return fn.apply(new Builder()).build();
@@ -48,11 +31,15 @@ public class CategoriesRequest extends RequestBase implements JsonpSerializable 
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
+        serializeInternal(generator, mapper);
+        generator.writeEnd();
+    }
+
+    public void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if (this.locale != null) {
             generator.writeKey("locale");
             generator.write(this.locale);
         }
-        generator.writeEnd();
     }
 
     @Override
@@ -63,7 +50,7 @@ public class CategoriesRequest extends RequestBase implements JsonpSerializable 
     public static class Builder extends AbstractBuilder<Builder>
             implements
             ObjectBuilder<CategoriesRequest> {
-        Integer test;
+
         private String locale;
 
         public final Builder locale(String value) {
@@ -80,11 +67,22 @@ public class CategoriesRequest extends RequestBase implements JsonpSerializable 
             _checkSingleUse();
             return new CategoriesRequest(this);
         }
-
-        public Builder all(Integer test) {
-            this.test = test;
-            return this;
-        }
     }
+
+    public static final SimpleEndpoint<CategoriesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/categories",
+            // Request method
+            request -> "GET",
+
+            request -> "v3/categories",
+
+            // Request path
+            request -> {
+                HashMap<String, String> params = new HashMap<>();
+                if (request.locale() != null) {
+                    params.put("locale", request.locale());
+                }
+                return params;
+
+            }, SimpleEndpoint.emptyMap(), false, CategoriesResponse._DESERIALIZER);
 
 }

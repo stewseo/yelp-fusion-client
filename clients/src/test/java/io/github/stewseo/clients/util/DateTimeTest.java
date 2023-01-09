@@ -120,21 +120,6 @@ public class DateTimeTest extends TestJson {
     }
 
     @Test
-    void ofEpochMilli() {
-        DateTime dateTime = DateTime.ofEpochMilli(1L);
-        DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().toFormatter();
-        dateTime = DateTime.ofEpochMilli(1L, dateTimeFormatter);
-    }
-
-    @Test
-    void testOfEpochMilli() {
-    }
-
-    @Test
-    void of() {
-    }
-
-    @Test
     void testOf() {
     }
 

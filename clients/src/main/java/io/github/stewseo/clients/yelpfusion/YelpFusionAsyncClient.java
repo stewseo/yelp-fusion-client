@@ -12,7 +12,7 @@ import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
-import io.github.stewseo.clients.transport.restclient.YelpRestClientTransport;
+import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;
@@ -46,7 +46,7 @@ public class YelpFusionAsyncClient extends ApiClient<YelpFusionTransport, YelpFu
                 .setDefaultHeaders(defaultHeader)
                 .build();
 
-        YelpRestClientTransport transport = new YelpRestClientTransport(restClient, new JacksonJsonpMapper());
+        RestClientTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
         return new YelpFusionAsyncClient(transport);
     }
 

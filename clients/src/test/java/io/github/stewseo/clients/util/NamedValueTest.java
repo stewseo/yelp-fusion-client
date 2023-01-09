@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class NamedValueTest extends FunctionalTestCase {
+class NamedValueTest {
 
     @Test
     public void namedValueTest() {

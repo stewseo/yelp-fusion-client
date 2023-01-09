@@ -1,19 +1,16 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-class BusinessMatchResponseTest extends YelpFusionResponseTestCase<BusinessMatchResponse> {
+class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
 
     private final BusinessMatchResponse businessMatchResponse = of();
 
@@ -28,10 +25,8 @@ class BusinessMatchResponseTest extends YelpFusionResponseTestCase<BusinessMatch
         );
     }
 
-    @Override
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(businessMatchResponse.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return parser(businessMatchResponse);
     }
 
     @Test

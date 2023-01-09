@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.testcases.context;
 
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
-import io.github.stewseo.clients.transport.restclient.YelpRestClientTransport;
+import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -13,7 +13,7 @@ import java.io.IOException;
 public class YelpFusionTransportCtx {
     private final YelpFusionTransport transport;
 
-    protected YelpFusionTransportCtx() {
+    public YelpFusionTransportCtx() {
         this.transport = createTransport();
     }
 
@@ -39,7 +39,7 @@ public class YelpFusionTransportCtx {
 
         try {
 
-            return new YelpRestClientTransport(restClient, mapper);
+            return new RestClientTransport(restClient, mapper);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

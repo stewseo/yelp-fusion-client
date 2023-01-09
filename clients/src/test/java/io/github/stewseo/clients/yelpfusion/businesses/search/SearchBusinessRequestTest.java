@@ -2,7 +2,8 @@ package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -25,12 +26,12 @@ import static io.github.stewseo.clients.yelpfusion._types.TestData.SORT_BY;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.TERM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchBusinessRequestTest extends YelpFusionRequestTestCase<SearchBusinessRequest> {
+class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
+        implements RequestTestCase<SearchBusinessRequest> {
 
     private final String PRICE = "price";
 
     public static final List<String> LOCATIONS = List.of("location"), TERMS = List.of("term");
-
 
     private final SearchBusinessRequest searchBusinessRequest = of();
 

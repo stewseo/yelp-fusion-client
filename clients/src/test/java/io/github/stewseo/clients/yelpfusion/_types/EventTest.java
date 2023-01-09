@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ResultTestCase;
+import io.github.stewseo.clients.json.DeserializeFromJson;
+import io.github.stewseo.clients.json.SerializeToJson;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -12,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EventTest implements ResultTestCase {
+class EventTest implements SerializeToJson, DeserializeFromJson {
 
     private final Integer attending_count = 1, interested_count = 1;
 
