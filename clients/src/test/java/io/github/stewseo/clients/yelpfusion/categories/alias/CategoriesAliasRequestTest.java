@@ -1,15 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.categories.alias;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ALIAS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CategoriesAliasRequestTest extends YelpFusionRequestTestCase<CategoriesAliasRequest> {
-
+class CategoriesAliasRequestTest
+        extends ModelTestCase<CategoriesAliasRequest>
+        implements RequestTestCase<CategoriesAliasRequest> {
 
     private final CategoriesAliasRequest categoriesAliasRequest = of();
 
@@ -78,4 +81,27 @@ class CategoriesAliasRequestTest extends YelpFusionRequestTestCase<CategoriesAli
 
         assertThat(categoriesAliasReq.toString()).isEqualTo("{\"alias\":\"aliasValue\"}");
     }
+
+    @Test
+    public void testDeserialize() {
+
+//        JsonParser parser = parser();
+//
+//        CategoriesAliasResponse deserializedCategoriesAliasResponse =
+//                CategoriesAliasRequest._DESERIALIZER.deserialize(parser, mapper);
+//
+//        assertThat(deserializedCategoriesAliasResponse.toString()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testDeserializer() {
+
+//        assertThat(CategoriesAliasRequest._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");
+
+    }
+
+    public JsonParser parser() {
+        return parser(categoriesAliasRequest);
+    }
+
 }

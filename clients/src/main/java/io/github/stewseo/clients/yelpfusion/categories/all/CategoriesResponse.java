@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
+import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import io.github.stewseo.clients.json.JsonpDeserializable;
@@ -18,9 +19,10 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class CategoriesResponse extends RequestBase implements JsonpSerializable {
+
     public static final JsonpDeserializer<CategoriesResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             CategoriesResponse::setGetCategoriesResponseDeserializer);
-    private List<Category> categories;
+    private final List<Category> categories;
 
     private CategoriesResponse(Builder builder) {
         this.categories = builder.categories;
@@ -35,12 +37,21 @@ public class CategoriesResponse extends RequestBase implements JsonpSerializable
     }
 
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeKey("categories");
-        generator.writeStartArray();
-        for (Category item0 : this.categories) {
-            item0.serialize(generator, mapper);
-        }
+        generator.writeStartObject();
+        serializeInternal(generator, mapper);
         generator.writeEnd();
+    }
+
+    void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
+
+        if(ApiTypeHelper.isDefined(this.categories)) {
+            generator.writeKey("categories");
+            generator.writeStartArray();
+            for (Category item0 : this.categories) {
+                item0.serialize(generator, mapper);
+            }
+            generator.writeEnd();
+        }
     }
 
     @Override
@@ -60,7 +71,6 @@ public class CategoriesResponse extends RequestBase implements JsonpSerializable
 
         public final Builder categories(List<Category> categories) {
             this.categories = ObjectBuilderBase._listAddAll(this.categories, categories);
-            ;
             return this;
         }
 

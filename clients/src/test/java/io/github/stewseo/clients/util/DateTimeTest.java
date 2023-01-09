@@ -1,13 +1,19 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.json.jackson.JacksonJsonpGenerator;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.json.testcases.TestJson;
+import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
+import java.io.StringWriter;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateTimeTest extends TestJson {
 
@@ -119,78 +125,39 @@ public class DateTimeTest extends TestJson {
 
     }
 
-    @Test
-    void ofEpochMilli() {
-        DateTime dateTime = DateTime.ofEpochMilli(1L);
-        DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().toFormatter();
-        dateTime = DateTime.ofEpochMilli(1L, dateTimeFormatter);
-    }
-
-    @Test
-    void testOfEpochMilli() {
-    }
-
-    @Test
-    void of() {
-    }
-
-    @Test
-    void testOf() {
-    }
-
-    @Test
-    void testOf1() {
-    }
-
-    @Test
-    void testOf2() {
-    }
+    private final DateTime dateTime = DateTime.of(text, DateTimeFormatter.ISO_INSTANT);
 
     @Test
     void getString() {
+
+        assertThat(dateTime.getString()).isEqualTo("2022-02-02T17:16:12.348Z");
     }
 
     @Test
     void getFormatter() {
-    }
+        assertThat(dateTime.getFormatter()).isInstanceOf(DateTimeFormatter.class);
 
-    @Test
-    void toInstant() {
-    }
-
-    @Test
-    void testToInstant() {
-    }
-
-    @Test
-    void toZonedDateTime() {
-    }
-
-    @Test
-    void testToZonedDateTime() {
-    }
-
-    @Test
-    void toEpochMilli() {
-    }
-
-    @Test
-    void testToEpochMilli() {
     }
 
     @Test
     void serialize() {
+        JsonGenerator generator = mapper.jsonProvider().createGenerator(new StringWriter());
+        dateTime.serialize(generator, mapper);
     }
 
     @Test
     void testEquals() {
+        assertThat(dateTime.equals(DateTime.of(text, DateTimeFormatter.ISO_INSTANT))).isTrue();
     }
 
     @Test
     void testHashCode() {
+        assertThat(dateTime.hashCode()).isEqualTo(-2083014308);
     }
 
     @Test
     void testToString() {
+        assertThat(dateTime.toString()).isEqualTo("2022-02-02T17:16:12.348Z");
+
     }
 }

@@ -1,9 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.categories.alias;
 
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventResponse;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -15,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class CategoriesAliasResponseTest extends YelpFusionResponseTestCase<CategoriesAliasResponse> {
+public class CategoriesAliasResponseTest extends ModelTestCase<CategoriesAliasResponse> {
 
     private final CategoriesAliasResponse categoriesAliasResponse = of();
 
@@ -50,7 +48,6 @@ public class CategoriesAliasResponseTest extends YelpFusionResponseTestCase<Cate
         AssertionsForClassTypes.assertThat(categoriesAliasResponse.toString()).isEqualTo(expected);
     }
 
-    @Override
     public JsonParser parser() {
         InputStream content = IOUtils.toInputStream(categoriesAliasResponse.toString(), StandardCharsets.UTF_8);
         return mapper.jsonProvider().createParser(content);
@@ -71,11 +68,6 @@ public class CategoriesAliasResponseTest extends YelpFusionResponseTestCase<Cate
     public void testDeserializer() {
 
         assertThat(CategoriesAliasResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");
-
-    }
-
-    @Test
-    public void testBuildWithJson() {
 
     }
 

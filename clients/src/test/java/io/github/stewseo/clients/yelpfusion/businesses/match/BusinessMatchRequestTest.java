@@ -1,21 +1,21 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BusinessMatchRequestTest extends YelpFusionRequestTestCase<BusinessMatchRequest> {
+public class BusinessMatchRequestTest extends ModelTestCase<BusinessMatchRequest>
+        implements RequestTestCase<BusinessMatchRequest> {
 
     private final String city = "sf", name = "Brenda's+French+Soul+Food", phone = "4151111111",
             address1="625+polk+st", state="ca", country="US", postal_code="94111", match_threshold="none";
 
     private final BusinessMatchRequest businessMatchRequest = of();
 
-    @Override
     public BusinessMatchRequest of() {
         return BusinessMatchRequest.of(b -> b
                 .city(city)

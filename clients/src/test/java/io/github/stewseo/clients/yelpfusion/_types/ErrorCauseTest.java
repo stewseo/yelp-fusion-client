@@ -29,15 +29,20 @@ class ErrorCauseTest extends TestJson {
 
     @Test
     void causedBy() {
-        ErrorCause causedBy = ErrorCause.of(error -> error.causedBy(errorCause));
-        assertThat(causedBy).isNotNull();
+        final String expected = "{\"caused_by\":{\"string\":\"jsonData\",\"type\":\"type\",\"reason\":\"reason\",\"stack_trace\":\"stacktrace\"}}";
 
+        ErrorCause causedBy = ErrorCause.of(error -> error
+                .causedBy(errorCause)
+        );
+        assertThat(causedBy.toString()).isEqualTo(expected);
     }
 
     @Test
     void rootCause() {
+        final String expected = "" + "{\"root_cause\":[{\"string\":\"jsonData\",\"type\":\"type\",\"reason\":\"reason\",\"stack_trace\":\"stacktrace\"}]}";
+
         ErrorCause rootCause = ErrorCause.of(error -> error.rootCause(errorCause));
-        assertThat(rootCause).isNotNull();
+        assertThat(rootCause.toString()).isEqualTo(expected);
     }
 
     private final String expectedJson = "{\"string\":\"jsonData\",\"type\":\"type\",\"reason\":\"reason\",\"stack_trace\":\"stacktrace\"}";

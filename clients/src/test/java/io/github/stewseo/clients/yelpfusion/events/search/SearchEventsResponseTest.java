@@ -1,21 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.EVENT;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class SearchEventsResponseTest extends YelpFusionResponseTestCase<SearchEventsResponse> {
+public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse> {
 
     private final SearchEventsResponse searchEventsResponse = of();
 
@@ -50,10 +47,9 @@ public class SearchEventsResponseTest extends YelpFusionResponseTestCase<SearchE
         AssertionsForClassTypes.assertThat(searchEventsResponse.toString()).isEqualTo(expected);
     }
 
-    @Override
+
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(searchEventsResponse.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return parser(searchEventsResponse);
     }
 
     @Test

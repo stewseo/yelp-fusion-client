@@ -22,7 +22,7 @@ import io.github.stewseo.lowlevel.restclient.RequestOptions;
 import io.github.stewseo.lowlevel.restclient.Response;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
 import io.github.stewseo.lowlevel.restclient.ResponseListener;
-import io.github.stewseo.lowlevel.restclient.RestClientInterface;
+import io.github.stewseo.lowlevel.restclient.RestClient;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpEntity;
@@ -38,36 +38,37 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 
-public class YelpRestClientTransport implements YelpFusionTransport {
+public class RestClientTransport implements YelpFusionTransport {
 
-    private final RestClientInterface restClientInterface;
+    private final RestClient restClient;
     private final JsonpMapper mapper;
-    private final YelpRestTransportOptions transportOptions;
+
+    private final RestClientOptions transportOptions;
 
     private JsonpMapper esMapper;
 
-    public YelpRestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper, TransportOptions options) { // TransportOptions
-        this.restClientInterface = restClientInterface;
+    public RestClientTransport(RestClient restClient, JsonpMapper mapper, TransportOptions options) { // TransportOptions
+        this.restClient = restClient;
         this.mapper = mapper;
         if (options == null) {
-            transportOptions = YelpRestTransportOptions.initialOptions();
+            transportOptions = RestClientOptions.initialOptions();
         } else {
-            transportOptions = YelpRestTransportOptions.of(options);
+            transportOptions = RestClientOptions.of(options);
         }
 
     }
 
-    public YelpRestClientTransport(RestClientInterface restClientInterface, JsonpMapper mapper) throws IOException {
-        this(restClientInterface, mapper, null);
+    public RestClientTransport(RestClient restClient, JsonpMapper mapper) throws IOException {
+        this(restClient, mapper, null);
     }
 
     @Override
     public void close() throws IOException {
-        this.restClientInterface.close();
+        this.restClient.close();
     }
 
-    public RestClientInterface restClientInterface() {
-        return restClientInterface;
+    public RestClient restClient() {
+        return restClient;
     }
 
     public <RequestT, ResponseT, ErrorT> ResponseT performRequest(
@@ -77,7 +78,7 @@ public class YelpRestClientTransport implements YelpFusionTransport {
 
         Request clientRequest = prepareLowLevelRequest(request, endpoint, transportOptions);
 
-        Response clientResponse = restClientInterface.performRequest(clientRequest);
+        Response clientResponse = restClient.performRequest(clientRequest);
 
         return getHighLevelResponse(clientResponse, endpoint);
     }
@@ -93,7 +94,7 @@ public class YelpRestClientTransport implements YelpFusionTransport {
 
         boolean disableRequiredChecks = ApiTypeHelper.requiredPropertiesCheckDisabled();
 
-        future.cancellable = restClientInterface.performRequestAsync(clientReq, new ResponseListener() {
+        future.cancellable = restClient.performRequestAsync(clientReq, new ResponseListener() {
 
             @Override
             public void onSuccess(Response clientResp) {
@@ -130,7 +131,7 @@ public class YelpRestClientTransport implements YelpFusionTransport {
 
         if (options != null) {
             RequestOptions restOptions =
-                    YelpRestTransportOptions.of(options).restClientRequestOptions();
+                    RestClientOptions.of(options).restClientRequestOptions();
             clientReq.setOptions(restOptions);
         }
 
@@ -218,7 +219,6 @@ public class YelpRestClientTransport implements YelpFusionTransport {
                             endpoint.id(), new ResponseException(clientResp)
                     );
                 }
-//                logger.info("entity = new BufferedHttpEntity(entity): " + EntityUtils.toString(entity));
                 InputStream content = entity.getContent();
 
                 JsonParser parser = mapper.jsonProvider().createParser(content);

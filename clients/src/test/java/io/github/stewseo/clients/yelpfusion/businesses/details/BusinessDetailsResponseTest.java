@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -14,7 +14,7 @@ import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class BusinessDetailsResponseTest extends YelpFusionResponseTestCase<BusinessDetailsResponse> {
+class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse> {
 
     private final BusinessDetailsResponse businessDetailsResponse = of();
 
@@ -29,12 +29,6 @@ class BusinessDetailsResponseTest extends YelpFusionResponseTestCase<BusinessDet
                 .result(BusinessDetails.of(bd -> bd
                         .id(ID)))
         );
-    }
-
-    @Override
-    public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(businessDetailsResponse.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
     }
 
     @Test
@@ -57,6 +51,22 @@ class BusinessDetailsResponseTest extends YelpFusionResponseTestCase<BusinessDet
     }
 
     @Test
+    public void testBuilder() {
+
+        BusinessDetailsResponse.Builder builder = new BusinessDetailsResponse.Builder().result(BusinessDetails.of(b -> b
+                .id("idValue")));
+
+        BusinessDetailsResponse.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        BusinessDetailsResponse searchBusinessResp = builder.build();
+
+        assertThat(searchBusinessResp.toString()).isEqualTo("{\"businesses\":{\"id\":\"idValue\"}}");
+
+    }
+
+    @Test
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -71,23 +81,7 @@ class BusinessDetailsResponseTest extends YelpFusionResponseTestCase<BusinessDet
         assertThat(BusinessDetailsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.JsonpDeserializer");
     }
 
-    @Test
-    public void testBuildWithJson() {
-    }
-
-    @Test
-    public void testBuilder() {
-
-        BusinessDetailsResponse.Builder builder = new BusinessDetailsResponse.Builder().result(BusinessDetails.of(b -> b
-                .id("idValue")));
-
-        BusinessDetailsResponse.Builder self = builder.self();
-
-        assertThat(self).isEqualTo(builder);
-
-        BusinessDetailsResponse searchBusinessResp = builder.build();
-
-        assertThat(searchBusinessResp.toString()).isEqualTo("{\"businesses\":{\"id\":\"idValue\"}}");
-
+    public JsonParser parser() {
+        return parser(businessDetailsResponse);
     }
 }

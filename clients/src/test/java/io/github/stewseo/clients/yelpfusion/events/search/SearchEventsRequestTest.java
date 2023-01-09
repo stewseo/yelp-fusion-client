@@ -3,7 +3,8 @@ package io.github.stewseo.clients.yelpfusion.events.search;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,8 @@ import static io.github.stewseo.clients.yelpfusion._types.TestData.RADIUS;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.SORT_BY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchEventsRequestTest extends YelpFusionRequestTestCase<SearchEventsRequest> {
+class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
+        implements RequestTestCase<SearchEventsRequest> {
 
     private final String sort_on = "sort_on";
 
@@ -80,13 +82,11 @@ class SearchEventsRequestTest extends YelpFusionRequestTestCase<SearchEventsRequ
         assertThat(searchEventsRequest.categories()).isEqualTo(categories);
     }
 
-    private final String expected = "{\"categories\":[\"categories\"]," +
+    private final String expected = "" +
+            "{\"categories\":[\"categories\"]," +
             "\"excluded_events\":[\"excludedEvent1\",\"excludedEvent2\"]," +
-            "\"locale\":\"locale\"," +
-            "\"sort_by\":\"sort_by\",\"sort_on\":\"sort_on\"," +
-            "\"offset\":5,\"location\":\"locationValue\"," +
-            "\"limit\":50,\"start_date\":1,\"end_date\":5,\"radius\":20000," +
-            "\"latitude\":37.7829,\"longitude\":-122.4189,\"is_free\":true}";
+            "\"locale\":\"en_US\",\"sort_by\":\"sort_by\",\"sort_on\":\"sort_on\",\"offset\":5,\"location\":\"locationValue\",\"limit\":50,\"start_date\":1,\"end_date\":5,\"radius\":20000,\"latitude\":37.7829,\"longitude\":-122.4189," +
+            "\"is_free\":true}";
 
     @Test
     public void testSerialize() {

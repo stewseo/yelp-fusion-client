@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch.ingest.GetPipelineRequest;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
+import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
@@ -54,6 +55,9 @@ public class BusinessDetailsRequest extends RequestBase implements JsonpSerializ
             generator.writeKey("alias");
             generator.write(this.alias);
         }
+    }
+    public String toString() {
+        return JsonpUtils.toString(this);
     }
 
     public static class Builder extends AbstractBuilder<Builder>

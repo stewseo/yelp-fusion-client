@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResponseTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class FeaturedEventResponseTest extends YelpFusionResponseTestCase<FeaturedEventResponse> {
+public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventResponse> {
 
     private final FeaturedEventResponse featuredEventsResponse = of();
 
@@ -51,10 +51,8 @@ public class FeaturedEventResponseTest extends YelpFusionResponseTestCase<Featur
         AssertionsForClassTypes.assertThat(featuredEventsResponse.toString()).isEqualTo(expected);
     }
 
-    @Override
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(featuredEventsResponse.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return super.parser(featuredEventsResponse);
     }
 
     @Test
@@ -72,11 +70,6 @@ public class FeaturedEventResponseTest extends YelpFusionResponseTestCase<Featur
     public void testDeserializer() {
 
         assertThat(FeaturedEventResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");
-
-    }
-
-    @Test
-    public void testBuildWithJson() {
 
     }
 

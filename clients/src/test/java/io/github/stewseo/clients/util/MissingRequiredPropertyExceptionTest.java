@@ -2,15 +2,26 @@ package io.github.stewseo.clients.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MissingRequiredPropertyExceptionTest {
 
-    @Test
-    void getObjectClass() {
-    }
+    private String id;
 
     @Test
-    void getPropertyName() {
+    void getObjectClass() {
+
+        MissingRequiredPropertyException exception =
+                assertThrows(MissingRequiredPropertyException.class,
+                        () -> ApiTypeHelper.requireNonNull(id, this, "idName"));
+
+        assertThat(exception.getObjectClass()).isEqualTo(this.getClass());
+
+        assertThat(exception.getObjectClass()).isEqualTo(MissingRequiredPropertyExceptionTest.class);
+
+        assertThat(exception.getPropertyName()).isEqualTo("idName");
+
     }
+
 }

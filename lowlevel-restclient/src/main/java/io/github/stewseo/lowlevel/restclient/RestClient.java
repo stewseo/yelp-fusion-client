@@ -1,5 +1,6 @@
 package io.github.stewseo.lowlevel.restclient;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -28,6 +29,7 @@ import org.apache.http.nio.client.methods.HttpAsyncMethods;
 import org.apache.http.nio.protocol.HttpAsyncRequestProducer;
 import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +57,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.zip.GZIPOutputStream;
 
 
-public class RestClient implements Closeable, RestClientInterface {
+public class RestClient implements Closeable {
     //    private static final Log logger = LogFactory.getLog(RestClient.class);
     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
     final List<Header> defaultHeaders;
@@ -277,7 +279,6 @@ public class RestClient implements Closeable, RestClientInterface {
         HttpResponse httpResponse;
         try {
             httpResponse = client.execute(context.requestProducer, context.asyncResponseConsumer, context.context, null).get();
-
         } catch (Exception e) {
             RequestLogger.logFailedRequest(logger, request.httpRequest, httpHost, e);
             Exception cause = extractAndWrapCause(e);
@@ -345,7 +346,6 @@ public class RestClient implements Closeable, RestClientInterface {
         }
     }
 
-    @Override
     public HttpHost httpHost() {
         return httpHost;
     }

@@ -1,21 +1,21 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
 
-import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CategoriesTest extends FunctionalTestCase {
 
     private final CategoriesRequest categoriesRequest = CategoriesRequest.of(c -> c
-            .all(1)
-            .locale("us_En"));
+            .locale(LOCALE));
     @Test
     public void testCategoriesEndpoint() {
 

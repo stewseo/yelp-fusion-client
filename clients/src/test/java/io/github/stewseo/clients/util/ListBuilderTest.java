@@ -13,8 +13,9 @@ class ListBuilderTest {
 
     private final ListBuilder<BusinessDetails, ObjectBuilder<BusinessDetails>> lb =
             new ListBuilder<>(BusinessDetails.Builder::new);
+
     @Test
-    void of() {
+    void testInstantiation() {
 
         assertThat(lb).isNotNull();
 

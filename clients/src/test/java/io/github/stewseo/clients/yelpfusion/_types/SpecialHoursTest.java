@@ -1,40 +1,54 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionResultTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
+import static io.github.stewseo.clients.yelpfusion._types.TestData.IS_CLOSED;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.IS_OVERNIGHT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SpecialHoursTest extends YelpFusionResultTestCase {
+class SpecialHoursTest extends ModelTestCase<SpecialHours> {
 
     private final String date = "1/6/2023", start = "0800", end = "1700";
 
-    private final Boolean is_closed = true, is_overnight = true;
+    private final SpecialHours specialHours = of();
+    @Override
+    public SpecialHours of() {
+        return SpecialHours.of(s -> s
+                .date(date)
+                .start(start)
+                .end(end)
+                .is_closed(IS_CLOSED)
+                .is_overnight(IS_OVERNIGHT));
+    }
 
-    private final SpecialHours specialHours = SpecialHours.of(s -> s
-            .date(date)
-            .start(start)
-            .end(end)
-            .is_closed(is_closed)
-            .is_overnight(is_overnight));
+    @Test
+    public void testBuilder() {
+        SpecialHours.Builder builder = new SpecialHours.Builder().date(date);
 
+        SpecialHours.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        SpecialHours specialHours = builder.build();
+
+        Assertions.assertThat(specialHours.toString()).isEqualTo("{\"date\":\"1/6/2023\"}");
+    }
 
     @Test
     public void testOf() {
         assertThat(specialHours.date()).isEqualTo(date);
         assertThat(specialHours.start()).isEqualTo(start);
         assertThat(specialHours.end()).isEqualTo(end);
-        assertThat(specialHours.is_closed()).isEqualTo(is_closed);
-        assertThat(specialHours.is_overnight()).isEqualTo(is_overnight);
+        assertThat(specialHours.is_closed()).isEqualTo(IS_CLOSED);
+        assertThat(specialHours.is_overnight()).isEqualTo(IS_OVERNIGHT);
 
     }
-    String expected = "{\"date\":\"1/6/2023\",\"is_closed\":true,\"start\":\"0800\",\"end\":\"1700\",\"is_overnight\":true}";
+
+    private final String expected = "{\"date\":\"1/6/2023\",\"is_closed\":false,\"start\":\"0800\",\"end\":\"1700\",\"is_overnight\":false}";
     JsonGenerator generator = generator();
     @Test
     public void testSerialize() {
@@ -59,18 +73,13 @@ class SpecialHoursTest extends YelpFusionResultTestCase {
 
     @Test
     public void testDeserialize() {
-        InputStream content = IOUtils.toInputStream(specialHours.toString(), StandardCharsets.UTF_8);
 
-        JsonParser parser = mapper.jsonProvider().createParser(content);
-
-        SpecialHours searchBusinessRes = SpecialHours._DESERIALIZER.deserialize(parser, mapper);
+        SpecialHours searchBusinessRes = SpecialHours._DESERIALIZER.deserialize(parser(), mapper);
 
         assertThat(specialHours.toString()).isEqualTo(expected);
     }
 
-    @Override
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(specialHours.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return parser(specialHours);
     }
 }

@@ -1,16 +1,17 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
-import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionRequestTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class BusinessDetailsRequestTest extends YelpFusionRequestTestCase<BusinessDetailsRequest> {
-
-    private final String id = "idVal", alias = "aliasVal";
+class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
+        implements RequestTestCase<BusinessDetailsRequest> {
     private final BusinessDetailsRequest businessDetailsRequest = of();
 
     @Override
@@ -18,21 +19,19 @@ class BusinessDetailsRequestTest extends YelpFusionRequestTestCase<BusinessDetai
         return BusinessDetailsRequest._ENDPOINT;
     }
 
-    @Override
     public BusinessDetailsRequest of() {
         return BusinessDetailsRequest.of(b -> b
-                .id(id)
-                .alias(alias)
+                .id(ID)
+                .alias(ALIAS)
         );
     }
     @Test
     public void testOf() {
-        assertThat(businessDetailsRequest.id()).isEqualTo(id);
-        assertThat(businessDetailsRequest.alias()).isEqualTo(alias);
+        assertThat(businessDetailsRequest.id()).isEqualTo(ID);
+        assertThat(businessDetailsRequest.alias()).isEqualTo(ALIAS);
     }
 
-    private final String expected = "BusinessDetailsRequest: GET v3/businesses/aliasVal " +
-            "{\"id\":\"idVal\",\"alias\":\"aliasVal\"}";
+    private final String expected = "BusinessDetailsRequest: GET v3/businesses/alias {\"id\":\"id\",\"alias\":\"alias\"}";
     private final JsonGenerator generator = generator();
 
     @Test
@@ -55,8 +54,8 @@ class BusinessDetailsRequestTest extends YelpFusionRequestTestCase<BusinessDetai
         testEndpointWithAliasPathParam(businessDetailsRequest);
 
         testEndpointWithIdPathParam(BusinessDetailsRequest.of(b -> b
-                .alias(alias)
-                .id(id)
+                .alias(ALIAS)
+                .id(ID)
         ));
 
     }
@@ -67,7 +66,7 @@ class BusinessDetailsRequestTest extends YelpFusionRequestTestCase<BusinessDetai
 
         assertThat(endpoint().id()).isEqualTo(basePath);
 
-        assertThat(endpoint().requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + alias);
+        assertThat(endpoint().requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + ALIAS);
 
         assertThat(endpoint().hasRequestBody()).isFalse();
 
@@ -82,7 +81,7 @@ class BusinessDetailsRequestTest extends YelpFusionRequestTestCase<BusinessDetai
 
         assertThat(endpoint().id()).isEqualTo(basePath);
 
-        assertThat(endpoint().requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + alias);
+        assertThat(endpoint().requestUrl(businessDetailsRequest)).isEqualTo("v3/businesses/" + ALIAS);
 
         BusinessDetailsRequest req = new BusinessDetailsRequest.Builder().build();
     }

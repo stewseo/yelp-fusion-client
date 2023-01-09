@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class LazyDeserializerTest extends Assertions {
 
+
     @Test
     public void testConcurrentInit() throws Exception {
         // See https://github.com/elastic/elasticsearch-java/issues/58

@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 
 import java.util.List;
 
-public abstract class ElasticsearchTestCase {
+public class ElasticsearchTestCase {
 
     public static final String INDEX_NYC = "yelp-fusion-businesses-restaurants-sf";
 

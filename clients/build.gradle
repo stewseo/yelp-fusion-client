@@ -21,11 +21,11 @@ javadoc {
 
 dependencies {
 
-    api files("../lib/lowlevel-restclient.jar")
-    api files("../lib/temporaldata-service.jar")
+//    api files("../lib/lowlevel-restclient.jar")
+//    api files("../lib/temporaldata-service.jar")
 
-//    api project(":lowlevel-restclient")
-//    api project(":temporaldata-service")
+    api project(":lowlevel-restclient")
+    api project(":temporaldata-service")
 
     implementation buildLibs.elasticsearch.java
 
