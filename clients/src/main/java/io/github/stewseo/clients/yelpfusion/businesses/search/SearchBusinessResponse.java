@@ -24,8 +24,10 @@ import java.util.function.Function;
 public class SearchBusinessResponse implements JsonpSerializable {
 
     private final List<SearchBusinessResult> businesses;
+
     @Nullable
     private final Integer total;
+
     @Nullable
     private final Region region;
 

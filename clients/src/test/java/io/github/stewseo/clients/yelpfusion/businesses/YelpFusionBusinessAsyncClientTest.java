@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.QueryParameter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase {
 
     @Test
-    void withTransportOptions() throws IOException {
+    public void testWithTransportOptions() {
 
         try(RestClientTransport restClientTransport = restClientTransport()) {
 
@@ -25,6 +26,8 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
                     );
 
             assertThat(client._transportOptions()).isNotNull();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -63,6 +66,5 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
         );
 
         assertThat(exception.getMessage()).isEqualTo(expected);
-
     }
 }

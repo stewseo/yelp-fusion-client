@@ -4,7 +4,6 @@ import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static io.github.stewseo.clients.util.ApiTypeHelper.DisabledChecksHandle;
 import static org.assertj.core.api.Assertions.assertThat;

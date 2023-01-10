@@ -1,13 +1,13 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
-import io.github.stewseo.clients.json.JsonpUtils;
-import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
+import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
+import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;

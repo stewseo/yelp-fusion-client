@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class YelpFusionCategoriesAsyncClientTest extends YelpFusionClientTestCase {
 
     @Test
-    void withTransportOptions() throws IOException {
+    public void testWithTransportOptions() {
 
         try(RestClientTransport restClientTransport = restClientTransport()) {
 
@@ -28,9 +28,11 @@ class YelpFusionCategoriesAsyncClientTest extends YelpFusionClientTestCase {
                     );
 
             assertThat(client._transportOptions()).isNotNull();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
-
 
     YelpFusionCategoriesAsyncClient asyncClient = new YelpFusionCategoriesAsyncClient(restClientTransport());
 
@@ -41,7 +43,7 @@ class YelpFusionCategoriesAsyncClientTest extends YelpFusionClientTestCase {
                 .locale(LOCALE));
 
         ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> cf.get().categories()
+                () -> assertThat(cf.get().categories()).isNull()
         );
 
         assertThat(executionException.getMessage()).isNotNull();

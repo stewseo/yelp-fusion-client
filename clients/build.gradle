@@ -51,7 +51,7 @@ dependencies {
 
 test {
     filter {
-        excludeTestsMatching "io.github.stewseo.clients.functional.*"
+//        excludeTestsMatching "io.github.stewseo.clients.functional.*"
     }
 }
 

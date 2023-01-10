@@ -146,7 +146,7 @@ class JsonValueParser {
 
         @Override
         public BigDecimal bigDecimalValue() {
-            return new BigDecimal(value);
+            return BigDecimal.valueOf(value);
         }
 
         @Override

@@ -54,12 +54,7 @@ public class JacksonJsonProvider extends JsonProvider {
 
     @Override
     public JsonParserFactory createParserFactory(Map<String, ?> config) {
-        if (config == null || config.isEmpty()) {
-            return defaultParserFactory;
-        } else {
-            // TODO: handle specific configuration
-            return defaultParserFactory;
-        }
+        return defaultParserFactory;
     }
 
     @Override
@@ -77,12 +72,7 @@ public class JacksonJsonProvider extends JsonProvider {
 
     @Override
     public JsonGeneratorFactory createGeneratorFactory(Map<String, ?> config) {
-        if (config == null || config.isEmpty()) {
-            return defaultGeneratorFactory;
-        } else {
-            // TODO: handle specific configuration
-            return defaultGeneratorFactory;
-        }
+        return defaultGeneratorFactory;
     }
 
     @Override

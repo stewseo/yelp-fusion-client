@@ -11,7 +11,6 @@ class NamedValueTest {
 
     @Test
     public void namedValueTest() {
-        String json = "{\"order\":[{\"a\":\"asc\"},{\"b\":\"desc\"}]}";
 
         NamedValue<SortOrder> namedValueAsc = NamedValue.of("a", SortOrder.Asc);
 
@@ -24,6 +23,8 @@ class NamedValueTest {
         assertThat(namedValueDesc.value()).isEqualTo(SortOrder.Desc);
 
         JsonpDeserializer<NamedValue<String>> jsonpDeserializer = NamedValue.deserializer(JsonpDeserializer.stringDeserializer());
+
+        assertThat(jsonpDeserializer).isNotNull();
     }
 
     @Test

@@ -16,7 +16,6 @@ import io.github.stewseo.clients.yelpfusion._types.Location;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 @JsonpDeserializable
@@ -245,7 +244,7 @@ public class SearchBusinessResult implements JsonpSerializable {
 
         // ---------------------------------------------- Setters ---------------------------------- //
 
-        private final Builder display_phone(String value) {
+        public final Builder display_phone(String value) {
             this.display_phone = value;
             return this;
         }

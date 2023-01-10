@@ -4,9 +4,8 @@
 [![release](https://badgen.net/badge/version/1.0.7/green?icon=github)](https://github.com/stewseo/yelp-fusion-client/tree/version-1.0.7)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.stewseo/yelp-fusion-client?versionPrefix=1.0.7)](https://search.maven.org/artifact/io.github.stewseo/yelp-fusion-client/1.0.7/jar)
 [![examples](https://badgen.net/badge/docs/examples/cyan?icon=github)](https://stewseo.github.io/yelp-fusion-client/examples)
-[![Lines of Code](http://localhost:9000/api/project_badges/measure?project=yelp-fusion-client%3Aclients&metric=ncloc)](http://localhost:9000/dashboard?id=yelp-fusion-client%3Aclients)
-[![Coverage](http://localhost:9000/api/project_badges/measure?project=yelp-fusion-client%3Aclients&metric=coverage)](http://localhost:9000/dashboard?id=yelp-fusion-client%3Aclients)
-[![Vulnerabilities](http://localhost:9000/api/project_badges/measure?project=yelp-fusion-client%3Aclients&metric=vulnerabilities)](http://localhost:9000/dashboard?id=yelp-fusion-client%3Aclients)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 
 ### Features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Create blocking and asynchronous clients with your Yelp Fusion API key.

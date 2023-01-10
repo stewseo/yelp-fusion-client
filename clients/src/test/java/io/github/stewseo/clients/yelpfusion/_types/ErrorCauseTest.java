@@ -3,12 +3,10 @@ package io.github.stewseo.clients.yelpfusion._types;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 

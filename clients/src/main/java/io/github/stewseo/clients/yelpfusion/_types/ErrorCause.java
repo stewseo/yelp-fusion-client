@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import co.elastic.clients.elasticsearch._types.ErrorResponse;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;

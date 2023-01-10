@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.INDEX_SF_RESTAURANTS;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.MAX_RESULTS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -25,7 +26,7 @@ public class TermsAggregationTest extends ElasticsearchTestCase {
         try {
             SearchResponse<ObjectNode> respon = elasticsearchService.getAsyncClient().search(s -> s
                                     .storedFields("id")
-                                    .index(index)
+                                    .index(INDEX_SF_RESTAURANTS)
                                     .size(size),
                             ObjectNode.class)
                     .get();
@@ -54,14 +55,14 @@ public class TermsAggregationTest extends ElasticsearchTestCase {
     @Test
     void termsAggregationTest() {
 
-        List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(MAX_RESULTS, index);
-        assertThat(buckets.size()).isEqualTo(222);
+        List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(MAX_RESULTS, INDEX_SF_RESTAURANTS);
+        assertThat(buckets.size()).isEqualTo(227);
     }
 
     @Test
     void docsCountTest() {
-        int count = elasticsearchService.docsCount(index);
-        assertThat(count).isEqualTo(3697);
+        int count = elasticsearchService.docsCount(INDEX_SF_RESTAURANTS);
+        assertThat(count).isEqualTo(3949);
     }
 
 }

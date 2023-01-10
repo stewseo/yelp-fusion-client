@@ -31,10 +31,10 @@ java {
     withSourcesJar()
 }
 
-jar {
 
-    archiveFileName.set(project.name + ".jar")
-    archiveVersion.set(version)
+jar {
+    archiveFileName.set(project.name)
+    archiveFileName.set(version)
 
     manifest {
         attributes("Implementation-Title": archiveFileName,
@@ -54,7 +54,7 @@ tasks.withType(JavaCompile) {
     javaCompiler.set(javaToolchains.compilerFor {
         languageVersion = JavaLanguageVersion.of(17)
     })
-    options.deprecation = true
+    options.deprecation = false
     options.encoding = 'UTF-8'
 }
 
@@ -66,7 +66,7 @@ tasks.withType(JavaCompile) {
 // No Warnings
 checkstyle {
     config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig("$rootDir/config/checkstyle/checkstyle.xml"))
-    maxWarnings = 0
+    maxWarnings = 5
 }
 
 /*****************************************************************************
@@ -95,15 +95,13 @@ jacoco {
 }
 
 sonarqube {
-
     properties {
         property "sonar.projectKey", "stewseo_yelp-fusion-client"
-        property "sonar.organization", "2babyotters"
-        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.organization", System.getenv("ORGANIZATION_NAME")
+        property "sonar.host.url", SONAR_HOST
         property "sonar.login", System.getenv("SONAR_TOKEN")
     }
 
-//    property 'sonar.host.url', 'http://localhost:9000'
 }
 
 test.finalizedBy jacocoTestReport

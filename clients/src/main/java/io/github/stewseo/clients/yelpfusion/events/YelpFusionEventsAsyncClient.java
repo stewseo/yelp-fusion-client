@@ -30,17 +30,17 @@ public class YelpFusionEventsAsyncClient extends ApiClient<YelpFusionTransport, 
         return new YelpFusionEventsAsyncClient(this.transport, transportOptions);
     }
 
-    public CompletableFuture<FeaturedEventResponse> featuredEvent(FeaturedEventRequest request) throws Exception {
+    public CompletableFuture<FeaturedEventResponse> featured(FeaturedEventRequest request) throws Exception {
         @SuppressWarnings("unchecked")
         JsonEndpoint<FeaturedEventRequest, FeaturedEventResponse, ErrorResponse> endpoint =
                 (JsonEndpoint<FeaturedEventRequest, FeaturedEventResponse, ErrorResponse>) FeaturedEventRequest._ENDPOINT;
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final CompletableFuture<FeaturedEventResponse> featuredEvent(
+    public final CompletableFuture<FeaturedEventResponse> featured(
             Function<FeaturedEventRequest.Builder, ObjectBuilder<FeaturedEventRequest>> fn)
             throws Exception {
-        return featuredEvent(fn.apply(new FeaturedEventRequest.Builder()).build());
+        return featured(fn.apply(new FeaturedEventRequest.Builder()).build());
     }
 
     public CompletableFuture<SearchEventsResponse> search(SearchEventsRequest request) throws Exception {

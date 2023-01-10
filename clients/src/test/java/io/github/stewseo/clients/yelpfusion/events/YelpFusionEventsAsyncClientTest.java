@@ -2,7 +2,6 @@ package io.github.stewseo.clients.yelpfusion.events;
 
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
-import io.github.stewseo.lowlevel.restclient.ResponseException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class YelpFusionEventsAsyncClientTest extends YelpFusionClientTestCase {
 
     @Test
-    void withTransportOptions() throws IOException {
+    public void testWithTransportOptions() {
 
         try(RestClientTransport restClientTransport = restClientTransport()) {
 
@@ -24,38 +23,38 @@ class YelpFusionEventsAsyncClientTest extends YelpFusionClientTestCase {
                     );
 
             assertThat(client._transportOptions()).isNotNull();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private final YelpFusionEventsAsyncClient eventsClient = new YelpFusionEventsAsyncClient(restClientTransport());
 
-    // if rate limited
     @Test
-    void testSearchEvents() throws Exception {
+    void testSearchEvents() {
+        String expectedUri = "URI [v3/events?locale=en_US]";
 
-        String expectedError = "" +
-                "io.github.stewseo.lowlevel.restclient.ResponseException: method [GET], host [https://api.yelp.com:443], URI [v3/events?locale=en_US], status line [HTTP/1.1 429 Too Many Requests]\n" +
-                "{\"error\": {\"code\": \"ACCESS_LIMIT_REACHED\", \"description\": \"You've reached the access limit for this client. See instructions for requesting a higher access limit at https://www.yelp.com/developers/documentation/v3/rate_limiting\"}}";
+        String expected = buildExpectedExecutionExceptionMessage(expectedUri);
 
-        Exception exception = assertThrows(ExecutionException.class,
-                () -> eventsClient.search(s -> s.locale(LOCALE)).get()
-        );
+        ExecutionException executionException =
+                assertThrows(ExecutionException.class, () -> eventsClient.search(s -> s.locale(LOCALE)).get());
 
-        assertThat(exception.getMessage()).isEqualTo(expectedError);
+        assertThat(executionException.getMessage()).isEqualTo(expected);
+
     }
 
-    // if rate limited
+
     @Test
-    void testFeaturedEvents() throws Exception {
+    void testFeaturedEvents() {
 
-        String expected = "io.github.stewseo.lowlevel.restclient.ResponseException: method [GET], host [https://api.yelp.com:443], URI [v3/events/featured?locale=en_US], status line [HTTP/1.1 429 Too Many Requests]\n" +
-                "{\"error\": {\"code\": \"ACCESS_LIMIT_REACHED\", \"description\": \"You've reached the access limit for this client. See instructions for requesting a higher access limit at https://www.yelp.com/developers/documentation/v3/rate_limiting\"}}";
+        String expectedUri = "URI [v3/events/featured?locale=en_US]";
 
-        Exception exception = assertThrows(ExecutionException.class,
-                () -> eventsClient.featuredEvent(s -> s.locale(LOCALE)).get()
+        String expected = buildExpectedExecutionExceptionMessage(expectedUri);
+
+        ExecutionException executionException = assertThrows(ExecutionException.class,
+                () -> eventsClient.featured(s -> s.locale(LOCALE)).get()
         );
 
-        assertThat(exception.getMessage()).isEqualTo(expected);
-
+        assertThat(executionException.getMessage()).isEqualTo(expected);
     }
 }

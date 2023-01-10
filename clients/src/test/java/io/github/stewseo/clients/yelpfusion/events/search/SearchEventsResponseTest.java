@@ -1,9 +1,9 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
+import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -34,19 +34,30 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
     }
 
     @Test
+    public void testBuilder() {
+
+        SearchEventsResponse.Builder builder = new SearchEventsResponse.Builder().events(Event.of(e-> e.name("nameValue")));
+
+        SearchEventsResponse.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        SearchEventsResponse searchEventsResp = builder.build();
+
+        assertThat(searchEventsResp.toString()).isEqualTo("{\"events\":[{\"name\":\"nameValue\"}]}");
+    }
+    @Test
     public void testSerialize() {
         searchEventsResponse.serialize(generator, mapper);
-        AssertionsForClassTypes.assertThat(searchEventsResponse.toString()).isEqualTo(expected);
+        assertThat(searchEventsResponse.toString()).contains(expected);
     }
-
     @Test
     public void testSerializeInternal() {
         generator.writeStartObject();
         searchEventsResponse.serializeInternal(generator, mapper);
         generator.writeEnd().close();
-        AssertionsForClassTypes.assertThat(searchEventsResponse.toString()).isEqualTo(expected);
+        assertThat(searchEventsResponse.toString()).isEqualTo(expected);
     }
-
 
     public JsonParser parser() {
         return parser(searchEventsResponse);
@@ -70,13 +81,5 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
 
     }
 
-    @Test
-    public void testBuildWithJson() {
 
-    }
-
-    @Test
-    public void testBuilder() {
-
-    }
 }

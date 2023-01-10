@@ -11,7 +11,6 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Coordinates;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
@@ -20,7 +19,6 @@ import io.github.stewseo.clients.yelpfusion._types.Messaging;
 import io.github.stewseo.clients.yelpfusion._types.SpecialHours;
 import jakarta.json.stream.JsonGenerator;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
@@ -44,7 +42,6 @@ public class BusinessDetails implements JsonpSerializable {
     private final List<String> photos;
     private final List<Hours> hours;
     private final List<Category> categories;
-    private final List<Attribute> attributes;
     private final List<SpecialHours> special_hours;
     private final Messaging messaging;
 
@@ -61,12 +58,11 @@ public class BusinessDetails implements JsonpSerializable {
         this.is_closed = builder.is_closed;
         this.messaging = builder.messaging;
         this.phone = builder.phone;
-        this.photos = builder.photos;
+        this.photos = ApiTypeHelper.unmodifiable(builder.photos);
         this.price = builder.price;
         this.url = builder.url;
         this.rating = builder.rating;
         this.review_count = builder.review_count;
-        this.attributes = ApiTypeHelper.unmodifiable(builder.attributes);
         this.categories = ApiTypeHelper.unmodifiable(builder.categories);
         this.special_hours = ApiTypeHelper.unmodifiable(builder.special_hours);
         this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
@@ -150,10 +146,6 @@ public class BusinessDetails implements JsonpSerializable {
 
     public final List<SpecialHours> special_hours() {
         return special_hours;
-    }
-
-    public final List<Attribute> attributes() {
-        return attributes;
     }
 
     public final Messaging messaging() {
@@ -243,7 +235,14 @@ public class BusinessDetails implements JsonpSerializable {
             generator.writeKey("messaging");
             messaging.serialize(generator, mapper);
         }
-
+        if (ApiTypeHelper.isDefined(this.photos)) {
+            generator.writeKey("photos");
+            generator.writeStartArray();
+            for (String item0 : this.photos) {
+                generator.write(item0);
+            }
+            generator.writeEnd();
+        }
         if (ApiTypeHelper.isDefined(this.hours)) {
             generator.writeKey("hours");
             generator.writeStartArray();
@@ -252,7 +251,6 @@ public class BusinessDetails implements JsonpSerializable {
             }
             generator.writeEnd();
         }
-
         if (ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("categories");
             generator.writeStartArray();
@@ -261,16 +259,6 @@ public class BusinessDetails implements JsonpSerializable {
             }
             generator.writeEnd();
         }
-
-        if (ApiTypeHelper.isDefined(this.attributes)) {
-            generator.writeKey("attributes");
-            generator.writeStartArray();
-            for (Attribute item0 : this.attributes) {
-                item0.serialize(generator, mapper);
-            }
-            generator.writeEnd();
-        }
-
         if (ApiTypeHelper.isDefined(this.special_hours)) {
             generator.writeKey("special_hours");
             generator.writeStartArray();
@@ -308,21 +296,15 @@ public class BusinessDetails implements JsonpSerializable {
 
         private Integer review_count;
 
-        private Integer distance;
-
         private Boolean is_claimed;
 
         private Boolean is_closed;
-
-        private Boolean open_now;
 
         private List<String> transactions;
 
         private List<String> photos;
 
         private List<SpecialHours> special_hours;
-
-        private List<Attribute> attributes;
 
         private Coordinates coordinates;
 
@@ -403,10 +385,6 @@ public class BusinessDetails implements JsonpSerializable {
             return this;
         }
 
-        public final Builder open_now(Boolean value) {
-            this.open_now = value;
-            return this;
-        }
 
         public final Builder hours(Function<Hours.Builder, ObjectBuilder<Hours>> fn) {
             return this.hours(fn.apply(new Hours.Builder()).build());
@@ -464,16 +442,6 @@ public class BusinessDetails implements JsonpSerializable {
             return this;
         }
 
-        public final Builder attributes(@Nullable List<Attribute> value) {
-            this.attributes = _listAddAll(this.attributes, value);
-            return this;
-        }
-
-        public final Builder attributes(Attribute value, Attribute... values) {
-            this.attributes = _listAdd(this.attributes, value, values);
-            return this;
-        }
-
         public final Builder transactions(List<String> value) {
             this.transactions = _listAddAll(this.transactions, value);
             return this;
@@ -517,17 +485,15 @@ public class BusinessDetails implements JsonpSerializable {
         op.add(Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
         op.add(Builder::url, JsonpDeserializer.stringDeserializer(), "url");
         op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
-        op.add(Builder::is_claimed, JsonpDeserializer.booleanDeserializer(), "is_closed");
+        op.add(Builder::is_claimed, JsonpDeserializer.booleanDeserializer(), "is_claimd");
         op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
-        op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "open_now");
         op.add(Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
         op.add(Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
         op.add(Builder::location, Location._DESERIALIZER, "location");
         op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
         op.add(Builder::messaging, Messaging._DESERIALIZER, "messaging");
-        op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");
+        op.add(Builder::photos, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");
         op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
-        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
         op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
         op.add(Builder::hours, JsonpDeserializer.arrayDeserializer(Hours._DESERIALIZER), "hours");
     }

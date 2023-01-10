@@ -16,12 +16,11 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class SearchTransactionResponseTest extends ModelTestCase<SearchTransactionResponse> {
 
     private final SearchTransactionResponse searchTransactionsResponse = of();
@@ -40,9 +39,7 @@ class SearchTransactionResponseTest extends ModelTestCase<SearchTransactionRespo
                 .total(1)
                 .region(Region.of(r -> r.center(Center.of(cent -> cent.latitude(38.0)))))
         );
-
     }
-
 
     @Test
     public void testOf() {

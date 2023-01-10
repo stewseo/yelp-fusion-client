@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ALIAS;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.QueryParameter;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>

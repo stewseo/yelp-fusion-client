@@ -3,15 +3,10 @@ package io.github.stewseo.clients.yelpfusion.businesses.details;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
-
+import static io.github.stewseo.clients.yelpfusion._types.TestData.QueryParameter;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse> {
@@ -34,7 +29,7 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
     @Test
     public void testSerialize() {
         businessDetailsResponse.serialize(generator, mapper);
-        AssertionsForClassTypes.assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
+        assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
     }
 
     @Test
@@ -42,7 +37,7 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
         generator.writeStartObject();
         businessDetailsResponse.serializeInternal(generator, mapper);
         generator.writeEnd().close();
-        AssertionsForClassTypes.assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
+        assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
     }
 
     @Test
@@ -78,7 +73,9 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
 
     @Test
     public void testDeserializer() {
+
         assertThat(BusinessDetailsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.JsonpDeserializer");
+
     }
 
     public JsonParser parser() {

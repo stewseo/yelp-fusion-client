@@ -16,8 +16,6 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class SpecialHours implements JsonpSerializable {
-    public static final JsonpDeserializer<SpecialHours> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SpecialHours::setUpSpecialHoursDeserializer);
     private final String date;
     private final Boolean is_closed;
     private final String start;
@@ -70,8 +68,6 @@ public class SpecialHours implements JsonpSerializable {
         serializeInternal(generator, mapper);
         generator.writeEnd();
     }
-
-    // ---------------------------------------------- Builder ---------------------------------- //
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
@@ -150,4 +146,7 @@ public class SpecialHours implements JsonpSerializable {
             return new SpecialHours(this);
         }
     }
+
+    public static final JsonpDeserializer<SpecialHours> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            SpecialHours::setUpSpecialHoursDeserializer);
 }

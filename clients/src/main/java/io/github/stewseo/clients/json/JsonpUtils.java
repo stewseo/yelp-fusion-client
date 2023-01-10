@@ -11,6 +11,7 @@ import jakarta.json.stream.JsonLocation;
 import jakarta.json.stream.JsonParser;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.AbstractMap;
 import java.util.Map;
@@ -21,8 +22,6 @@ import java.util.stream.Collectors;
  * JsonpUtils
  */
 public class JsonpUtils {
-
-    private static int MAX_TO_STRING_LENGTH = 10000;
 
     @AllowForbiddenApis("Implementation of the JsonProvider lookup")
     public static JsonProvider provider() {
@@ -189,7 +188,6 @@ public class JsonpUtils {
         }
     }
 
-    // serialize to JSON
     public static String toString(JsonpSerializable value) {
         StringBuilder sb = new StringBuilder();
         return toString(value, ToStringMapper.INSTANCE, sb).toString();
@@ -209,7 +207,12 @@ public class JsonpUtils {
         return MAX_TO_STRING_LENGTH;
     }
 
+    protected static int MAX_TO_STRING_LENGTH = 10000;
+
+    private static class ToStringTooLongException extends RuntimeException { }
+
     public static StringBuilder toString(JsonpSerializable value, JsonpMapper mapper, StringBuilder dest) {
+
         Writer writer = new Writer() {
             int length = 0;
 
@@ -229,10 +232,12 @@ public class JsonpUtils {
 
             @Override
             public void flush() {
+                // flush
             }
 
             @Override
             public void close() {
+                // close
             }
         };
 
@@ -244,10 +249,16 @@ public class JsonpUtils {
         return dest;
     }
 
+    public static String toJsonString(JsonpSerializable value, JsonpMapper mapper) {
+        StringWriter writer = new StringWriter();
+        JsonGenerator generator = mapper.jsonProvider().createGenerator(writer);
+        value.serialize(generator, mapper);
+        generator.close();
+        return writer.toString();
+    }
+
     public static StringBuilder toString(JsonpSerializable value, StringBuilder dest) {
         return toString(value, ToStringMapper.INSTANCE, dest);
     }
 
-    private static class ToStringTooLongException extends RuntimeException {
-    }
 }

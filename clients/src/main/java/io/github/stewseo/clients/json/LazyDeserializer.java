@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 public class LazyDeserializer<T> extends DelegatingDeserializer.SameType<T> {
 
     private final Supplier<JsonpDeserializer<T>> ctor;
+
+    // "Use a thread-safe type; adding "volatile" is not enough to make this field thread-safe"
     private volatile JsonpDeserializer<T> deserializer = null;
 
     public LazyDeserializer(Supplier<JsonpDeserializer<T>> ctor) {

@@ -1,12 +1,12 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
@@ -104,7 +104,7 @@ public class BusinessReviewsRequest extends RequestBase implements JsonpSerializ
 
             // Request parameters
             request -> {
-                return new HashMap<String, String>();
+                return new HashMap<>();
             },
             // Business Details endpoint accepts a business id path param and returns a Business with additional fields.
 

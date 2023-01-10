@@ -28,6 +28,8 @@ public class ElasticsearchService {
 
     private long timestamp;
 
+    private String FIELD_TIMESTAMP = "timestamp";
+
     private final ElasticsearchAsyncClient asyncClient;
 
     public ElasticsearchService(ElasticsearchAsyncClient client) {
@@ -38,15 +40,13 @@ public class ElasticsearchService {
         return asyncClient;
     }
 
-    public List<Long> getTimestamp(Long timestamp, String index, SortOrder sortOrder) {
+    public List<Long> getTimestamp(String timestamp, String index, SortOrder sortOrder) {
 
-        String field = "timestamp";
+        SourceFilter sourceFilter = buildSourceFilter(FIELD_TIMESTAMP);
 
-        SourceFilter sourceFilter = buildSourceFilter(field);
+        Query byTimestamp = rangeQueryGteTimestamp(timestamp)._toQuery();
 
-        Query byTimestamp = buildRangeQuery(field, timestamp)._toQuery();
-
-        SortOptions sortOptions = buildSortOptions(field, sortOrder);
+        SortOptions sortOptions = buildSortOptions(FIELD_TIMESTAMP, sortOrder);
 
         try {
             return asyncClient.search(s -> s
@@ -71,7 +71,10 @@ public class ElasticsearchService {
                     .map(source -> Long.parseLong(source.toString()))
                     .toList();
 
-        } catch (Exception e) {
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
@@ -136,10 +139,12 @@ public class ElasticsearchService {
                             ),
                     Void.class // Using Void will ignore any document in the response.
             ).get();
-        } catch (Exception e) {
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+        
         return response.aggregations()
                 .get("buildTermsAggregation")
                 .sterms()
@@ -174,12 +179,8 @@ public class ElasticsearchService {
                         .order(SortOrder.Asc))
         );
 
-        SearchResponse<ObjectNode> response;
-
-        List<Hit<ObjectNode>> nodes;
-
         try {
-            response = asyncClient.search(s -> s
+            return asyncClient.search(s -> s
                             .index("yelp-businesses-restaurants-nyc")
                             .query(q -> q
                                     .bool(b -> b
@@ -191,15 +192,14 @@ public class ElasticsearchService {
                             .sort(sortOptions)
                             .size(10000)
                     , ObjectNode.class
-            ).get();
+            ).get().hits().hits();
 
-            TotalHits total = response.hits().total();
-
-        } catch (Exception e) {
+        } catch (ExecutionException e) {
             throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-
-        return response.hits().hits();
+        return null;
     }
 
     public int docsCount(String index) {
@@ -211,10 +211,12 @@ public class ElasticsearchService {
                     .valueBody()
                     .get(0)
                     .count()));
-
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+        return -1;
     }
 
     private TermsAggregation buildTermsAggregation(String field, int size) {
@@ -231,6 +233,22 @@ public class ElasticsearchService {
         );
     }
 
+    private RangeQuery rangeQueryGteTimestamp(String timestamp) {
+
+        return RangeQuery.of(r -> r
+                .field(FIELD_TIMESTAMP)
+                .gte(JsonData.of(timestamp))
+        );
+    }
+
+    private RangeQuery rangeQueryLteTimestamp(String timestamp) {
+
+        return RangeQuery.of(r -> r
+                .field(FIELD_TIMESTAMP)
+                .lte(JsonData.of(timestamp))
+        );
+    }
+
     public MatchAllQuery buildMatchAllQuery(String queryName) {
         return MatchAllQuery.of(m -> m
                 .queryName(queryName)
@@ -243,7 +261,7 @@ public class ElasticsearchService {
 
     }
 
-    private SortOptions buildSortOptions(String field, SortOrder sortOrder) {
+    public SortOptions buildSortOptions(String field, SortOrder sortOrder) {
         return SortOptions.of(options -> options
                 .field(f -> f
                         .field(field)

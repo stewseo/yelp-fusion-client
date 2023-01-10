@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.QueryParameter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MapBuilderTest {
@@ -109,7 +109,7 @@ class MapBuilderTest {
         List<BusinessDetails> list = new ArrayList<>();
 
         for(int i = 0; i< size; i++) {
-            list.add(generateBusinessDetails(ID + i));
+            list.add(generateBusinessDetails(QueryParameter.ID.name() + i));
         }
         return list;
     }

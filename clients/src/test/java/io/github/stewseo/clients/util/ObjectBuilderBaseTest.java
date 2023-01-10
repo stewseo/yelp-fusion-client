@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 class ObjectBuilderBaseTest {
 
     private final List<String> list = List.of("value1");

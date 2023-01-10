@@ -8,31 +8,36 @@
         <Or>
             <Bug pattern="EI_EXPOSE_REP"/>
             <Bug pattern="EI_EXPOSE_REP2"/>
-<!--            <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>-->
-<!--            <Bug pattern="DLS_DEAD_LOCAL_STORE"/>-->
+            <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+            <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
             <Bug pattern="MS_EXPOSE_REP"/>
             <Bug pattern="URF_UNREAD_FIELD"/>
             <Bug pattern="UUF_UNUSED_FIELD"/>
             <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
             <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+            <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+            <Bug pattern="SS_SHOULD_BE_STATIC"/>
         </Or>
     </Match>
 
-    <!-- getter
-        may expose internal representation by returning/>-->
+    <Match>
+        <Class name="io.github.stewseo.clients.yelpfusion.categories.CategoriesResponse" />
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+
+    <!-- This method may fail to clean up (close, dispose of) a stream, database object, or other resource requiring an explicit cleanup operation./>-->
     <Match>
         <Or>
             <Class name="io.github.stewseo.clients.json.NamedDeserializer" />
             <Class name="io.github.stewseo.clients.json.ExternallyTaggedUnion" />
-            <Class name="io.github.stewseo.clients.json.jackson.JsonpMapperTest" />
-            <Class name="io.github.stewseo.clients.yelpfusion._types.aggregations.MultiTermsBucket" />
-            <Class name="io.github.stewseo.clients.yelpfusion._types.aggregations.Aggregation" />
+            <Class name="io.github.stewseo.clients.transport.Version" />
         </Or>
-        <Bug pattern="EI_EXPOSE_REP"/>
+        <Bug pattern="OBL_UNSATISFIED_OBLIGATION"/>
+
     </Match>
 
     <!-- setter
-    may expose internal representation by storing an externally mutable object into/>-->
+        may expose internal representation by storing an externally mutable object into/>-->
     <Match>
         <Or>
             <Class name="io.github.stewseo.clients.json.NamedDeserializer" />
@@ -44,14 +49,17 @@
         <Bug pattern="EI_EXPOSE_REP2"/>
     </Match>
 
-    <!-- This method may fail to clean up (close, dispose of) a stream, database object, or other resource requiring an explicit cleanup operation./>-->
+    <!-- getter
+    may expose internal representation by returning/>-->
     <Match>
         <Or>
             <Class name="io.github.stewseo.clients.json.NamedDeserializer" />
             <Class name="io.github.stewseo.clients.json.ExternallyTaggedUnion" />
+            <Class name="io.github.stewseo.clients.json.jackson.JsonpMapperTest" />
+            <Class name="io.github.stewseo.clients.yelpfusion._types.aggregations.MultiTermsBucket" />
+            <Class name="io.github.stewseo.clients.yelpfusion._types.aggregations.Aggregation" />
         </Or>
-        <Bug pattern="OBL_UNSATISFIED_OBLIGATION"/>
-
+        <Bug pattern="EI_EXPOSE_REP"/>
     </Match>
 
     <Match>

@@ -8,11 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse> {
 
-    private final List<BusinessReview> businessReview = List.of(BusinessReview.of(br -> br.id("idValue")));
+    private final List<BusinessReview> businessReviews = List.of(BusinessReview.of(br -> br.id(ID)));
 
     private final String possibleLanguages = "possibleLanguages";
 
@@ -21,20 +22,36 @@ class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse>
     @Override
     public BusinessReviewsResponse of() {
         return BusinessReviewsResponse.of(b -> b
-                .reviews(businessReview)
+                .reviews(businessReviews)
                 .possible_languages(List.of(possibleLanguages))
                 .total(TOTAL)
         );
     }
 
     private final String expected =
-            "{\"reviews\":[{\"id\":\"idValue\"}],\"possible_languages\":[\"possibleLanguages\"],\"total\":1}";
+            "{\"reviews\":[{\"id\":\"id\"}],\"possible_languages\":[\"possibleLanguages\"],\"total\":1}";
+    @Test
+    public void testBuilder() {
+
+        BusinessReviewsResponse.Builder builder = new BusinessReviewsResponse.Builder()
+                .reviews(businessReviews)
+                .possible_languages(List.of(possibleLanguages))
+                .total(TOTAL);
+
+        BusinessReviewsResponse.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+        BusinessReviewsResponse searchBusinessReq = builder.build();
+
+        assertThat(searchBusinessReq.toString()).isEqualTo(expected);
+    }
 
     private final JsonGenerator generator = generator();
 
     @Test
     public void testOf() {
-        assertThat(businessReviewsResponse.reviews()).isEqualTo(businessReview);
+        assertThat(businessReviewsResponse.reviews()).isEqualTo(businessReviews);
         assertThat(businessReviewsResponse.possible_languages().get(0)).isEqualTo(possibleLanguages);
         assertThat(businessReviewsResponse.total()).isEqualTo(TOTAL);
     }
@@ -53,6 +70,10 @@ class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse>
         AssertionsForClassTypes.assertThat(businessReviewsResponse.toString()).isEqualTo(expected);
     }
 
+    public JsonParser parser() {
+        return parser(businessReviewsResponse);
+    }
+
     @Test
     public void testDeserialize() {
         assertThat(BusinessReviewsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
@@ -67,28 +88,5 @@ class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse>
         BusinessReviewsResponse businessMatchRes = BusinessReviewsResponse._DESERIALIZER.deserialize(parser, mapper);
 
         assertThat(businessMatchRes.toString()).isEqualTo(expected);
-    }
-
-    public JsonParser parser() {
-        return parser(businessReviewsResponse);
-    }
-
-    @Test
-    public void testBuildWithJson() {
-
-    }
-
-    @Test
-    public void testBuilder() {
-
-        BusinessReviewsResponse.Builder builder = new BusinessReviewsResponse.Builder().reviews(BusinessReview.of(t->t.id("idValue")));
-
-        BusinessReviewsResponse.Builder self = builder.self();
-
-        assertThat(self).isEqualTo(builder);
-
-        BusinessReviewsResponse searchBusinessReq = builder.build();
-
-        assertThat(searchBusinessReq.toString()).isEqualTo("{\"reviews\":[{\"id\":\"idValue\"}]}");
     }
 }

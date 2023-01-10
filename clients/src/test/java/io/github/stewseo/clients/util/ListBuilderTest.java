@@ -7,7 +7,9 @@ import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 class ListBuilderTest {
 
@@ -33,7 +35,7 @@ class ListBuilderTest {
         assertThat(businessDetails.toString()).isEqualTo(expectedAdd);
 
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            BusinessDetails shouldThrowIndexOutOfBounds = businessDetails.get(1);
+            assertNull(businessDetails.get(1));
         });
         assertThat(exception).isInstanceOf(IndexOutOfBoundsException.class);
     }

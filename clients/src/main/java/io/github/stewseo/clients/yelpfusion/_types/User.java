@@ -9,7 +9,10 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReview;
 import jakarta.json.stream.JsonGenerator;
+
+import java.util.function.Function;
 
 @JsonpDeserializable
 public class User implements JsonpSerializable {
@@ -28,11 +31,8 @@ public class User implements JsonpSerializable {
         this.name = builder.name;
     }
 
-    protected static void setupUserDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::id, JsonpDeserializer.stringDeserializer(), "id");
-        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
-        op.add(Builder::profile_url, JsonpDeserializer.stringDeserializer(), "profile_url");
-        op.add(Builder::image_url, JsonpDeserializer.stringDeserializer(), "image_url");
+    public static User of(Function<User.Builder, ObjectBuilder<User>> fn) {
+        return fn.apply(new User.Builder()).build();
     }
 
     public String id() {
@@ -122,4 +122,10 @@ public class User implements JsonpSerializable {
         }
     }
 
+    protected static void setupUserDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::id, JsonpDeserializer.stringDeserializer(), "id");
+        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
+        op.add(Builder::profile_url, JsonpDeserializer.stringDeserializer(), "profile_url");
+        op.add(Builder::image_url, JsonpDeserializer.stringDeserializer(), "image_url");
+    }
 }

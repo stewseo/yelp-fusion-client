@@ -3,6 +3,7 @@ package io.github.stewseo.clients.yelpfusion.testcases;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Coordinates;
 import io.github.stewseo.clients.yelpfusion._types.Location;
@@ -17,7 +18,6 @@ import java.util.stream.Stream;
 
 // generates instances of YelpFusionResult and TemporalDataResult
 public abstract class FunctionalTestCase {
-
 
     private static final String state = "CA";
 
@@ -109,6 +109,10 @@ public abstract class FunctionalTestCase {
 
         return Stream.concat(cities, citiesInCa).map(FunctionalTestCase::locationByCity);
 
+    }
+
+    public YelpFusionClient getYelpFusionClient() {
+        return yelpFusionService.yelpFusionClient();
     }
 
 

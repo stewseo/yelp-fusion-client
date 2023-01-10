@@ -227,9 +227,12 @@ public class JacksonJsonpParser implements JsonParser {
             do {
                 token = parser.nextToken();
                 switch (token) {
-                    case START_OBJECT -> depth++;
-                    case END_OBJECT -> depth--;
-                    default -> System.out.println("skipObject default");
+                    case START_OBJECT:
+                        depth++;
+                        break;
+                    case END_OBJECT:
+                        depth--;
+                        break;
                 }
             } while(!(token == JsonToken.END_OBJECT && depth == 0));
         } catch (IOException e) {

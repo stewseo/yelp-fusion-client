@@ -15,6 +15,7 @@ import static io.github.stewseo.clients.yelpfusion._types.TestData.CATEGORY;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.COORDINATES;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.DISTANCE;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.TestData.QueryParameter;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.IMAGE_URL;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.IS_CLOSED;
 import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCATION;
@@ -42,6 +43,7 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
             .price(String.valueOf(PRICE))
             .rating(RATING)
             .transactions(TRANSACTIONS)
+
     );
 
     private final String expected = "" +
