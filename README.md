@@ -6,7 +6,7 @@
 [![examples](https://badgen.net/badge/docs/examples/cyan?icon=github)](https://stewseo.github.io/yelp-fusion-client/examples)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=bugs)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
+
 
 ### Features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Create blocking and asynchronous clients with your Yelp Fusion API key.
