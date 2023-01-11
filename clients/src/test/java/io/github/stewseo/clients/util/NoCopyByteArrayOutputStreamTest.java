@@ -1,22 +1,22 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.util.NoCopyByteArrayOutputStream;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NoCopyByteArrayOutputStreamTest {
+public class NoCopyByteArrayOutputStreamTest {
 
     private final NoCopyByteArrayOutputStream noCopyByteArrayOutputStream = new NoCopyByteArrayOutputStream();
 
     @Test
-    void array() {
+    void testArray() {
         NoCopyByteArrayOutputStream noCopyByteArrayOutputStream = new NoCopyByteArrayOutputStream();
         assertThat(noCopyByteArrayOutputStream.array().length).isEqualTo(32);
     }
 
     @Test
-    void asInputStream() {
+    void testAsInputStream() {
         assertThat(noCopyByteArrayOutputStream.asInputStream().read()).isEqualTo(-1);
+
     }
 }

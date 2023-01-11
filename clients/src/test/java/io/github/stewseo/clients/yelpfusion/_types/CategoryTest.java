@@ -3,7 +3,6 @@ package io.github.stewseo.clients.yelpfusion._types;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public class CategoryTest extends ModelTestCase<Category> {
 
         Category cat = builder.build();
 
-        Assertions.assertThat(cat.toString()).isEqualTo(expected);
+        assertThat(cat.toString()).isEqualTo(expected);
     }
 
     JsonGenerator generator = generator();

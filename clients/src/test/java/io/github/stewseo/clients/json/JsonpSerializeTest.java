@@ -22,11 +22,7 @@ public class JsonpSerializeTest extends FunctionalTestCase {
     int size = 10;
 
     @Test
-    public void jsonpSerializeTest() throws IOException {
-
-        String state = "CA";
-
-        String country = "USA";
+    public void jsonpSerializeTest() {
 
         final Stream<BusinessDetails> businesses = generateBusinessInstances(size);
 
@@ -98,9 +94,6 @@ public class JsonpSerializeTest extends FunctionalTestCase {
 
         try (expectedJsonToIS; actualJsonToIS) {
             assertThat(actualJsonToIS).isEqualTo(expectedJsonString);
-
-            expectedJsonToIS.close();
-            actualJsonToIS.close();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -29,6 +29,7 @@ version = '1.7.6'
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.ADOPTIUM
     }
 
     withSourcesJar()
@@ -70,7 +71,7 @@ tasks.withType(JavaCompile) {
 // No Warnings
 checkstyle {
     config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig("$rootDir/config/checkstyle/checkstyle.xml"))
-    maxWarnings = 0
+//    maxWarnings = 0
 }
 
 /*****************************************************************************

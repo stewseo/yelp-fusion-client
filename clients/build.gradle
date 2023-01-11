@@ -11,10 +11,6 @@ plugins {
  *         java                                                             *
  *****************************************************************************/
 
-javadoc {
-    source = sourceSets.main.allJava
-}
-
 /*****************************************************************************
  *         :clients dependencies                                            *
  *****************************************************************************/
@@ -80,12 +76,12 @@ publishing {
                 setGroupId POM_GROUP_ID
                 packaging = POM_PACKAGING
                 description = POM_DESCRIPTION
-                url = 'https://github.com/stewseo/yelp-fusion-client'
+                url = POM_URL
 
                 licenses {
                     license {
-                        name = LICENSE_NAME
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = POM_LICENSE_NAME
+                        url = POM_LICENSE_URL
                     }
                 }
 

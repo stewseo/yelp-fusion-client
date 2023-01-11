@@ -17,20 +17,20 @@ def readmeCheck = tasks.register('readmeCheck', io.github.stewseo.ReadmeVerifica
 
 tasks.named('check') { dependsOn(readmeCheck) }
 
-publishing {
-
-    publications {
-        library(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            name "build-conventions"
-            url 'build/local-repo'
-        }
-    }
-}
+//publishing {
+//
+//    publications {
+//        library(MavenPublication) {
+//            from components.java
+//        }
+//    }
+//
+//    repositories {
+//        maven {
+//            name "build-conventions"
+//            url 'build/local-repo'
+//        }
+//    }
+//}
 
 

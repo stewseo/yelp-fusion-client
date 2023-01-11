@@ -1,20 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Objects;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.*;
-
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EX_BUSINESS_DETAILS_RESULT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.FIELD_URL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IS_CLAIMED;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.REVIEW_COUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
@@ -22,32 +20,7 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
     private final BusinessDetails business = of();
 
     public BusinessDetails of() {
-        return BusinessDetails.of(b -> b
-                .id(ID)
-                .alias(ALIAS)
-                .center(CENTER)
-                .hours(HOURS)
-                .hours(h -> h.hours_type("hoursTypeValue"))
-                .hours(List.of(HOURS))
-                .location(LOCATION)
-                .review_count(REVIEW_COUNT)
-                .rating(RATING)
-                .categories(CATEGORY)
-                .categories(List.of(CATEGORY))
-                .categories(cat -> cat.alias(ALIAS))
-                .phone(PHONE)
-                .image_url(IMAGE_URL)
-                .price(PRICE_STRING)
-                .is_closed(IS_CLOSED)
-                .display_phone("display_phone")
-                .is_claimed(IS_CLAIMED)
-                .name(NAME)
-                .url(FIELD_URL)
-                .messaging(MESSAGING)
-                .transactions(TRANSACTIONS)
-                .photos(PHOTOS)
-                .photos(List.of(PHOTOS))
-        );
+        return EX_BUSINESS_DETAILS_RESULT;
     }
 
     @Test
@@ -87,8 +60,6 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
         assertThat(business.special_hours()).isNotNull();
         assertThat(business.transactions()).isNotNull();
     }
-
-    JsonGenerator generator = generator();
 
     private final String expected = "" +
             "{\"id\":\"id\",\"alias\":\"alias\"," +

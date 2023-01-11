@@ -6,7 +6,6 @@ import io.github.stewseo.clients.json.NamedDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import io.github.stewseo.clients.yelpfusion.businesses.search.Hit;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -17,31 +16,19 @@ import java.util.function.Supplier;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IMAGE_URL;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.NAME;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PHOTOS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EX_BUSINESS_DETAILS_RESULT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
 
-    private final BusinessDetails businessDetails = BusinessDetails.of(b -> b
-            .id(ID)
-            .name(NAME)
-            .categories(CATEGORY)
-            .center(CENTER)
-            .price(PRICE_STRING)
-            .photos(PHOTOS)
-            .image_url(IMAGE_URL));
-
-    private final JsonpSerializer<BusinessDetails> tDocumentSerializer = JacksonJsonpMapper.findSerializer(businessDetails);
+    private final JsonpSerializer<BusinessDetails> tDocumentSerializer = JacksonJsonpMapper.findSerializer(EX_BUSINESS_DETAILS_RESULT);
 
     @Override
     public Hit<BusinessDetails> of() {
         return Hit.of(hit -> hit
                 .tDocumentSerializer(tDocumentSerializer)
-                .source(businessDetails)
+                .source(EX_BUSINESS_DETAILS_RESULT)
         );
     }
     private final Hit<BusinessDetails> hit = of();
@@ -50,14 +37,14 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     public void testBuilder() {
 
         Hit.Builder<BusinessDetails> builder = new Hit.Builder<BusinessDetails>()
-                .source(businessDetails)
+                .source(EX_BUSINESS_DETAILS_RESULT)
                 .tDocumentSerializer(tDocumentSerializer);
         assertThat(builder).isNotNull();
     }
 
     @Test
     public void testOf() {
-        assertThat(hit.source()).isEqualTo(businessDetails);
+        assertThat(hit.source()).isEqualTo(EX_BUSINESS_DETAILS_RESULT);
         assertThat(hit.tDocumentSerializer()).isEqualTo(tDocumentSerializer);
     }
 
@@ -66,7 +53,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     @Test
     void tDocumentSerializer() {
         assertThat(hit.tDocumentSerializer()).isNotNull();
-        hit.tDocumentSerializer().serialize(businessDetails, generator, mapper);
+        hit.tDocumentSerializer().serialize(EX_BUSINESS_DETAILS_RESULT, generator, mapper);
     }
 
     @Test
@@ -114,7 +101,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
         generator.writeStartObject();
         hit.serializeInternal(generator, mapper);
         generator.writeEnd().close();
-        assertThat(hit.toString()).isNotNull();
+        assertThat(hit.toString()).isEqualTo(expected);
     }
 
     @Test
@@ -139,6 +126,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
         JsonParser parser = parser();
         assertThat(parser).isNotNull();
         assertThat(parser.hasNext()).isTrue();
+        assertThat(jsonpDeserializer).isInstanceOf(JsonpDeserializer.class);
     }
 
     @Test

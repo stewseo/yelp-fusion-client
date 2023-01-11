@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.util.DateTimeUtil;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpDeserializerBase;
@@ -31,7 +30,7 @@ public class DateTime implements JsonpSerializable {
     @Nullable
     private final String str;
 
-    private DateTime(long epochMillis, String str, DateTimeFormatter format) {
+    private DateTime(long epochMillis, @Nullable String str, @Nullable DateTimeFormatter format) {
         this.millis = epochMillis;
         this.str = str;
         this.formatter = format;

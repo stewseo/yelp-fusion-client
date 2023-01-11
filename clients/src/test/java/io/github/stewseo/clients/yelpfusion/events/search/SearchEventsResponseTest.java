@@ -1,7 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;

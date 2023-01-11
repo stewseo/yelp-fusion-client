@@ -109,7 +109,7 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //
 //        assertThat(searchBusiness.review_count()).isGreaterThanOrEqualTo(1);
 //
-//        Assertions.assertThat(searchBusiness.location().city()).isNotNull();
+//        assertThat(searchBusiness.location().city()).isNotNull();
 //
 //    }
 //

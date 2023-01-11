@@ -106,11 +106,10 @@ public class Hit<TDocument> implements JsonpSerializable {
             .lazy(() -> createHitDeserializer(
                     new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search._types.TDocument")));
 
-
-    // <TDocument, BuilderT extends AbstractBuilder<TDocument, BuilderT>> void setupResponseBodyDeserializer(
-    //			ObjectDeserializer<BuilderT> op, JsonpDeserializer<TDocument> tDocumentDeserializer) {
     protected static <TDocument> void setupHitDeserializer(ObjectDeserializer<Builder<TDocument>> op,
                                                            JsonpDeserializer<TDocument> tDocumentDeserializer) {
+
+        System.out.println("`````setupHitDeserializer " + " op: ");
 
         op.add(Builder::source, tDocumentDeserializer, "source");
     }

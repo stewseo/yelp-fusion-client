@@ -15,13 +15,13 @@ public class ObjectBuilderBaseTest extends ObjectBuilderBase {
 
     @Test
     void test_listAdd() {
-        assertThat(ObjectBuilderBase._listAdd(list, "value2"))
+        assertThat(ObjectBuilderBase._listAdd(list, "value2").toString())
                 .isEqualTo("[value1, value2]");
     }
 
     @Test
     void test_listAddAll() {
-        assertThat(ObjectBuilderBase._listAddAll(list, List.of("value2", "value3")))
+        assertThat(ObjectBuilderBase._listAddAll(list, List.of("value2", "value3")).toString())
                 .isEqualTo("[value1, value2, value3]");
     }
 
@@ -29,13 +29,13 @@ public class ObjectBuilderBaseTest extends ObjectBuilderBase {
 
     @Test
     void test_mapPut() {
-        assertThat(ObjectBuilderBase._mapPut(map, "k2", "v2"))
+        assertThat(ObjectBuilderBase._mapPut(map, "k2", "v2").toString())
                 .isEqualTo("{k1=v1, k2=v2}");
     }
 
     @Test
     void test_mapPutAll() {
-        assertThat(ObjectBuilderBase._mapPutAll(map, Map.of("k2", "v2")))
+        assertThat(ObjectBuilderBase._mapPutAll(map, Map.of("k2", "v2")).toString())
                 .isEqualTo("{k1=v1, k2=v2}");
     }
 

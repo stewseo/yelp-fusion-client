@@ -1,11 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonData;
-import io.github.stewseo.clients.yelpfusion._types.ErrorCause;
-import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
-import io.github.stewseo.clients.yelpfusion._types.Messaging;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
-import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
@@ -14,7 +10,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ErrorResponseTest extends ModelTestCase<ErrorResponse> {
+public class ErrorResponseTest extends ModelTestCase<ErrorResponse> {
 
 
     private final ErrorCause errorCause = ErrorCause.of(e -> e

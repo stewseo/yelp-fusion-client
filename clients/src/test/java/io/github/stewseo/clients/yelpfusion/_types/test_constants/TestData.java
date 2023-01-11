@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion._types.test_constants;
 
-import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Center;
@@ -49,6 +48,7 @@ public class TestData {
     public static final String NAME = "name";
     public static final String PHOTOS = "photos";
     public static final String PRICE_STRING = "$";
+    public static final String DISPLAY_PHONE = "display_phone";
     public static final int TOTAL = 1;
     public static final int REVIEW_COUNT = 1;
     public static final int OFFSET = 5;
@@ -92,6 +92,32 @@ public class TestData {
             .state("stateValue")
             .country("countryValue"));
 
+    public static final BusinessDetails EX_BUSINESS_DETAILS_RESULT = BusinessDetails.of(b -> b
+            .id(ID)
+            .alias(ALIAS)
+            .center(CENTER)
+            .hours(HOURS)
+            .hours(h -> h.hours_type("hoursTypeValue"))
+            .hours(List.of(HOURS))
+            .location(LOCATION)
+            .review_count(REVIEW_COUNT)
+            .rating(RATING)
+            .categories(CATEGORY)
+            .categories(List.of(CATEGORY))
+            .categories(cat -> cat.alias(ALIAS))
+            .phone(PHONE)
+            .image_url(IMAGE_URL)
+            .price(PRICE_STRING)
+            .is_closed(IS_CLOSED)
+            .display_phone(DISPLAY_PHONE)
+            .is_claimed(IS_CLAIMED)
+            .name(NAME)
+            .url(FIELD_URL)
+            .messaging(MESSAGING)
+            .transactions(TRANSACTIONS)
+            .photos(PHOTOS)
+            .photos(List.of(PHOTOS))
+    );
     public static final SearchBusinessResult EXPECTED_SEARCH_BUSINESS_RESULT = SearchBusinessResult.of(s -> s
             .id(ID)
             .center(CENTER)

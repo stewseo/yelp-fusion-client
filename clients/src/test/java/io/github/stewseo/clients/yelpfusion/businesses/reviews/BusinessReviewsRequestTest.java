@@ -31,11 +31,11 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
 
         BusinessReviewsRequest.Builder self = builder.self();
 
-        Assertions.assertThat(self).isEqualTo(builder);
+        assertThat(self).isEqualTo(builder);
 
         BusinessReviewsRequest businessReviewsReq = builder.build();
 
-        Assertions.assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
+        assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
     }
 
     @Test

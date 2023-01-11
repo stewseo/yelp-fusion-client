@@ -40,7 +40,7 @@ class MessagingTest extends ModelTestCase<Messaging>
 
         Messaging messaging = builder.build();
 
-        Assertions.assertThat(messaging.toString()).isEqualTo(expected);
+        assertThat(messaging.toString()).isEqualTo(expected);
     }
 
     @Test
