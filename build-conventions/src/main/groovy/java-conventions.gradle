@@ -1,3 +1,5 @@
+import java.nio.charset.StandardCharsets
+
 /*****************************************************************************
  *         plugins                                                          *
  *****************************************************************************/
@@ -18,17 +20,19 @@ plugins {
  *****************************************************************************/
 
 group = 'io.github.stewseo'
-version = '1.7.5'
+version = '1.7.6'
 
 /*****************************************************************************
  *         packaging                                                         *
  *****************************************************************************/
 
 java {
-    targetCompatibility = JavaVersion.VERSION_17
-    sourceCompatibility = JavaVersion.VERSION_17
-    withJavadocJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+
     withSourcesJar()
+    withJavadocJar()
 }
 
 
@@ -54,8 +58,8 @@ tasks.withType(JavaCompile) {
     javaCompiler.set(javaToolchains.compilerFor {
         languageVersion = JavaLanguageVersion.of(17)
     })
-    options.deprecation = false
-    options.encoding = 'UTF-8'
+    options.deprecation = true
+    options.encoding = StandardCharsets.UTF_8
 }
 
 
@@ -66,7 +70,7 @@ tasks.withType(JavaCompile) {
 // No Warnings
 checkstyle {
     config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig("$rootDir/config/checkstyle/checkstyle.xml"))
-    maxWarnings = 5
+    maxWarnings = 0
 }
 
 /*****************************************************************************
@@ -106,7 +110,7 @@ sonarqube {
 
 test.finalizedBy jacocoTestReport
 
-tasks.named('sonarqube').configure {
+tasks.named('sonar').configure {
     dependsOn test
 }
 

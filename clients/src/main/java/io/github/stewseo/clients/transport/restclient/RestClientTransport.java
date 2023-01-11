@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.transport.restclient;
 
 
-import io.github.stewseo.clients.clients.transport.restclient.HttpClientBinaryResponse;
+import io.github.stewseo.clients.transport.restclient.HttpClientBinaryResponse;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.NdJsonpSerializable;
@@ -238,7 +238,7 @@ public class RestClientTransport implements YelpFusionTransport {
         } else if (endpoint instanceof BinaryEndpoint<?> bep) {
 
             @SuppressWarnings("unchecked")
-            ResponseT response = (ResponseT) new io.github.stewseo.clients.clients.transport.restclient.HttpClientBinaryResponse(entity);
+            ResponseT response = (ResponseT) new io.github.stewseo.clients.transport.restclient.HttpClientBinaryResponse(entity);
             return response;
 
         } else {

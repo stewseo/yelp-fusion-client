@@ -1,15 +1,5 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.clients.json.JsonLocationImpl;
-import io.github.stewseo.clients.clients.json.ToStringMapper;
-import io.github.stewseo.clients.json.DelegatingJsonParser;
-import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpMapperFeatures;
-import io.github.stewseo.clients.json.JsonpMappingException;
-import io.github.stewseo.clients.json.JsonpSerializable;
-import io.github.stewseo.clients.json.JsonpSerializer;
-import io.github.stewseo.clients.json.UnexpectedJsonEventException;
 import io.github.stewseo.clients.util.AllowForbiddenApis;
 import jakarta.json.JsonException;
 import jakarta.json.JsonObject;
@@ -20,6 +10,7 @@ import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonLocation;
 import jakarta.json.stream.JsonParser;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -143,7 +134,7 @@ public class JsonpUtils {
         newParser = new DelegatingJsonParser(newParser) {
             @Override
             public JsonLocation getLocation() {
-                return new io.github.stewseo.clients.clients.json.JsonLocationImpl(location.getLineNumber(), location.getColumnNumber(), location.getStreamOffset()) {
+                return new io.github.stewseo.clients.json.JsonLocationImpl(location.getLineNumber(), location.getColumnNumber(), location.getStreamOffset()) {
                     @Override
                     public String toString() {
                         return "(in object at " + super.toString().substring(1);
@@ -200,12 +191,12 @@ public class JsonpUtils {
 
     public static String toString(JsonpSerializable value) {
         StringBuilder sb = new StringBuilder();
-        return toString(value, io.github.stewseo.clients.clients.json.ToStringMapper.INSTANCE, sb).toString();
+        return toString(value, ToStringMapper.INSTANCE, sb).toString();
     }
 
     public static String typedKeysToString(JsonpSerializable value) {
         StringBuilder sb = new StringBuilder(value.getClass().getSimpleName()).append(": ");
-        return toString(value, io.github.stewseo.clients.clients.json.ToStringMapper.INSTANCE, sb).toString();
+        return toString(value, ToStringMapper.INSTANCE, sb).toString();
     }
 
 
@@ -213,26 +204,26 @@ public class JsonpUtils {
         MAX_TO_STRING_LENGTH = length;
     }
 
-    public static int maxToStringLength() {
+    protected static int maxToStringLength() {
         return MAX_TO_STRING_LENGTH;
     }
 
     protected static int MAX_TO_STRING_LENGTH = 10000;
 
-    private static class ToStringTooLongException extends RuntimeException { }
+    private static class ToStringTooLongException extends RuntimeException {}
 
     public static StringBuilder toString(JsonpSerializable value, JsonpMapper mapper, StringBuilder dest) {
 
-        Writer writer = new Writer() {
-            int length = 0;
+        final int[] length = {0};
 
+        try (Writer wr = new Writer() {
             @SuppressWarnings("NullableProblems")
             @Override
             public void write(char[] cbuf, int off, int len) {
                 int max = maxToStringLength();
-                length += len;
-                if (length > max) {
-                    dest.append(cbuf, off, len - (length - max));
+                length[0] += len;
+                if (length[0] > max) {
+                    dest.append(cbuf, off, len - (length[0] - max));
                     dest.append("...");
                     throw new ToStringTooLongException();
                 } else {
@@ -241,22 +232,24 @@ public class JsonpUtils {
             }
 
             @Override
-            public void flush() {
+            public void flush() throws IOException {
                 // flush
             }
 
             @Override
-            public void close() {
+            public void close() throws IOException {
                 // close
             }
-        };
-
-        try (JsonGenerator generator = mapper.jsonProvider().createGenerator(writer)) {
-            value.serialize(generator, mapper);
-        } catch (ToStringTooLongException e) {
-            // Ignore
+        }) {
+            try (JsonGenerator generator = mapper.jsonProvider().createGenerator(wr)) {
+                value.serialize(generator, mapper);
+            } catch (ToStringTooLongException e) {
+                // Ignore
+            }
+            return dest;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return dest;
     }
 
     public static String toJsonString(JsonpSerializable value, JsonpMapper mapper) {
@@ -268,7 +261,7 @@ public class JsonpUtils {
     }
 
     public static StringBuilder toString(JsonpSerializable value, StringBuilder dest) {
-        return toString(value, io.github.stewseo.clients.clients.json.ToStringMapper.INSTANCE, dest);
+        return toString(value, io.github.stewseo.clients.json.ToStringMapper.INSTANCE, dest);
     }
 
 }

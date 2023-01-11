@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <!-- Do not enforce line length -->
+    <suppress files="src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]lowlevel[/\\]restclient[^.]*\.java" checks="LineLength"/>
+    <suppress files="src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]clients[^.]*\.java" checks="LineLength"/>
+    <suppress files="src[/\\]main[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]clients[^.]*\.java" checks="LineLength"/>
+    <suppress files="src[/\\]main[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]clients[^.]*\.java" checks="UnusedImports"/>
+    <suppress files="src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]clients[^.]*\.java" checks="UnusedImports"/>
+    <suppress files="src[/\\]test[/\\]java[/\\]io[/\\]github[/\\]stewseo[/\\]clients[/\\]yelpfusion[/\\]businesses[/\\]details[^.]*\.java" checks="AvoidStarImport"/>
+    <suppress files="build[^.]*\.java" checks="PackageDeclaration"/>
+</suppressions>

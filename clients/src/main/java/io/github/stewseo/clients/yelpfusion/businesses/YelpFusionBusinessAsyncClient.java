@@ -1,21 +1,20 @@
 package io.github.stewseo.clients.yelpfusion.businesses;
 
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionResponse;
 import io.github.stewseo.clients.ApiClient;
-import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.transport.endpoints.EndpointWithResponseMapperAttr;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 
 import javax.annotation.Nullable;

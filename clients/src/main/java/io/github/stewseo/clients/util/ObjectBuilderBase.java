@@ -29,7 +29,7 @@ public class ObjectBuilderBase {
         InternalList(Collection<? extends T> c) {
             super(c);
         }
-    };
+    }
 
     /** Get a mutable list from the current list value of an object builder property */
     private static <T> List<T> _mutableList(List<T> list) {

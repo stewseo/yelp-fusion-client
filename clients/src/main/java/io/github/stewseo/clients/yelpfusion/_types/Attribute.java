@@ -42,7 +42,7 @@ public class Attribute implements JsonpSerializable {
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if (this.attribute != null) {
-            generator.writeKey("attributes");
+            generator.writeKey("attribute");
             generator.write(this.attribute);
         }
     }
