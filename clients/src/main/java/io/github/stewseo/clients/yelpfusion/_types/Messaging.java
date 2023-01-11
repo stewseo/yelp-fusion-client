@@ -27,8 +27,8 @@ public class Messaging implements JsonpSerializable {
         this.use_case_text = builder.use_case_text;
     }
 
-    public static Messaging of(Function<Messaging.Builder, ObjectBuilder<Messaging>> fn) {
-        return fn.apply(new Messaging.Builder()).build();
+    public static Messaging of(Function<Builder, ObjectBuilder<Messaging>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
     public final String url() {

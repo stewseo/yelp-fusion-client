@@ -1,5 +1,8 @@
 package io.github.stewseo.clients.json;
 
+import io.github.stewseo.clients.json.DelegatingDeserializer;
+import io.github.stewseo.clients.json.JsonpDeserializer;
+
 import java.util.function.Supplier;
 
 public class LazyDeserializer<T> extends DelegatingDeserializer.SameType<T> {

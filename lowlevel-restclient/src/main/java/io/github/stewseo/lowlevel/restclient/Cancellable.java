@@ -19,7 +19,7 @@ public abstract class Cancellable {
     };
 
     static Cancellable fromRequest(HttpRequestBase httpRequest) {
-        return new Cancellable.TestRequestCancelable(httpRequest);
+        return new TestRequestCancelable(httpRequest);
     }
 
     static CancellationException newCancellationException() {

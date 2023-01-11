@@ -31,8 +31,8 @@ public class User implements JsonpSerializable {
         this.name = builder.name;
     }
 
-    public static User of(Function<User.Builder, ObjectBuilder<User>> fn) {
-        return fn.apply(new User.Builder()).build();
+    public static User of(Function<Builder, ObjectBuilder<User>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
     public String id() {

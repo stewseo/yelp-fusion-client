@@ -37,10 +37,9 @@ public class SearchTransactionResponse implements JsonpSerializable {
         this.region = builder.region;
     }
 
-
-    public static SearchTransactionResponse of(Function<SearchTransactionResponse.Builder,
+    public static SearchTransactionResponse of(Function<Builder,
             ObjectBuilder<SearchTransactionResponse>> fn) {
-        return fn.apply(new SearchTransactionResponse.Builder()).build();
+        return fn.apply(new Builder()).build();
     }
 
     public final List<SearchBusinessResult> businesses() {

@@ -1,5 +1,9 @@
 package io.github.stewseo.clients.json;
 
+import io.github.stewseo.clients.json.JsonpDeserializer;
+import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.JsonpMappingException;
+import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.util.QuadConsumer;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.stream.JsonParser.Event;
@@ -33,7 +37,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
     }
 
     /** Field deserializer for objects (and boxed primitives) */
-    public static class FieldObjectDeserializer<ObjectType, FieldType> extends ObjectDeserializer.FieldDeserializer<ObjectType> {
+    public static class FieldObjectDeserializer<ObjectType, FieldType> extends FieldDeserializer<ObjectType> {
         private final BiConsumer<ObjectType, FieldType> setter;
         private final JsonpDeserializer<FieldType> deserializer;
 
@@ -67,7 +71,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
         }
     }
 
-    private static final ObjectDeserializer.FieldDeserializer<?> IGNORED_FIELD = new ObjectDeserializer.FieldDeserializer<>("-") {
+    private static final FieldDeserializer<?> IGNORED_FIELD = new FieldDeserializer<>("-") {
 
         @Override
         public void deserialize(JsonParser parser, JsonpMapper mapper, String fieldName, Object object) {
@@ -91,11 +95,11 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
 
     private EnumSet<Event> acceptedEvents = EventSetObject; // May be changed in `shortcutProperty()`
     private final Supplier<ObjectType> constructor;
-    protected final Map<String, ObjectDeserializer.FieldDeserializer<ObjectType>> fieldDeserializers;
-    private ObjectDeserializer.FieldDeserializer<ObjectType> singleKey;
+    protected final Map<String, FieldDeserializer<ObjectType>> fieldDeserializers;
+    private FieldDeserializer<ObjectType> singleKey;
     private String typeProperty;
     private String defaultType;
-    private ObjectDeserializer.FieldDeserializer<ObjectType> shortcutProperty;
+    private FieldDeserializer<ObjectType> shortcutProperty;
     private QuadConsumer<ObjectType, String, JsonParser, JsonpMapper> unknownFieldHandler;
 
     public ObjectDeserializer(Supplier<ObjectType> constructor) {
@@ -166,7 +170,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
                     JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
                     fieldName = parser.getString();
 
-                    ObjectDeserializer.FieldDeserializer<ObjectType> fieldDeserializer = fieldDeserializers.get(fieldName);
+                    FieldDeserializer<ObjectType> fieldDeserializer = fieldDeserializers.get(fieldName);
                     if (fieldDeserializer == null) {
                         parseUnknownField(parser, mapper, fieldName, value);
                     } else {
@@ -183,7 +187,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
                 String variant = unionInfo.getKey();
                 JsonParser innerParser = unionInfo.getValue();
 
-                ObjectDeserializer.FieldDeserializer<ObjectType> fieldDeserializer = fieldDeserializers.get(variant);
+                FieldDeserializer<ObjectType> fieldDeserializer = fieldDeserializers.get(variant);
                 if (fieldDeserializer == null) {
                     parseUnknownField(innerParser, mapper, variant, value);
                 } else {
@@ -226,7 +230,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
 
     @SuppressWarnings("unchecked")
     public void ignore(String name) {
-        this.fieldDeserializers.put(name, (ObjectDeserializer.FieldDeserializer<ObjectType>) IGNORED_FIELD);
+        this.fieldDeserializers.put(name, (FieldDeserializer<ObjectType>) IGNORED_FIELD);
     }
 
     public void shortcutProperty(String name) {
@@ -247,8 +251,8 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
             JsonpDeserializer<FieldType> deserializer,
             String name
     ) {
-        ObjectDeserializer.FieldObjectDeserializer<ObjectType, FieldType> fieldDeserializer =
-                new ObjectDeserializer.FieldObjectDeserializer<>(setter, deserializer, name);
+        FieldObjectDeserializer<ObjectType, FieldType> fieldDeserializer =
+                new FieldObjectDeserializer<>(setter, deserializer, name);
         this.fieldDeserializers.put(name, fieldDeserializer);
     }
 
@@ -257,8 +261,8 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
             JsonpDeserializer<FieldType> deserializer,
             String name, String... aliases
     ) {
-        ObjectDeserializer.FieldObjectDeserializer<ObjectType, FieldType> fieldDeserializer =
-                new ObjectDeserializer.FieldObjectDeserializer<>(setter, deserializer, name);
+        FieldObjectDeserializer<ObjectType, FieldType> fieldDeserializer =
+                new FieldObjectDeserializer<>(setter, deserializer, name);
         this.fieldDeserializers.put(name, fieldDeserializer);
         for (String alias: aliases) {
             this.fieldDeserializers.put(alias, fieldDeserializer);
@@ -266,7 +270,7 @@ public class ObjectDeserializer<ObjectType> implements JsonpDeserializer<ObjectT
     }
 
     public <FieldType> void setKey(BiConsumer<ObjectType, FieldType> setter, JsonpDeserializer<FieldType> deserializer) {
-        this.singleKey = new ObjectDeserializer.FieldObjectDeserializer<>(setter, deserializer, null);
+        this.singleKey = new FieldObjectDeserializer<>(setter, deserializer, null);
     }
 
     public void setTypeProperty(String name, String defaultType) {

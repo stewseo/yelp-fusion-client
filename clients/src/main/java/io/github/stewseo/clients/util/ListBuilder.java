@@ -1,5 +1,7 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.util.ObjectBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;

@@ -1,5 +1,11 @@
 package io.github.stewseo.clients.json;
 
+import io.github.stewseo.clients.clients.json.JsonDataImpl;
+import io.github.stewseo.clients.json.JsonpDeserializable;
+import io.github.stewseo.clients.json.JsonpDeserializer;
+import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.JsonpSerializable;
+import io.github.stewseo.clients.json.JsonpUtils;
 import jakarta.json.JsonValue;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonParser;
@@ -33,7 +39,7 @@ public interface JsonData extends JsonpSerializable {
         if (value instanceof JsonData) {
             return (JsonData) value;
         } else {
-            return new JsonDataImpl(value, null);
+            return new io.github.stewseo.clients.clients.json.JsonDataImpl(value, null);
         }
     }
 
@@ -41,7 +47,7 @@ public interface JsonData extends JsonpSerializable {
      * Creates a raw JSON value from an existing object, along with the mapper to use for further conversions.
      */
     static <T> JsonData of(T value, JsonpMapper mapper) {
-        return new JsonDataImpl(value, mapper);
+        return new io.github.stewseo.clients.clients.json.JsonDataImpl(value, mapper);
     }
 
     /**
@@ -62,7 +68,7 @@ public interface JsonData extends JsonpSerializable {
         JsonProvider provider = JsonpUtils.provider();
         try (JsonParser parser = provider.createParser(json)) {
             parser.next();
-            return new JsonDataImpl(parser.getValue(), null);
+            return new io.github.stewseo.clients.clients.json.JsonDataImpl(parser.getValue(), null);
         }
 
     }
@@ -75,7 +81,7 @@ public interface JsonData extends JsonpSerializable {
         JsonProvider provider = JsonpUtils.provider();
         try (JsonParser parser = provider.createParser(json)) {
             parser.next();
-            return new JsonDataImpl(parser.getValue(), null);
+            return new io.github.stewseo.clients.clients.json.JsonDataImpl(parser.getValue(), null);
         }
     }
 

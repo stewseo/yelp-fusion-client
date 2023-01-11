@@ -286,14 +286,14 @@ public class ErrorCause implements JsonpSerializable {
     public static final JsonpDeserializer<ErrorCause> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             ErrorCause::setupErrorCauseDeserializer);
 
-    protected static void setupErrorCauseDeserializer(ObjectDeserializer<ErrorCause.Builder> op) {
+    protected static void setupErrorCauseDeserializer(ObjectDeserializer<Builder> op) {
 
-        op.add(ErrorCause.Builder::type, JsonpDeserializer.stringDeserializer(), "type");
-        op.add(ErrorCause.Builder::reason, JsonpDeserializer.stringDeserializer(), "reason");
-        op.add(ErrorCause.Builder::stackTrace, JsonpDeserializer.stringDeserializer(), "stack_trace");
-        op.add(ErrorCause.Builder::causedBy, ErrorCause._DESERIALIZER, "caused_by");
-        op.add(ErrorCause.Builder::rootCause, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "root_cause");
-        op.add(ErrorCause.Builder::suppressed, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "suppressed");
+        op.add(Builder::type, JsonpDeserializer.stringDeserializer(), "type");
+        op.add(Builder::reason, JsonpDeserializer.stringDeserializer(), "reason");
+        op.add(Builder::stackTrace, JsonpDeserializer.stringDeserializer(), "stack_trace");
+        op.add(Builder::causedBy, ErrorCause._DESERIALIZER, "caused_by");
+        op.add(Builder::rootCause, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "root_cause");
+        op.add(Builder::suppressed, JsonpDeserializer.arrayDeserializer(ErrorCause._DESERIALIZER), "suppressed");
 
         op.setUnknownFieldHandler((builder, name, parser, mapper) -> {
             builder.metadata(name, JsonData._DESERIALIZER.deserialize(parser, mapper));

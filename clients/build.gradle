@@ -90,7 +90,7 @@ publishing {
                 }
 
                 scm {
-                    connection = POM_SCM_DEV_CONNECTION
+                    connection = POM_SCM_CONNECTION
                     developerConnection = POM_SCM_DEV_CONNECTION
                     url = POM_SCM_URL
                 }

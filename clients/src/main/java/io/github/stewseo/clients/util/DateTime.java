@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.clients.util.DateTimeUtil;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpDeserializerBase;
@@ -77,8 +78,8 @@ public class DateTime implements JsonpSerializable {
         } else {
             if (formatter == null) {
                 try {
-                    ZonedDateTime zdt = DateTimeUtil.from(
-                            DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
+                    ZonedDateTime zdt = io.github.stewseo.clients.clients.util.DateTimeUtil.from(
+                            io.github.stewseo.clients.clients.util.DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
                             Locale.ROOT,
                             ZoneOffset.UTC
                     );
@@ -115,8 +116,8 @@ public class DateTime implements JsonpSerializable {
             return ZonedDateTime.ofInstant(toInstant(), ZoneOffset.UTC);
         } else {
             try {
-                return DateTimeUtil.from(
-                        DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
+                return io.github.stewseo.clients.clients.util.DateTimeUtil.from(
+                        io.github.stewseo.clients.clients.util.DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
                         Locale.ROOT,
                         ZoneOffset.UTC
                 );

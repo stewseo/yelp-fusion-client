@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import co.elastic.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -15,13 +16,12 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class Center implements JsonpSerializable {
-    
     private final Double latitude;
     private final Double longitude;
     
     private Center(Builder builder) {
-        this.latitude = builder.latitude;
-        this.longitude = builder.longitude;
+        this.latitude = ApiTypeHelper.requireNonNull(builder.latitude, this, "latitude");
+        this.longitude = ApiTypeHelper.requireNonNull(builder.longitude, this, "longitude");
     }
 
     public static Center of(Function<Builder, ObjectBuilder<Center>> fn) {
@@ -43,16 +43,11 @@ public class Center implements JsonpSerializable {
     }
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
+        generator.writeKey("latitude");
+        generator.write(this.latitude);
 
-        if (this.longitude != null) {
-            generator.writeKey("longitude");
-            generator.write(this.longitude);
-        }
-        
-        if (this.latitude != null) {
-            generator.writeKey("latitude");
-            generator.write(this.latitude);
-        }
+        generator.writeKey("longitude");
+        generator.write(this.longitude);
     }
 
     @Override

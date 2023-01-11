@@ -8,6 +8,7 @@ import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;

@@ -18,9 +18,10 @@ import java.io.IOException;
 public class HeapBufferedAsyncResponseConsumer extends AbstractAsyncResponseConsumer<HttpResponse> {
 
     private final int bufferLimitBytes;
-    private volatile HttpResponse response;
-    private volatile SimpleInputBuffer buf;
 
+    private volatile HttpResponse response;
+
+    private volatile SimpleInputBuffer buf;
 
     public HeapBufferedAsyncResponseConsumer(int bufferLimit) {
         if (bufferLimit <= 0) {

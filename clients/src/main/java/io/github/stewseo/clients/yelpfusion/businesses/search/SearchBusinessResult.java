@@ -11,7 +11,7 @@ import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import jakarta.json.stream.JsonGenerator;
 
@@ -34,7 +34,7 @@ public class SearchBusinessResult implements JsonpSerializable {
     private final Double rating;
     private final Integer review_count;
     private final List<String> transactions;
-    private final Coordinates coordinates;
+    private final Center center;
     private final Location location;
     private final List<Category> categories;
 
@@ -52,7 +52,7 @@ public class SearchBusinessResult implements JsonpSerializable {
         this.rating = builder.rating;
         this.review_count = builder.review_count;
         this.location = builder.location;
-        this.coordinates = builder.coordinates;
+        this.center = builder.center;
         this.categories = ApiTypeHelper.unmodifiable(builder.categories);
         this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
     }
@@ -113,8 +113,8 @@ public class SearchBusinessResult implements JsonpSerializable {
         return location;
     }
 
-    public final Coordinates coordinates() {
-        return coordinates;
+    public final Center center() {
+        return center;
     }
 
     public final List<Category> categories() {
@@ -199,9 +199,9 @@ public class SearchBusinessResult implements JsonpSerializable {
             generator.writeKey("location");
             location.serialize(generator, mapper);
         }
-        if (this.coordinates != null) {
-            generator.writeKey("coordinates");
-            coordinates.serialize(generator, mapper);
+        if (this.center != null) {
+            generator.writeKey("center");
+            center.serialize(generator, mapper);
         }
         if (ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("categories");
@@ -237,7 +237,7 @@ public class SearchBusinessResult implements JsonpSerializable {
         private Double distance;
         private Integer review_count;
         private List<String> transactions;
-        private Coordinates coordinates;
+         private Center center;
         private Location location;
         private List<Category> categories;
 
@@ -303,13 +303,13 @@ public class SearchBusinessResult implements JsonpSerializable {
             return this.location(fn.apply(new Location.Builder()).build());
         }
 
-        public final Builder coordinates(Coordinates value) {
-            this.coordinates = value;
+        public final Builder center(Center value) {
+            this.center = value;
             return this;
         }
 
-        public final Builder coordinates(Function<Coordinates.Builder, ObjectBuilder<Coordinates>> fn) {
-            return this.coordinates(fn.apply(new Coordinates.Builder()).build());
+        public final Builder center(Function<Center.Builder, ObjectBuilder<Center>> fn) {
+            return this.center(fn.apply(new Center.Builder()).build());
         }
 
         public final Builder categories(Function<Category.Builder, ObjectBuilder<Category>> fn) {
@@ -380,7 +380,7 @@ public class SearchBusinessResult implements JsonpSerializable {
         op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
 
         op.add(Builder::location, Location._DESERIALIZER, "location");
-        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
+        op.add(Builder::center, Center._DESERIALIZER, "center");
         op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
 
     }

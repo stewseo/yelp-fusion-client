@@ -19,15 +19,10 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class Category implements JsonpSerializable {
-
     private final String title;
-
     private final String alias;
-
     private final List<String> parent_aliases;
-
     private final List<String> country_whitelist;
-
     private final List<String> country_blacklist;
 
     private Category(Builder builder) {
@@ -49,7 +44,6 @@ public class Category implements JsonpSerializable {
     public final String title() {
         return title;
     }
-
 
     @Nullable
     public final List<String> parent_aliases() {
@@ -116,31 +110,7 @@ public class Category implements JsonpSerializable {
     public String toString() {
         return JsonpUtils.toString(this);
     }
-
-
-    @JsonpDeserializable
-    public enum MappingProperties implements JsonEnum {
-
-        ALIAS("categories.alias.keyword"),
-
-        TITLE("categories.title.keyword"),
-
-        PARENTS("categories.parents.keyword");
-
-        public static final Deserializer<MappingProperties> _DESERIALIZER = new Deserializer<>(values());
-        private final String type;
-
-        MappingProperties(String value) {
-            this.type = value;
-        }
-
-        @Override
-        public String jsonValue() {
-            return type;
-        }
-
-    }
-
+    
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Category> {
 
         private String alias;

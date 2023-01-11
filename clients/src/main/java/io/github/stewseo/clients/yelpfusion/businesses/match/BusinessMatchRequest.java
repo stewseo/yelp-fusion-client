@@ -9,6 +9,7 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
@@ -259,20 +260,20 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
         }
     }
 
-    public static final JsonpDeserializer<BusinessMatchRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(BusinessMatchRequest.Builder::new,
+    public static final JsonpDeserializer<BusinessMatchRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             BusinessMatchRequest::setupSearchRequestDeserializer);
 
-    protected static void setupSearchRequestDeserializer(ObjectDeserializer<BusinessMatchRequest.Builder> op) {
-        op.add(BusinessMatchRequest.Builder::address1, JsonpDeserializer.stringDeserializer(), "address1");
-        op.add(BusinessMatchRequest.Builder::address2, JsonpDeserializer.stringDeserializer(), "address2");
-        op.add(BusinessMatchRequest.Builder::address3, JsonpDeserializer.stringDeserializer(), "address3");
-        op.add(BusinessMatchRequest.Builder::city, JsonpDeserializer.stringDeserializer(), "city");
-        op.add(BusinessMatchRequest.Builder::match_threshold, JsonpDeserializer.stringDeserializer(), "match_threshold");
-        op.add(BusinessMatchRequest.Builder::postal_code, JsonpDeserializer.stringDeserializer(), "postal_code");
-        op.add(BusinessMatchRequest.Builder::state, JsonpDeserializer.stringDeserializer(), "state");
-        op.add(BusinessMatchRequest.Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
-        op.add(BusinessMatchRequest.Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
-        op.add(BusinessMatchRequest.Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
+    protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
+        op.add(Builder::address1, JsonpDeserializer.stringDeserializer(), "address1");
+        op.add(Builder::address2, JsonpDeserializer.stringDeserializer(), "address2");
+        op.add(Builder::address3, JsonpDeserializer.stringDeserializer(), "address3");
+        op.add(Builder::city, JsonpDeserializer.stringDeserializer(), "city");
+        op.add(Builder::match_threshold, JsonpDeserializer.stringDeserializer(), "match_threshold");
+        op.add(Builder::postal_code, JsonpDeserializer.stringDeserializer(), "postal_code");
+        op.add(Builder::state, JsonpDeserializer.stringDeserializer(), "state");
+        op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
+        op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
+        op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
     }
 
     public static final SimpleEndpoint<BusinessMatchRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/matches",

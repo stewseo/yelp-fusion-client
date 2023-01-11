@@ -10,6 +10,7 @@ public enum QueryParameter implements JsonEnum {
     TEXT("text"),
     ID("id"),
     NAME("name"),
+    TIMESTAMP("timestamp"),
     META_FIELD_ID("_id"),
     PRICE("price")
     ;

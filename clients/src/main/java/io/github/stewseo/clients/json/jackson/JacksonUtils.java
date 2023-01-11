@@ -2,6 +2,7 @@ package io.github.stewseo.clients.json.jackson;
 
 
 import com.fasterxml.jackson.core.JsonParseException;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpLocation;
 import jakarta.json.JsonException;
 import jakarta.json.stream.JsonGenerationException;
 import jakarta.json.stream.JsonParsingException;

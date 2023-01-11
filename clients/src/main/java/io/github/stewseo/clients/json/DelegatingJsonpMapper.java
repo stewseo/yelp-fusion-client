@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.json;
 
+import io.github.stewseo.clients.json.JsonpMapper;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;

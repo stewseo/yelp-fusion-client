@@ -3,6 +3,7 @@ package io.github.stewseo.clients.json.jackson;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpLocation;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonNumber;

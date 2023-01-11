@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.transport.endpoints;
 
+import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.transport.JsonEndpoint;

@@ -13,8 +13,9 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.ObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -48,7 +49,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
     @Nullable
     private final Integer offset;
 
-    private final Coordinates coordinates;
+    private final Center center;
     @Nullable
     private final String sort_by;
 
@@ -67,7 +68,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
     private SearchBusinessRequest(Builder builder) {
         this.term = ApiTypeHelper.unmodifiable(builder.term);
         this.location = ApiTypeHelper.unmodifiable(builder.location);
-        this.coordinates = builder.coordinates;
+        this.center = builder.center;
         this.radius = builder.radius;
         this.categories = builder.categories;
         this.locale = builder.locale;
@@ -100,8 +101,8 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         return this.categories;
     }
 
-    public final Coordinates coordinates() {
-        return this.coordinates;
+    public final Center center() {
+        return this.center;
     }
 
     public final String locale() {
@@ -169,9 +170,9 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             this.categories.serialize(generator, mapper);
         }
 
-        if (this.coordinates != null) {
-            generator.writeKey("coordinates");
-            this.coordinates.serialize(generator, mapper);
+        if (this.center != null) {
+            generator.writeKey("center");
+            this.center.serialize(generator, mapper);
         }
 
         if (this.radius != null) {
@@ -229,7 +230,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         private List<String> location;
 
         @Nullable
-        private Coordinates coordinates;
+         private Center center;
 
         @Nullable
         private Double latitude;
@@ -286,13 +287,13 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             return this.categories(fn.apply(new Category.Builder()).build());
         }
 
-        public final Builder coordinates(Coordinates value) {
-            this.coordinates = value;
+        public final Builder center(Center value) {
+            this.center = value;
             return this;
         }
 
-        public final Builder coordinates(Function<Coordinates.Builder, ObjectBuilder<Coordinates>> fn) {
-            return this.coordinates(fn.apply(new Coordinates.Builder()).build());
+        public final Builder center(Function<Center.Builder, ObjectBuilder<Center>> fn) {
+            return this.center(fn.apply(new Center.Builder()).build());
         }
 
         public final Builder location(@Nullable List<String> list) {
@@ -387,12 +388,12 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
                 if (request.categories != null) {
                     parameters.put("categories", request.categories.alias());
                 }
-                if (request.coordinates != null) {
-                    Double latitude = request.coordinates().latitude();
+                if (request.center != null) {
+                    Double latitude = request.center().latitude();
                     if (latitude != null) {
                         parameters.put("latitude", String.valueOf(latitude));
                     }
-                    Double longitude = request.coordinates().longitude();
+                    Double longitude = request.center().longitude();
                     if (longitude != null) {
                         parameters.put("longitude", String.valueOf(longitude));
                     }
@@ -432,7 +433,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             SearchBusinessResponse._DESERIALIZER);
 
     public static final JsonpDeserializer<SearchBusinessRequest> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(SearchBusinessRequest.Builder::new,
+            ObjectBuilderDeserializer.lazy(Builder::new,
             SearchBusinessRequest::setupSearchBusinessRequestDeserializer);
 
 
@@ -442,7 +443,7 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
         op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
 
         op.add(Builder::location, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "location");
-        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
+        op.add(Builder::center, Center._DESERIALIZER, "center");
         op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
         op.add(Builder::categories, Category._DESERIALIZER, "categories");
         op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");

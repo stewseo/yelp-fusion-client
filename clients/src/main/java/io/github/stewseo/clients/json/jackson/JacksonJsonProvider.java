@@ -2,6 +2,9 @@ package io.github.stewseo.clients.json.jackson;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpGenerator;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpParser;
+import io.github.stewseo.clients.json.jackson.JacksonUtils;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonBuilderFactory;

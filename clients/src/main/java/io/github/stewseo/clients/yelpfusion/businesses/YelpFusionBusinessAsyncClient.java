@@ -96,15 +96,15 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
     }
 
-    public CompletableFuture<SearchTransactionResponse> searchTransaction(SearchTransactionRequest request) throws Exception {
+    public CompletableFuture<SearchBusinessResponse> searchTransaction(SearchTransactionRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchTransactionRequest, SearchTransactionResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<SearchTransactionRequest, SearchTransactionResponse, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
+        JsonEndpoint<SearchTransactionRequest, SearchBusinessResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchTransactionRequest, SearchBusinessResponse, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final CompletableFuture<SearchTransactionResponse> searchTransaction(
+    public final CompletableFuture<SearchBusinessResponse> searchTransaction(
             Function<SearchTransactionRequest.Builder, ObjectBuilder<SearchTransactionRequest>> fn)
             throws Exception {
         return searchTransaction(fn.apply(new SearchTransactionRequest.Builder()).build());

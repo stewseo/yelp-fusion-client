@@ -10,6 +10,7 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -225,7 +226,7 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
             },
             SimpleEndpoint.emptyMap(),
             false,
-            SearchTransactionResponse._DESERIALIZER);
+            SearchBusinessResponse._DESERIALIZER);
 }
 
 

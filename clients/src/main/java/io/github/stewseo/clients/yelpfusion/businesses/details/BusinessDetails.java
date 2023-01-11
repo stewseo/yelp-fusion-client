@@ -12,7 +12,7 @@ import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import io.github.stewseo.clients.yelpfusion._types.Messaging;
@@ -37,7 +37,8 @@ public class BusinessDetails implements JsonpSerializable {
     private final Integer review_count;
     private final Double rating;
     private final Location location;
-    private final Coordinates coordinates;
+
+    private final Center center;
     private final List<String> transactions;
     private final List<String> photos;
     private final List<Hours> hours;
@@ -51,7 +52,7 @@ public class BusinessDetails implements JsonpSerializable {
         this.name = builder.name;
         this.location = builder.location;
         this.display_phone = builder.display_phone;
-        this.coordinates = builder.coordinates;
+        this.center = builder.center;
         this.hours = builder.hours;
         this.image_url = builder.image_url;
         this.is_claimed = builder.is_claimed;
@@ -124,8 +125,8 @@ public class BusinessDetails implements JsonpSerializable {
         return location;
     }
 
-    public final Coordinates coordinates() {
-        return coordinates;
+    public final Center center() {
+        return center;
     }
 
     public final List<String> photos() {
@@ -217,9 +218,9 @@ public class BusinessDetails implements JsonpSerializable {
             this.location.serialize(generator, mapper);
         }
 
-        if (this.coordinates != null) {
-            generator.writeKey("coordinates");
-            this.coordinates.serialize(generator, mapper);
+        if (this.center != null) {
+            generator.writeKey("center");
+            this.center.serialize(generator, mapper);
         }
 
         if (ApiTypeHelper.isDefined(this.transactions)) {
@@ -306,7 +307,7 @@ public class BusinessDetails implements JsonpSerializable {
 
         private List<SpecialHours> special_hours;
 
-        private Coordinates coordinates;
+         private Center center;
 
 
         private List<Category> categories;
@@ -419,13 +420,13 @@ public class BusinessDetails implements JsonpSerializable {
             return this.location(fn.apply(new Location.Builder()).build());
         }
 
-        public final Builder coordinates(Coordinates value) {
-            this.coordinates = value;
+        public final Builder center(Center value) {
+            this.center = value;
             return this;
         }
 
-        public final Builder coordinates(Function<Coordinates.Builder, ObjectBuilder<Coordinates>> fn) {
-            return this.coordinates(fn.apply(new Coordinates.Builder()).build());
+        public final Builder center(Function<Center.Builder, ObjectBuilder<Center>> fn) {
+            return this.center(fn.apply(new Center.Builder()).build());
         }
 
         public final Builder categories(Function<Category.Builder, ObjectBuilder<Category>> fn) {
@@ -490,7 +491,7 @@ public class BusinessDetails implements JsonpSerializable {
         op.add(Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
         op.add(Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
         op.add(Builder::location, Location._DESERIALIZER, "location");
-        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
+        op.add(Builder::center, Center._DESERIALIZER, "center");
         op.add(Builder::messaging, Messaging._DESERIALIZER, "messaging");
         op.add(Builder::photos, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");
         op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");

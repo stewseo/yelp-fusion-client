@@ -11,24 +11,28 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion._types.MappingProperties;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-
+import static io.github.stewseo.clients.yelpfusion._types.QueryParameter.TIMESTAMP;
 public class ElasticsearchService {
 
+    private final Logger logger = LoggerFactory.getLogger(ElasticsearchService.class);
     int MAX_RESULTS = 10000;
 
     private long timestamp;
-
-    private String FIELD_TIMESTAMP = "timestamp";
 
     private final ElasticsearchAsyncClient asyncClient;
 
@@ -40,36 +44,31 @@ public class ElasticsearchService {
         return asyncClient;
     }
 
-    public List<Long> getTimestamp(String timestamp, String index, SortOrder sortOrder) {
+    // accepts a timestamp, an index name or alias, sortOrder
+    // returns HitsMetaData
+    public HitsMetadata<ObjectNode> searchWithRangeQuery(String timestamp, String index, SortOrder sortOrder) {
 
-        SourceFilter sourceFilter = buildSourceFilter(FIELD_TIMESTAMP);
+        SourceFilter sourceFilter = buildSourceFilter(TIMESTAMP);
 
         Query byTimestamp = rangeQueryGteTimestamp(timestamp)._toQuery();
 
-        SortOptions sortOptions = buildSortOptions(FIELD_TIMESTAMP, sortOrder);
+        SortOptions sortOptions = buildSortOptions(TIMESTAMP, sortOrder);
 
         try {
             return asyncClient.search(s -> s
                                     .index(index)
                                     .query(q -> q
                                             .bool(b -> b
-                                                    .must(byTimestamp) // greater than or equal to range parameter
+                                                    .must(byTimestamp)
                                             )
                                     ).source(src -> src
                                             .filter(sourceFilter)
 
                                     ).sort(sortOptions)
                                     .size(1)
-
                             , ObjectNode.class
                     ).get()
-                    .hits()
-                    .hits()
-                    .stream()
-                    .filter(hit -> hit.source() != null)
-                    .map(Hit::source)
-                    .map(source -> Long.parseLong(source.toString()))
-                    .toList();
+                    .hits();
 
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
@@ -126,29 +125,42 @@ public class ElasticsearchService {
         }
 
         // Dynamically build each unique bucket by field: all alias
-        TermsAggregation termsAggregation = buildTermsAggregation(Category.MappingProperties.ALIAS.jsonValue(), size);
+        TermsAggregation termsAggregation = buildTermsAggregation(MappingProperties.ALIAS.jsonValue(), size);
 
-        SearchResponse<Void> response = null;
+        final String buildTermsAggs = "buildTermsAggregation";
 
         try {
-            response = asyncClient.search(b -> b
-                            .index(index)
-                            .size(0) // Set the number of matching documents to zero
-                            .aggregations("buildTermsAggregation", a -> a // Create an aggregation named "all-aggs"
-                                    .terms(termsAggregation) // Select the terms aggregation variant.
-                            ),
-                    Void.class // Using Void will ignore any document in the response.
-            ).get();
+            return asyncClient.search(b -> b
+                                    .index(index)
+                                    .size(0) // Set the number of matching documents to zero
+                                    .aggregations(buildTermsAggs, a -> a // Create an aggregation named "all-aggs"
+                                            .terms(termsAggregation) // Select the terms aggregation variant.
+                                    )
+                            , Void.class // Using Void will ignore any document in the response.
+                    )
+                    .whenComplete((response, exception) -> {
+
+                        if (exception != null) {
+                            logger.error("Search failed. Exception: " + exception);
+                        }
+                        else {
+                            logger.info("Search successful.");
+                        }
+                    })
+                    .get()
+                    .aggregations()
+                    .get(buildTermsAggs)
+                    .sterms()
+                    .buckets().array();
+
+
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
+
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
-        
-        return response.aggregations()
-                .get("buildTermsAggregation")
-                .sterms()
-                .buckets().array();
     }
 
     public List<StringTermsBucket> termsAggregationByCategory(Integer size) {
@@ -201,6 +213,7 @@ public class ElasticsearchService {
         }
         return null;
     }
+    private static String timestampField = TIMESTAMP.name();
 
     public int docsCount(String index) {
         try {
@@ -236,7 +249,7 @@ public class ElasticsearchService {
     private RangeQuery rangeQueryGteTimestamp(String timestamp) {
 
         return RangeQuery.of(r -> r
-                .field(FIELD_TIMESTAMP)
+                .field(timestampField)
                 .gte(JsonData.of(timestamp))
         );
     }
@@ -244,7 +257,7 @@ public class ElasticsearchService {
     private RangeQuery rangeQueryLteTimestamp(String timestamp) {
 
         return RangeQuery.of(r -> r
-                .field(FIELD_TIMESTAMP)
+                .field(timestampField)
                 .lte(JsonData.of(timestamp))
         );
     }
@@ -255,16 +268,18 @@ public class ElasticsearchService {
         );
     }
 
-    private SourceFilter buildSourceFilter(String field) {
+    private SourceFilter buildSourceFilter(QueryParameter type) {
+
         return SourceFilter.of(source -> source
-                .includes(field));
+                .includes(type.name()));
 
     }
 
-    public SortOptions buildSortOptions(String field, SortOrder sortOrder) {
+    public SortOptions buildSortOptions(QueryParameter type, SortOrder sortOrder) {
+
         return SortOptions.of(options -> options
                 .field(f -> f
-                        .field(field)
+                        .field(type.name())
                         .order(sortOrder))
         );
     }

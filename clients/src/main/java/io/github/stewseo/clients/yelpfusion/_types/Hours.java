@@ -26,8 +26,8 @@ public class Hours implements JsonpSerializable {
         this.hours_type = builder.hours_type;
         this.is_open_now = builder.is_open_now;
     }
-    public static Hours of(Function<Hours.Builder, ObjectBuilder<Hours>> fn) {
-        return fn.apply(new Hours.Builder()).build();
+    public static Hours of(Function<Builder, ObjectBuilder<Hours>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
     public final List<Open> open() {

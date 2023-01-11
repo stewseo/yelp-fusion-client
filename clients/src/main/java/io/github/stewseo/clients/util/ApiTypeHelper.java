@@ -1,5 +1,8 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.util.MissingRequiredPropertyException;
+import io.github.stewseo.clients.util.ObjectBuilder;
+
 import javax.annotation.Nullable;
 import java.util.AbstractList;
 import java.util.AbstractMap;
@@ -43,8 +46,8 @@ public class ApiTypeHelper {
      * The result of this method is an {@link AutoCloseable} handle that can be used in try-with-resource blocks to precisely
      * limit the scope where checks are disabled.
      */
-    public static ApiTypeHelper.DisabledChecksHandle DANGEROUS_disableRequiredPropertiesCheck(boolean disable) {
-        ApiTypeHelper.DisabledChecksHandle result = new ApiTypeHelper.DisabledChecksHandle(disableRequiredPropertiesCheck.get());
+    public static DisabledChecksHandle DANGEROUS_disableRequiredPropertiesCheck(boolean disable) {
+        DisabledChecksHandle result = new DisabledChecksHandle(disableRequiredPropertiesCheck.get());
         disableRequiredPropertiesCheck.set(disable);
         return result;
 
@@ -77,7 +80,7 @@ public class ApiTypeHelper {
         }
     };
 
-    static final List<Object> UNDEFINED_LIST = new ApiTypeHelper.EmptyList();
+    static final List<Object> UNDEFINED_LIST = new EmptyList();
 
     /**
      * Returns an empty list that is undefined from a JSON perspective. It will not be serialized
@@ -130,7 +133,7 @@ public class ApiTypeHelper {
         }
     }
 
-    static final Map<Object, Object> UNDEFINED_MAP = new ApiTypeHelper.EmptyMap();
+    static final Map<Object, Object> UNDEFINED_MAP = new EmptyMap();
 
     /**
      * Returns an empty list that is undefined from a JSON perspective. It will not be serialized

@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.util;
 
 import io.github.stewseo.clients.json.NdJsonpSerializable;
+import io.github.stewseo.clients.util.TaggedUnion;
 
 import java.util.Collections;
 import java.util.Iterator;
