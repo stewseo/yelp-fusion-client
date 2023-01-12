@@ -58,13 +58,13 @@ public class TermsAggregationTest extends ElasticsearchTestCase {
     void termsAggregationTest() {
 
         List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(MAX_RESULTS, INDEX_SF_RESTAURANTS);
-        assertThat(buckets.size()).isEqualTo(227);
+        assertThat(buckets.size()).isEqualTo(249);
     }
 
     @Test
     void docsCountTest() {
         int count = elasticsearchService.docsCount(INDEX_SF_RESTAURANTS);
-        assertThat(count).isEqualTo(3949);
+        assertThat(count).isEqualTo(4374);
     }
 
 }

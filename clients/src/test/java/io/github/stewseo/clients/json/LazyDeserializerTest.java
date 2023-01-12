@@ -38,6 +38,30 @@ public class LazyDeserializerTest {
 
     }
 
+    @Test
+    public void testConcurInit() throws Exception {
+
+        final LazyDeserializer<String> ld = new LazyDeserializer<>(JsonpDeserializer::stringDeserializer);
+
+        CompletableFuture<JsonpDeserializer<String>> fut1;
+        CompletableFuture<JsonpDeserializer<String>> fut2;
+
+        // Lock the mutex and start 2 threads that will compete for it.
+        synchronized (ld) {
+            fut1 = futureUnwrap(ld);
+            fut2 = futureUnwrap(ld);
+        }
+
+        // We should see the same non-null results everywhere
+        assertNotNull(fut1.get());
+        assertNotNull(fut2.get());
+
+        final JsonpDeserializer<String> unwrapped = ld.unwrap();
+        assertEquals(unwrapped, fut1.get());
+        assertEquals(unwrapped, fut2.get());
+
+    }
+
     private CompletableFuture<JsonpDeserializer<String>> futureUnwrap(LazyDeserializer<String> d) {
 
         final CompletableFuture<JsonpDeserializer<String>> result = new CompletableFuture<>();

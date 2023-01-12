@@ -52,6 +52,8 @@ public class TestData {
     public static final String PHOTOS = "photos";
     public static final String PRICE_STRING = "$";
     public static final String DISPLAY_PHONE = "display_phone";
+
+    public static final String EXPECTED_CATEGORIES = "[{\"alias\":\"alias\"}, {\"alias\":\"alias\"}, {\"alias\":\"alias\"}]";
     public static final int TOTAL = 1;
     public static final int REVIEW_COUNT = 1;
     public static final int OFFSET = 5;
@@ -72,14 +74,14 @@ public class TestData {
 
     public static final String TRANSACTION_TYPE = "delivery";
 
-    public static String HOURS_START = "0800";
+    public static final String HOURS_START = "0800";
 
-    public static String HOURS_END = "1700";
+    public static final String HOURS_END = "1700";
     public static final Center CENTER = Center.of(c -> c.latitude(LATITUDE).longitude(LONGITUDE));
     public static final Region REGION = Region.of(r -> r.center(CENTER));
     public static final List<String> TRANSACTIONS = List.of("transactionValue");
     public static final List<Attribute> ATTRIBUTES = List.of(Attribute.of(a -> a.attribute("attribute")));
-    public static final User USER = User.of(u -> u.id("idValue").name("nameValue"));
+    public static final User USER = User.of(u -> u.id("idValue").name(NAME));
     public static final Messaging MESSAGING = Messaging.of(m -> m.use_case_text("use_case_text"));
     public static final Hours HOURS = Hours.of(h -> h.hours_type("hoursType"));
 
@@ -87,8 +89,8 @@ public class TestData {
             .is_closed(IS_CLOSED)
             .start(HOURS_START)
             .end(HOURS_END));
-    public static final Event EVENT = Event.of(e -> e.name("nameValue"));
-    public static final Category CATEGORY = Category.of(c -> c.alias("catAlias"));
+    public static final Event EVENT = Event.of(e -> e.name(NAME));
+    public static final Category CATEGORY = Category.of(c -> c.alias(ALIAS));
     public static final Location LOCATION = Location.of(l -> l
             .address1("addressOneValue")
             .city("cityValue")
@@ -126,6 +128,7 @@ public class TestData {
             .center(CENTER)
             .rating(RATING));
     public static final Hit<SearchBusinessResult> HIT = Hit.of(h -> h
+            .source(EXPECTED_SEARCH_BUSINESS_RESULT)
             .tDocumentSerializer(JsonpMapperBase.findSerializer(EXPECTED_SEARCH_BUSINESS_RESULT)));
 
     public static final SearchResponse<SearchBusinessResult> EXPECTED_SEARCH_RESPONSE = SearchResponse.of(s -> s

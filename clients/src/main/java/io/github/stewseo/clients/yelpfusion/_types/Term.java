@@ -71,6 +71,5 @@ public class Term implements JsonpSerializable {
     }
 
     public static final JsonpDeserializer<Term> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new,
-                    Term::setupTermDeserializer);
+            ObjectBuilderDeserializer.lazy(Builder::new, Term::setupTermDeserializer);
 }

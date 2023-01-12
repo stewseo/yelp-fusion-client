@@ -17,6 +17,8 @@ import java.util.function.Supplier;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EXPECTED_BUSINESS_DETAILS_RESULT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EXPECTED_CATEGORIES;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.HIT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,8 +29,8 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     @Override
     public Hit<BusinessDetails> of() {
         return Hit.of(hit -> hit
-                .tDocumentSerializer(tDocumentSerializer)
                 .source(EXPECTED_BUSINESS_DETAILS_RESULT)
+                .tDocumentSerializer(tDocumentSerializer)
         );
     }
     private final Hit<BusinessDetails> hit = of();
@@ -60,36 +62,12 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     void testSource() {
         assertThat(hit.source()).isNotNull();
         assertThat(hit.source()).isInstanceOf(BusinessDetails.class);
-        assertThat(hit.source().categories()).isEqualTo(List.of(CATEGORY));
+        assertThat(hit.source().categories().toString()).isEqualTo(EXPECTED_CATEGORIES);
         assertThat(hit.source().center()).isEqualTo(CENTER);
         assertThat(hit.source().price()).isEqualTo(PRICE_STRING);
     }
 
-    private final String expected = "" +
-            "{" +
-                "\"source\":" +
-                    "{" +
-                        "\"id\":\"id\"," +
-                        "\"name\":\"name\"," +
-                        "\"image_url\":\"imageUrlValue\"," +
-                        "\"price\":\"$\"," +
-                        "\"center\":" +
-                            "{" +
-                                "\"latitude\":37.7829,\"longitude\":-122.4189" +
-                            "}," +
-                        "\"photos\":" +
-                            "[" +
-                                "\"photos\"" +
-                            "]," +
-                        "\"categories\":" +
-                            "[" +
-                                "{" +
-                                    "\"alias\":\"catAlias\"" +
-                                "}" +
-                            "]" +
-                    "}" +
-            "}";
-
+    private final String expected = "{\"source\":{\"id\":\"id\",\"alias\":\"alias\",\"name\":\"name\",\"image_url\":\"imageUrlValue\",\"url\":\"url\",\"phone\":\"phoneValue\",\"price\":\"$\",\"display_phone\":\"display_phone\",\"is_claimed\":false,\"is_closed\":false,\"rating\":4.5,\"review_count\":1,\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"transactions\":[\"transactionValue\"],\"messaging\":{\"use_case_text\":\"use_case_text\"},\"photos\":[\"photos\",\"photos\"],\"hours\":[{\"hours_type\":\"hoursType\"},{\"hours_type\":\"hoursTypeValue\"},{\"hours_type\":\"hoursType\"}],\"categories\":[{\"alias\":\"alias\"},{\"alias\":\"alias\"},{\"alias\":\"alias\"}]}}";
     @Test
     public void testSerialize() {
         hit.serialize(generator, mapper);

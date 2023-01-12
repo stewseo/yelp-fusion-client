@@ -195,14 +195,17 @@ public class SearchBusinessResult implements JsonpSerializable {
             }
             generator.writeEnd();
         }
+
         if (this.location != null) {
             generator.writeKey("location");
             location.serialize(generator, mapper);
         }
+
         if (this.center != null) {
             generator.writeKey("center");
             center.serialize(generator, mapper);
         }
+
         if (ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("categories");
             generator.writeStartArray();

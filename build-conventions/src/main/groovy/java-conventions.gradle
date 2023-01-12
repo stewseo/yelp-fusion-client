@@ -11,7 +11,6 @@ plugins {
     id 'com.github.spotbugs'
     id 'jacoco'
     id "org.sonarqube"
-    id 'com.github.dawnwords.jacoco.badge'
 }
 
 
@@ -71,7 +70,7 @@ tasks.withType(JavaCompile) {
 // No Warnings
 checkstyle {
     config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig("$rootDir/config/checkstyle/checkstyle.xml"))
-//    maxWarnings = 0
+    maxWarnings = 0
 }
 
 /*****************************************************************************
@@ -111,7 +110,7 @@ sonarqube {
 
 test.finalizedBy jacocoTestReport
 
-tasks.named('sonar').configure {
+tasks.named('sonarqube').configure {
     dependsOn test
 }
 

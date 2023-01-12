@@ -1,8 +1,9 @@
-package io.github.stewseo.clients.functional;//package io.github.stewseo.clients.functional;
+//package io.github.stewseo.clients.functional;
 //
 //import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 //import co.elastic.clients.elasticsearch._types.SortOptions;
 //import co.elastic.clients.elasticsearch._types.SortOrder;
+//import co.elastic.clients.elasticsearch._types.WriteResponseBase;
 //import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 //import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 //import co.elastic.clients.elasticsearch.core.IndexRequest;
@@ -16,9 +17,9 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //import io.github.stewseo.clients.elasticsearch.ElasticsearchTestCase;
 //import io.github.stewseo.clients.json.JsonData;
 //import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-//import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 //import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 //import io.github.stewseo.clients.yelpfusion._types.Category;
+//import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 //import io.github.stewseo.clients.yelpfusion._types.Result;
 //import io.github.stewseo.clients.yelpfusion._types.SortBy;
 //import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
@@ -26,8 +27,6 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 //import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 //import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
-//import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
-//import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTestService;
 //import org.junit.jupiter.api.Test;
 //
 //import java.io.IOException;
@@ -35,13 +34,13 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //import java.util.List;
 //import java.util.Set;
 //
+//import static io.github.stewseo.clients.yelpfusion._types.QueryParameter.META_FIELD_ID;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.FIELD_TIMESTAMP;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.INDEX_SEARCH_SF_RESTAURANTS;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.INDEX_SF_RESTAURANTS;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LIMIT;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.MAX_RESULTS;
-//import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.META_FIELD_ID;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TERM_RESTAURANTS;
 //import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TIMESTAMP_PIPELINE;
 //import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -55,14 +54,14 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //
 //    static int total = 0;
 //
-//    private Set<String> categoriesGt = new HashSet<>();
+//    private final Set<String> categoriesGt = new HashSet<>();
 //
 //    @Test
 //    public void testSearchBusinessRequest() throws Exception {
 //
 //        yelpFusionClient = getYelpFusionClient();
 //
-//        Set<Category> categories = categoriesWithRestaurantParent();
+//        Set<Category> categories = searchCategories();
 //
 //        esAsyncClient = new ElasticsearchTestCase().elasticsearchService.getAsyncClient();
 //
@@ -113,7 +112,7 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //            } while (offset <= 1000 && offset < (total + LIMIT));
 //        }
 //
-//        System.out.println(categoriesGt.size() + " , categories gt 1000 results: " + categoriesGt.toString());
+//        System.out.println(categoriesGt.size() + ", categories gt 1000 results: " + categoriesGt);
 //    }
 //
 //    private SearchBusinessRequest searchBusinessRequest(Category category, int offset) {
@@ -129,24 +128,24 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //        );
 //    }
 //
+//    // Build a CategoriesRequest and filter categories: "parent_alias":"restaurants".
+//    // Build a SearchBusinessRequest for each category with "parent_alias":"restaurants"
+//    // Build a BusinessDetailsRequest for each id contained in each SearchBusinessResult
+//    // Build an IndexRequest for each BusinessDetailsResult and store as a JSON document.
 //    @Test
-//    public void testBusinessDetailsRequest() throws Exception {
+//    public void testBusinessDetailsRequest() {
 //
+//        // build SearchRequest with SortOptions.desc.
+//        // Returns a document containing the greatest timestamp from index: restaurants-sf
+//        // search for the document containing the unique _id field from index: search-business-results-sf
+//        // search for all documents with a timestamp field greater than or equal to the matched document.
 //        esAsyncClient = new ElasticsearchTestCase().elasticsearchService.getAsyncClient();
 //
-//        // get id of doc with greatest timestamp
-////        String id = searchWithMatchAllQuery(FIELD_TIMESTAMP, MAX_RESULTS, SortOrder.Asc)
-////                .hits()
-////                .hits()
-////                .get(0)
-////                .id();
-//
-//        // build range query of timestamps greater than or equal timestamp
 //        Query byTimestamp = RangeQuery.of(r -> r
 //                .field(FIELD_TIMESTAMP)
-//                .gte(co.elastic.clients.json.JsonData.of("2023-01-09T07:21:58.817173731Z")))._toQuery();
+//                .gte(co.elastic.clients.json.JsonData.of("2023-01-09T07:24:55.561678124Z")))._toQuery();
 //
-//        // search restaurants-sf index with range query by timestamp
+//
 //        SearchResponse<ObjectNode> searchResponse = searchWithRangeQueryGte(INDEX_SEARCH_SF_RESTAURANTS, byTimestamp);
 //
 //        yelpFusionClient = getYelpFusionClient();
@@ -164,7 +163,7 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //
 //        ElasticsearchService elasticsearchService = new ElasticsearchService(esAsyncClient);
 //
-//        SortOptions byTimestampDesc = elasticsearchService.buildSortOptions(FIELD_TIMESTAMP, sortOrder);
+//        SortOptions byTimestampDesc = elasticsearchService.buildSortOptions(QueryParameter.TIMESTAMP, sortOrder);
 //
 //        try {
 //            return esAsyncClient.search(s -> s
@@ -208,7 +207,7 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //            } else {
 //                assertThat(response.result()).isNotEqualTo(Result.NotFound);
 //            }
-//        }).thenApply(e -> e.result()).join();
+//        }).thenApply(WriteResponseBase::result).join();
 //    }
 //
 //    private SearchResponse<ObjectNode> searchWithMatchAllQuery() {
@@ -216,7 +215,7 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //            return esAsyncClient.search(s -> s
 //                    .query(q -> q
 //                            .matchAll(m -> m
-//                                    .queryName(META_FIELD_ID))
+//                                    .queryName(META_FIELD_ID.name()))
 //                    ).size(MAX_RESULTS)
 //                    ,
 //                    ObjectNode.class).get();
@@ -255,7 +254,7 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //        }
 //    }
 //
-//    private Set<Category> categoriesWithRestaurantParent() {
+//    private Set<Category> searchCategories() {
 //
 //        Set<Category> restCats = new HashSet<>();
 //        try {

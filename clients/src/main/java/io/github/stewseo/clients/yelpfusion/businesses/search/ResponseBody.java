@@ -73,7 +73,7 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
 
     @Override
     public String toString() {
-        return JsonpUtils.typedKeysToString(this);
+        return JsonpUtils.toString(this);
     }
 
     protected abstract static class AbstractBuilder<TDocument, BuilderT extends AbstractBuilder<TDocument, BuilderT>>
@@ -127,7 +127,7 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
     protected static <TDocument, BuilderT extends AbstractBuilder<TDocument, BuilderT>>
         void setupResponseBodyDeserializer(
                 ObjectDeserializer<BuilderT> op, JsonpDeserializer<TDocument> tDocumentDeserializer) {
-        System.out.println("====================================================================setup Response Body Deserializer" + tDocumentDeserializer);
+
         op.add(AbstractBuilder::hits, JsonpDeserializer.arrayDeserializer(
                 Hit.createHitDeserializer(tDocumentDeserializer)), "hits");
 
