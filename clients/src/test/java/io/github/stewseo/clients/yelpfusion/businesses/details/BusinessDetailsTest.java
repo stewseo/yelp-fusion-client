@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EX_BUSINESS_DETAILS_RESULT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EXPECTED_BUSINESS_DETAILS_RESULT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.FIELD_URL;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IS_CLAIMED;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.REVIEW_COUNT;
@@ -20,7 +20,7 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
     private final BusinessDetails business = of();
 
     public BusinessDetails of() {
-        return EX_BUSINESS_DETAILS_RESULT;
+        return EXPECTED_BUSINESS_DETAILS_RESULT;
     }
 
     @Test

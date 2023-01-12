@@ -73,7 +73,7 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
 
     @Override
     public String toString() {
-        return JsonpUtils.toString(this);
+        return JsonpUtils.typedKeysToString(this);
     }
 
     protected abstract static class AbstractBuilder<TDocument, BuilderT extends AbstractBuilder<TDocument, BuilderT>>

@@ -16,19 +16,19 @@ import java.util.function.Supplier;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EX_BUSINESS_DETAILS_RESULT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EXPECTED_BUSINESS_DETAILS_RESULT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
 
-    private final JsonpSerializer<BusinessDetails> tDocumentSerializer = JacksonJsonpMapper.findSerializer(EX_BUSINESS_DETAILS_RESULT);
+    private final JsonpSerializer<BusinessDetails> tDocumentSerializer = JacksonJsonpMapper.findSerializer(EXPECTED_BUSINESS_DETAILS_RESULT);
 
     @Override
     public Hit<BusinessDetails> of() {
         return Hit.of(hit -> hit
                 .tDocumentSerializer(tDocumentSerializer)
-                .source(EX_BUSINESS_DETAILS_RESULT)
+                .source(EXPECTED_BUSINESS_DETAILS_RESULT)
         );
     }
     private final Hit<BusinessDetails> hit = of();
@@ -37,14 +37,14 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     public void testBuilder() {
 
         Hit.Builder<BusinessDetails> builder = new Hit.Builder<BusinessDetails>()
-                .source(EX_BUSINESS_DETAILS_RESULT)
+                .source(EXPECTED_BUSINESS_DETAILS_RESULT)
                 .tDocumentSerializer(tDocumentSerializer);
         assertThat(builder).isNotNull();
     }
 
     @Test
     public void testOf() {
-        assertThat(hit.source()).isEqualTo(EX_BUSINESS_DETAILS_RESULT);
+        assertThat(hit.source()).isEqualTo(EXPECTED_BUSINESS_DETAILS_RESULT);
         assertThat(hit.tDocumentSerializer()).isEqualTo(tDocumentSerializer);
     }
 
@@ -53,7 +53,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     @Test
     void tDocumentSerializer() {
         assertThat(hit.tDocumentSerializer()).isNotNull();
-        hit.tDocumentSerializer().serialize(EX_BUSINESS_DETAILS_RESULT, generator, mapper);
+        hit.tDocumentSerializer().serialize(EXPECTED_BUSINESS_DETAILS_RESULT, generator, mapper);
     }
 
     @Test

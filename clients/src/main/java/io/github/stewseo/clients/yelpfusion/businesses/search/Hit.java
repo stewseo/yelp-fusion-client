@@ -109,8 +109,6 @@ public class Hit<TDocument> implements JsonpSerializable {
     protected static <TDocument> void setupHitDeserializer(ObjectDeserializer<Builder<TDocument>> op,
                                                            JsonpDeserializer<TDocument> tDocumentDeserializer) {
 
-        System.out.println("`````setupHitDeserializer " + " op: ");
-
         op.add(Builder::source, tDocumentDeserializer, "source");
     }
 }

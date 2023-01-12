@@ -1,17 +1,20 @@
 package io.github.stewseo.clients.json;
 
-import java.util.concurrent.CompletableFuture;
-
-import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.json.LazyDeserializer;
-import org.junit.jupiter.api.Assertions;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import org.junit.jupiter.api.Test;
 
-public class LazyDeserializerTest extends Assertions {
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class LazyDeserializerTest {
 
     @Test
     public void testConcurrentInit() throws Exception {
+
         // See https://github.com/elastic/elasticsearch-java/issues/58
 
         final LazyDeserializer<String> ld = new LazyDeserializer<>(JsonpDeserializer::stringDeserializer);
@@ -49,4 +52,31 @@ public class LazyDeserializerTest extends Assertions {
 
         return result;
     }
+
+    @Test
+    public void testRaceCondition() {
+        // Fix race condition in LazyDeserializer initialization #59
+        // https://github.com/elastic/elasticsearch-java/commit/7dc37429a97613f099455ca42d19acf4b70c80e9
+
+        JsonpDeserializer<SearchResponse<Object>> searchResponseDeser =
+                JsonpDeserializer.lazy(() -> SearchResponse.createSearchResponseDeserializer(
+                                new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.TDocument")));
+
+    }
+
+//    protected JsonpDeserializer<SearchResponse<Object>> unwrap() {
+//
+//        JsonpDeserializer<SearchResponse<Object>> d = deserializer;
+//        if (d == null) {
+//            synchronized (this) {
+//                if (deserializer == null) {
+//                    d = ctor.get();
+//                    deserializer = d;
+//                }
+//            }
+//        }
+//        return d;
+//    }
+
+
 }

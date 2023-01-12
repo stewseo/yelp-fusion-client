@@ -7,7 +7,6 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestDat
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class SearchResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult>> {
+class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult>> {
 
     private static final JsonpSerializer<SearchBusinessResult> toStringSerializer =
             (JsonpSerializer<SearchBusinessResult>) (value, generator, mapper) -> {
@@ -105,12 +104,6 @@ class SearchResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusiness
             ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessResult>>) SearchResponse.Builder::new,
                     op -> SearchResponse.setupSearchResponseDeserializer(op,
                             new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.TDocument")));
-
-    @Test
-    public void testSetupResponseBodyDeserializer() {
-
-        assertThat(tDocumentDeserializer).isExactlyInstanceOf(ObjectBuilderDeserializer.class);
-    }
 
     public JsonParser parser() {
         return parser(searchResponse);

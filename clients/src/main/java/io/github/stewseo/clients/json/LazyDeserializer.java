@@ -30,4 +30,19 @@ public class LazyDeserializer<T> extends DelegatingDeserializer.SameType<T> {
             return deserializer;
         }
     }
+
+    protected JsonpDeserializer<T> testUnwrap() {
+
+        JsonpDeserializer<T> d = deserializer;
+        if (d == null) {
+            synchronized (this) {
+                if (deserializer == null) {
+                    d = ctor.get();
+                    deserializer = d;
+                }
+            }
+        }
+        return d;
+    }
+
 }

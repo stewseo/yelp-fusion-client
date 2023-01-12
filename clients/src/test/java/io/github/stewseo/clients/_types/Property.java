@@ -36,8 +36,6 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         }
 
     }
-
-
     private final Kind _kind;
 
     private final Object _value;

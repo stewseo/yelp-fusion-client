@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion._types.test_constants;
 
+import io.github.stewseo.clients.json.JsonpMapperBase;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Center;
@@ -11,7 +12,9 @@ import io.github.stewseo.clients.yelpfusion._types.Region;
 import io.github.stewseo.clients.yelpfusion._types.SpecialHours;
 import io.github.stewseo.clients.yelpfusion._types.User;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
+import io.github.stewseo.clients.yelpfusion.businesses.search.Hit;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 
 import java.util.List;
 
@@ -92,7 +95,7 @@ public class TestData {
             .state("stateValue")
             .country("countryValue"));
 
-    public static final BusinessDetails EX_BUSINESS_DETAILS_RESULT = BusinessDetails.of(b -> b
+    public static final BusinessDetails EXPECTED_BUSINESS_DETAILS_RESULT = BusinessDetails.of(b -> b
             .id(ID)
             .alias(ALIAS)
             .center(CENTER)
@@ -122,11 +125,12 @@ public class TestData {
             .id(ID)
             .center(CENTER)
             .rating(RATING));
+    public static final Hit<SearchBusinessResult> HIT = Hit.of(h -> h
+            .tDocumentSerializer(JsonpMapperBase.findSerializer(EXPECTED_SEARCH_BUSINESS_RESULT)));
 
-    public static final BusinessDetails EXPECTED_BUSINESS_DETAILS_RESULT = BusinessDetails.of(b -> b
-            .id(ID)
-            .location(LOCATION)
-            .hours(HOURS)
-            .special_hours(SPECIAL_HOURS));
+    public static final SearchResponse<SearchBusinessResult> EXPECTED_SEARCH_RESPONSE = SearchResponse.of(s -> s
+            .hits(HIT)
+            .region(REGION)
+            .total(TOTAL));
 
 }

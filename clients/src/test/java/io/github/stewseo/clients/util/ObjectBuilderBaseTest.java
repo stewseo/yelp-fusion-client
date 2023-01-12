@@ -2,7 +2,6 @@ package io.github.stewseo.clients.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +37,6 @@ public class ObjectBuilderBaseTest extends ObjectBuilderBase {
         assertThat(ObjectBuilderBase._mapPutAll(map, Map.of("k2", "v2")).toString())
                 .isEqualTo("{k1=v1, k2=v2}");
     }
-
 
     @Test
     void test_checkSingleUseEmptyInternalList() {
