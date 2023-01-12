@@ -9,7 +9,7 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import jakarta.json.stream.JsonGenerator;
 
@@ -20,7 +20,7 @@ public class BusinessMatch implements JsonpSerializable {
     private final String id;
     private final String alias;
     private final String name;
-    private final Coordinates coordinates;
+    private final Center center;
     private final Location location;
     private final String phone;
     private final String display;
@@ -29,7 +29,7 @@ public class BusinessMatch implements JsonpSerializable {
         this.id = builder.id;
         this.alias = builder.alias;
         this.name = builder.name;
-        this.coordinates = builder.coordinates;
+        this.center = builder.center;
         this.location = builder.location;
         this.phone = builder.phone;
         this.display = builder.display;
@@ -51,8 +51,8 @@ public class BusinessMatch implements JsonpSerializable {
         return name;
     }
 
-    public final Coordinates coordinates() {
-        return coordinates;
+    public final Center center() {
+        return center;
     }
 
     public final Location location() {
@@ -92,9 +92,9 @@ public class BusinessMatch implements JsonpSerializable {
             generator.writeKey("location");
             location.serialize(generator, mapper);
         }
-        if (this.coordinates != null) {
-            generator.writeKey("coordinates");
-            coordinates.serialize(generator, mapper);
+        if (this.center != null) {
+            generator.writeKey("center");
+            center.serialize(generator, mapper);
         }
         if (this.phone != null) {
             generator.writeKey("phone");
@@ -117,7 +117,7 @@ public class BusinessMatch implements JsonpSerializable {
         private String id;
         private String alias;
         private String name;
-        private Coordinates coordinates;
+         private Center center;
         private Location location;
         private String phone;
         private String display;
@@ -137,8 +137,8 @@ public class BusinessMatch implements JsonpSerializable {
             return this;
         }
 
-        public final Builder coordinates(Coordinates coordinates) {
-            this.coordinates = coordinates;
+        public final Builder center(Center center) {
+            this.center = center;
             return this;
         }
 
@@ -178,7 +178,7 @@ public class BusinessMatch implements JsonpSerializable {
         op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
         op.add(Builder::phone, JsonpDeserializer.stringDeserializer(), "phone");
         op.add(Builder::display, JsonpDeserializer.stringDeserializer(), "display");
-        op.add(Builder::coordinates, Coordinates._DESERIALIZER, "coordinates");
+        op.add(Builder::center, Center._DESERIALIZER, "center");
         op.add(Builder::location, Location._DESERIALIZER, "location");
     }
 }

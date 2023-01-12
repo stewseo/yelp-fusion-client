@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
+import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.CATEGORY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {

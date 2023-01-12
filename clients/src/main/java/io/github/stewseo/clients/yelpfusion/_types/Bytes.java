@@ -20,6 +20,7 @@ public enum Bytes implements JsonEnum {
     ;
 
     public static final Deserializer<Bytes> _DESERIALIZER = new Deserializer<>(io.github.stewseo.clients.yelpfusion._types.Bytes.values());
+
     private final String jsonValue;
 
     Bytes(String jsonValue) {

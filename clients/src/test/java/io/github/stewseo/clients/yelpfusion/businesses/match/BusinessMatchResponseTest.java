@@ -1,5 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;

@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
@@ -8,7 +9,7 @@ import jakarta.json.stream.JsonGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsRequest>
@@ -30,11 +31,11 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
 
         BusinessReviewsRequest.Builder self = builder.self();
 
-        Assertions.assertThat(self).isEqualTo(builder);
+        assertThat(self).isEqualTo(builder);
 
         BusinessReviewsRequest businessReviewsReq = builder.build();
 
-        Assertions.assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
+        assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
     }
 
     @Test

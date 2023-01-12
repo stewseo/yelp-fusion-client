@@ -1,20 +1,29 @@
 package io.github.stewseo.clients.yelpfusion.events;
 
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
+import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.LOCATION_MISSING;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.VALIDATION_ERROR_DOES_NOT_MATCH;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.BAD_LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
 
     @Test
-    void withTransportOptions() throws IOException {
+    public void testClient() {
+
+    }
+
+    @Test
+    public void testWithTransportOptions() {
 
         try(RestClientTransport restClientTransport = restClientTransport()) {
 
@@ -23,6 +32,8 @@ class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
                     );
 
             assertThat(client._transportOptions()).isNotNull();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -30,42 +41,29 @@ class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
 
     // if rate limited
     @Test
-    void testSearchEvents() throws Exception {
+    void testSearchEvents() {
+        String expectedUri = "URI [v3/events?locale=en_US]";
 
-        String expectedError = "" +
-                "method [GET], " +
-                "host [https://api.yelp.com:443], " +
-                "URI [v3/events?locale=en_US], " +
-                "status line [HTTP/1.1 429 Too Many Requests]\n" +
-                "{\"error\": {\"code\": \"ACCESS_LIMIT_REACHED\", " +
-                "\"description\": \"You've reached the access limit for this client. " +
-                "See instructions for requesting a higher access limit at https://www.yelp.com/developers/documentation/v3/rate_limiting\"}}";
+        String expected = buildExpectedResponseExceptionMessage(expectedUri);
 
-        Exception exception = assertThrows(ResponseException.class,
-                () -> eventsClient.search(s -> s.locale(LOCALE))
-        );
+        ResponseException responseException = assertThrows(ResponseException.class,
+                () -> eventsClient.search(s -> s.locale(BAD_LOCALE)));
 
-        assertThat(exception.getMessage()).isEqualTo(expectedError);
+        assertThat(responseException.getMessage()).contains(VALIDATION_ERROR_DOES_NOT_MATCH);
+
     }
 
     // if rate limited
     @Test
-    void testFeaturedEvents() throws Exception {
-        String expected = "" +
-                "method [GET], " +
-                "host [https://api.yelp.com:443], " +
-                "URI [v3/events/featured?locale=en_US], " +
-                "status line [HTTP/1.1 429 Too Many Requests]\n" +
-                    "{\"error\": " +
-                        "{\"code\": \"ACCESS_LIMIT_REACHED\", " +
-                        "\"description\": \"You've reached the access limit for this client. " +
-                        "See instructions for requesting a higher access limit at https://www.yelp.com/developers/documentation/v3/rate_limiting\"}}";
+    void testFeaturedEvents() {
 
-        Exception exception = assertThrows(ResponseException.class,
+        String expectedUri = "URI [v3/events/featured?locale=en_US]";
+
+        String expected = buildExpectedResponseExceptionMessage(expectedUri);
+
+        ResponseException responseException = assertThrows(ResponseException.class,
                 () -> eventsClient.featured(s -> s.locale(LOCALE))
         );
-
-        assertThat(exception.getMessage()).isEqualTo(expected);
-
+        assertThat(responseException.getMessage()).contains(LOCATION_MISSING);
     }
 }

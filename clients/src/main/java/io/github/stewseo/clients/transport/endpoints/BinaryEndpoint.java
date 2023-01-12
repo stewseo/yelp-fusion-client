@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.transport.endpoints;
 
 import io.github.stewseo.clients.transport.EndpointBase;
+import io.github.stewseo.clients.transport.endpoints.BinaryResponse;
 
 import java.util.Map;
 import java.util.function.Function;

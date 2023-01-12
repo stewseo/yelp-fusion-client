@@ -76,4 +76,32 @@ public class JsonpMappingExceptionTest extends TestJson {
 
         assertThat(msg).contains("Missing required property 'SearchBusinessResponse");
     }
+
+    @Test
+    void from() {
+    }
+
+    @Test
+    void testFrom() {
+    }
+
+    @Test
+    void getMessage() {
+    }
+
+    @Test
+    void path() {
+    }
+
+    @Test
+    void testPath() {
+    }
+
+    @Test
+    void prepend() {
+    }
+
+    @Test
+    void testPrepend() {
+    }
 }

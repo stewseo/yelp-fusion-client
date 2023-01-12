@@ -5,16 +5,17 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion._types.Event;
+import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.PRICE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.TERM;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TERM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionRequest>

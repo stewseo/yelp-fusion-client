@@ -8,6 +8,7 @@ import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpMapperBase;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.json.WithJson;
+import io.github.stewseo.clients.util.ObjectBuilderBase;
 import jakarta.json.stream.JsonParser;
 
 public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase implements WithJson<B> {
@@ -24,7 +25,7 @@ public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase imp
         }
 
         // Generic parameters are always deserialized to JsonData unless the parent mapper can provide a deserializer
-        mapper = new WithJsonObjectBuilderBase.WithJsonMapper(mapper);
+        mapper = new WithJsonMapper(mapper);
 
         @SuppressWarnings("unchecked")
         ObjectDeserializer<B> builderDeser = (ObjectDeserializer<B>) DelegatingDeserializer.unwrap(classDeser);
@@ -50,7 +51,7 @@ public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase imp
 
         @Override
         public <T> JsonpMapper withAttribute(String name, T value) {
-            return new WithJsonObjectBuilderBase.WithJsonMapper(this.mapper.withAttribute(name, value));
+            return new WithJsonMapper(this.mapper.withAttribute(name, value));
         }
     }
 }

@@ -12,7 +12,6 @@ public interface JsonpMapper {
 
     JsonProvider jsonProvider();
 
-
     default <T> T deserialize(JsonParser parser, Class<T> clazz) {
         return deserialize(parser, (Type) clazz);
     }

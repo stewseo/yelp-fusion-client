@@ -18,7 +18,8 @@
 
 <br>
 
-### Use Case Search for all restaurants in San Francisco
+### Use cases
+- [restaurant recommender](https://github.com/stewseo/restaurant-recommendation-system)
 
 #### As a Maven Dependency
 You can use [Maven's dependency management](https://search.maven.org/search?q=g:io.github.stewseo) to obtain the driver by adding the following configuration in the application's Project Object Model (POM) file:
@@ -29,7 +30,7 @@ You can use [Maven's dependency management](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>io.github.stewseo</groupId>
   <artifactId>yelp-fusion-client</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.75</version>
 </dependency>
 </dependencies>
 ```
@@ -39,7 +40,7 @@ You can use [Gradle's dependency management](https://search.maven.org/search?q=g
 **Example - Gradle**
 ```gradle
 dependencies {
-   implementation 'io.github.stewseo:yelp-fusion-client:1.0.7'
+   implementation 'io.github.stewseo:yelp-fusion-client:1.0.75'
 }
 ```
 <br>

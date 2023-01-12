@@ -13,6 +13,7 @@ public class SimpleJsonpMapper extends JsonpMapperBase {
     public static final SimpleJsonpMapper INSTANCE_REJECT_UNKNOWN_FIELDS = new SimpleJsonpMapper(false);
     private static final Map<Type, JsonpSerializer<?>> serializers = new HashMap<>();
     private static final Map<Type, JsonpDeserializer<?>> deserializers = new HashMap<>();
+
     public static SimpleJsonpMapper INSTANCE = new SimpleJsonpMapper(true);
 
     static {

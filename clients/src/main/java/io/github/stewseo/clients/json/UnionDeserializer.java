@@ -1,6 +1,12 @@
 package io.github.stewseo.clients.json;
 
 import co.elastic.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.json.DelegatingDeserializer;
+import io.github.stewseo.clients.json.JsonpDeserializer;
+import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.JsonpMappingException;
+import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.ObjectDeserializer;
 import jakarta.json.JsonObject;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.stream.JsonParser.Event;
@@ -29,7 +35,7 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
         abstract EnumSet<Event> nativeEvents();
     }
 
-    private static class SingleMemberHandler<Union, Kind, Member> extends UnionDeserializer.EventHandler<Union, Kind, Member> {
+    private static class SingleMemberHandler<Union, Kind, Member> extends EventHandler<Union, Kind, Member> {
         private final JsonpDeserializer<? extends Member> deserializer;
         private final Kind tag;
         // ObjectDeserializers provide the list of fields they know about
@@ -60,13 +66,13 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
      * An event handler for value events (string, number, etc) that can try multiple handlers, which are ordered
      * from most specific (e.g. enum) to least specific (e.g. string)
      */
-    private static class MultiMemberHandler<Union, Kind, Member> extends UnionDeserializer.EventHandler<Union, Kind, Member> {
-        private List<UnionDeserializer.SingleMemberHandler<Union, Kind, Member>> handlers;
+    private static class MultiMemberHandler<Union, Kind, Member> extends EventHandler<Union, Kind, Member> {
+        private List<SingleMemberHandler<Union, Kind, Member>> handlers;
 
         @Override
         EnumSet<Event> nativeEvents() {
             EnumSet<Event> result = EnumSet.noneOf(Event.class);
-            for (UnionDeserializer.SingleMemberHandler<Union, Kind, Member> smh: handlers) {
+            for (SingleMemberHandler<Union, Kind, Member> smh: handlers) {
                 result.addAll(smh.deserializer.nativeEvents());
             }
             return result;
@@ -75,7 +81,7 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
         @Override
         Union deserialize(JsonParser parser, JsonpMapper mapper, Event event, BiFunction<Kind, Member, Union> buildFn) {
             RuntimeException exception = null;
-            for (UnionDeserializer.EventHandler<Union, Kind, Member> d: handlers) {
+            for (EventHandler<Union, Kind, Member> d: handlers) {
                 try {
                     return d.deserialize(parser, mapper, event, buildFn);
                 } catch(RuntimeException ex) {
@@ -90,8 +96,8 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
 
         private final BiFunction<Kind, Member, Union> buildFn;
 
-        private final List<UnionDeserializer.SingleMemberHandler<Union, Kind, Member>> objectMembers = new ArrayList<>();
-        private final Map<Event, UnionDeserializer.EventHandler<Union, Kind, Member>> otherMembers = new HashMap<>();
+        private final List<SingleMemberHandler<Union, Kind, Member>> objectMembers = new ArrayList<>();
+        private final Map<Event, EventHandler<Union, Kind, Member>> otherMembers = new HashMap<>();
         private final boolean allowAmbiguousPrimitive;
 
         public Builder(BiFunction<Kind, Member, Union> buildFn, boolean allowAmbiguities) {
@@ -101,25 +107,25 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
         }
 
         private void addAmbiguousDeserializer(Event e, Kind tag, JsonpDeserializer<? extends Member> deserializer) {
-            UnionDeserializer.EventHandler<Union, Kind, Member> m = otherMembers.get(e);
-            UnionDeserializer.MultiMemberHandler<Union, Kind, Member> mmh;
+            EventHandler<Union, Kind, Member> m = otherMembers.get(e);
+            MultiMemberHandler<Union, Kind, Member> mmh;
             if (m instanceof UnionDeserializer.MultiMemberHandler<?, ?, ?>) {
-                mmh = (UnionDeserializer.MultiMemberHandler<Union, Kind, Member>) m;
+                mmh = (MultiMemberHandler<Union, Kind, Member>) m;
             } else {
-                mmh = new UnionDeserializer.MultiMemberHandler<>();
+                mmh = new MultiMemberHandler<>();
                 mmh.handlers = new ArrayList<>(2);
-                mmh.handlers.add((UnionDeserializer.SingleMemberHandler<Union, Kind, Member>) m);
+                mmh.handlers.add((SingleMemberHandler<Union, Kind, Member>) m);
                 otherMembers.put(e, mmh);
             }
-            mmh.handlers.add(new UnionDeserializer.SingleMemberHandler<>(tag, deserializer));
+            mmh.handlers.add(new SingleMemberHandler<>(tag, deserializer));
             // Sort handlers by number of accepted events, which gives their specificity
             mmh.handlers.sort(Comparator.comparingInt(a -> a.deserializer.acceptedEvents().size()));
         }
 
-        private void addMember(Event e, Kind tag, UnionDeserializer.SingleMemberHandler<Union, Kind, Member> member) {
+        private void addMember(Event e, Kind tag, SingleMemberHandler<Union, Kind, Member> member) {
             if (otherMembers.containsKey(e)) {
                 if (!allowAmbiguousPrimitive || e == Event.START_OBJECT || e == Event.START_ARRAY) {
-                    throw new UnionDeserializer.AmbiguousUnionException("Union member '" + tag + "' conflicts with other members");
+                    throw new AmbiguousUnionException("Union member '" + tag + "' conflicts with other members");
                 } else {
                     // Allow ambiguities on value event
                     addAmbiguousDeserializer(e, tag, member.deserializer);
@@ -131,26 +137,26 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
             }
         }
 
-        public UnionDeserializer.Builder<Union, Kind, Member> addMember(Kind tag, JsonpDeserializer<? extends Member> deserializer) {
+        public Builder<Union, Kind, Member> addMember(Kind tag, JsonpDeserializer<? extends Member> deserializer) {
 
             JsonpDeserializer<?> unwrapped = DelegatingDeserializer.unwrap(deserializer);
             if (unwrapped instanceof ObjectDeserializer) {
                 ObjectDeserializer<?> od = (ObjectDeserializer<?>) unwrapped;
                 Set<String> allFields = od.fieldNames();
                 Set<String> fields = new HashSet<>(allFields); // copy to update
-                for (UnionDeserializer.SingleMemberHandler<Union, Kind, Member> member: objectMembers) {
+                for (SingleMemberHandler<Union, Kind, Member> member: objectMembers) {
                     // Remove respective fields on both sides to keep specific ones
                     fields.removeAll(member.fields);
                     member.fields.removeAll(allFields);
                 }
-                UnionDeserializer.SingleMemberHandler<Union, Kind, Member> member = new UnionDeserializer.SingleMemberHandler<>(tag, deserializer, fields);
+                SingleMemberHandler<Union, Kind, Member> member = new SingleMemberHandler<>(tag, deserializer, fields);
                 objectMembers.add(member);
                 if (od.shortcutProperty() != null) {
                     // also add it as a string
                     addMember(Event.VALUE_STRING, tag, member);
                 }
             } else {
-                UnionDeserializer.SingleMemberHandler<Union, Kind, Member> member = new UnionDeserializer.SingleMemberHandler<>(tag, deserializer);
+                SingleMemberHandler<Union, Kind, Member> member = new SingleMemberHandler<>(tag, deserializer);
                 for (Event e: deserializer.nativeEvents()) {
                     addMember(e, tag, member);
                 }
@@ -162,9 +168,9 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
         @Override
         public JsonpDeserializer<Union> build() {
             // Check that no object member had all its fields removed
-            for (UnionDeserializer.SingleMemberHandler<Union, Kind, Member> member: objectMembers) {
+            for (SingleMemberHandler<Union, Kind, Member> member: objectMembers) {
                 if (member.fields.isEmpty()) {
-                    throw new UnionDeserializer.AmbiguousUnionException("All properties of '" + member.tag + "' also exist in other object members");
+                    throw new AmbiguousUnionException("All properties of '" + member.tag + "' also exist in other object members");
                 }
             }
 
@@ -183,13 +189,13 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
 
     private final BiFunction<Kind, Member, Union> buildFn;
     private final EnumSet<Event> nativeEvents;
-    private final Map<String, UnionDeserializer.EventHandler<Union, Kind, Member>> objectMembers;
-    private final Map<Event, UnionDeserializer.EventHandler<Union, Kind, Member>> otherMembers;
-    private final UnionDeserializer.EventHandler<Union, Kind, Member> fallbackObjectMember;
+    private final Map<String, EventHandler<Union, Kind, Member>> objectMembers;
+    private final Map<Event, EventHandler<Union, Kind, Member>> otherMembers;
+    private final EventHandler<Union, Kind, Member> fallbackObjectMember;
 
     public UnionDeserializer(
-            List<UnionDeserializer.SingleMemberHandler<Union, Kind, Member>> objectMembers,
-            Map<Event, UnionDeserializer.EventHandler<Union, Kind, Member>> otherMembers,
+            List<SingleMemberHandler<Union, Kind, Member>> objectMembers,
+            Map<Event, EventHandler<Union, Kind, Member>> otherMembers,
             BiFunction<Kind, Member, Union> buildFn
     ) {
         this.buildFn = buildFn;
@@ -199,7 +205,7 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
             this.objectMembers = Collections.emptyMap();
         } else {
             this.objectMembers = new HashMap<>();
-            for (UnionDeserializer.SingleMemberHandler<Union, Kind, Member> member: objectMembers) {
+            for (SingleMemberHandler<Union, Kind, Member> member: objectMembers) {
                 for (String field: member.fields) {
                     this.objectMembers.put(field, member);
                 }
@@ -209,7 +215,7 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
         this.otherMembers = otherMembers;
 
         this.nativeEvents = EnumSet.noneOf(Event.class);
-        for (UnionDeserializer.EventHandler<Union, Kind, Member> member: otherMembers.values()) {
+        for (EventHandler<Union, Kind, Member> member: otherMembers.values()) {
             this.nativeEvents.addAll(member.nativeEvents());
         }
 
@@ -241,7 +247,7 @@ public class UnionDeserializer<Union, Kind, Member> implements JsonpDeserializer
 
     @Override
     public Union deserialize(JsonParser parser, JsonpMapper mapper, Event event) {
-        UnionDeserializer.EventHandler<Union, Kind, Member> member = otherMembers.get(event);
+        EventHandler<Union, Kind, Member> member = otherMembers.get(event);
 
         if (member == null && event == Event.START_OBJECT && !objectMembers.isEmpty()) {
             // Parse as an object to find matching field names

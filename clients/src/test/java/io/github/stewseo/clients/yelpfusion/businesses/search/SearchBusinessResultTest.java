@@ -11,19 +11,19 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.CATEGORY;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.COORDINATES;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.DISTANCE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.IMAGE_URL;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.IS_CLOSED;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCATION;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.NAME;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.PHONE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.PRICE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.RATING;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.REVIEW_COUNT;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.TRANSACTIONS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.DISTANCE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IMAGE_URL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IS_CLOSED;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCATION;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.NAME;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PHONE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.RATING;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.REVIEW_COUNT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TRANSACTIONS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
@@ -35,22 +35,17 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
             .review_count(REVIEW_COUNT)
             .categories(CATEGORY)
             .location(LOCATION)
-            .coordinates(COORDINATES)
+            .center(CENTER)
             .image_url(IMAGE_URL)
             .phone(PHONE)
             .name(NAME)
             .price(String.valueOf(PRICE))
             .rating(RATING)
             .transactions(TRANSACTIONS)
+
     );
 
-    private final String expected = "" +
-            "{\"id\":\"id\"," +
-            "\"name\":\"name\"," +
-            "\"image_url\":\"imageUrlValue\"," +
-            "\"phone\":\"phoneValue\"," +
-            "\"price\":\"3\",\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1,\"transactions\":[\"transactionValue\"],\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"coordinates\":{\"latitude\":37.7829,\"longitude\":-122.4189}," +
-            "\"categories\":[{\"alias\":\"catAlias\"}]}";
+    private final String expected = "{\"id\":\"id\",\"name\":\"name\",\"image_url\":\"imageUrlValue\",\"phone\":\"phoneValue\",\"price\":\"3\",\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1,\"transactions\":[\"transactionValue\"],\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"catAlias\"}]}";
 
     @Test
     public void testOf() {
@@ -59,7 +54,7 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
         assertThat(searchBusinessResult.is_closed()).isEqualTo(IS_CLOSED);
         assertThat(searchBusinessResult.location()).isEqualTo(LOCATION);
         assertThat(searchBusinessResult.categories().get(0)).isEqualTo(CATEGORY);
-        assertThat(searchBusinessResult.coordinates()).isEqualTo(COORDINATES);
+        assertThat(searchBusinessResult.center()).isEqualTo(CENTER);
         assertThat(searchBusinessResult.phone()).isEqualTo(PHONE);
         assertThat(searchBusinessResult.image_url()).isEqualTo(IMAGE_URL);
         assertThat(searchBusinessResult.phone()).isEqualTo(PHONE);

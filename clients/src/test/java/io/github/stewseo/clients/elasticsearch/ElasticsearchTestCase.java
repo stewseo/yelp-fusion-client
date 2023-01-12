@@ -3,6 +3,7 @@ package io.github.stewseo.clients.elasticsearch;
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 
+
 import java.util.List;
 
 public class ElasticsearchTestCase {

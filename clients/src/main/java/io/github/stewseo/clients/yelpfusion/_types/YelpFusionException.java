@@ -1,5 +1,8 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion._types.ErrorCause;
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+
 public class YelpFusionException extends RuntimeException {
     private final ErrorResponse response;
     private final String endpointId;

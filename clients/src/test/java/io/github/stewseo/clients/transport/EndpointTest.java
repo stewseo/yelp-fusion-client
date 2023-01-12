@@ -1,10 +1,6 @@
 package io.github.stewseo.clients.transport;
 
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,8 @@
 package io.github.stewseo.clients.json.jackson;
 
 import com.fasterxml.jackson.core.JsonToken;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpLocation;
+import io.github.stewseo.clients.json.jackson.JsonValueParser;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
@@ -227,9 +229,12 @@ public class JacksonJsonpParser implements JsonParser {
             do {
                 token = parser.nextToken();
                 switch (token) {
-                    case START_OBJECT -> depth++;
-                    case END_OBJECT -> depth--;
-                    default -> System.out.println("skipObject default");
+                    case START_OBJECT:
+                        depth++;
+                        break;
+                    case END_OBJECT:
+                        depth--;
+                        break;
                 }
             } while(!(token == JsonToken.END_OBJECT && depth == 0));
         } catch (IOException e) {

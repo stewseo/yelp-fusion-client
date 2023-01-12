@@ -2,9 +2,6 @@ package io.github.stewseo.clients.json.testcases;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
-import jakarta.json.stream.JsonParser;
-
-import java.io.StringReader;
 
 public interface FromJson extends JsonTestCase {
 

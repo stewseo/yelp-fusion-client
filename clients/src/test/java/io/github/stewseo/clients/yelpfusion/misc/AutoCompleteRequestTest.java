@@ -7,9 +7,9 @@ import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AutoCompleteRequestTest

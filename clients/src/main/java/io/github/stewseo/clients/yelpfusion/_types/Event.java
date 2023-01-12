@@ -9,6 +9,7 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.clients.yelpfusion._types.Location;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;

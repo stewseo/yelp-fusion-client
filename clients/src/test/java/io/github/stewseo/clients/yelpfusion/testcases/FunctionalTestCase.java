@@ -3,8 +3,9 @@ package io.github.stewseo.clients.yelpfusion.testcases;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Coordinates;
+import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTestService;
@@ -15,9 +16,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
+
 // generates instances of YelpFusionResult and TemporalDataResult
 public abstract class FunctionalTestCase {
-
 
     private static final String state = "CA";
 
@@ -78,7 +80,7 @@ public abstract class FunctionalTestCase {
                 .country(country)
         );
 
-        Coordinates coordinates = Coordinates.of(c -> c
+        Center center = Center.of(c -> c
                 .latitude(latitude)
                 .longitude(longitude)
         );
@@ -86,7 +88,7 @@ public abstract class FunctionalTestCase {
         String phoneNumber = "000000000" + i;
 
         return BusinessDetails.of(e -> e
-                .coordinates(coordinates)
+                .center(CENTER)
                 .location(location)
                 .categories(category)
                 .id(id)
@@ -109,6 +111,10 @@ public abstract class FunctionalTestCase {
 
         return Stream.concat(cities, citiesInCa).map(FunctionalTestCase::locationByCity);
 
+    }
+
+    public YelpFusionClient getYelpFusionClient() {
+        return yelpFusionService.yelpFusionClient();
     }
 
 

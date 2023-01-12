@@ -29,17 +29,17 @@ public class ObjectBuilderBase {
         InternalList(Collection<? extends T> c) {
             super(c);
         }
-    };
+    }
 
     /** Get a mutable list from the current list value of an object builder property */
     private static <T> List<T> _mutableList(List<T> list) {
         if (list == null) {
-            return new ObjectBuilderBase.InternalList<>();
-        } else if (list instanceof ObjectBuilderBase.InternalList) {
+            return new InternalList<>();
+        } else if (list instanceof InternalList) {
             return list;
         } else {
             // Adding to a list we don't own: make a defensive copy, also ensuring it is mutable.
-            return new ObjectBuilderBase.InternalList<>(list);
+            return new InternalList<>(list);
         }
     }
 
@@ -82,12 +82,12 @@ public class ObjectBuilderBase {
     /** Get a mutable map from the current map value of an object builder property */
     private static <K, V> Map<K, V> _mutableMap(Map<K, V> map) {
         if (map == null) {
-            return new ObjectBuilderBase.InternalMap<>();
-        } else if (map instanceof ObjectBuilderBase.InternalMap) {
+            return new InternalMap<>();
+        } else if (map instanceof InternalMap) {
             return map;
         } else {
             // Adding to a map we don't own: make a defensive copy, also ensuring it is mutable.
-            return new ObjectBuilderBase.InternalMap<>(map);
+            return new InternalMap<>(map);
         }
     }
 

@@ -6,6 +6,7 @@ import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;

@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.json.jackson;
 
+import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import jakarta.json.Json;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonGenerationException;

@@ -1,6 +1,5 @@
 package io.github.stewseo.clients._types;
 
-import co.elastic.clients.elasticsearch._types.mapping.BooleanProperty;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -15,13 +14,13 @@ import java.util.function.Function;
 public class BinaryProperty extends DocValuesPropertyBase implements PropertyVariant {
     // ---------------------------------------------------------------------------------------------
 
-    private BinaryProperty(BinaryProperty.Builder builder) {
+    private BinaryProperty(Builder builder) {
         super(builder);
 
     }
 
-    public static BinaryProperty of(Function<BinaryProperty.Builder, ObjectBuilder<BinaryProperty>> fn) {
-        return fn.apply(new BinaryProperty.Builder()).build();
+    public static BinaryProperty of(Function<Builder, ObjectBuilder<BinaryProperty>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
     @Override
@@ -38,11 +37,11 @@ public class BinaryProperty extends DocValuesPropertyBase implements PropertyVar
     // ---------------------------------------------------------------------------------------------
 
 
-    public static class Builder extends DocValuesPropertyBase.AbstractBuilder<BinaryProperty.Builder>
+    public static class Builder extends AbstractBuilder<Builder>
             implements
             ObjectBuilder<BinaryProperty> {
         @Override
-        protected BinaryProperty.Builder self() {
+        protected Builder self() {
             return this;
         }
 
@@ -55,7 +54,7 @@ public class BinaryProperty extends DocValuesPropertyBase implements PropertyVar
 
     // ---------------------------------------------------------------------------------------------
 
-    public static final JsonpDeserializer<BinaryProperty> _DESERIALIZER = ObjectBuilderDeserializer.lazy(BinaryProperty.Builder::new,
+    public static final JsonpDeserializer<BinaryProperty> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             BinaryProperty::setupBinaryPropertyDeserializer);
 
     protected static void setupBinaryPropertyDeserializer(ObjectDeserializer<Builder> op) {

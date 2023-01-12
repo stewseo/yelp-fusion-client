@@ -4,6 +4,7 @@ import io.github.stewseo.clients.json.DelegatingDeserializer;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.transport.JsonEndpoint;
+import io.github.stewseo.clients.transport.endpoints.DelegatingJsonEndpoint;
 import jakarta.json.stream.JsonParser;
 
 

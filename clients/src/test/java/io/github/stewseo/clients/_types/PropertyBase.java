@@ -22,7 +22,7 @@ public abstract class PropertyBase implements JsonpSerializable {
 
     // ---------------------------------------------------------------------------------------------
 
-    protected PropertyBase(PropertyBase.AbstractBuilder<?> builder) {
+    protected PropertyBase(AbstractBuilder<?> builder) {
 
         this.meta = ApiTypeHelper.unmodifiable(builder.meta);
         this.properties = ApiTypeHelper.unmodifiable(builder.properties);
@@ -75,7 +75,7 @@ public abstract class PropertyBase implements JsonpSerializable {
         return JsonpUtils.typedKeysToString(this);
     }
 
-    protected abstract static class AbstractBuilder<BuilderT extends PropertyBase.AbstractBuilder<BuilderT>>
+    protected abstract static class AbstractBuilder<BuilderT extends AbstractBuilder<BuilderT>>
             extends
             WithJsonObjectBuilderBase<BuilderT> {
         @Nullable
@@ -116,13 +116,13 @@ public abstract class PropertyBase implements JsonpSerializable {
     }
 
     // ---------------------------------------------------------------------------------------------
-    protected static <BuilderT extends PropertyBase.AbstractBuilder<BuilderT>> void setupPropertyBaseDeserializer(
+    protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupPropertyBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
 
-        op.add(PropertyBase.AbstractBuilder::meta, JsonpDeserializer.stringMapDeserializer(JsonpDeserializer.stringDeserializer()),
+        op.add(AbstractBuilder::meta, JsonpDeserializer.stringMapDeserializer(JsonpDeserializer.stringDeserializer()),
                 "meta");
 
-        op.add(PropertyBase.AbstractBuilder::properties, JsonpDeserializer.stringMapDeserializer(Property._DESERIALIZER),
+        op.add(AbstractBuilder::properties, JsonpDeserializer.stringMapDeserializer(Property._DESERIALIZER),
                 "properties");
 
     }

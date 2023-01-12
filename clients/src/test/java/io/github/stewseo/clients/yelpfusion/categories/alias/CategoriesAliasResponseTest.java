@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.categories.alias;
 
 import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;

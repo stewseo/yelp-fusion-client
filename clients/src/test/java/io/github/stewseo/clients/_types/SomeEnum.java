@@ -30,5 +30,5 @@ public enum SomeEnum implements JsonEnum {
         return this.jsonValue;
     }
 
-    public static final JsonEnum.Deserializer<SomeEnum> _DESERIALIZER = new JsonEnum.Deserializer<>(SomeEnum.values());
+    public static final Deserializer<SomeEnum> _DESERIALIZER = new Deserializer<>(SomeEnum.values());
 }

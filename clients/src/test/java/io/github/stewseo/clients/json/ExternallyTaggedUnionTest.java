@@ -1,6 +1,8 @@
 package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients._types.Property;
+import io.github.stewseo.clients.json.ExternallyTaggedUnion;
+import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;

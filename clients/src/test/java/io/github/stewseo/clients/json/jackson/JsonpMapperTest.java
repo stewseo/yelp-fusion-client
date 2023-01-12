@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;

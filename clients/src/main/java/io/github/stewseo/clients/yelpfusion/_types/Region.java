@@ -9,6 +9,7 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.clients.yelpfusion._types.Center;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;
@@ -53,7 +54,7 @@ public class Region implements JsonpSerializable {
     }
 
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Region> {
-        private Center center;
+         private Center center;
 
         public final Builder center(Center value) {
             this.center = value;
@@ -72,7 +73,7 @@ public class Region implements JsonpSerializable {
         }
     }
 
-    public static final JsonpDeserializer<Region> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Region.Builder::new, Region::setupRegionDeserializer);
+    public static final JsonpDeserializer<Region> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new, Region::setupRegionDeserializer);
 
 
 }

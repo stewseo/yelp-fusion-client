@@ -1,7 +1,6 @@
 package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.JsonTestCase;
-import io.github.stewseo.clients.json.testcases.ToJson;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 

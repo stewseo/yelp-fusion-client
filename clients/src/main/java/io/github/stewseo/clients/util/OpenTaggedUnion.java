@@ -19,6 +19,8 @@
 
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.util.TaggedUnion;
+
 import javax.annotation.Nullable;
 
 public interface OpenTaggedUnion<Tag extends Enum<?>, BaseType> extends TaggedUnion<Tag, BaseType> {

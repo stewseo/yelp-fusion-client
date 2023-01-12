@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 public final class DeadHostState implements Comparable<DeadHostState> {
 
     static final long MAX_CONNECTION_TIMEOUT_NANOS = TimeUnit.MINUTES.toNanos(30);
+
     static final Supplier<Long> DEFAULT_TIME_SUPPLIER = System::nanoTime;
     private static final long MIN_CONNECTION_TIMEOUT_NANOS = TimeUnit.MINUTES.toNanos(1);
     private final int failedAttempts;

@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.util;
 
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
+import io.github.stewseo.clients.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;

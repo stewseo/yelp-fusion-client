@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.json.jackson;
 
+import io.github.stewseo.clients.json.jackson.JacksonJsonProvider;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

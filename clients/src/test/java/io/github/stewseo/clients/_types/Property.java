@@ -1,6 +1,5 @@
 package io.github.stewseo.clients._types;
 
-import io.github.stewseo.clients.json.ExternallyTaggedUnion;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.json.JsonpDeserializable;
@@ -17,9 +16,6 @@ import io.github.stewseo.clients.util.TaggedUnionUtils;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @JsonpDeserializable
@@ -40,9 +36,7 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         }
 
     }
-
-
-    private final Property.Kind _kind;
+    private final Kind _kind;
 
     private final Object _value;
 
@@ -50,7 +44,7 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
 
 
     @Override
-    public final Property.Kind _kind() {
+    public final Kind _kind() {
         return _kind;
     }
 
@@ -75,24 +69,24 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
     }
 
     public Property(String kind, JsonData value) {
-        this._kind = Property.Kind._Custom;
+        this._kind = Kind._Custom;
         this._value = value;
         this._customKind = kind;
     }
 
     public Property(Kind kind, Object value) {
-        this._kind = Property.Kind._Custom;
+        this._kind = Kind._Custom;
         this._value = value;
         this._customKind = null;
     }
 
-    public static Property of(Function<Property.Builder, ObjectBuilder<Property>> fn) {
-        return fn.apply(new Property.Builder()).build();
+    public static Property of(Function<Builder, ObjectBuilder<Property>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
 
     public boolean _isCustom() {
-        return _kind == Property.Kind._Custom;
+        return _kind == Kind._Custom;
     }
 
     public final String _customKind() {
@@ -123,7 +117,7 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         private Object _value;
         private String _customKind;
 
-        public final Builder kind(Property.Kind value) {
+        public final Builder kind(Kind value) {
             this._kind = value;
             return this;
         }
@@ -139,7 +133,7 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         }
 
         public ObjectBuilder<Property> binary(BinaryProperty v) {
-            this._kind = Property.Kind.Binary;
+            this._kind = Kind.Binary;
             this._value = v;
             return this;
         }
@@ -149,7 +143,7 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         }
 
         public ObjectBuilder<Property> _custom(String name, Object data) {
-            this._kind = Property.Kind._Custom;
+            this._kind = Kind._Custom;
             this._customKind = name;
             this._value = JsonData.of(data);
             return this;
@@ -161,12 +155,12 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         }
     }
 
-    public static final JsonpDeserializer<Property> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Property.Builder::new,
-            Property::setupPropertyDeserializer, Property.Builder::build);
+    public static final JsonpDeserializer<Property> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            Property::setupPropertyDeserializer, Builder::build);
 
     protected static void setupPropertyDeserializer(ObjectDeserializer<Builder> op) {
 
-        op.add(Property.Builder::binary, BinaryProperty._DESERIALIZER, "binary");
+        op.add(Builder::binary, BinaryProperty._DESERIALIZER, "binary");
     }
 
 }

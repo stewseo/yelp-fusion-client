@@ -1,21 +1,20 @@
 package io.github.stewseo.clients.yelpfusion.businesses;
 
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionResponse;
 import io.github.stewseo.clients.ApiClient;
-import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.transport.endpoints.EndpointWithResponseMapperAttr;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 
 import javax.annotation.Nullable;
@@ -96,15 +95,15 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
     }
 
-    public CompletableFuture<SearchTransactionResponse> searchTransaction(SearchTransactionRequest request) throws Exception {
+    public CompletableFuture<SearchBusinessResponse> searchTransaction(SearchTransactionRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchTransactionRequest, SearchTransactionResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<SearchTransactionRequest, SearchTransactionResponse, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
+        JsonEndpoint<SearchTransactionRequest, SearchBusinessResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchTransactionRequest, SearchBusinessResponse, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final CompletableFuture<SearchTransactionResponse> searchTransaction(
+    public final CompletableFuture<SearchBusinessResponse> searchTransaction(
             Function<SearchTransactionRequest.Builder, ObjectBuilder<SearchTransactionRequest>> fn)
             throws Exception {
         return searchTransaction(fn.apply(new SearchTransactionRequest.Builder()).build());

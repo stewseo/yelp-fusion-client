@@ -10,7 +10,7 @@ public abstract class CorePropertyBase extends PropertyBase {
 
     private final String similarity;
 
-    protected CorePropertyBase(CorePropertyBase.AbstractBuilder<?> builder) {
+    protected CorePropertyBase(AbstractBuilder<?> builder) {
         super(builder);
         
         this.similarity = builder.similarity;
@@ -30,7 +30,7 @@ public abstract class CorePropertyBase extends PropertyBase {
 
     }
 
-    protected abstract static class AbstractBuilder<BuilderT extends CorePropertyBase.AbstractBuilder<BuilderT>>
+    protected abstract static class AbstractBuilder<BuilderT extends AbstractBuilder<BuilderT>>
             extends
             PropertyBase.AbstractBuilder<BuilderT> {
 
@@ -47,7 +47,7 @@ public abstract class CorePropertyBase extends PropertyBase {
     protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupCorePropertyBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
         PropertyBase.setupPropertyBaseDeserializer(op);
-        op.add(CorePropertyBase.AbstractBuilder::similarity, JsonpDeserializer.stringDeserializer(), "similarity");
+        op.add(AbstractBuilder::similarity, JsonpDeserializer.stringDeserializer(), "similarity");
     }
 
 }

@@ -43,6 +43,7 @@ public class ObjectBuilderDeserializer<T, B extends ObjectBuilder<T>> extends De
             Supplier<B> ctor,
             Consumer<ObjectDeserializer<B>> configurer
     ) {
+
         ObjectDeserializer<B> op = new ObjectDeserializer<>(ctor);
         configurer.accept(op);
         return new ObjectBuilderDeserializer<>(op);

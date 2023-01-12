@@ -1,5 +1,8 @@
 package io.github.stewseo.clients.json;
 
+import io.github.stewseo.clients.json.JsonpSerializer;
+import io.github.stewseo.clients.json.SimpleJsonpMapper;
+
 class ToStringMapper extends SimpleJsonpMapper {
 
     static final ToStringMapper INSTANCE = new ToStringMapper();

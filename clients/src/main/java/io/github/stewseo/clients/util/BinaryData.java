@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.util;
 
 import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.util.NoCopyByteArrayOutputStream;
 import jakarta.json.stream.JsonGenerator;
 
 import java.io.IOException;

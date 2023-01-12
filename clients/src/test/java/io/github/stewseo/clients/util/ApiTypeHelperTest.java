@@ -1,10 +1,11 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.util.ApiTypeHelper;
+import io.github.stewseo.clients.util.MissingRequiredPropertyException;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static io.github.stewseo.clients.util.ApiTypeHelper.DisabledChecksHandle;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +53,7 @@ class ApiTypeHelperTest {
 
     @Test
     void testUnmodifiable() {
-        assertThrows(java.lang.AssertionError.class,
+        assertThrows(AssertionError.class,
                 () -> assertThat(ApiTypeHelper.unmodifiable(List.of("value1"))).isNotInstanceOf(List.class)
         );
         assertThat(ApiTypeHelper.unmodifiable(ApiTypeHelper.undefinedMap())).isNotNull();

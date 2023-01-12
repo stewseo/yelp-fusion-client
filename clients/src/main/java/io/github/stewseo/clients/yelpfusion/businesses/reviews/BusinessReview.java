@@ -35,8 +35,8 @@ public class BusinessReview implements JsonpSerializable {
         this.user = builder.user;
     }
 
-    public static BusinessReview of(Function<BusinessReview.Builder, ObjectBuilder<BusinessReview>> fn) {
-        return fn.apply(new BusinessReview.Builder()).build();
+    public static BusinessReview of(Function<Builder, ObjectBuilder<BusinessReview>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
     // getters

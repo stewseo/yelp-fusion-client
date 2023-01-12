@@ -1,6 +1,9 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+
 import io.github.stewseo.clients.json.DeserializeFromJson;
+import io.github.stewseo.clients.json.testcases.JsonTestCase;
+
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -37,7 +40,7 @@ class MessagingTest extends ModelTestCase<Messaging>
 
         Messaging messaging = builder.build();
 
-        Assertions.assertThat(messaging.toString()).isEqualTo(expected);
+        assertThat(messaging.toString()).isEqualTo(expected);
     }
 
     @Test
@@ -50,14 +53,14 @@ class MessagingTest extends ModelTestCase<Messaging>
     @Test
     public void testSerialize() {
 
-        messaging.serialize(generator, mapper);
+        messaging.serialize(generator, JsonTestCase.mapper);
         assertThat(messaging.toString()).isEqualTo(expected);
     }
 
     @Test
     public void testSerializeInternal() {
         generator.writeStartObject();
-        messaging.serializeInternal(generator, mapper);
+        messaging.serializeInternal(generator, JsonTestCase.mapper);
         generator.writeEnd().close();
         assertThat(messaging.toString()).isNotNull();
     }
@@ -71,7 +74,7 @@ class MessagingTest extends ModelTestCase<Messaging>
     @Test
     public void testDeserialize() {
 
-        Messaging messaging = Messaging._DESERIALIZER.deserialize(parser(), mapper);
+        Messaging messaging = Messaging._DESERIALIZER.deserialize(parser(), JsonTestCase.mapper);
 
         assertThat(messaging.toString()).isEqualTo(expected);
     }

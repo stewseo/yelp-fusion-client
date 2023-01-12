@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -21,13 +22,13 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
     private final YelpFusionClient client = new YelpFusionClient(restClientTransport());
 
     @Test
-    void createClient() throws IOException {
+    public void testClient()  {
 
         assertThat(client).isNotNull();
     }
 
     @Test
-    void withTransportOptions() throws IOException {
+    public void testWithTransportOptions()  {
 
         RestClientOptions transportOptions = new RestClientOptions(RequestOptions.DEFAULT);
 
@@ -37,14 +38,14 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
     }
 
     @Test
-    void businesses() throws IOException {
+    void testBusinesses()  {
 
         assertThat(client.businesses()).isInstanceOf(YelpFusionBusinessClient.class);
     }
 
 
     @Test
-    void test() throws IOException {
+    void testCategories()  {
 
         assertThat(client.categories()).isInstanceOf(YelpFusionCategoriesClient.class);
     }
@@ -58,18 +59,25 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
     @Test
     void testAutocomplete() throws Exception {
 
-        AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a.text("textValue"));
+        String expectedUri = "URI [v3/autocomplete?text=textValue]";
 
-        Exception exception = assertThrows(Exception.class,
-                () -> client.autocomplete(autoCompleteRequest)
-        );
+        String expectedTextValue = "textValue";
 
-        assertThat(exception).isInstanceOf(ResponseException.class);
+        String expected = buildExpectedResponseExceptionMessage(expectedUri);
 
-        exception = assertThrows(Exception.class,
-                () -> client.autocomplete(a -> a.text("text"))
-        );
+        AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a.latitude(LATITUDE));
 
-        assertThat(exception).isInstanceOf(ResponseException.class);
+        ResponseException responseException = assertThrows(ResponseException.class,
+                () -> client.autocomplete(autoCompleteRequest));
+
+        assertThat(responseException.getMessage()).contains("status line [HTTP/1.1 400 Bad Request]\n" +
+                "{\"error\": {\"code\": \"VALIDATION_ERROR\", \"description\": \"'' is too short\", \"field\": \"text\", \"instance\": \"\"}}");
+
+        responseException = assertThrows(ResponseException.class,  () -> client.autocomplete(a -> a.latitude(LATITUDE)));
+
+        assertThat(responseException.getMessage()).contains("status line [HTTP/1.1 400 Bad Request]\n" +
+                "{\"error\": {\"code\": \"VALIDATION_ERROR\", \"description\": \"'' is too short\", \"field\": \"text\", \"instance\": \"\"}}");
+
+
     }
 }

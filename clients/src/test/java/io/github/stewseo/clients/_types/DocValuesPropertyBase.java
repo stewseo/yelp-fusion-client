@@ -13,7 +13,7 @@ public abstract class DocValuesPropertyBase extends CorePropertyBase {
 
     // ---------------------------------------------------------------------------------------------
 
-    protected DocValuesPropertyBase(DocValuesPropertyBase.AbstractBuilder<?> builder) {
+    protected DocValuesPropertyBase(AbstractBuilder<?> builder) {
         super(builder);
         this.docValues = builder.docValues;
     }
@@ -32,7 +32,7 @@ public abstract class DocValuesPropertyBase extends CorePropertyBase {
         }
     }
 
-    protected abstract static class AbstractBuilder<BuilderT extends DocValuesPropertyBase.AbstractBuilder<BuilderT>>
+    protected abstract static class AbstractBuilder<BuilderT extends AbstractBuilder<BuilderT>>
             extends
             CorePropertyBase.AbstractBuilder<BuilderT> {
         @Nullable
@@ -49,10 +49,10 @@ public abstract class DocValuesPropertyBase extends CorePropertyBase {
     }
 
     // ---------------------------------------------------------------------------------------------
-    protected static <BuilderT extends DocValuesPropertyBase.AbstractBuilder<BuilderT>> void setupDocValuesPropertyBaseDeserializer(
+    protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupDocValuesPropertyBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
         CorePropertyBase.setupCorePropertyBaseDeserializer(op);
-        op.add(DocValuesPropertyBase.AbstractBuilder::docValues, JsonpDeserializer.booleanDeserializer(), "doc_values");
+        op.add(AbstractBuilder::docValues, JsonpDeserializer.booleanDeserializer(), "doc_values");
 
     }
 

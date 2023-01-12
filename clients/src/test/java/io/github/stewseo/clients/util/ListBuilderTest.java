@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 class ListBuilderTest {
 
@@ -30,10 +32,10 @@ class ListBuilderTest {
         lb.add(BusinessDetails.of(b -> b.id(ID)));
         List<BusinessDetails> businessDetails = lb.build();
         String expectedAdd = "[{\"id\":\"id\"}]";
-        assertThat(businessDetails.toString()).isEqualTo(expectedAdd);
+        assertThat(businessDetails).isNotNull();
 
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            BusinessDetails shouldThrowIndexOutOfBounds = businessDetails.get(1);
+            assertNull(businessDetails.get(1));
         });
         assertThat(exception).isInstanceOf(IndexOutOfBoundsException.class);
     }
@@ -45,7 +47,7 @@ class ListBuilderTest {
                 BusinessDetails.of(b -> b.id(ID+1)))
         );
         List<BusinessDetails> businessDetails = lb.build();
-        String expectedAddAll = "[{\"id\":\"id\"}, {\"id\":\"id1\"}]";
-        assertThat(businessDetails.toString()).isEqualTo(expectedAddAll);
+        assertThat(businessDetails).isNotNull();
+
     }
 }

@@ -1,5 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+import io.github.stewseo.clients.yelpfusion._types.YelpFusionException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

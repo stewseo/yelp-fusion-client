@@ -1,14 +1,15 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>

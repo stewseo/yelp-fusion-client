@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.json;
 
+
 import jakarta.json.JsonValue;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonParser;
@@ -41,7 +42,7 @@ public interface JsonData extends JsonpSerializable {
      * Creates a raw JSON value from an existing object, along with the mapper to use for further conversions.
      */
     static <T> JsonData of(T value, JsonpMapper mapper) {
-        return new JsonDataImpl(value, mapper);
+        return new io.github.stewseo.clients.json.JsonDataImpl(value, mapper);
     }
 
     /**
@@ -62,7 +63,7 @@ public interface JsonData extends JsonpSerializable {
         JsonProvider provider = JsonpUtils.provider();
         try (JsonParser parser = provider.createParser(json)) {
             parser.next();
-            return new JsonDataImpl(parser.getValue(), null);
+            return new io.github.stewseo.clients.json.JsonDataImpl(parser.getValue(), null);
         }
 
     }
@@ -75,7 +76,7 @@ public interface JsonData extends JsonpSerializable {
         JsonProvider provider = JsonpUtils.provider();
         try (JsonParser parser = provider.createParser(json)) {
             parser.next();
-            return new JsonDataImpl(parser.getValue(), null);
+            return new io.github.stewseo.clients.json.JsonDataImpl(parser.getValue(), null);
         }
     }
 

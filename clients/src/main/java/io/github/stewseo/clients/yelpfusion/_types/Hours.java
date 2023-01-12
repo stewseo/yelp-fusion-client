@@ -13,6 +13,7 @@ import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
+import java.util.function.Function;
 
 @JsonpDeserializable
 public class Hours implements JsonpSerializable {
@@ -21,20 +22,23 @@ public class Hours implements JsonpSerializable {
     private final Boolean is_open_now;
 
     private Hours(Builder builder) {
-        this.open = builder.open;
+        this.open = ApiTypeHelper.unmodifiable(builder.open);
         this.hours_type = builder.hours_type;
         this.is_open_now = builder.is_open_now;
     }
+    public static Hours of(Function<Builder, ObjectBuilder<Hours>> fn) {
+        return fn.apply(new Builder()).build();
+    }
 
-    public List<Open> open() {
+    public final List<Open> open() {
         return open;
     }
 
-    public String hours_type() {
+    public final String hours_type() {
         return hours_type;
     }
 
-    public Boolean is_open_now() {
+    public final Boolean is_open_now() {
         return is_open_now;
     }
 

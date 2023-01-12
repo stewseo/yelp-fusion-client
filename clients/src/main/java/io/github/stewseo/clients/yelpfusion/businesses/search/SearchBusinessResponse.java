@@ -13,6 +13,7 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 
 import io.github.stewseo.clients.yelpfusion._types.Region;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -24,8 +25,10 @@ import java.util.function.Function;
 public class SearchBusinessResponse implements JsonpSerializable {
 
     private final List<SearchBusinessResult> businesses;
+
     @Nullable
     private final Integer total;
+
     @Nullable
     private final Region region;
 
@@ -36,7 +39,7 @@ public class SearchBusinessResponse implements JsonpSerializable {
     }
 
     public static SearchBusinessResponse of(Function<Builder, ObjectBuilder<SearchBusinessResponse>> fn) {
-        return fn.apply(new SearchBusinessResponse.Builder()).build();
+        return fn.apply(new Builder()).build();
     }
 
     public List<SearchBusinessResult> businesses() {

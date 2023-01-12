@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonData;
+import io.github.stewseo.clients.yelpfusion._types.FieldValue;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

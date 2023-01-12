@@ -26,8 +26,8 @@ public class Attribute implements JsonpSerializable {
         this.attribute = builder.attribute;
     }
 
-    public static Attribute of(Function<Attribute.Builder, ObjectBuilder<Attribute>> fn) {
-        return fn.apply(new Attribute.Builder()).build();
+    public static Attribute of(Function<Builder, ObjectBuilder<Attribute>> fn) {
+        return fn.apply(new Builder()).build();
     }
 
     public String attribute() {
@@ -42,7 +42,7 @@ public class Attribute implements JsonpSerializable {
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
         if (this.attribute != null) {
-            generator.writeKey("attributes");
+            generator.writeKey("attribute");
             generator.write(this.attribute);
         }
     }

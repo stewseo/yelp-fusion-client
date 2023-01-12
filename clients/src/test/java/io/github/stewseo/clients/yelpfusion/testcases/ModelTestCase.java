@@ -1,8 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.testcases;
 
-import io.github.stewseo.clients.json.DeserializeFromJson;
 import io.github.stewseo.clients.json.SerializeToJson;
-import io.github.stewseo.clients.json.testcases.TestJson;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -15,9 +13,8 @@ import java.nio.charset.StandardCharsets;
 public abstract class ModelTestCase<YelpFusionT>
         implements BuilderTestCase<YelpFusionT>, SerializeToJson {
 
-    private final TestJson testJson = new TestJson();
 
-    private final JsonProvider jsonProvider() {
+    private JsonProvider jsonProvider() {
         return mapper.jsonProvider();
     }
 
@@ -29,10 +26,6 @@ public abstract class ModelTestCase<YelpFusionT>
     @Override
     public final JsonGenerator generator() {
         return jsonProvider().createGenerator(new StringWriter());
-    }
-
-    public TestJson testJson() {
-        return this.testJson;
     }
 
 }

@@ -2,6 +2,9 @@ package io.github.stewseo.clients.json.jackson;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpGenerator;
+import io.github.stewseo.clients.json.jackson.JacksonJsonpParser;
+import io.github.stewseo.clients.json.jackson.JacksonUtils;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonBuilderFactory;
@@ -54,12 +57,7 @@ public class JacksonJsonProvider extends JsonProvider {
 
     @Override
     public JsonParserFactory createParserFactory(Map<String, ?> config) {
-        if (config == null || config.isEmpty()) {
-            return defaultParserFactory;
-        } else {
-            // TODO: handle specific configuration
-            return defaultParserFactory;
-        }
+        return defaultParserFactory;
     }
 
     @Override
@@ -77,12 +75,7 @@ public class JacksonJsonProvider extends JsonProvider {
 
     @Override
     public JsonGeneratorFactory createGeneratorFactory(Map<String, ?> config) {
-        if (config == null || config.isEmpty()) {
-            return defaultGeneratorFactory;
-        } else {
-            // TODO: handle specific configuration
-            return defaultGeneratorFactory;
-        }
+        return defaultGeneratorFactory;
     }
 
     @Override

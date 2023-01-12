@@ -24,7 +24,7 @@ public class ElasticsearchConnection {
         String apiKey = System.getenv("API_KEY_ID");
         String apiKeySecret = System.getenv("API_KEY_SECRET");
 
-        org.elasticsearch.client.RestClient restClient = createRestClient(host, port, scheme, apiKey, apiKeySecret);
+        RestClient restClient = createRestClient(host, port, scheme, apiKey, apiKeySecret);
 
         co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient,
                 new co.elastic.clients.json.jackson.JacksonJsonpMapper());
@@ -40,7 +40,7 @@ public class ElasticsearchConnection {
         String apiKey = System.getenv("API_KEY_ID");
         String apiKeySecret = System.getenv("API_KEY_SECRET");
 
-        org.elasticsearch.client.RestClient restClient = createRestClient(host, port, scheme, apiKey, apiKeySecret);
+        RestClient restClient = createRestClient(host, port, scheme, apiKey, apiKeySecret);
 
         co.elastic.clients.transport.ElasticsearchTransport transport = new RestClientTransport(restClient,
                 new co.elastic.clients.json.jackson.JacksonJsonpMapper());

@@ -59,7 +59,6 @@ public class AutoCompleteResponse implements JsonpSerializable {
         generator.writeEnd();
     }
 
-
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
         if (ApiTypeHelper.isDefined(this.categories)) {
@@ -88,8 +87,6 @@ public class AutoCompleteResponse implements JsonpSerializable {
             generator.writeEnd();
         }
     }
-
-    // ------------------------------ Deserializer ------------------------------------ //
 
     @Override
     public String toString() {

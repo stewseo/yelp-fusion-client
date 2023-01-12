@@ -1,19 +1,13 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import io.github.stewseo.clients.json.DeserializeFromJson;
-import io.github.stewseo.clients.json.SerializeToJson;
+import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
-
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EventTest implements SerializeToJson, DeserializeFromJson {
+public class EventTest extends ModelTestCase<Event> {
 
     private final Integer attending_count = 1, interested_count = 1;
 
@@ -26,30 +20,35 @@ class EventTest implements SerializeToJson, DeserializeFromJson {
     private final String id = "id", category = "category", description = "description", event_site_url = "event_site_url", name = "name",
             tickets_url = "tickets_url", image_url = "image_url", time_end = "time_end", time_start = "time_start";
 
-    private final Event event = Event.of(e -> e
-            .id(id)
-            .attending_count(attending_count)
-            .category(category)
-            .cost(cost)
-            .cost_max(cost_max)
-            .description(description)
-            .event_site_url(event_site_url)
-            .interested_count(interested_count)
-            .is_canceled(is_canceled)
-            .is_free(is_free)
-            .is_official(is_official)
-            .latitude(latitude)
-            .location(location)
-            .longitude(longitude)
-            .name(name)
-            .tickets_url(tickets_url)
-            .time_end(time_end)
-            .time_start(time_start)
-            .image_url(image_url));
 
     @Override
-    public JsonGenerator generator() {
-        return mapper.jsonProvider().createGenerator(new StringWriter());
+    public Event of() {
+        return Event.of(e -> e
+                .id(id)
+                .attending_count(attending_count)
+                .category(category)
+                .cost(cost)
+                .cost_max(cost_max)
+                .description(description)
+                .event_site_url(event_site_url)
+                .interested_count(interested_count)
+                .is_canceled(is_canceled)
+                .is_free(is_free)
+                .is_official(is_official)
+                .latitude(latitude)
+                .location(location)
+                .longitude(longitude)
+                .name(name)
+                .tickets_url(tickets_url)
+                .time_end(time_end)
+                .time_start(time_start)
+                .image_url(image_url));
+    }
+    private final Event event = of();
+    JsonGenerator generator = generator();
+
+    public void testBuilder() {
+
     }
 
     @Test
@@ -91,25 +90,20 @@ class EventTest implements SerializeToJson, DeserializeFromJson {
 
     @Test
     public void testSerialize() {
-        JsonGenerator generator = generator();
         event.serialize(generator, mapper);
         assertThat(event.toString()).isEqualTo(expected);
     }
 
     @Test
     public void testSerializeInternal() {
-        JsonGenerator generator = generator();
         generator.writeStartObject();
         event.serializeInternal(generator, mapper);
         generator.writeEnd().close();
         assertThat(event).isNotNull();
     }
 
-    @Override
-    public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(event.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
-    }
+    JsonParser parser = parser(event);
+
     @Test
     public void testDeserialize() {
         assertThat(Event._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
@@ -118,9 +112,6 @@ class EventTest implements SerializeToJson, DeserializeFromJson {
 
     @Test
     public void testDeserializer() {
-        InputStream content = IOUtils.toInputStream(event.toString(), StandardCharsets.UTF_8);
-
-        JsonParser parser = mapper.jsonProvider().createParser(content);
 
         Event searchBusinessRes = Event._DESERIALIZER.deserialize(parser, mapper);
 

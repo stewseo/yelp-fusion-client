@@ -30,7 +30,7 @@ public class DateTime implements JsonpSerializable {
     @Nullable
     private final String str;
 
-    private DateTime(long epochMillis, String str, DateTimeFormatter format) {
+    private DateTime(long epochMillis, @Nullable String str, @Nullable DateTimeFormatter format) {
         this.millis = epochMillis;
         this.str = str;
         this.formatter = format;
@@ -77,8 +77,8 @@ public class DateTime implements JsonpSerializable {
         } else {
             if (formatter == null) {
                 try {
-                    ZonedDateTime zdt = DateTimeUtil.from(
-                            DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
+                    ZonedDateTime zdt = io.github.stewseo.clients.util.DateTimeUtil.from(
+                            io.github.stewseo.clients.util.DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
                             Locale.ROOT,
                             ZoneOffset.UTC
                     );
@@ -115,8 +115,8 @@ public class DateTime implements JsonpSerializable {
             return ZonedDateTime.ofInstant(toInstant(), ZoneOffset.UTC);
         } else {
             try {
-                return DateTimeUtil.from(
-                        DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
+                return io.github.stewseo.clients.util.DateTimeUtil.from(
+                        io.github.stewseo.clients.util.DateTimeUtil.STRICT_DATE_OPTIONAL_TIME_FORMATTER.parse(str),
                         Locale.ROOT,
                         ZoneOffset.UTC
                 );

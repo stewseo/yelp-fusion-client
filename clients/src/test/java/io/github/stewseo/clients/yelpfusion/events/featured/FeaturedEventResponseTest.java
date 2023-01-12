@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.yelpfusion._types.Event;
+import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -12,14 +13,15 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventResponse> {
 
     private final FeaturedEventResponse featuredEventsResponse = of();
 
-    private final String expected = "{\"event\":{\"name\":\"featuredEvent\"},\"business_id\":\"id\"}";
+    private final String expected = "{\"event\":{\"name\":\"featured\"},\"business_id\":\"id\"}";
 
     private final JsonGenerator generator = generator();
 
@@ -28,13 +30,28 @@ public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventRespon
         return FeaturedEventResponse.of(fr -> fr
                 .business_id(ID)
                 .event(Event.of(e -> e
-                        .name("featuredEvent")))
+                        .name("featured")))
         );
     }
 
     @Test
     public void testOf() {
         assertThat(featuredEventsResponse.toString()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testBuilder() {
+
+        FeaturedEventResponse.Builder builder = new FeaturedEventResponse.Builder().event(Event.of(e-> e.name("nameValue")));
+
+        FeaturedEventResponse.Builder self = builder.self();
+
+        assertThat(self).isEqualTo(builder);
+
+
+        FeaturedEventResponse searchBusinessReq = builder.build();
+
+        assertThat(searchBusinessReq.toString()).isEqualTo("{\"event\":{\"name\":\"nameValue\"}}");
     }
 
     @Test
@@ -71,20 +88,5 @@ public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventRespon
 
         assertThat(FeaturedEventResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");
 
-    }
-
-    @Test
-    public void testBuilder() {
-
-        FeaturedEventResponse.Builder builder = new FeaturedEventResponse.Builder().event(Event.of(e-> e.name("nameValue")));
-
-        FeaturedEventResponse.Builder self = builder.self();
-
-        assertThat(self).isEqualTo(builder);
-
-
-        FeaturedEventResponse searchBusinessReq = builder.build();
-
-        assertThat(searchBusinessReq.toString()).isEqualTo("{\"event\":{\"name\":\"nameValue\"}}");
     }
 }

@@ -1,13 +1,14 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ALIAS;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>

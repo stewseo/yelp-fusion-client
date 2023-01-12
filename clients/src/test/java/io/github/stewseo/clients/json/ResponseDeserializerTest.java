@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.json;
 
+import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.JsonEndpoint;

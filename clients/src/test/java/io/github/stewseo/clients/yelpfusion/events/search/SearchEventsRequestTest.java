@@ -3,6 +3,7 @@ package io.github.stewseo.clients.yelpfusion.events.search;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
@@ -10,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LIMIT;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LONGITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.OFFSET;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.RADIUS;
-import static io.github.stewseo.clients.yelpfusion._types.TestData.SORT_BY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LIMIT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.OFFSET;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.RADIUS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.SORT_BY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>

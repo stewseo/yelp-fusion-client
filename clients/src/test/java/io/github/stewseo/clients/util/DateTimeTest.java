@@ -1,7 +1,5 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.json.jackson.JacksonJsonpGenerator;
-import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.json.testcases.TestJson;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,6 @@ import java.io.StringWriter;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -128,21 +125,23 @@ public class DateTimeTest extends TestJson {
     private final DateTime dateTime = DateTime.of(text, DateTimeFormatter.ISO_INSTANT);
 
     @Test
-    void getString() {
+    void testGetString() {
 
         assertThat(dateTime.getString()).isEqualTo("2022-02-02T17:16:12.348Z");
     }
 
     @Test
-    void getFormatter() {
+    void testGetFormatter() {
         assertThat(dateTime.getFormatter()).isInstanceOf(DateTimeFormatter.class);
 
     }
+    long expectedEpochMilli = 1643822172348L;
 
     @Test
-    void serialize() {
+    void testSerialize() {
         JsonGenerator generator = mapper.jsonProvider().createGenerator(new StringWriter());
         dateTime.serialize(generator, mapper);
+        assertThat(dateTime.toString()).isEqualTo("2022-02-02T17:16:12.348Z");
     }
 
     @Test
@@ -158,6 +157,17 @@ public class DateTimeTest extends TestJson {
     @Test
     void testToString() {
         assertThat(dateTime.toString()).isEqualTo("2022-02-02T17:16:12.348Z");
+
+    }
+
+    @Test
+    void toEpochMilli() {
+        assertThat(dateTime.toEpochMilli()).isEqualTo(expectedEpochMilli);
+    }
+
+    @Test
+    void testToEpochMilli() {
+        assertThat(dateTime.toEpochMilli(DateTimeFormatter.ISO_DATE_TIME)).isEqualTo(expectedEpochMilli);
 
     }
 }

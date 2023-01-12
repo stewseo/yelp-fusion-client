@@ -2,6 +2,8 @@ package io.github.stewseo.clients.transport.restclient;
 
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
 import io.github.stewseo.clients.transport.TransportOptions;
+import io.github.stewseo.clients.transport.restclient.RestClientOptions;
+import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;

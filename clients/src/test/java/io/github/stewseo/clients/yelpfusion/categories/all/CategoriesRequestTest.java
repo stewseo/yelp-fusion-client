@@ -1,13 +1,14 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CategoriesRequestTest

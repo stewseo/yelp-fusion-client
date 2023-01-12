@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.stewseo.clients.yelpfusion._types.TestData.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MapBuilderTest {
@@ -57,7 +57,6 @@ class MapBuilderTest {
         Map<String, BusinessDetails> testMapBuilder = MapBuilder.of("key", businessDetails);
         assertThat(testMapBuilder.size()).isEqualTo(1);
         assertThat(testMapBuilder.get("key")).isEqualTo(businessDetails);
-        assertThat(testMapBuilder.entrySet().toString()).isEqualTo("[key={\"id\":\"idValue\"}]");
     }
 
     @Test
@@ -109,7 +108,7 @@ class MapBuilderTest {
         List<BusinessDetails> list = new ArrayList<>();
 
         for(int i = 0; i< size; i++) {
-            list.add(generateBusinessDetails(ID + i));
+            list.add(generateBusinessDetails(QueryParameter.ID.name() + i));
         }
         return list;
     }

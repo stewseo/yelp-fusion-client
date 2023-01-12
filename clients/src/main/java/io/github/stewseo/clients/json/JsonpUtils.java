@@ -10,7 +10,9 @@ import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonLocation;
 import jakarta.json.stream.JsonParser;
 
+import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.AbstractMap;
 import java.util.Map;
@@ -21,8 +23,6 @@ import java.util.stream.Collectors;
  * JsonpUtils
  */
 public class JsonpUtils {
-
-    private static int MAX_TO_STRING_LENGTH = 10000;
 
     @AllowForbiddenApis("Implementation of the JsonProvider lookup")
     public static JsonProvider provider() {
@@ -134,7 +134,7 @@ public class JsonpUtils {
         newParser = new DelegatingJsonParser(newParser) {
             @Override
             public JsonLocation getLocation() {
-                return new JsonLocationImpl(location.getLineNumber(), location.getColumnNumber(), location.getStreamOffset()) {
+                return new io.github.stewseo.clients.json.JsonLocationImpl(location.getLineNumber(), location.getColumnNumber(), location.getStreamOffset()) {
                     @Override
                     public String toString() {
                         return "(in object at " + super.toString().substring(1);
@@ -189,7 +189,6 @@ public class JsonpUtils {
         }
     }
 
-    // serialize to JSON
     public static String toString(JsonpSerializable value) {
         StringBuilder sb = new StringBuilder();
         return toString(value, ToStringMapper.INSTANCE, sb).toString();
@@ -205,21 +204,26 @@ public class JsonpUtils {
         MAX_TO_STRING_LENGTH = length;
     }
 
-    public static int maxToStringLength() {
+    protected static int maxToStringLength() {
         return MAX_TO_STRING_LENGTH;
     }
 
-    public static StringBuilder toString(JsonpSerializable value, JsonpMapper mapper, StringBuilder dest) {
-        Writer writer = new Writer() {
-            int length = 0;
+    protected static int MAX_TO_STRING_LENGTH = 10000;
 
+    private static class ToStringTooLongException extends RuntimeException {}
+
+    public static StringBuilder toString(JsonpSerializable value, JsonpMapper mapper, StringBuilder dest) {
+
+        final int[] length = {0};
+
+        try (Writer wr = new Writer() {
             @SuppressWarnings("NullableProblems")
             @Override
             public void write(char[] cbuf, int off, int len) {
                 int max = maxToStringLength();
-                length += len;
-                if (length > max) {
-                    dest.append(cbuf, off, len - (length - max));
+                length[0] += len;
+                if (length[0] > max) {
+                    dest.append(cbuf, off, len - (length[0] - max));
                     dest.append("...");
                     throw new ToStringTooLongException();
                 } else {
@@ -228,26 +232,36 @@ public class JsonpUtils {
             }
 
             @Override
-            public void flush() {
+            public void flush() throws IOException {
+                // flush
             }
 
             @Override
-            public void close() {
+            public void close() throws IOException {
+                // close
             }
-        };
-
-        try (JsonGenerator generator = mapper.jsonProvider().createGenerator(writer)) {
-            value.serialize(generator, mapper);
-        } catch (ToStringTooLongException e) {
-            // Ignore
+        }) {
+            try (JsonGenerator generator = mapper.jsonProvider().createGenerator(wr)) {
+                value.serialize(generator, mapper);
+            } catch (ToStringTooLongException e) {
+                // Ignore
+            }
+            return dest;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return dest;
+    }
+
+    public static String toJsonString(JsonpSerializable value, JsonpMapper mapper) {
+        StringWriter writer = new StringWriter();
+        JsonGenerator generator = mapper.jsonProvider().createGenerator(writer);
+        value.serialize(generator, mapper);
+        generator.close();
+        return writer.toString();
     }
 
     public static StringBuilder toString(JsonpSerializable value, StringBuilder dest) {
-        return toString(value, ToStringMapper.INSTANCE, dest);
+        return toString(value, io.github.stewseo.clients.json.ToStringMapper.INSTANCE, dest);
     }
 
-    private static class ToStringTooLongException extends RuntimeException {
-    }
 }
