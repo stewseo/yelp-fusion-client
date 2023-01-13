@@ -9,7 +9,6 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
@@ -328,7 +327,7 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
 
                 return params;
 
-            }, SimpleEndpoint.emptyMap(), false, BusinessMatchResponse._DESERIALIZER);
+            }, SimpleEndpoint.emptyMap(), false, MatchBusinessesResponse._DESERIALIZER);
 
 
 }

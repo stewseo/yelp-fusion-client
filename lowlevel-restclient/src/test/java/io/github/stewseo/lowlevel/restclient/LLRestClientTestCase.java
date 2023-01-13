@@ -33,6 +33,9 @@ public abstract class LLRestClientTestCase {
     }
 
     public static RestClient restClient() {
+        if(restClient == null) {
+            connect();
+        }
         return restClient;
     }
 

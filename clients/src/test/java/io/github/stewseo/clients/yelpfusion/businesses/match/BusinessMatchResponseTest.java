@@ -1,7 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -12,17 +10,17 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
+class BusinessMatchResponseTest extends ModelTestCase<MatchBusinessesResponse> {
 
-    private final BusinessMatchResponse businessMatchResponse = of();
+    private final MatchBusinessesResponse businessMatchResponse = of();
 
     private final String expected = "{\"businesses\":[{\"id\":\"id\"}]}";
 
     private final JsonGenerator generator = generator();
 
     @Override
-    public final BusinessMatchResponse of() {
-        return BusinessMatchResponse.of(b ->
+    public final MatchBusinessesResponse of() {
+        return MatchBusinessesResponse.of(b ->
                 b.businesses(List.of(BusinessMatch.of(bm -> bm.id("id"))))
         );
     }
@@ -52,7 +50,7 @@ class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
 
     @Test
     public void testDeserialize() {
-        assertThat(BusinessMatchResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
+        assertThat(MatchBusinessesResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
@@ -61,7 +59,7 @@ class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
 
         JsonParser parser = parser();
 
-        BusinessMatchResponse businessMatchRes = BusinessMatchResponse._DESERIALIZER.deserialize(parser, mapper);
+        MatchBusinessesResponse businessMatchRes = MatchBusinessesResponse._DESERIALIZER.deserialize(parser, mapper);
 
         assertThat(businessMatchRes).isNotNull();
     }

@@ -45,7 +45,15 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
 
     );
 
-    private final String expected = "{\"id\":\"id\",\"name\":\"name\",\"image_url\":\"imageUrlValue\",\"phone\":\"phoneValue\",\"price\":\"3\",\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1,\"transactions\":[\"transactionValue\"],\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"catAlias\"}]}";
+    private final String expected = "" +
+            "{\"id\":\"id\"," +
+            "\"name\":\"name\"," +
+            "\"image_url\":\"imageUrlValue\"," +
+            "\"phone\":\"phoneValue\",\"price\":\"3\"," +
+            "\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1," +
+            "\"transactions\":[\"transactionValue\"]," +
+            "\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"}," +
+            "\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"alias\"}]}";
 
     @Test
     public void testOf() {

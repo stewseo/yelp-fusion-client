@@ -10,11 +10,11 @@ import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 
 import javax.annotation.Nullable;
@@ -50,21 +50,21 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());
     }
 
-    public <TDocument> CompletableFuture<SearchBusinessResponse> search(SearchBusinessRequest request,
-                                                                        Class<TDocument> tDocumentClass) {
+    public <ResultT> CompletableFuture<SearchResponse<ResultT>> searchBusinesses(SearchBusinessRequest request,
+                                                                                 Class<ResultT> resultTClass) {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchBusinessRequest, SearchBusinessResponse, ErrorResponse> endpoint = 
-                (JsonEndpoint<SearchBusinessRequest, SearchBusinessResponse, ErrorResponse>) SearchBusinessRequest._ENDPOINT;
+        JsonEndpoint<SearchBusinessRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchBusinessRequest, SearchResponse<ResultT>, ErrorResponse>) SearchBusinessRequest._ENDPOINT;
         endpoint = new EndpointWithResponseMapperAttr<>(endpoint,
-                "clients.yelpfusion:Deserializer:_global.search.TDocument", getDeserializer(tDocumentClass));
+                "clients.yelpfusion:Deserializer:_global.searchBusinesses.TDocument", getDeserializer(resultTClass));
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final <TDocument> CompletableFuture<SearchBusinessResponse> search(
+    public final <ResultT> CompletableFuture<SearchResponse<ResultT>> searchBusinesses(
 
-            Function<SearchBusinessRequest.Builder, ObjectBuilder<SearchBusinessRequest>> fn, Class<TDocument> tDocumentClass) {
+            Function<SearchBusinessRequest.Builder, ObjectBuilder<SearchBusinessRequest>> fn, Class<ResultT> tDocumentClass) {
 
-        return search(fn.apply(new SearchBusinessRequest.Builder()).build(), tDocumentClass);
+        return searchBusinesses(fn.apply(new SearchBusinessRequest.Builder()).build(), tDocumentClass);
     }
 
     public CompletableFuture<BusinessReviewsResponse> businessReviews(BusinessReviewsRequest request) throws Exception {
@@ -81,31 +81,31 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
     }
 
-    public CompletableFuture<BusinessMatchResponse> businessMatch(BusinessMatchRequest request) throws Exception {
+    public CompletableFuture<MatchBusinessesResponse> businessMatch(BusinessMatchRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessMatchRequest, BusinessMatchResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
+        JsonEndpoint<BusinessMatchRequest, MatchBusinessesResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<BusinessMatchRequest, MatchBusinessesResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final CompletableFuture<BusinessMatchResponse> businessMatch(
+    public final CompletableFuture<MatchBusinessesResponse> businessMatch(
             Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn)
             throws Exception {
         return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
     }
 
-    public CompletableFuture<SearchBusinessResponse> searchTransaction(SearchTransactionRequest request) throws Exception {
+    public<ResultT> CompletableFuture<SearchResponse<ResultT>> searchTransaction(SearchTransactionRequest request, Class<ResultT> resultTClass) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchTransactionRequest, SearchBusinessResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<SearchTransactionRequest, SearchBusinessResponse, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
+        JsonEndpoint<SearchTransactionRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchTransactionRequest, SearchResponse<ResultT>, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
-    public final CompletableFuture<SearchBusinessResponse> searchTransaction(
-            Function<SearchTransactionRequest.Builder, ObjectBuilder<SearchTransactionRequest>> fn)
+    public final<ResultT> CompletableFuture<SearchResponse<ResultT>> searchTransaction(
+            Function<SearchTransactionRequest.Builder, ObjectBuilder<SearchTransactionRequest>> fn, Class<ResultT> resultTClass)
             throws Exception {
-        return searchTransaction(fn.apply(new SearchTransactionRequest.Builder()).build());
+        return searchTransaction(fn.apply(new SearchTransactionRequest.Builder()).build(), resultTClass);
     }
 }

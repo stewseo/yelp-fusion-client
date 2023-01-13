@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
@@ -11,21 +11,21 @@ import jakarta.json.stream.JsonGenerator;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BinaryProperty extends DocValuesPropertyBase implements PropertyVariant {
+public class TermProperty extends DocValuesPropertyBase implements PropertyVariant {
     // ---------------------------------------------------------------------------------------------
 
-    private BinaryProperty(Builder builder) {
+    private TermProperty(Builder builder) {
         super(builder);
 
     }
 
-    public static BinaryProperty of(Function<Builder, ObjectBuilder<BinaryProperty>> fn) {
+    public static TermProperty of(Function<Builder, ObjectBuilder<TermProperty>> fn) {
         return fn.apply(new Builder()).build();
     }
 
     @Override
     public Property.Kind _propertyKind() {
-        return Property.Kind.Binary;
+        return Property.Kind.Term;
     }
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
@@ -39,25 +39,25 @@ public class BinaryProperty extends DocValuesPropertyBase implements PropertyVar
 
     public static class Builder extends AbstractBuilder<Builder>
             implements
-            ObjectBuilder<BinaryProperty> {
+            ObjectBuilder<TermProperty> {
         @Override
         protected Builder self() {
             return this;
         }
 
-        public BinaryProperty build() {
+        public TermProperty build() {
             _checkSingleUse();
 
-            return new BinaryProperty(this);
+            return new TermProperty(this);
         }
     }
 
     // ---------------------------------------------------------------------------------------------
 
-    public static final JsonpDeserializer<BinaryProperty> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            BinaryProperty::setupBinaryPropertyDeserializer);
+    public static final JsonpDeserializer<TermProperty> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            TermProperty::setupTermPropertyDeserializer);
 
-    protected static void setupBinaryPropertyDeserializer(ObjectDeserializer<Builder> op) {
+    protected static void setupTermPropertyDeserializer(ObjectDeserializer<Builder> op) {
 
         DocValuesPropertyBase.setupDocValuesPropertyBaseDeserializer(op);
 

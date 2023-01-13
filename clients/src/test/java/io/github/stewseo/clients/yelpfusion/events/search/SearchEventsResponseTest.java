@@ -16,7 +16,7 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
 
     private final SearchEventsResponse searchEventsResponse = of();
 
-    private final String expected = "{\"events\":[{\"name\":\"nameValue\"}],\"total\":1}";
+    private final String expected = "{\"events\":[{\"name\":\"name\"}],\"total\":1}";
 
     private final JsonGenerator generator = generator();
 

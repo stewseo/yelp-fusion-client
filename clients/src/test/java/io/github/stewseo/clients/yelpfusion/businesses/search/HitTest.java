@@ -87,7 +87,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
         assertThat(Hit._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
         JsonpDeserializer<Hit<BusinessDetails>> jsonpDeserializer = JsonpDeserializer.lazy(() ->
-                Hit.createHitDeserializer(new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search._types.TDocument")));
+                Hit.createHitDeserializer(new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses._types.TDocument")));
         assertThat(jsonpDeserializer).isNotNull();
     }
 
@@ -99,7 +99,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     public void testDeserialize() {
 
         JsonpDeserializer<Hit<BusinessDetails>> jsonpDeserializer = JsonpDeserializer.lazy(() ->
-                Hit.createHitDeserializer(new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search._types.TDocument")));
+                Hit.createHitDeserializer(new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses._types.TDocument")));
 
         JsonParser parser = parser();
         assertThat(parser).isNotNull();

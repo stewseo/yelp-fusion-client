@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -16,20 +16,12 @@ import java.util.function.Function;
 
 public abstract class PropertyBase implements JsonpSerializable {
 
-    private final Map<String, String> meta;
-
     private final Map<String, Property> properties;
 
     // ---------------------------------------------------------------------------------------------
 
     protected PropertyBase(AbstractBuilder<?> builder) {
-
-        this.meta = ApiTypeHelper.unmodifiable(builder.meta);
         this.properties = ApiTypeHelper.unmodifiable(builder.properties);
-    }
-
-    public final Map<String, String> meta() {
-        return this.meta;
     }
 
     public final Map<String, Property> properties() {
@@ -43,18 +35,6 @@ public abstract class PropertyBase implements JsonpSerializable {
     }
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
-
-        if (ApiTypeHelper.isDefined(this.meta)) {
-            generator.writeKey("meta");
-            generator.writeStartObject();
-            for (Map.Entry<String, String> item0 : this.meta.entrySet()) {
-                generator.writeKey(item0.getKey());
-                generator.write(item0.getValue());
-
-            }
-            generator.writeEnd();
-
-        }
 
         if (ApiTypeHelper.isDefined(this.properties)) {
             generator.writeKey("properties");
@@ -84,18 +64,6 @@ public abstract class PropertyBase implements JsonpSerializable {
         @Nullable
         private Map<String, Property> properties;
 
-        public final BuilderT meta(Map<String, String> map) {
-            this.meta = _mapPutAll(this.meta, map);
-            return self();
-        }
-
-
-        public final BuilderT meta(String key, String value) {
-            this.meta = _mapPut(this.meta, key, value);
-            return self();
-        }
-
-
         public final BuilderT properties(Map<String, Property> map) {
             this.properties = _mapPutAll(this.properties, map);
             return self();
@@ -105,7 +73,6 @@ public abstract class PropertyBase implements JsonpSerializable {
             this.properties = _mapPut(this.properties, key, value);
             return self();
         }
-
 
         public final BuilderT properties(String key, Function<Property.Builder, ObjectBuilder<Property>> fn) {
             return properties(key, fn.apply(new Property.Builder()).build());
@@ -118,9 +85,6 @@ public abstract class PropertyBase implements JsonpSerializable {
     // ---------------------------------------------------------------------------------------------
     protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupPropertyBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
-
-        op.add(AbstractBuilder::meta, JsonpDeserializer.stringMapDeserializer(JsonpDeserializer.stringDeserializer()),
-                "meta");
 
         op.add(AbstractBuilder::properties, JsonpDeserializer.stringMapDeserializer(Property._DESERIALIZER),
                 "properties");

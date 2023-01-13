@@ -9,7 +9,7 @@
 //import co.elastic.clients.elasticsearch.core.IndexRequest;
 //import co.elastic.clients.elasticsearch.core.IndexResponse;
 //import co.elastic.clients.elasticsearch.core.SearchResponse;
-//import co.elastic.clients.elasticsearch.core.search.Hit;
+//import co.elastic.clients.elasticsearch.core.searchBusinesses.Hit;
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.JsonNode;
 //import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -23,9 +23,9 @@
 //import io.github.stewseo.clients.yelpfusion._types.Result;
 //import io.github.stewseo.clients.yelpfusion._types.SortBy;
 //import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-//import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-//import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
-//import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+//import io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses.SearchBusinessRequest;
+//import io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses.SearchBusinessResponse;
+//import io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses.SearchBusinessResult;
 //import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 //import org.junit.jupiter.api.Test;
 //
@@ -137,8 +137,8 @@
 //
 //        // build SearchRequest with SortOptions.desc.
 //        // Returns a document containing the greatest timestamp from index: restaurants-sf
-//        // search for the document containing the unique _id field from index: search-business-results-sf
-//        // search for all documents with a timestamp field greater than or equal to the matched document.
+//        // searchBusinesses for the document containing the unique _id field from index: searchBusinesses-business-results-sf
+//        // searchBusinesses for all documents with a timestamp field greater than or equal to the matched document.
 //        esAsyncClient = new ElasticsearchTestCase().elasticsearchService.getAsyncClient();
 //
 //        Query byTimestamp = RangeQuery.of(r -> r
@@ -166,7 +166,7 @@
 //        SortOptions byTimestampDesc = elasticsearchService.buildSortOptions(QueryParameter.TIMESTAMP, sortOrder);
 //
 //        try {
-//            return esAsyncClient.search(s -> s
+//            return esAsyncClient.searchBusinesses(s -> s
 //                            .query(q -> q
 //                                    .matchAll(m -> m
 //                                            .queryName(queryName))
@@ -212,7 +212,7 @@
 //
 //    private SearchResponse<ObjectNode> searchWithMatchAllQuery() {
 //        try {
-//            return esAsyncClient.search(s -> s
+//            return esAsyncClient.searchBusinesses(s -> s
 //                    .query(q -> q
 //                            .matchAll(m -> m
 //                                    .queryName(META_FIELD_ID.name()))
@@ -227,7 +227,7 @@
 //    private SearchResponse<ObjectNode> searchWithRangeQueryGte(String index, Query queryByTimestamp) {
 //
 //        try {
-//            return esAsyncClient.search(s -> s
+//            return esAsyncClient.searchBusinesses(s -> s
 //                            .query(q -> q
 //                                    .bool(b -> b
 //                                            .must(queryByTimestamp)

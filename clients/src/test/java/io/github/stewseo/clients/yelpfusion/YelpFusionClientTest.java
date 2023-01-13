@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.yelpfusion;
 
 import io.github.stewseo.clients.transport.restclient.RestClientOptions;
-import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessClient;
+import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessesClient;
 import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesClient;
 import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
@@ -40,7 +40,7 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
     @Test
     void testBusinesses()  {
 
-        assertThat(client.businesses()).isInstanceOf(YelpFusionBusinessClient.class);
+        assertThat(client.businesses()).isInstanceOf(YelpFusionBusinessesClient.class);
     }
 
 

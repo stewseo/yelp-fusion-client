@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
-import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -17,7 +17,8 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
     private final CategoriesResponse categoriesResponse = of();
 
     // {"categories":[{"alias":"categoryAliasValue"},{"alias":"category"}],"terms":[{"text":"termTextValue"},{"text":"termTextValue"}],"businesses":[{"id":"businessIdValue"}]}
-    private final String expected = "{\"categories\":[{\"alias\":\"catAlias\"},{\"alias\":\"catAlias\"},{\"alias\":\"categoryAliasValue\"}]}";
+    private final String expected =
+            "{\"categories\":[{\"alias\":\"alias\"},{\"alias\":\"alias\"},{\"alias\":\"alias\"}]}";
 
     private final JsonGenerator generator = generator();
 
@@ -27,7 +28,7 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
         return CategoriesResponse.of(a -> a
                 .categories(List.of(CATEGORY))
                 .categories(CATEGORY)
-                .categories(c -> c.alias("categoryAliasValue"))
+                .categories(c -> c.alias(ALIAS))
         );
     }
 
@@ -80,7 +81,7 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
 
         CategoriesResponse searchBusinessReq = builder.build();
 
-        assertThat(searchBusinessReq.toString()).isEqualTo("{\"categories\":[{\"alias\":\"catAlias\"}]}");
+        assertThat(searchBusinessReq.toString()).isEqualTo("{\"categories\":[{\"alias\":\"alias\"}]}");
     }
 
     public JsonParser parser() {

@@ -84,13 +84,15 @@ public class LazyDeserializerTest {
 
         JsonpDeserializer<SearchResponse<Object>> searchResponseDeser =
                 JsonpDeserializer.lazy(() -> SearchResponse.createSearchResponseDeserializer(
-                                new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.TDocument")));
+                                new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
 
     }
 
-//    protected JsonpDeserializer<SearchResponse<Object>> unwrap() {
+
+//    private JsonpDeserializer<String> deserializer = JsonpDeserializer.stringDeserializer();
+//    protected JsonpDeserializer<String> unwrap() {
 //
-//        JsonpDeserializer<SearchResponse<Object>> d = deserializer;
+//        JsonpDeserializer<String> d = deserializer;
 //        if (d == null) {
 //            synchronized (this) {
 //                if (deserializer == null) {

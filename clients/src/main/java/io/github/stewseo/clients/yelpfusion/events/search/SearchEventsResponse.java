@@ -16,7 +16,7 @@ import jakarta.json.stream.JsonGenerator;
 import java.util.List;
 import java.util.function.Function;
 
-//Returns events that match search criteria
+//Returns events that match searchBusinesses criteria
 public class SearchEventsResponse extends RequestBase implements JsonpSerializable {
 
     private final List<Event> events;

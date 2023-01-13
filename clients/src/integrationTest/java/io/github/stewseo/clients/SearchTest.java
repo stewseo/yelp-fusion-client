@@ -1,10 +1,9 @@
-package io.github.stewseo.clients.functional;//package io.github.stewseo.clients.functional;
 //
 //import com.brein.domain.results.BreinTemporalDataResult;
 //import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 //import io.github.stewseo.clients.yelpfusion._types.Event;
-//import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
-//import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
+//import io.github.stewseo.clients.yelpfusion.events.searchBusinesses.SearchEventsRequest;
+//import io.github.stewseo.clients.yelpfusion.events.searchBusinesses.SearchEventsResponse;
 //import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 //import org.junit.jupiter.api.Test;
 //
@@ -62,7 +61,7 @@ package io.github.stewseo.clients.functional;//package io.github.stewseo.clients
 //        try {
 //            // execute the request using the yelpFusionServiceCtx.getYelpFusionAsyncClient()
 //            future = yelpFusionService.yelpFusionAsyncClient().events()
-//                    .search(eventSearchRequest)
+//                    .searchBusinesses(eventSearchRequest)
 //                    .whenComplete((response, exception) -> {
 //
 //                        if (exception != null) {

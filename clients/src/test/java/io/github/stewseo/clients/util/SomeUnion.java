@@ -1,8 +1,8 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients._types.SomeUnionVariant;
-import io.github.stewseo.clients._types.UVariantA;
-import io.github.stewseo.clients._types.UVariantB;
+import io.github.stewseo.functional.testtypes.SomeUnionVariant;
+import io.github.stewseo.functional.testtypes.UVariantA;
+import io.github.stewseo.functional.testtypes.UVariantB;
 import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;

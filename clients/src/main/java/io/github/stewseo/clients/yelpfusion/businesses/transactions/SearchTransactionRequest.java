@@ -8,9 +8,10 @@ import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
+import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -32,6 +33,7 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
     private SearchTransactionRequest(Builder builder) {
 
         this.transaction_type = builder.transaction_type;
+
         this.latitude = builder.latitude;
         this.longitude = builder.longitude;
         this.location = builder.location;
@@ -183,6 +185,7 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
         op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
     }
 
+//    private final String apiBasePath = "v3/transactions";
 
     // endpoint
     public static final SimpleEndpoint<SearchTransactionRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/transactions",
@@ -191,7 +194,7 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
             // Request path
             request -> {
                 if (request.transaction_type != null) {
-                    return "v3/transactions" + "/" + request.transaction_type + "/search";
+                    return "v3/transactions/" + request.transaction_type + "/search";
                 }
                 throw SimpleEndpoint.noPathTemplateFound("path");
             },
@@ -226,7 +229,7 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
             },
             SimpleEndpoint.emptyMap(),
             false,
-            SearchBusinessResponse._DESERIALIZER);
+            SearchResponse._DESERIALIZER);
 }
 
 

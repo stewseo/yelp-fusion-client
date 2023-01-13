@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -6,7 +6,6 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import jakarta.json.stream.JsonGenerator;
 
 public abstract class CorePropertyBase extends PropertyBase {
-
 
     private final String similarity;
 
@@ -46,7 +45,7 @@ public abstract class CorePropertyBase extends PropertyBase {
     // ---------------------------------------------------------------------------------------------
     protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupCorePropertyBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
-        PropertyBase.setupPropertyBaseDeserializer(op);
+        setupPropertyBaseDeserializer(op);
         op.add(AbstractBuilder::similarity, JsonpDeserializer.stringDeserializer(), "similarity");
     }
 

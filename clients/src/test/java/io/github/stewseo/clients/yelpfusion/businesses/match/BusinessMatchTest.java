@@ -1,7 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +60,7 @@ public class BusinessMatchTest extends ModelTestCase<BusinessMatch> {
 
         List<BusinessMatch> businessMatches = List.of(businessMatch);
 
-        final BusinessMatchResponse businessMatchResponse = BusinessMatchResponse.of(b -> b
+        final MatchBusinessesResponse businessMatchResponse = MatchBusinessesResponse.of(b -> b
                 .businesses(businessMatches));
 
         assertThat(businessMatchResponse).isNotNull();

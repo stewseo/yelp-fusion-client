@@ -1,28 +1,17 @@
-package io.github.stewseo.clients._types;
-
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 
 @JsonpDeserializable
-public enum SomeEnum implements JsonEnum {
-    NotEq("not_eq"),
+public enum Term implements JsonEnum {
 
-    Eq("eq"),
-
-    Lt("lt"),
-
-    Gt("gt"),
-
-    Lte("lte"),
-
-    Gte("gte"),
-
+    MICHELIN_STAR("michelin+star")
     ;
 
     private final String jsonValue;
 
-    SomeEnum(String jsonValue) {
+    Term(String jsonValue) {
         this.jsonValue = jsonValue;
     }
 

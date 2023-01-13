@@ -1,19 +1,20 @@
 package io.github.stewseo.clients.yelpfusion.events;
 
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
-import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.LOCATION_MISSING;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.VALIDATION_ERROR_DOES_NOT_MATCH;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.LOCATION_MISSING_ERROR;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_SPECIFY_LOCATION_ERROR;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_ERROR_DOES_NOT_MATCH;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.BAD_LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
 
@@ -64,6 +65,7 @@ class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
         ResponseException responseException = assertThrows(ResponseException.class,
                 () -> eventsClient.featured(s -> s.locale(LOCALE))
         );
-        assertThat(responseException.getMessage()).contains(LOCATION_MISSING);
+
+        assertThat(responseException.getMessage()).contains(LOCATION_MISSING_ERROR);
     }
 }

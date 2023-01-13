@@ -1,8 +1,7 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients._types.Property;
-import io.github.stewseo.clients.json.ExternallyTaggedUnion;
-import io.github.stewseo.clients.json.JsonpMapper;
+
+import io.github.stewseo.clients._type.Property;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
@@ -22,15 +21,6 @@ class ExternallyTaggedUnionTest {
 
     private final Property property;
 
-    //     public static final ExternallyTaggedUnion.TypedKeysDeserializer<Property> _TYPED_KEYS_DESERIALIZER;
-    //
-    //    static {
-    //        Map<String, JsonpDeserializer<? extends Property>> deserializers = new HashMap<>();
-    //
-    //        _TYPED_KEYS_DESERIALIZER = new ExternallyTaggedUnion.Deserializer<>(deserializers, Property::new,
-    //                Property::new).typedKeys();
-    //    }
-
     private ExternallyTaggedUnionTest() {
 
         generator = JsonProvider.provider().createGenerator(new StringWriter());
@@ -38,8 +28,8 @@ class ExternallyTaggedUnionTest {
         mapper = new JsonbJsonpMapper();
 
         property = Property.of(p -> p
-                .kind(Property.Kind.Binary)
-                ._value("binaryValue")
+                .kind(Property.Kind.Term)
+                ._value("termValue")
         );
     }
 

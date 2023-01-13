@@ -1,4 +1,4 @@
-package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.clients.yelpfusion.businesses.search;
+package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses;
 //
 //import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 //import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
@@ -31,7 +31,7 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //
 //        SearchBusinessRequest searchBusinessRequest = SearchBusinessRequest.of(s -> s.location("SF"));
 //
-//        assertThat("v3/businesses/search")
+//        assertThat("v3/businesses/searchBusinesses")
 //                .isEqualTo(SearchBusinessRequest._ENDPOINT.requestUrl(searchBusinessRequest));
 //    }
 //
@@ -47,7 +47,7 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //            CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionService
 //                    .yelpFusionAsyncClient()
 //                    .businesses()
-//                    .search(searchBusinessRequest
+//                    .searchBusinesses(searchBusinessRequest
 //                            ,
 //                            SearchBusinessResult.class
 //                    ).whenComplete((response, exception) -> {

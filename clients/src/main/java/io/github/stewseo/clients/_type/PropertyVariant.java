@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonpSerializable;
 

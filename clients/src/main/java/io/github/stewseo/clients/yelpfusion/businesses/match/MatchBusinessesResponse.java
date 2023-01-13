@@ -10,22 +10,21 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessMatchResponse implements JsonpSerializable {
+public class MatchBusinessesResponse implements JsonpSerializable {
     
     private final List<BusinessMatch> businesses;
 
-    private BusinessMatchResponse(Builder builder) {
+    private MatchBusinessesResponse(Builder builder) {
         this.businesses = builder.businesses;
     }
 
-    public static BusinessMatchResponse of(Function<Builder, ObjectBuilder<BusinessMatchResponse>> fn) {
+    public static MatchBusinessesResponse of(Function<Builder, ObjectBuilder<MatchBusinessesResponse>> fn) {
         return fn.apply(new Builder()).build();
     }
 
@@ -58,7 +57,7 @@ public class BusinessMatchResponse implements JsonpSerializable {
     }
     public static class Builder extends WithJsonObjectBuilderBase<Builder>
             implements
-            ObjectBuilder<BusinessMatchResponse> {
+            ObjectBuilder<MatchBusinessesResponse> {
         private List<BusinessMatch> businesses;
 
         public final Builder businesses(List<BusinessMatch> businesses) {
@@ -71,14 +70,14 @@ public class BusinessMatchResponse implements JsonpSerializable {
             return this;
         }
 
-        public BusinessMatchResponse build() {
+        public MatchBusinessesResponse build() {
             _checkSingleUse();
-            return new BusinessMatchResponse(this);
+            return new MatchBusinessesResponse(this);
         }
     }
 
-    public static final JsonpDeserializer<BusinessMatchResponse> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new, BusinessMatchResponse::setupBusinessResponseDeserializer);
+    public static final JsonpDeserializer<MatchBusinessesResponse> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new, MatchBusinessesResponse::setupBusinessResponseDeserializer);
 
     protected static void setupBusinessResponseDeserializer(ObjectDeserializer<Builder> op) {
 

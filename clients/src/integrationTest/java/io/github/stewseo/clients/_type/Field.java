@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.json.JsonpDeserializable;
@@ -6,7 +6,7 @@ import io.github.stewseo.clients.json.JsonpMapper;
 import jakarta.json.stream.JsonGenerator;
 
 @JsonpDeserializable
-public enum Term implements JsonEnum {
+public enum Field implements JsonEnum {
     ;
 
     @Override

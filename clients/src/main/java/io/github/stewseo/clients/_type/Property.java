@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonEnum;
@@ -22,7 +22,8 @@ import java.util.function.Function;
 public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSerializable {
 
     public enum Kind implements JsonEnum {
-        Binary("binary"),
+        
+        Term("term"),
         _Custom(null);
 
         private final String jsonValue;
@@ -93,12 +94,12 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
         return _customKind;
     }
 
-    public boolean isBinary() {
-        return _kind == Kind.Binary;
+    public boolean isTerm() {
+        return _kind == Kind.Term;
     }
 
-    public BinaryProperty binary() {
-        return TaggedUnionUtils.get(this, Kind.Binary);
+    public TermProperty binary() {
+        return TaggedUnionUtils.get(this, Kind.Term);
     }
 
 
@@ -132,14 +133,14 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
             return this;
         }
 
-        public ObjectBuilder<Property> binary(BinaryProperty v) {
-            this._kind = Kind.Binary;
+        public ObjectBuilder<Property> binary(TermProperty v) {
+            this._kind = Kind.Term;
             this._value = v;
             return this;
         }
 
-        public ObjectBuilder<Property> binary(Function<BinaryProperty.Builder, ObjectBuilder<BinaryProperty>> fn) {
-            return this.binary(fn.apply(new BinaryProperty.Builder()).build());
+        public ObjectBuilder<Property> binary(Function<TermProperty.Builder, ObjectBuilder<TermProperty>> fn) {
+            return this.binary(fn.apply(new TermProperty.Builder()).build());
         }
 
         public ObjectBuilder<Property> _custom(String name, Object data) {
@@ -160,7 +161,7 @@ public class Property implements OpenTaggedUnion<Property.Kind, Object>, JsonpSe
 
     protected static void setupPropertyDeserializer(ObjectDeserializer<Builder> op) {
 
-        op.add(Builder::binary, BinaryProperty._DESERIALIZER, "binary");
+        op.add(Builder::binary, TermProperty._DESERIALIZER, "term");
     }
 
 }

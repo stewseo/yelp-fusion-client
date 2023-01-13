@@ -12,27 +12,29 @@ import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.Region;
 import jakarta.json.stream.JsonGenerator;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
-public abstract class ResponseBody<TDocument> implements JsonpSerializable {
+public abstract class ResponseBody<ResultT> implements JsonpSerializable {
 
-    private final List<Hit<TDocument>> hits;
+    private final List<Hit<ResultT>> hits;
 
-    private final JsonpSerializer<TDocument> tDocumentSerializer;
+    private final JsonpSerializer<ResultT> tDocumentSerializer;
 
     private final Integer total;
 
+    @Nullable
     private final Region region;
 
-    protected ResponseBody(AbstractBuilder<TDocument, ?> builder) {
-        this.hits = ApiTypeHelper.unmodifiableRequired(builder.hits, this, "hits");
+    protected ResponseBody(AbstractBuilder<ResultT, ?> builder) {
+        this.hits = ApiTypeHelper.unmodifiableRequired(builder.hits, this, "businesses");
         this.tDocumentSerializer = builder.tDocumentSerializer;
         this.total = ApiTypeHelper.requireNonNull(builder.total, this, "total");
-        this.region = ApiTypeHelper.requireNonNull(builder.region, this, "region");
+        this.region = builder.region;
     }
-
-    public final List<Hit<TDocument>> hits() {
+    
+    public final List<Hit<ResultT>> hits() {
         return hits;
     }
 
@@ -55,7 +57,7 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
         if (ApiTypeHelper.isDefined(this.hits)) {
             generator.writeKey("hits");
             generator.writeStartArray();
-            for (Hit<TDocument> item0 : this.hits) {
+            for (Hit<ResultT> item0 : this.hits) {
                 item0.serialize(generator, mapper);
 
             }
@@ -65,6 +67,7 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
 
         generator.writeKey("total");
         generator.write(this.total);
+
         if (region != null) {
             generator.writeKey("region");
             this.region.serialize(generator, mapper);
@@ -85,7 +88,7 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
         private JsonpSerializer<TDocument> tDocumentSerializer;
 
         private Integer total;
-
+        @Nullable
         private Region region;
 
 
@@ -115,7 +118,8 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
             return self();
         }
 
-        public final BuilderT region(Region value) {
+        @Nullable
+        public final BuilderT region(@Nullable Region value) {
             this.region = value;
             return self();
         }
@@ -126,13 +130,16 @@ public abstract class ResponseBody<TDocument> implements JsonpSerializable {
 
     protected static <TDocument, BuilderT extends AbstractBuilder<TDocument, BuilderT>>
         void setupResponseBodyDeserializer(
-                ObjectDeserializer<BuilderT> op, JsonpDeserializer<TDocument> tDocumentDeserializer) {
+                ObjectDeserializer<BuilderT> op, 
+                JsonpDeserializer<TDocument> tDocumentDeserializer) {
 
         op.add(AbstractBuilder::hits, JsonpDeserializer.arrayDeserializer(
-                Hit.createHitDeserializer(tDocumentDeserializer)), "hits");
+                Hit.createHitDeserializer(tDocumentDeserializer)), "businesses");
 
         op.add(AbstractBuilder::total, JsonpDeserializer.integerDeserializer(), "total");
 
         op.add(AbstractBuilder::region, Region._DESERIALIZER, "region");
     }
+    
+    
 }

@@ -5,7 +5,6 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
@@ -139,5 +138,6 @@ class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionReques
 
         assertThat(searchTransactionReq.toString()).isEqualTo("{\"term\":\"termValue\"}");
     }
+
 
 }

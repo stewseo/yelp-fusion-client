@@ -30,8 +30,10 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
     }
     String expected = "{\"id\":\"id\"," +
             "\"text\":\"TEXT\"," +
-            "\"url\":\"url\",\"rating\":4.5," +
-            "\"time_created\":\"time_created\",\"user\":{\"id\":\"idValue\",\"name\":\"nameValue\"}}";
+            "\"url\":\"url\"," +
+            "\"rating\":4.5," +
+            "\"time_created\":\"time_created\"," +
+            "\"user\":{\"id\":\"idValue\",\"name\":\"name\"}}";
 
     @Test
     public void testOf() {

@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion;
 
-import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessClient;
+import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessesClient;
 import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesClient;
 import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
@@ -62,8 +62,8 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
      *
      * @return YelpFusionBusinessClient
      */
-    public YelpFusionBusinessClient businesses() {
-        return new YelpFusionBusinessClient(this.transport, this.transportOptions);
+    public YelpFusionBusinessesClient businesses() {
+        return new YelpFusionBusinessesClient(this.transport, this.transportOptions);
     }
 
     /**
@@ -103,6 +103,8 @@ public class YelpFusionClient extends ApiClient<YelpFusionTransport, YelpFusionC
             throws Exception {
         return autocomplete(fn.apply(new AutoCompleteRequest.Builder()).build());
     }
+
+
 
 }
 

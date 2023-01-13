@@ -4,6 +4,8 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpSerializer;
 import io.github.stewseo.clients.json.NamedDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
+import io.github.stewseo.clients.json.ObjectDeserializer;
+import io.github.stewseo.clients.yelpfusion._types.Region;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -100,26 +102,31 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult
         assertThat(searchResponse.toString()).isEqualTo(expected);
     }
 
-    private final JsonpDeserializer<SearchResponse<SearchBusinessResult>> tDocumentDeserializer =
+    private final JsonpDeserializer<SearchResponse<SearchBusinessResult>> searchRespDeser =
             ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessResult>>) SearchResponse.Builder::new,
                     op -> SearchResponse.setupSearchResponseDeserializer(op,
-                            new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.TDocument")));
+                            new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
 
     public JsonParser parser() {
         return parser(searchResponse);
     }
 
     @Test
-    public void testDeserialize() {
+    public void testDeserializer() {
 
-        assertThat(tDocumentDeserializer.toString()).contains("io.github.stewseo.clients.json.ObjectBuilderDeserializer");
+        assertThat(searchRespDeser.toString()).contains("io.github.stewseo.clients.json.ObjectBuilderDeserializer");
 
-        JsonParser parser = parser();
+        ObjectDeserializer<SearchResponse.Builder<SearchBusinessResult>> res = 
+                new ObjectDeserializer<>(SearchResponse.Builder<SearchBusinessResult>::new);
 
-        SearchResponse<SearchBusinessResult> searchResp = tDocumentDeserializer.deserialize(parser, mapper);
+        JsonpDeserializer<SearchBusinessResult> deser = SearchBusinessResult._DESERIALIZER;
+
+        ResponseBody.setupResponseBodyDeserializer(res, deser);
+
 
         assertThat(searchResponse.toString()).isEqualTo(expected);
     }
+
 
 
 }

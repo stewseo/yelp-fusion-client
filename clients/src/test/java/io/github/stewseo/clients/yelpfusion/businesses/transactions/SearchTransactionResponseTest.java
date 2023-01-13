@@ -5,7 +5,7 @@
 //import io.github.stewseo.clients.yelpfusion._types.Center;
 //import io.github.stewseo.clients.yelpfusion._types.Event;
 //import io.github.stewseo.clients.yelpfusion._types.Region;
-//import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+//import io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses.SearchBusinessResult;
 //import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 //import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionResponse;
 //import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;

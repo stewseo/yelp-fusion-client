@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
@@ -12,9 +12,9 @@ import jakarta.json.stream.JsonGenerator;
 import javax.annotation.Nullable;
 
 @JsonpDeserializable
-public class UVariantB implements SomeUnionVariant, JsonpSerializable {
+public class UVariantA implements SomeUnionVariant, JsonpSerializable {
 
-    private final Integer number;
+    private final String name;
 
     @Override
     public String _variantType() {
@@ -22,12 +22,12 @@ public class UVariantB implements SomeUnionVariant, JsonpSerializable {
     }
 
     @Nullable
-    public Integer number () {
-        return this.number;
+    public String name() {
+        return this.name;
     }
 
-    public UVariantB(Builder builder) {
-        this.number = builder.number;
+    public UVariantA(Builder builder) {
+        this.name = builder.name;
     }
 
     @Override
@@ -35,28 +35,28 @@ public class UVariantB implements SomeUnionVariant, JsonpSerializable {
         builder.writeStartObject();
         // Write variant value
         builder.write("type", _variantType());
-        if (this.number != null) builder.write("number", this.number);
+        if (this.name != null) builder.write("name", this.name);
         builder.writeEnd();
     }
 
-    public static class Builder implements ObjectBuilder<UVariantB> {
-        private Integer number;
+    public static class Builder implements ObjectBuilder<UVariantA> {
+        private String name;
 
-        public Builder number(@Nullable Integer number) {
-            this.number = number;
+        public Builder name(@Nullable String name) {
+            this.name = name;
             return this;
         }
 
-        public UVariantB build() {
-            return new UVariantB(this);
+        public UVariantA build() {
+            return new UVariantA(this);
         }
     }
 
-    public static final JsonpDeserializer<UVariantB> _DESERIALIZER;
+    public static final JsonpDeserializer<UVariantA> _DESERIALIZER;
 
     static {
         ObjectDeserializer<Builder> op = new ObjectDeserializer<>(Builder::new);
-        op.add(Builder::number, JsonpDeserializer.integerDeserializer(), "number");
+        op.add(Builder::name, JsonpDeserializer.stringDeserializer(), "name");
         op.ignore("type");
         _DESERIALIZER = new ObjectBuilderDeserializer<>(op);
     }

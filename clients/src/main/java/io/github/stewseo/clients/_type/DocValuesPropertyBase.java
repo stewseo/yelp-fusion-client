@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._types;
+package io.github.stewseo.clients._type;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -51,7 +51,7 @@ public abstract class DocValuesPropertyBase extends CorePropertyBase {
     // ---------------------------------------------------------------------------------------------
     protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupDocValuesPropertyBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
-        CorePropertyBase.setupCorePropertyBaseDeserializer(op);
+        setupCorePropertyBaseDeserializer(op);
         op.add(AbstractBuilder::docValues, JsonpDeserializer.booleanDeserializer(), "doc_values");
 
     }

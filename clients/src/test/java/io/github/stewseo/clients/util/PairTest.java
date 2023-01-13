@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients._types.UVariantA;
+import io.github.stewseo.clients._type.TermProperty;
+import io.github.stewseo.functional.testtypes.UVariantA;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
@@ -18,9 +19,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class PairTest extends TestJson {
 
-    private final SomeUnion suA = new SomeUnion.Builder()
-            .variantA(a_ -> a_
-                    .name("a-name")
+    private final TermProperty suA = new TermProperty.Builder()
+            .properties()
             ).build();
 
     private final SomeUnion suB = new SomeUnion.Builder()

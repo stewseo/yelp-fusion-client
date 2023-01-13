@@ -17,9 +17,6 @@ plugins {
 
 dependencies {
 
-//    api files("../lib/lowlevel-restclient.jar")
-//    api files("../lib/temporaldata-service.jar")
-
     api project(":lowlevel-restclient")
     api project(":temporaldata-service")
 
@@ -47,7 +44,7 @@ dependencies {
 
 test {
     filter {
-//        excludeTestsMatching "io.github.stewseo.clients.functional.*"
+//        excludeTestsMatching "io.github.stewseo.functional.*"
     }
 }
 

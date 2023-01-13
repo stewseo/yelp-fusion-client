@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients._types.Property;
+
+import io.github.stewseo.clients._type.Property;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 

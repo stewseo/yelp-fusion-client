@@ -3,8 +3,8 @@ package io.github.stewseo.clients.yelpfusion.testcases;
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTransportCtx;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.FQ_RESPONSE_EXCEPTION_CLASSNAME;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.HOST_NAME;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.FQ_RESPONSE_EXCEPTION_CLASS_NAME;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.HOST_NAME;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.METHOD;
 
 public abstract class YelpFusionClientTestCase implements ApiClientTestCase {
@@ -32,7 +32,7 @@ public abstract class YelpFusionClientTestCase implements ApiClientTestCase {
     }
 
     public String buildExpectedExecutionExceptionMessage(String expectedUri) {
-        return FQ_RESPONSE_EXCEPTION_CLASSNAME +
+        return FQ_RESPONSE_EXCEPTION_CLASS_NAME +
                 ": " + METHOD +
                 ", " + HOST_NAME + ", " +
                 expectedUri + ", " +

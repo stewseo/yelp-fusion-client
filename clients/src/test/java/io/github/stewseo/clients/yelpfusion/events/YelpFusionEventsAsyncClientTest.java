@@ -1,17 +1,14 @@
 package io.github.stewseo.clients.yelpfusion.events;
 
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
-import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsAsyncClient;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.LOCATION_MISSING;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.VALIDATION_ERROR_DOES_NOT_MATCH;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_ERROR_DOES_NOT_MATCH;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.BAD_LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
