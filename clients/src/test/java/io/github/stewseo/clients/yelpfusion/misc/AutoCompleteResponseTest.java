@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.misc;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Term;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
@@ -8,6 +9,7 @@ import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -55,14 +57,14 @@ public class AutoCompleteResponseTest extends ModelTestCase<AutoCompleteResponse
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(autocompleteResponse.businesses()).isNotNull();
         assertThat(autocompleteResponse.categories()).isNotNull();
         assertThat(autocompleteResponse.terms()).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         AutoCompleteResponse.Builder builder = new AutoCompleteResponse.Builder()
@@ -87,13 +89,13 @@ public class AutoCompleteResponseTest extends ModelTestCase<AutoCompleteResponse
 
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         autocompleteResponse.serialize(generator, mapper);
         AssertionsForClassTypes.assertThat(autocompleteResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
 
         generator.writeStartObject();
@@ -103,7 +105,7 @@ public class AutoCompleteResponseTest extends ModelTestCase<AutoCompleteResponse
         AssertionsForClassTypes.assertThat(autocompleteResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -114,7 +116,7 @@ public class AutoCompleteResponseTest extends ModelTestCase<AutoCompleteResponse
         assertThat(deserializedAutoCompleteResponse.toString()).contains(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         assertThat(AutoCompleteResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");

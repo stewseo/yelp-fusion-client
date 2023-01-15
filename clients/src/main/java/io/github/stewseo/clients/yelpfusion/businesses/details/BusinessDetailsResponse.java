@@ -7,7 +7,6 @@ import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 

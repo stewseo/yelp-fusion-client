@@ -5,7 +5,7 @@
 //import io.github.stewseo.clients.yelpfusion._types.Center;
 //import io.github.stewseo.clients.yelpfusion._types.Event;
 //import io.github.stewseo.clients.yelpfusion._types.Region;
-//import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+//import io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses.SearchBusinessResult;
 //import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 //import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionResponse;
 //import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
@@ -43,7 +43,7 @@
 //        );
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testOf() {
 //        assertThat(searchTransactionsResponse.businesses().toString()).isEqualTo("[{\"id\":\"id\"}]");
 //        assertThat(searchTransactionsResponse.region().toString()).isEqualTo("{\"center\":{\"latitude\":38.0}}");
@@ -53,13 +53,13 @@
 //    private final JsonGenerator generator = generator();
 //    String expected = "{\"businesses\":[{\"id\":\"id\"}],\"total\":1,\"region\":{\"center\":{\"latitude\":38.0}}}";
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testSerialize() {
 //        searchTransactionsResponse.serialize(generator, mapper);
 //        assertThat(searchTransactionsResponse.toString()).isEqualTo(expected);
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testSerializeInternal() {
 //        generator.writeStartObject();
 //        searchTransactionsResponse.serializeInternal(generator, mapper);
@@ -67,7 +67,7 @@
 //        assertThat(searchTransactionsResponse.toString()).isEqualTo(expected);
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testDeserialize() {
 //
 //        JsonParser parser = parser();
@@ -77,7 +77,7 @@
 //        assertThat(searchBusinessRes).isNotNull();
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testDeserializer() {
 //
 //        assertThat(SearchTransactionResponse._DESERIALIZER.toString())
@@ -98,7 +98,7 @@
 //        return mapper.jsonProvider().createParser(content);
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testBuilder() {
 //
 //        SearchTransactionResponse.Builder builder = new SearchTransactionResponse.Builder().total(1);

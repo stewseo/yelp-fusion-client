@@ -1,0 +1,231 @@
+{
+  "businesses": [
+    {
+      "id": "wGl_DyNxSv8KUtYgiuLhmA",
+      "alias": "bi-rite-creamery-san-francisco",
+      "name": "Bi-Rite Creamery",
+      "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/ZFLw9lTtUH3R67b4pvb3tg/o.jpg",
+      "is_closed": false,
+      "url": "https://www.yelp.com/biz/bi-rite-creamery-san-francisco?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "review_count": 10006,
+      "categories": [
+        {
+          "alias": "icecream",
+          "title": "Ice Cream & Frozen Yogurt"
+        }
+      ],
+      "rating": 4.5,
+      "coordinates": {
+        "latitude": 37.761591,
+        "longitude": -122.425717
+      },
+      "transactions": [
+        "delivery"
+      ],
+      "price": "$$",
+      "location": {
+        "address1": "3692 18th St",
+        "address2": null,
+        "address3": "",
+        "city": "San Francisco",
+        "zip_code": "94110",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "3692 18th St",
+          "San Francisco, CA 94110"
+        ]
+      },
+      "phone": "+14156265600",
+      "display_phone": "(415) 626-5600",
+      "distance": 946.3867385272524
+    },
+    {
+      "id": "lJAGnYzku5zSaLnQ_T6_GQ",
+      "alias": "brendas-french-soul-food-san-francisco-6",
+      "name": "Brenda's French Soul Food",
+      "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/VJ865E7ULQWSNjKhNG57VQ/o.jpg",
+      "is_closed": false,
+      "url": "https://www.yelp.com/biz/brendas-french-soul-food-san-francisco-6?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "review_count": 11904,
+      "categories": [
+        {
+          "alias": "breakfast_brunch",
+          "title": "Breakfast & Brunch"
+        },
+        {
+          "alias": "southern",
+          "title": "Southern"
+        },
+        {
+          "alias": "cajun",
+          "title": "Cajun/Creole"
+        }
+      ],
+      "rating": 4.0,
+      "coordinates": {
+        "latitude": 37.78291531984934,
+        "longitude": -122.41889950001861
+      },
+      "transactions": [
+        "delivery"
+      ],
+      "price": "$$",
+      "location": {
+        "address1": "652 Polk St",
+        "address2": "",
+        "address3": "",
+        "city": "San Francisco",
+        "zip_code": "94102",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "652 Polk St",
+          "San Francisco, CA 94102"
+        ]
+      },
+      "phone": "+14153458100",
+      "display_phone": "(415) 345-8100",
+      "distance": 2893.406621737596
+    },
+    {
+      "id": "WavvLdfdP6g8aZTtbBQHTw",
+      "alias": "gary-danko-san-francisco",
+      "name": "Gary Danko",
+      "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/eyYUz3Xl7NtcJeN7x7SQwg/o.jpg",
+      "is_closed": false,
+      "url": "https://www.yelp.com/biz/gary-danko-san-francisco?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "review_count": 5803,
+      "categories": [
+        {
+          "alias": "newamerican",
+          "title": "American (New)"
+        },
+        {
+          "alias": "french",
+          "title": "French"
+        },
+        {
+          "alias": "wine_bars",
+          "title": "Wine Bars"
+        }
+      ],
+      "rating": 4.5,
+      "coordinates": {
+        "latitude": 37.80587,
+        "longitude": -122.42058
+      },
+      "transactions": [],
+      "price": "$$$$",
+      "location": {
+        "address1": "800 N Point St",
+        "address2": "",
+        "address3": "",
+        "city": "San Francisco",
+        "zip_code": "94109",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "800 N Point St",
+          "San Francisco, CA 94109"
+        ]
+      },
+      "phone": "+14157492060",
+      "display_phone": "(415) 749-2060",
+      "distance": 5191.341803207417
+    },
+    {
+      "id": "ri7UUYmx21AgSpRsf4-9QA",
+      "alias": "tartine-bakery-san-francisco-3",
+      "name": "Tartine Bakery",
+      "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/QRbC0TQ2zxTKXHt5NfpFCw/o.jpg",
+      "is_closed": false,
+      "url": "https://www.yelp.com/biz/tartine-bakery-san-francisco-3?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "review_count": 8673,
+      "categories": [
+        {
+          "alias": "bakeries",
+          "title": "Bakeries"
+        },
+        {
+          "alias": "cafes",
+          "title": "Cafes"
+        },
+        {
+          "alias": "desserts",
+          "title": "Desserts"
+        }
+      ],
+      "rating": 4.0,
+      "coordinates": {
+        "latitude": 37.76131,
+        "longitude": -122.42431
+      },
+      "transactions": [
+        "delivery"
+      ],
+      "price": "$$",
+      "location": {
+        "address1": "600 Guerrero St",
+        "address2": "",
+        "address3": "",
+        "city": "San Francisco",
+        "zip_code": "94110",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "600 Guerrero St",
+          "San Francisco, CA 94110"
+        ]
+      },
+      "phone": "+14154872600",
+      "display_phone": "(415) 487-2600",
+      "distance": 1087.6389326055803
+    },
+    {
+      "id": "76smcUUGRvq3k1MVPUXbnA",
+      "alias": "mitchells-ice-cream-san-francisco",
+      "name": "Mitchells Ice Cream",
+      "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/f4lzrsfJLSd4CW1-LWmO2w/o.jpg",
+      "is_closed": false,
+      "url": "https://www.yelp.com/biz/mitchells-ice-cream-san-francisco?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "review_count": 4631,
+      "categories": [
+        {
+          "alias": "icecream",
+          "title": "Ice Cream & Frozen Yogurt"
+        },
+        {
+          "alias": "customcakes",
+          "title": "Custom Cakes"
+        }
+      ],
+      "rating": 4.5,
+      "coordinates": {
+        "latitude": 37.744221,
+        "longitude": -122.422791
+      },
+      "transactions": [
+        "pickup",
+        "delivery"
+      ],
+      "price": "$",
+      "location": {
+        "address1": "688 San Jose Ave",
+        "address2": "",
+        "address3": "",
+        "city": "San Francisco",
+        "zip_code": "94110",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "688 San Jose Ave",
+          "San Francisco, CA 94110"
+        ]
+      },
+      "phone": "+14156482300",
+      "display_phone": "(415) 648-2300",
+      "distance": 2209.2604244994063
+    }
+  ]
+}

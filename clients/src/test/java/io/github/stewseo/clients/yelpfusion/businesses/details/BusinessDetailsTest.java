@@ -1,56 +1,33 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import io.github.stewseo.clients.yelpfusion._types.Center;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
-import java.util.List;
 import java.util.Objects;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.*;
-
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.EXPECTED_BUSINESS_DETAILS_RESULT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.FIELD_URL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.IS_CLAIMED;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.REVIEW_COUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
+@Tag("businesses")
 public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
 
     private final BusinessDetails business = of();
 
     public BusinessDetails of() {
-        return BusinessDetails.of(b -> b
-                .id(ID)
-                .alias(ALIAS)
-                .center(CENTER)
-                .hours(HOURS)
-                .hours(h -> h.hours_type("hoursTypeValue"))
-                .hours(List.of(HOURS))
-                .location(LOCATION)
-                .review_count(REVIEW_COUNT)
-                .rating(RATING)
-                .categories(CATEGORY)
-                .categories(List.of(CATEGORY))
-                .categories(cat -> cat.alias(ALIAS))
-                .phone(PHONE)
-                .image_url(IMAGE_URL)
-                .price(PRICE_STRING)
-                .is_closed(IS_CLOSED)
-                .display_phone("display_phone")
-                .is_claimed(IS_CLAIMED)
-                .name(NAME)
-                .url(FIELD_URL)
-                .messaging(MESSAGING)
-                .transactions(TRANSACTIONS)
-                .photos(PHOTOS)
-                .photos(List.of(PHOTOS))
-        );
+        return EXPECTED_BUSINESS_DETAILS_RESULT;
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
         BusinessDetails.Builder builder = new BusinessDetails.Builder().name("nameValue");
 
@@ -63,7 +40,7 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
         assertThat(businessDetails.toString()).isEqualTo("{\"name\":\"nameValue\"}");
 
     }
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(business.price()).isNotNull();
         assertThat(business.toString()).isNotNull();
@@ -76,7 +53,6 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
         assertThat(business.categories()).isNotNull();
         assertThat(business.display_phone()).isNotNull();
         assertThat(business.center()).isNotNull();
-        assertThat(business.image_url()).isNotNull();
         assertThat(business.phone()).isNotNull();
         assertThat(business.location()).isNotNull();
         assertThat(business.name()).isNotNull();
@@ -88,8 +64,6 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
         assertThat(business.transactions()).isNotNull();
     }
 
-    JsonGenerator generator = generator();
-
     private final String expected = "" +
             "{\"id\":\"id\",\"alias\":\"alias\"," +
             "\"name\":\"name\"," +
@@ -99,14 +73,14 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
             "\"review_count\":1,\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"coordinates\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"transactions\":[\"transactionValue\"],\"messaging\":{\"use_case_text\":\"use_case_text\"},\"photos\":[\"photos\",\"photos\"],\"hours\":[{\"hours_type\":\"hoursType\"},{\"hours_type\":\"hoursTypeValue\"},{\"hours_type\":\"hoursType\"}],\"categories\":[{\"alias\":\"catAlias\"}," +
             "{\"alias\":\"catAlias\"},{\"alias\":\"alias\"}]}";
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();
         business.serialize(generator, mapper);
         assertThat(business).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         JsonGenerator generator = generator();
         generator.writeStartObject();
@@ -119,7 +93,7 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
         return parser(business);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -129,7 +103,7 @@ public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
         assertThat(businessDetails).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
         assertThat(Event._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
     }

@@ -1,25 +1,26 @@
 package io.github.stewseo.clients.json.jackson;
 
-import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
+import io.github.stewseo.clients.json.JsonTest;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import jakarta.json.Json;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonGenerationException;
 import jakarta.json.stream.JsonGenerator;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import jakarta.json.stream.JsonParser;
 
 import java.io.StringWriter;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class JacksonJsonpGeneratorTest extends Assertions {
+public class JacksonJsonpGeneratorTest extends ModelJsonTestCase {
 
     StringWriter sw = new StringWriter();
 
     JsonGenerator generator = new JacksonJsonpMapper().jsonProvider().createGenerator(sw);
 
-    @Test
+    @JsonTest
     public void testWrite(){
 
         StringWriter sw = new StringWriter();
@@ -78,7 +79,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
                 "}", sw.toString());
     }
 
-    @Test
+    @JsonTest
     public void testWriteThrows(){
 
         StringWriter sw = new StringWriter();
@@ -116,7 +117,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
 
     }
 
-    @Test
+    @JsonTest
     public void testWriteStartObjectThrows(){
 
         StringWriter sw = new StringWriter();
@@ -128,7 +129,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
         generator.close();
     }
 
-    @Test
+    @JsonTest
     public void testWriteStartObjectThrowsWithName(){
 
         StringWriter sw = new StringWriter();
@@ -143,7 +144,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
         generator.close();
     }
 
-    @Test
+    @JsonTest
     public void testWriteWithName(){
 
         generator.writeStartObject();
@@ -156,7 +157,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
 
     }
 
-    @Test
+    @JsonTest
     public void testWriteStartArray(){
         generator.writeStartArray();
         generator.writeStartObject();
@@ -167,7 +168,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
         assertThat(sw.toString()).isEqualTo("[{\"long1\":123456789012345}]");
     }
 
-    @Test
+    @JsonTest
     public void testWriteStartArrayThrows(){
 
         StringWriter sw = new StringWriter();
@@ -186,7 +187,7 @@ public class JacksonJsonpGeneratorTest extends Assertions {
         generator.close();
     }
 
-    @Test
+    @JsonTest
     public void testWriteStartArrayWithName(){
         generator.writeStartArray();
         generator.writeStartObject();
@@ -198,5 +199,12 @@ public class JacksonJsonpGeneratorTest extends Assertions {
         generator.writeEnd().close();
 
         assertThat(sw.toString()).isEqualTo("[{\"name\":[{\"long1\":123456789012345}]}]");
+    }
+
+    private String expected = "";
+
+    @Override
+    public JsonParser parser() {
+        return parser(expected);
     }
 }

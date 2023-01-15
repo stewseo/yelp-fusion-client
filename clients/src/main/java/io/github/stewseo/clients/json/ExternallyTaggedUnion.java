@@ -1,14 +1,5 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.JsonData;
-import io.github.stewseo.clients.json.JsonEnum;
-import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.json.JsonpDeserializerBase;
-import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpMapperFeatures;
-import io.github.stewseo.clients.json.JsonpMappingException;
-import io.github.stewseo.clients.json.JsonpSerializable;
-import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.util.OpenTaggedUnion;
 import io.github.stewseo.clients.util.TaggedUnion;
 import jakarta.json.stream.JsonGenerator;
@@ -23,11 +14,21 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Utilities for union types whose discriminant is not directly part of the structure, either as an enclosing property name or as
+ * an inner property. This is used for Elasticsearch aggregation results and suggesters, using the {@code typed_keys} parameter that
+ * encodes a name+type in a single JSON property.
+ *
+ */
 public class ExternallyTaggedUnion {
 
     private ExternallyTaggedUnion() {
     }
 
+    /**
+     * A deserializer for externally-tagged unions. Since the union variant discriminant is provided externally, this cannot be a
+     * regular {@link JsonpDeserializer} as the caller has to provide the discriminant value.
+     */
     public static <T extends TaggedUnion<?, ?>> JsonpDeserializer<Map<String, List<T>>> arrayMapDeserializer(
             TypedKeysDeserializer<T> deserializer
     ) {
@@ -124,6 +125,12 @@ public class ExternallyTaggedUnion {
         generator.writeEnd();
     }
 
+    /**
+     * Serialize a map of externally tagged union objects.
+     * <p>
+     * If {@link JsonpMapperFeatures#SERIALIZE_TYPED_KEYS} is <code>true</code> (the default), the typed keys encoding
+     * (<code>type#name</code>) is used.
+     */
     public static <T extends JsonpSerializable & TaggedUnion<? extends JsonEnum, ?>> void serializeTypedKeysInner(
             Map<String, T> map, JsonGenerator generator, JsonpMapper mapper
     ) {
@@ -140,6 +147,7 @@ public class ExternallyTaggedUnion {
             }
         }
     }
+
 
     private static <T extends JsonpSerializable & TaggedUnion<? extends JsonEnum, ?>> String getKind(T value) {
         String kind;

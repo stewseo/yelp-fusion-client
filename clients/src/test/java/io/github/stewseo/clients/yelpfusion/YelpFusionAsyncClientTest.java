@@ -1,17 +1,15 @@
 package io.github.stewseo.clients.yelpfusion;
 
 import io.github.stewseo.clients.transport.restclient.RestClientOptions;
-import io.github.stewseo.clients.yelpfusion.YelpFusionAsyncClient;
 import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessAsyncClient;
 import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesAsyncClient;
 import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsAsyncClient;
 import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
+import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
 import io.github.stewseo.lowlevel.restclient.RequestOptions;
-import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -19,13 +17,13 @@ public class YelpFusionAsyncClientTest extends YelpFusionClientTestCase {
 
     YelpFusionAsyncClient asyncClient = new YelpFusionAsyncClient(restClientTransport());
 
-    @Test
+    @YelpFusionTest
     public void testClient() {
         assertThat(asyncClient).isNotNull();
         assertThat(asyncClient).isInstanceOf(YelpFusionAsyncClient.class);
     }
 
-    @Test
+    @YelpFusionTest
     public void testWithTransportOptions() {
 
         RestClientOptions transportOptions = new RestClientOptions(RequestOptions.DEFAULT);
@@ -36,8 +34,8 @@ public class YelpFusionAsyncClientTest extends YelpFusionClientTestCase {
         assertThat(asyncClient._transportOptions()).isNotNull();
     }
 
-    @Test
-    void testClients() throws IOException {
+    @YelpFusionTest
+    void testClients() {
 
         assertThat(asyncClient.businesses()).isInstanceOf(YelpFusionBusinessAsyncClient.class);
 
@@ -46,14 +44,68 @@ public class YelpFusionAsyncClientTest extends YelpFusionClientTestCase {
         assertThat(asyncClient.events()).isInstanceOf(YelpFusionEventsAsyncClient.class);
     }
 
-    @Test
-    void testAutocomplete() throws Exception {
+    private final String autocompleteValue = "californi";
+    private final String expected = "" +
+            "{" +
+                "\"categories\":[]," +
+                    "\"terms\":" +
+                    "[" +
+                        "{" +
+                            "\"text\":\"California Chicken Cafe\"}," +
+                            "{\"text\":\"California Fish Gril\"}," +
+                            "{\"text\":\"Californian\"" +
+                        "}" +
+                    "]," +
+                "\"businesses\":[]" +
+            "}";
 
-        AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a.text("textValue"));
+    @YelpFusionTest
+    void testAutocompleteFunction() throws Exception {
+
+        assertThat(asyncClient.autocomplete(a -> a
+                                .text(autocompleteValue)
+                                .locale(LOCALE)
+                        ).whenComplete((response, exception) -> {
+                                    if (exception != null) {
+                                        System.out.println("Exception != null " + exception);
+                                    } else {
+                                        assertThat(response.businesses()).isNotNull();
+                                        assertThat(response.categories()).isNotNull();
+                                        assertThat(response.terms()).isNotNull();
+                                    }
+                                }
+                        )
+                        .thenApply(AutoCompleteResponse::toString)
+                        .join()
+        )
+                .isEqualTo(expected);
+
+    }
+
+    @YelpFusionTest
+    void testPerformAutocompleteRequest() throws Exception {
+
+        AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a.text(autocompleteValue));
 
         assertThat(asyncClient.autocomplete(autoCompleteRequest)).isNotNull();
 
-        assertThat(asyncClient.autocomplete(a -> a.text("text"))).isNotNull();
+        assertThat(asyncClient.autocomplete(autoCompleteRequest
+                        ).whenComplete((response, exception) -> {
+            if (exception != null) {
+                System.out.println("Exception != null " + exception);
+            } else {
+                assertThat(response.businesses()).isNotNull();
+                assertThat(response.categories()).isNotNull();
+                assertThat(response.terms()).isNotNull();
+            }
+                        }
+                        )
+                .thenApply(AutoCompleteResponse::toString)
+                .join()
+        )
+                .isEqualTo(expected);
+
+
     }
 
 }

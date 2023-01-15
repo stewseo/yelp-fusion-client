@@ -1,23 +1,23 @@
 package io.github.stewseo.clients.yelpfusion.events;
 
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
-import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsAsyncClient;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.LOCATION_MISSING;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.VALIDATION_ERROR_DOES_NOT_MATCH;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.BAD_LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_ERROR_DOES_NOT_MATCH;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.BAD_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
+@Tag("events")
 class YelpFusionEventsAsyncClientTest extends YelpFusionClientTestCase {
 
-    @Test
+    @YelpFusionTest
     public void testWithTransportOptions() {
 
         try(RestClientTransport restClientTransport = restClientTransport()) {
@@ -34,7 +34,7 @@ class YelpFusionEventsAsyncClientTest extends YelpFusionClientTestCase {
 
     private final YelpFusionEventsAsyncClient eventsClient = new YelpFusionEventsAsyncClient(restClientTransport());
 
-    @Test
+    @YelpFusionTest
     void testSearchEvents() {
         String expectedUri = "URI [v3/events?locale=en_US]";
 
@@ -48,7 +48,7 @@ class YelpFusionEventsAsyncClientTest extends YelpFusionClientTestCase {
     }
 
 
-    @Test
+    @YelpFusionTest
     void testFeaturedEvents() {
 
         String expectedUri = "URI [v3/events/featured?locale=en_US]";

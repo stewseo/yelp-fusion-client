@@ -11,6 +11,12 @@ import io.github.stewseo.clients.json.WithJson;
 import io.github.stewseo.clients.util.ObjectBuilderBase;
 import jakarta.json.stream.JsonParser;
 
+/**
+ * Base class for object builders that can read themselves from JSON.
+ * <p>
+ * If the concrete class has generic parameters, <code>withJson()</code> will deserialize them as {@link JsonData}, unless
+ * the mapper has a deserializer attribute for that generic parameter's name.
+ */
 public abstract class WithJsonObjectBuilderBase<B> extends ObjectBuilderBase implements WithJson<B> {
 
     protected abstract B self();

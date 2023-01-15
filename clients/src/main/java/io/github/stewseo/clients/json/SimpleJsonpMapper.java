@@ -1,10 +1,5 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpMapperBase;
-import io.github.stewseo.clients.json.JsonpSerializer;
-import io.github.stewseo.clients.json.JsonpUtils;
 import jakarta.json.JsonException;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
@@ -18,6 +13,7 @@ public class SimpleJsonpMapper extends JsonpMapperBase {
     public static final SimpleJsonpMapper INSTANCE_REJECT_UNKNOWN_FIELDS = new SimpleJsonpMapper(false);
     private static final Map<Type, JsonpSerializer<?>> serializers = new HashMap<>();
     private static final Map<Type, JsonpDeserializer<?>> deserializers = new HashMap<>();
+
     public static SimpleJsonpMapper INSTANCE = new SimpleJsonpMapper(true);
 
     static {

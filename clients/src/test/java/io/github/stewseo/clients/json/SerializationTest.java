@@ -3,13 +3,15 @@ package io.github.stewseo.clients.json;
 import io.github.stewseo.clients.json.JsonpUtils;
 import jakarta.json.Json;
 import jakarta.json.JsonValue;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
 public class SerializationTest {
-    @Test
+    @JsonTest
     public void testJsonpValuesToString() {
 
         assertThat("foo").isEqualTo(JsonpUtils.toString(Json.createValue("foo")));

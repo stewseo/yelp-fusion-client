@@ -1,16 +1,13 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
-import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsRequest>
         implements RequestTestCase<BusinessReviewsRequest> {
@@ -25,20 +22,20 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
                 .alias(alias));
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
         BusinessReviewsRequest.Builder builder = new BusinessReviewsRequest.Builder().alias(alias);
 
         BusinessReviewsRequest.Builder self = builder.self();
 
-        Assertions.assertThat(self).isEqualTo(builder);
+        assertThat(self).isEqualTo(builder);
 
         BusinessReviewsRequest businessReviewsReq = builder.build();
 
-        Assertions.assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
+        assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessReviewsRequest.id()).isEqualTo(id);
         assertThat(businessReviewsRequest.alias()).isEqualTo(alias);
@@ -48,13 +45,13 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
 
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessReviewsRequest.serialize(generator, mapper);
         assertThat(businessReviewsRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessReviewsRequest.serializeInternal(generator, mapper);
@@ -67,7 +64,7 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
         return BusinessReviewsRequest._ENDPOINT;
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
 
         String basePath = "v3/businesses";

@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.categories.alias;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
@@ -7,6 +8,7 @@ import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -14,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
+@Tag("categories")
 public class CategoriesAliasResponseTest extends ModelTestCase<CategoriesAliasResponse> {
 
     private final CategoriesAliasResponse categoriesAliasResponse = of();
@@ -30,18 +34,18 @@ public class CategoriesAliasResponseTest extends ModelTestCase<CategoriesAliasRe
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(categoriesAliasResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         categoriesAliasResponse.serialize(generator, mapper);
         AssertionsForClassTypes.assertThat(categoriesAliasResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         categoriesAliasResponse.serializeInternal(generator, mapper);
@@ -54,7 +58,7 @@ public class CategoriesAliasResponseTest extends ModelTestCase<CategoriesAliasRe
         return mapper.jsonProvider().createParser(content);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -65,14 +69,14 @@ public class CategoriesAliasResponseTest extends ModelTestCase<CategoriesAliasRe
         assertThat(deserializedCategoriesAliasResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         assertThat(CategoriesAliasResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         CategoriesAliasResponse.Builder builder = new CategoriesAliasResponse.Builder().categories(Category.of(e-> e.alias("aliasValue")));

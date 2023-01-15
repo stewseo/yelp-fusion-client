@@ -1,31 +1,31 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ATTRIBUTES;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LIMIT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.OFFSET;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.OPEN_AT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.OPEN_NOW;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.RADIUS;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.SORT_BY;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TERM;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ATTRIBUTES;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CATEGORY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LIMIT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OFFSET;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OPEN_AT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OPEN_NOW;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RADIUS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.SORT_BY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TERM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         implements RequestTestCase<SearchBusinessRequest> {
@@ -56,7 +56,7 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(searchBusinessRequest.locale()).isEqualTo(LOCALE);
         assertThat(searchBusinessRequest.sort_by()).isEqualTo(SORT_BY);
@@ -76,8 +76,18 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         assertThat(searchBusinessRequest.attributes()).isEqualTo(ATTRIBUTES);
     }
 
-    private final String expected = "{\"term\":[\"term\"],\"location\":[\"location\"],\"categories\":{\"alias\":\"catAlias\"},\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"radius\":20000,\"offset\":5,\"sort_by\":\"sort_by\",\"limit\":50,\"open_at\":1,\"price\":\"price\",\"attributes\":[{\"attribute\":\"attribute\"}]}";
-    @Test
+    private final String expected = "{" +
+            "\"term\":[\"term\"]," +
+            "\"location\":[\"location\"]," +
+            "\"categories\":{\"alias\":\"alias\"}," +
+            "\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189}," +
+            "\"radius\":20000,\"offset\":5," +
+            "\"sort_by\":\"sort_by\",\"limit\":50," +
+            "\"open_at\":1," +
+            "\"price\":\"price\"," +
+            "\"attributes\":[{\"attribute\":\"attribute\"}]}";
+
+    @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();
 
@@ -86,7 +96,7 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         assertThat(searchBusinessRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         JsonGenerator generator = generator();
         generator.writeStartObject();
@@ -101,13 +111,13 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         return SearchBusinessRequest._ENDPOINT;
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
         assertThat("v3/businesses/search")
                 .isEqualTo(SearchBusinessRequest._ENDPOINT.requestUrl(searchBusinessRequest));
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
         SearchBusinessRequest.Builder builder = new SearchBusinessRequest.Builder().term("termValue");
 
@@ -120,7 +130,7 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         assertThat(searchBusinessReq.toString()).isEqualTo("{\"term\":[\"termValue\"]}");
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -130,7 +140,7 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         assertThat(searchBusinessRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
         assertThat(BusinessReviewsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
     }

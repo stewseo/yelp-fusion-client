@@ -1,11 +1,15 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class EventTest extends ModelTestCase<Event> {
 
@@ -51,7 +55,7 @@ public class EventTest extends ModelTestCase<Event> {
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(event.id()).isEqualTo(id);
         assertThat(event.attending_count()).isEqualTo(attending_count);
@@ -88,13 +92,13 @@ public class EventTest extends ModelTestCase<Event> {
             "\"cost\":1.0,\"cost_max\":1.0," +
             "\"latitude\":1.0,\"longitude\":1.0,\"location\":{\"city\":\"San Francisco\"}}";
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         event.serialize(generator, mapper);
         assertThat(event.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         event.serializeInternal(generator, mapper);
@@ -104,13 +108,13 @@ public class EventTest extends ModelTestCase<Event> {
 
     JsonParser parser = parser(event);
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
         assertThat(Event._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         Event searchBusinessRes = Event._DESERIALIZER.deserialize(parser, mapper);

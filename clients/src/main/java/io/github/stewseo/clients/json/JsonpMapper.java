@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.JsonpMapperFeatures;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -12,7 +11,6 @@ import java.lang.reflect.Type;
 public interface JsonpMapper {
 
     JsonProvider jsonProvider();
-
 
     default <T> T deserialize(JsonParser parser, Class<T> clazz) {
         return deserialize(parser, (Type) clazz);

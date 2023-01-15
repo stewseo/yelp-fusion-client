@@ -1,4 +1,6 @@
-package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.clients.yelpfusion.businesses.search;
+package io.github.stewseo.clients.yelpfusion._types;
+
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;//package io.github.stewseo.clients.yelpfusion.businesses.searchBusinesses;
 //
 //import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 //import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
@@ -26,16 +28,16 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //    private final Integer offset = 0;
 //    private final int radius = 1610;
 //
-//    @Test
+//    @YelpFusionTest
 //    public void testSearchBusinessEndpoint() {
 //
 //        SearchBusinessRequest searchBusinessRequest = SearchBusinessRequest.of(s -> s.location("SF"));
 //
-//        assertThat("v3/businesses/search")
+//        assertThat("v3/businesses/searchBusinesses")
 //                .isEqualTo(SearchBusinessRequest._ENDPOINT.requestUrl(searchBusinessRequest));
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    void testSearchBusinessWithAsyncClient() {
 //
 //        getStreamOfTemporalData().forEach(breinTemporalDataResult -> {
@@ -47,7 +49,7 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //            CompletableFuture<SearchBusinessResponse> searchBusinessResponse = yelpFusionService
 //                    .yelpFusionAsyncClient()
 //                    .businesses()
-//                    .search(searchBusinessRequest
+//                    .searchBusinesses(searchBusinessRequest
 //                            ,
 //                            SearchBusinessResult.class
 //                    ).whenComplete((response, exception) -> {
@@ -66,7 +68,7 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //        });
 //    }
 //
-//    @Test
+//    @YelpFusionTest
 //    void testSearchBusinessWithBlockingClient() throws IOException {
 //
 //        YelpFusionClient yelpFusionClient = YelpFusionClient.createClient(System.getenv("YELP_API_KEY"));
@@ -109,7 +111,7 @@ package io.github.stewseo.clients.yelpfusion._types;//package io.github.stewseo.
 //
 //        assertThat(searchBusiness.review_count()).isGreaterThanOrEqualTo(1);
 //
-//        Assertions.assertThat(searchBusiness.location().city()).isNotNull();
+//        assertThat(searchBusiness.location().city()).isNotNull();
 //
 //    }
 //

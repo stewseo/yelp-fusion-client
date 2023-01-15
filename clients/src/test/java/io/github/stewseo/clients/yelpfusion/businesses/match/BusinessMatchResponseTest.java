@@ -1,28 +1,30 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatch;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
 
-    private final BusinessMatchResponse businessMatchResponse = of();
+@Tag("businesses")
+class BusinessMatchResponseTest extends ModelTestCase<MatchBusinessesResponse> {
+
+    private final MatchBusinessesResponse businessMatchResponse = of();
 
     private final String expected = "{\"businesses\":[{\"id\":\"id\"}]}";
 
     private final JsonGenerator generator = generator();
 
     @Override
-    public final BusinessMatchResponse of() {
-        return BusinessMatchResponse.of(b ->
+    public final MatchBusinessesResponse of() {
+        return MatchBusinessesResponse.of(b ->
                 b.businesses(List.of(BusinessMatch.of(bm -> bm.id("id"))))
         );
     }
@@ -31,13 +33,13 @@ class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
         return parser(businessMatchResponse);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessMatchResponse.serialize(generator, mapper);
         AssertionsForClassTypes.assertThat(businessMatchResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessMatchResponse.serializeInternal(generator, mapper);
@@ -45,28 +47,28 @@ class BusinessMatchResponseTest extends ModelTestCase<BusinessMatchResponse> {
         AssertionsForClassTypes.assertThat(businessMatchResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessMatchResponse.toString()).isEqualTo("{\"businesses\":[{\"id\":\"id\"}]}");
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
-        assertThat(BusinessMatchResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
+        assertThat(MatchBusinessesResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         JsonParser parser = parser();
 
-        BusinessMatchResponse businessMatchRes = BusinessMatchResponse._DESERIALIZER.deserialize(parser, mapper);
+        MatchBusinessesResponse businessMatchRes = MatchBusinessesResponse._DESERIALIZER.deserialize(parser, mapper);
 
         assertThat(businessMatchRes).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
     }

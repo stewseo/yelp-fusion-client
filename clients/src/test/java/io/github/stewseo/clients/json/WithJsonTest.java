@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.json;
 
-
 import co.elastic.clients.elasticsearch._types.InlineScript;
 import co.elastic.clients.elasticsearch._types.SlicedScroll;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
@@ -12,15 +11,17 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.indices.PutIndicesSettingsRequest;
 import co.elastic.clients.json.JsonData;
 import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
 public class WithJsonTest extends FunctionalTestCase {
 
-    @Test
+    @JsonTest
     public void testRequestWithGenericValueBody() {
         String json = "{\"foo\": \"bar\", \"baz\": 1}";
 
@@ -34,7 +35,7 @@ public class WithJsonTest extends FunctionalTestCase {
         assertThat(1).isEqualTo(req.document().toJson().asJsonObject().getInt("baz"));
     }
 
-    @Test
+    @JsonTest
     public void testRequestWithValueBody() {
         String json = "{" +
                 "\"analyze\": {" +
@@ -49,7 +50,7 @@ public class WithJsonTest extends FunctionalTestCase {
         assertThat(12).isEqualTo(req.settings().analyze().maxTokenCount().intValue());
     }
 
-    @Test
+    @JsonTest
     public void testRegularObject() {
         String json = "{\"field\": \"foo\", \"id\": 12}";
 
@@ -63,7 +64,7 @@ public class WithJsonTest extends FunctionalTestCase {
         assertThat(34).isEqualTo(s.max());
     }
 
-    @Test
+    @JsonTest
     public void testObjectWithGenericParam() {
 
         String json = "{" +
@@ -104,7 +105,7 @@ public class WithJsonTest extends FunctionalTestCase {
         assertThat("bar").isEqualTo(r.hits().hits().get(0).source().toJson().asJsonObject().getString("foo"));
     }
 
-    @Test
+    @JsonTest
     public void testTypeWithParent() {
 
         String json = "{\"source\": \"return doc;\"}";
@@ -116,7 +117,7 @@ public class WithJsonTest extends FunctionalTestCase {
         assertThat("return doc;").isEqualTo(is.source());
     }
 
-    @Test
+    @JsonTest
     public void testContainerTaggedUnion() {
         String json = "{" +
                 "    \"term\": {" +
@@ -137,7 +138,7 @@ public class WithJsonTest extends FunctionalTestCase {
 //        assertThat(1.0, tq.boost(), 0.001);
     }
 
-    @Test
+    @JsonTest
     public void testInternallyTaggedUnion() {
         String json = "{ " +
                 "        \"type\": \"text\"," +

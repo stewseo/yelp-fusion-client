@@ -10,7 +10,7 @@ package io.github.stewseo.clients.yelpfusion.events.featured;//package io.github
 //
 //public class FeaturedEventTest extends FunctionalTestCase {
 //
-//    @Test
+//    @YelpFusionTest
 //    public void featuredEventTest() throws Exception {
 //
 //        BreinTemporalDataResult breinTemporalDataResult = locationByCity("NYC");

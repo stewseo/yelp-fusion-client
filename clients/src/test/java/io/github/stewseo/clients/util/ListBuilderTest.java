@@ -1,22 +1,23 @@
 package io.github.stewseo.clients.util;
 
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Tag("utils")
 
 class ListBuilderTest {
 
     private final ListBuilder<BusinessDetails, ObjectBuilder<BusinessDetails>> lb =
             new ListBuilder<>(BusinessDetails.Builder::new);
 
-    @Test
+    @UtilTest
     void testInstantiation() {
 
         assertThat(lb).isNotNull();
@@ -27,7 +28,7 @@ class ListBuilderTest {
         assertThat(testOf).isNotNull();
     }
 
-    @Test
+    @UtilTest
     void add() {
         lb.add(BusinessDetails.of(b -> b.id(ID)));
         List<BusinessDetails> businessDetails = lb.build();
@@ -40,7 +41,7 @@ class ListBuilderTest {
         assertThat(exception).isInstanceOf(IndexOutOfBoundsException.class);
     }
 
-    @Test
+    @UtilTest
     void addAll() {
         lb.addAll(List.of(
                 BusinessDetails.of(b -> b.id(ID)),

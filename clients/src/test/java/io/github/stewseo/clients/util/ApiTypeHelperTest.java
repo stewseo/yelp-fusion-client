@@ -1,9 +1,7 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.util.ApiTypeHelper;
-import io.github.stewseo.clients.util.MissingRequiredPropertyException;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.List;
 
@@ -11,9 +9,10 @@ import static io.github.stewseo.clients.util.ApiTypeHelper.DisabledChecksHandle;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Tag("utils")
 class ApiTypeHelperTest {
 
-    @Test
+    @UtilTest
     void testDANGEROUS_disableRequiredPropertiesCheck() {
 
         assertThat(ApiTypeHelper.requiredPropertiesCheckDisabled()).isFalse();
@@ -25,11 +24,10 @@ class ApiTypeHelperTest {
 
             assertThat(ApiTypeHelper.requiredPropertiesCheckDisabled()).isTrue();
 
-            disabledChecksHandle.close();
         }
     }
 
-    @Test
+    @UtilTest
     void testRequireNonNull() {
 
         BusinessDetails businessDetails = BusinessDetails.of(b -> b.id("id"));
@@ -39,7 +37,7 @@ class ApiTypeHelperTest {
         assertThat(businessDetails).isNotNull();
     }
 
-    @Test
+    @UtilTest
     void testIsDefined() {
         assertThrows(org.opentest4j.AssertionFailedError.class,
                 () -> assertThat(ApiTypeHelper.isDefined(List.of("value1"))).isFalse()
@@ -51,7 +49,7 @@ class ApiTypeHelperTest {
         assertThat(isDefined).isFalse();
     }
 
-    @Test
+    @UtilTest
     void testUnmodifiable() {
         assertThrows(AssertionError.class,
                 () -> assertThat(ApiTypeHelper.unmodifiable(List.of("value1"))).isNotInstanceOf(List.class)
@@ -61,7 +59,7 @@ class ApiTypeHelperTest {
 
     }
 
-    @Test
+    @UtilTest
     void testUnmodifiableRequired() {
 
         assertThrows(MissingRequiredPropertyException.class,

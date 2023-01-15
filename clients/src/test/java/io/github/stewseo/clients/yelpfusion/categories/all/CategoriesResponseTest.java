@@ -1,23 +1,27 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
-import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesResponse;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CATEGORY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
+@Tag("categories")
 public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
 
     private final CategoriesResponse categoriesResponse = of();
 
     // {"categories":[{"alias":"categoryAliasValue"},{"alias":"category"}],"terms":[{"text":"termTextValue"},{"text":"termTextValue"}],"businesses":[{"id":"businessIdValue"}]}
-    private final String expected = "{\"categories\":[{\"alias\":\"catAlias\"},{\"alias\":\"catAlias\"},{\"alias\":\"categoryAliasValue\"}]}";
+    private final String expected =
+            "{\"categories\":[{\"alias\":\"alias\"},{\"alias\":\"alias\"},{\"alias\":\"alias\"}]}";
 
     private final JsonGenerator generator = generator();
 
@@ -27,23 +31,23 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
         return CategoriesResponse.of(a -> a
                 .categories(List.of(CATEGORY))
                 .categories(CATEGORY)
-                .categories(c -> c.alias("categoryAliasValue"))
+                .categories(c -> c.alias(ALIAS))
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(categoriesResponse.categories()).isNotNull();
 //        assertThat(categoriesResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         categoriesResponse.serialize(generator, mapper);
         assertThat(categoriesResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         categoriesResponse.serializeInternal(generator, mapper);
@@ -51,7 +55,7 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
         AssertionsForClassTypes.assertThat(categoriesResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -62,14 +66,14 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
         assertThat(deserializedCategoriesResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         assertThat(CategoriesResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         CategoriesResponse.Builder builder = new CategoriesResponse.Builder().categories(CATEGORY);
@@ -80,7 +84,7 @@ public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
 
         CategoriesResponse searchBusinessReq = builder.build();
 
-        assertThat(searchBusinessReq.toString()).isEqualTo("{\"categories\":[{\"alias\":\"catAlias\"}]}");
+        assertThat(searchBusinessReq.toString()).isEqualTo("{\"categories\":[{\"alias\":\"alias\"}]}");
     }
 
     public JsonParser parser() {

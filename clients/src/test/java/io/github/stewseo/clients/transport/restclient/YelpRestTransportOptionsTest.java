@@ -9,12 +9,13 @@ import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+@Tag("transport")
 class YelpRestTransportOptionsTest {
 
     private final HttpHost host = new HttpHost("api.yelp.com", 443, "https");

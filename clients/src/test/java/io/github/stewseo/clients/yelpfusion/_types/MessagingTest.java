@@ -1,5 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 
 import io.github.stewseo.clients.json.DeserializeFromJson;
 import io.github.stewseo.clients.json.testcases.JsonTestCase;
@@ -8,9 +10,11 @@ import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 class MessagingTest extends ModelTestCase<Messaging>
         implements DeserializeFromJson {
@@ -27,7 +31,7 @@ class MessagingTest extends ModelTestCase<Messaging>
         );
     }
     private final String expected = "{\"use_case_text\":\"useCaseTextValue\",\"url\":\"urlValue\"}";
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         Messaging.Builder builder = new Messaging.Builder()
@@ -40,24 +44,24 @@ class MessagingTest extends ModelTestCase<Messaging>
 
         Messaging messaging = builder.build();
 
-        Assertions.assertThat(messaging.toString()).isEqualTo(expected);
+        assertThat(messaging.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(messaging.url()).isEqualTo(URL);
         assertThat(messaging.use_case_text()).isEqualTo(USE_CASE_TEXT);
     }
 
     JsonGenerator generator = generator();
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
 
         messaging.serialize(generator, JsonTestCase.mapper);
         assertThat(messaging.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         messaging.serializeInternal(generator, JsonTestCase.mapper);
@@ -65,13 +69,13 @@ class MessagingTest extends ModelTestCase<Messaging>
         assertThat(messaging.toString()).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
         assertThat(Messaging._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         Messaging messaging = Messaging._DESERIALIZER.deserialize(parser(), JsonTestCase.mapper);

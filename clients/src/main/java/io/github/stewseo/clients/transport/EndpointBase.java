@@ -1,9 +1,8 @@
 package io.github.stewseo.clients.transport;
 
-import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
-import io.github.stewseo.clients.json.JsonpDeserializer;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 import java.util.Collections;

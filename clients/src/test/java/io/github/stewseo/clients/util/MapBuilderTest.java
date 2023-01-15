@@ -1,8 +1,8 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
+import io.github.stewseo.clients.yelpfusion._types.QueryParam;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,15 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("utils")
+
 class MapBuilderTest {
 
     private final MapBuilder<String, BusinessDetails, ObjectBuilder<BusinessDetails>> mapBuilder =
             new MapBuilder<>(BusinessDetails.Builder::new);
 
 
-    @Test
+    @UtilTest
     void testInstantiation() {
         assertThat(mapBuilder).isNotNull();
         assertThat(mapBuilder).isInstanceOf(MapBuilder.class);
@@ -29,7 +31,7 @@ class MapBuilderTest {
 
     private final BusinessDetails businessDetails = BusinessDetails.of(b -> b.id("idValue"));
 
-    @Test
+    @UtilTest
     void testPut() {
 
         MapBuilder<String, BusinessDetails, ObjectBuilder<BusinessDetails>> testPut =
@@ -40,7 +42,7 @@ class MapBuilderTest {
         assertThat(testPut.build().containsValue(businessDetails)).isTrue();
     }
 
-    @Test
+    @UtilTest
     void putAll() {
 
         MapBuilder<String, BusinessDetails, ObjectBuilder<BusinessDetails>> testPutAll =
@@ -51,7 +53,7 @@ class MapBuilderTest {
         assertThat(testPutAll.build().containsValue(businessDetails)).isTrue();
     }
 
-    @Test
+    @UtilTest
     void testMapBuilderOfOneElement() {
 
         Map<String, BusinessDetails> testMapBuilder = MapBuilder.of("key", businessDetails);
@@ -59,7 +61,7 @@ class MapBuilderTest {
         assertThat(testMapBuilder.get("key")).isEqualTo(businessDetails);
     }
 
-    @Test
+    @UtilTest
     void testMapBuilderOfTwoElements() {
         List<BusinessDetails> businessDetails = generateListOfBusinessDetails(2);
 
@@ -71,7 +73,7 @@ class MapBuilderTest {
 
     }
 
-    @Test
+    @UtilTest
     void testMapBuilderOfThreeElements() {
         List<BusinessDetails> businessDetails = generateListOfBusinessDetails(3);
 
@@ -85,7 +87,7 @@ class MapBuilderTest {
 
     }
 
-    @Test
+    @UtilTest
     void testMapBuilderOfFourElements() {
 
         List<BusinessDetails> businessDetails = generateListOfBusinessDetails(4);
@@ -108,7 +110,7 @@ class MapBuilderTest {
         List<BusinessDetails> list = new ArrayList<>();
 
         for(int i = 0; i< size; i++) {
-            list.add(generateBusinessDetails(QueryParameter.ID.name() + i));
+            list.add(generateBusinessDetails(QueryParam.ID.name() + i));
         }
         return list;
     }

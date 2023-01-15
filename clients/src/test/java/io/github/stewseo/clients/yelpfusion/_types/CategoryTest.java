@@ -1,19 +1,20 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.COUNTRY_BLACKLIST;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.COUNTRY_WHITELIST;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PARENT_ALIAS;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TITLE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.COUNTRY_BLACKLIST;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.COUNTRY_WHITELIST;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PARENT_ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TITLE;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class CategoryTest extends ModelTestCase<Category> {
 
@@ -36,7 +37,7 @@ public class CategoryTest extends ModelTestCase<Category> {
             "\"country_whitelist\":[\"country_whitelist\"]," +
             "\"country_blacklist\":[\"country_blacklist\"]}";
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(category.alias()).isEqualTo(ALIAS);
         assertThat(category.title()).isEqualTo(TITLE);
@@ -52,7 +53,7 @@ public class CategoryTest extends ModelTestCase<Category> {
                 .country_whitelist(List.of(COUNTRY_WHITELIST))
                 .parent_aliases(List.of(PARENT_ALIAS));
     }
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         Category.Builder builder = ofBuilder();
@@ -65,17 +66,17 @@ public class CategoryTest extends ModelTestCase<Category> {
 
         Category cat = builder.build();
 
-        Assertions.assertThat(cat.toString()).isEqualTo(expected);
+        assertThat(cat.toString()).isEqualTo(expected);
     }
 
     JsonGenerator generator = generator();
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         category.serialize(generator, mapper);
         assertThat(category.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         category.serializeInternal(generator, mapper);
@@ -83,13 +84,13 @@ public class CategoryTest extends ModelTestCase<Category> {
         assertThat(category.toString()).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
         assertThat(Category._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         Category cat = Category._DESERIALIZER.deserialize(parser(), mapper);

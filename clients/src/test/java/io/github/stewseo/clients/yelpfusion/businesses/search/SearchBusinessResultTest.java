@@ -1,32 +1,26 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
-import io.github.stewseo.clients.json.DeserializeFromJson;
-import io.github.stewseo.clients.json.SerializeToJson;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CATEGORY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.DISTANCE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.IMAGE_URL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.IS_CLOSED;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCATION;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.NAME;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PHONE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RATING;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.REVIEW_COUNT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTIONS;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.DISTANCE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IMAGE_URL;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.IS_CLOSED;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCATION;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.NAME;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PHONE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.RATING;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.REVIEW_COUNT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TRANSACTIONS;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
+class SearchBusinessResultTest extends ModelJsonTestCase {
 
     private final SearchBusinessResult searchBusinessResult = SearchBusinessResult.of(e -> e
             .distance(DISTANCE)
@@ -45,9 +39,13 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
 
     );
 
-    private final String expected = "{\"id\":\"id\",\"name\":\"name\",\"image_url\":\"imageUrlValue\",\"phone\":\"phoneValue\",\"price\":\"3\",\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1,\"transactions\":[\"transactionValue\"],\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"catAlias\"}]}";
+    private final String expected = "" +
+            "{\"id\":\"id\"," +
+            "\"name\":\"name\"," +
+            "\"phone\":\"phoneValue\",\"price\":\"3\",\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"alias\"}],\"image_url\":\"imageUrlValue\",\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1,\"transactions\":[\"transactionValue\"],\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\"," +
+            "\"state\":\"stateValue\"}}";
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(searchBusinessResult.distance()).isEqualTo(DISTANCE);
         assertThat(searchBusinessResult.id()).isEqualTo(ID);
@@ -64,7 +62,7 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
         assertThat(searchBusinessResult.transactions()).isEqualTo(TRANSACTIONS);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();
         searchBusinessResult.serialize(generator, mapper);
@@ -72,7 +70,7 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
         assertThat(searchBusinessResult.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         JsonGenerator generator = generator();
         generator.writeStartObject();
@@ -82,13 +80,13 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
         assertThat(searchBusinessResult.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
         assertThat(SearchBusinessResult._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -99,13 +97,7 @@ class SearchBusinessResultTest implements SerializeToJson, DeserializeFromJson {
     }
 
     @Override
-    public JsonGenerator generator() {
-        return mapper.jsonProvider().createGenerator(new StringWriter());
-    }
-
-    @Override
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(searchBusinessResult.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return parser(searchBusinessResult);
     }
 }

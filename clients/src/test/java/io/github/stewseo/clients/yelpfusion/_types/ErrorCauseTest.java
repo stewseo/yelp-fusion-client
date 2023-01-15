@@ -3,15 +3,16 @@ package io.github.stewseo.clients.yelpfusion._types;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.yelpfusion._types.ErrorCause;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+
 
 class ErrorCauseTest extends ModelTestCase<ErrorCause> {
 
@@ -28,7 +29,7 @@ class ErrorCauseTest extends ModelTestCase<ErrorCause> {
                 .type("type"));
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
        ErrorCause.Builder builder = new ErrorCause.Builder().metadata(Map.of("string", JsonData.of("jsonData")))
@@ -43,7 +44,7 @@ class ErrorCauseTest extends ModelTestCase<ErrorCause> {
        assertThat(builder.build()).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(errorCause.causedBy().toString()).isEqualTo("{\"type\":\"causedByType\"}");
         assertThat(errorCause.rootCause().toString()).isEqualTo("[{\"type\":\"rootCauseType\"}]");
@@ -53,14 +54,14 @@ class ErrorCauseTest extends ModelTestCase<ErrorCause> {
         assertThat(errorCause.metadata().toString()).isEqualTo(Map.of("string", JsonData.of("jsonData")).toString());
     }
 
-    @Test
+    @YelpFusionTest
     void setupErrorCauseDeserializer() {
 
         JsonpDeserializer<ErrorCause> errorCauseJsonpDeserializer = ErrorCause._DESERIALIZER;
         assertThat(errorCauseJsonpDeserializer).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     void causedBy() {
 
         final String expected = "{\"caused_by\":{\"string\":\"jsonData\"," +
@@ -75,7 +76,7 @@ class ErrorCauseTest extends ModelTestCase<ErrorCause> {
         assertThat(causedBy.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     void rootCause() {
         final String expected = "{\"root_cause\":[{\"string\":\"jsonData\"," +
                 "\"type\":\"type\",\"reason\":\"reason\"," +
@@ -96,7 +97,7 @@ class ErrorCauseTest extends ModelTestCase<ErrorCause> {
             "\"root_cause\":[{\"type\":\"rootCauseType\"}]}";
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
 
         errorCause.serialize(generator, new JacksonJsonpMapper());
@@ -104,7 +105,7 @@ class ErrorCauseTest extends ModelTestCase<ErrorCause> {
         assertThat(errorCause.toString()).isEqualTo(expectedJson);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         errorCause.serializeInternal(generator, mapper);

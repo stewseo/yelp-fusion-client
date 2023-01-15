@@ -1,14 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
+@Tag("businesses")
 public class BusinessMatchRequestTest extends ModelTestCase<BusinessMatchRequest>
         implements RequestTestCase<BusinessMatchRequest> {
 
@@ -32,7 +36,7 @@ public class BusinessMatchRequestTest extends ModelTestCase<BusinessMatchRequest
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessMatchRequest.city()).isEqualTo(city);
         assertThat(businessMatchRequest.name()).isEqualTo(name);
@@ -57,13 +61,13 @@ public class BusinessMatchRequestTest extends ModelTestCase<BusinessMatchRequest
 
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessMatchRequest.serialize(generator, mapper);
         assertThat(businessMatchRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessMatchRequest.serializeInternal(generator, mapper);
@@ -76,7 +80,7 @@ public class BusinessMatchRequestTest extends ModelTestCase<BusinessMatchRequest
         return BusinessMatchRequest._ENDPOINT;
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
 
         assertThat(endpoint().id()).isEqualTo("v3/businesses/matches");
@@ -94,7 +98,7 @@ public class BusinessMatchRequestTest extends ModelTestCase<BusinessMatchRequest
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
         BusinessMatchRequest.Builder builder = new BusinessMatchRequest.Builder().name("nameValue");
 

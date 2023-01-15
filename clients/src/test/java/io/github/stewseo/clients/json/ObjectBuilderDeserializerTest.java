@@ -2,20 +2,22 @@ package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
+
 public class ObjectBuilderDeserializerTest extends TestJson {
 
-    @Test
+    @JsonTest
     public void testNullObjectValue() {
         // Should also accept null for optional values
         String json = "{ \"price\": null }";
         fromJson(json, SearchBusinessResult.class);
     }
 
-    @Test
+    @JsonTest
     public void testNullObjectValueInFunctionBuilder() {
         String json = """
                 {
@@ -28,14 +30,14 @@ public class ObjectBuilderDeserializerTest extends TestJson {
         builder.build();
     }
 
-    @Test
+    @JsonTest
     public void testStringValue() {
 
         String json = "{ \"id\": \"abc1234\" }";
         fromJson(json, SearchBusinessResult.class);
     }
 
-    @Test
+    @JsonTest
     public void testIntegerValue() {
 
         String json = "{ \"rating\": 4.5 }";

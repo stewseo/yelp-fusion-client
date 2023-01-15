@@ -3,13 +3,12 @@ package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.TestJson;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 public class JsonpDeserializerBaseTest extends TestJson {
 
-    @Test
+    @JsonTest
     public void testArrayDeserializer() {
 
         JsonpDeserializer<List<Integer>> deser =

@@ -1,16 +1,17 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Tag("businesses")
 class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse> {
 
     private final BusinessDetailsResponse businessDetailsResponse = of();
@@ -28,13 +29,13 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessDetailsResponse.serialize(generator, mapper);
         assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessDetailsResponse.serializeInternal(generator, mapper);
@@ -42,12 +43,12 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
         assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessDetailsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         BusinessDetailsResponse.Builder builder = new BusinessDetailsResponse.Builder().result(BusinessDetails.of(b -> b
@@ -63,7 +64,7 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -73,7 +74,7 @@ class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse>
         assertThat(businessDetailsRes).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         assertThat(BusinessDetailsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.JsonpDeserializer");

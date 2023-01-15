@@ -1,7 +1,11 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.yelpfusion._types.YelpFusionException;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +24,7 @@ class YelpFusionExceptionTest {
         }
     }
 
-    @Test
+    @YelpFusionTest
     void testYelpFusionException() {
         int input = 2;
         YelpFusionException exception = assertThrows(YelpFusionException.class,

@@ -1,7 +1,6 @@
 package io.github.stewseo.clients.transport.restclient;
 
 
-import io.github.stewseo.clients.transport.restclient.HttpClientBinaryResponse;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.NdJsonpSerializable;
@@ -13,7 +12,6 @@ import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.transport.endpoints.BinaryEndpoint;
 import io.github.stewseo.clients.transport.endpoints.BooleanEndpoint;
 import io.github.stewseo.clients.transport.endpoints.BooleanResponse;
-import io.github.stewseo.clients.transport.restclient.RestClientOptions;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.MissingRequiredPropertyException;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
@@ -221,11 +219,13 @@ public class RestClientTransport implements YelpFusionTransport {
                             endpoint.id(), new ResponseException(clientResp)
                     );
                 }
+
                 InputStream content = entity.getContent();
 
                 JsonParser parser = mapper.jsonProvider().createParser(content);
 
                 response = responseParser.deserialize(parser, mapper);
+
             }
             return response;
         } else if (endpoint instanceof BooleanEndpoint<?> bep) {

@@ -1,8 +1,5 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.util.MissingRequiredPropertyException;
-import io.github.stewseo.clients.util.ObjectBuilder;
-
 import javax.annotation.Nullable;
 import java.util.AbstractList;
 import java.util.AbstractMap;
@@ -21,7 +18,9 @@ public class ApiTypeHelper {
     private static final ThreadLocal<Boolean> disableRequiredPropertiesCheck = new ThreadLocal<>();
 
     public static boolean requiredPropertiesCheckDisabled() {
-        return disableRequiredPropertiesCheck.get() == Boolean.TRUE;
+        boolean b = disableRequiredPropertiesCheck.get() == Boolean.TRUE;
+        disableRequiredPropertiesCheck.remove();
+        return b;
     }
 
     public static class DisabledChecksHandle implements AutoCloseable {
@@ -78,7 +77,7 @@ public class ApiTypeHelper {
         public Iterator<Object> iterator() {
             return Collections.emptyIterator();
         }
-    };
+    }
 
     static final List<Object> UNDEFINED_LIST = new EmptyList();
 

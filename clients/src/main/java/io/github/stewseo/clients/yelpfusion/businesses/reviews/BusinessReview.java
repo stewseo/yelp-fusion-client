@@ -10,7 +10,6 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.User;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;

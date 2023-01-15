@@ -1,46 +1,47 @@
 package io.github.stewseo.clients.util;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Tag("utils")
+
 public class ObjectBuilderBaseTest extends ObjectBuilderBase {
 
     private final List<String> list = List.of("value1");
 
-    @Test
+    @UtilTest
     void test_listAdd() {
-        assertThat(ObjectBuilderBase._listAdd(list, "value2"))
+        assertThat(ObjectBuilderBase._listAdd(list, "value2").toString())
                 .isEqualTo("[value1, value2]");
     }
 
-    @Test
+    @UtilTest
     void test_listAddAll() {
-        assertThat(ObjectBuilderBase._listAddAll(list, List.of("value2", "value3")))
+        assertThat(ObjectBuilderBase._listAddAll(list, List.of("value2", "value3")).toString())
                 .isEqualTo("[value1, value2, value3]");
     }
 
     private final Map<String, String> map = Map.of("k1", "v1");
 
-    @Test
+    @UtilTest
     void test_mapPut() {
-        assertThat(ObjectBuilderBase._mapPut(map, "k2", "v2"))
+        assertThat(ObjectBuilderBase._mapPut(map, "k2", "v2").toString())
                 .isEqualTo("{k1=v1, k2=v2}");
     }
 
-    @Test
+    @UtilTest
     void test_mapPutAll() {
-        assertThat(ObjectBuilderBase._mapPutAll(map, Map.of("k2", "v2")))
+        assertThat(ObjectBuilderBase._mapPutAll(map, Map.of("k2", "v2")).toString())
                 .isEqualTo("{k1=v1, k2=v2}");
     }
 
-
-    @Test
+    @UtilTest
     void test_checkSingleUseEmptyInternalList() {
 
         ObjectBuilderBase._listAddAll(list, List.of("value1"));
@@ -49,7 +50,7 @@ public class ObjectBuilderBaseTest extends ObjectBuilderBase {
         assertThat(illegalStateException.getMessage()).isEqualTo("Object builders can only be used once");
     }
 
-    @Test
+    @UtilTest
     void testInternalList() {
         ObjectBuilderBase.InternalList<Object> internalList = new InternalList<>();
         internalList.add("item1");

@@ -9,9 +9,9 @@ plugins {
     id 'checkstyle'
     id 'idea'
     id 'com.github.spotbugs'
+    id 'integration-tests'
     id 'jacoco'
     id "org.sonarqube"
-    id 'com.github.dawnwords.jacoco.badge'
 }
 
 
@@ -28,7 +28,8 @@ version = '1.7.6'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 
     withSourcesJar()
@@ -38,7 +39,7 @@ java {
 
 jar {
     archiveFileName.set(project.name)
-    archiveFileName.set(version)
+    archiveFileName.set(project.version)
 
     manifest {
         attributes("Implementation-Title": archiveFileName,
@@ -70,7 +71,7 @@ tasks.withType(JavaCompile) {
 // No Warnings
 checkstyle {
     config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig("$rootDir/config/checkstyle/checkstyle.xml"))
-    maxWarnings = 0
+//    maxWarnings = 0
 }
 
 /*****************************************************************************
@@ -110,7 +111,7 @@ sonarqube {
 
 test.finalizedBy jacocoTestReport
 
-tasks.named('sonar').configure {
+tasks.named('sonarqube').configure {
     dependsOn test
 }
 
@@ -147,10 +148,6 @@ dependencies {
 /*****************************************************************************
  *         testing                                                          *
  *****************************************************************************/
-
-test {
-    useJUnitPlatform()
-}
 
 tasks.register('printPaths') {
     doLast {

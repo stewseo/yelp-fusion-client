@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import io.github.stewseo.clients.json.JsonTest;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.StringReader;
@@ -21,27 +20,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class JsonpMapperTest extends Assertions {
 
     final String json = "{\"children\":[{\"doubleValue\":3.2,\"intValue\":2}],\"doubleValue\":2.1,\"intValue\":1," +
             "\"stringValue\":\"foo\"}";
 
-    @Test
+    @JsonTest
     public void testJsonb() {
         JsonpMapper mapper = new JsonbJsonpMapper();
         testSerialize(mapper, json);
         testDeserialize(mapper, json);
     }
 
-    @Test
+    @JsonTest
     public void testJackson() {
         JacksonJsonpMapper mapper = new JacksonJsonpMapper();
         testSerialize(mapper, json);
         testDeserialize(mapper, json);
     }
 
-    @Test
+    @JsonTest
     public void testJacksonCustomMapper() {
         ObjectMapper jkMapper = new ObjectMapper();
         jkMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
@@ -56,7 +54,7 @@ public class JsonpMapperTest extends Assertions {
         testDeserialize(mapper, json);
     }
 
-    @Test
+    @JsonTest
     public void testDeserializeWithType() {
 
         String json = "{\"foo\":{\"int_value\":1,\"double_value\":1.0},\"bar\":{\"int_value\":2,\"double_value\":2.0}}";

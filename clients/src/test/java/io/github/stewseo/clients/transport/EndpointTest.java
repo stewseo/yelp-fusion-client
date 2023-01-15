@@ -3,13 +3,12 @@ package io.github.stewseo.clients.transport;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.categories.all.CategoriesRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class EndpointTest extends Assertions {
 
-    @Test
+    @TransportTest
     public void testPathParameter() {
 
         CategoriesRequest req;

@@ -1,18 +1,21 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
-import static io.github.stewseo.clients.yelpfusion._types.QueryParameter.TEXT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.FIELD_URL;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.RATING;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.USER;
+import static io.github.stewseo.clients.yelpfusion._types.QueryParam.TEXT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.FIELD_URL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RATING;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@Tag("reviews")
 public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
 
     private final BusinessReview businessReview = of();
@@ -30,10 +33,12 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
     }
     String expected = "{\"id\":\"id\"," +
             "\"text\":\"TEXT\"," +
-            "\"url\":\"url\",\"rating\":4.5," +
-            "\"time_created\":\"time_created\",\"user\":{\"id\":\"idValue\",\"name\":\"nameValue\"}}";
+            "\"url\":\"url\"," +
+            "\"rating\":4.5," +
+            "\"time_created\":\"time_created\"," +
+            "\"user\":{\"id\":\"idValue\",\"name\":\"name\"}}";
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessReview.id()).isEqualTo(ID);
         assertThat(businessReview.url()).isEqualTo(FIELD_URL);
@@ -50,7 +55,7 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
                 .user(USER)
                 .rating(RATING);
     }
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         BusinessReview.Builder builder = ofBuilder();
@@ -67,13 +72,13 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
     }
 
     JsonGenerator generator = generator();
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessReview.serialize(generator, mapper);
         assertThat(businessReview.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessReview.serializeInternal(generator, mapper);
@@ -81,13 +86,13 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
         assertThat(businessReview.toString()).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
         assertThat(BusinessReview._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         BusinessReview cat = BusinessReview._DESERIALIZER.deserialize(parser(), mapper);

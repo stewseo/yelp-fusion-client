@@ -3,23 +3,26 @@ package io.github.stewseo.clients.yelpfusion.events.search;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsRequest;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LIMIT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.OFFSET;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.RADIUS;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.SORT_BY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LIMIT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OFFSET;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RADIUS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.SORT_BY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
+@Tag("events")
+@Tag("search")
 class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
         implements RequestTestCase<SearchEventsRequest> {
 
@@ -64,7 +67,7 @@ class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
 
         assertThat(searchEventsRequest.locale()).isEqualTo(LOCALE);
@@ -89,7 +92,7 @@ class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
             "\"locale\":\"en_US\",\"sort_by\":\"sort_by\",\"sort_on\":\"sort_on\",\"offset\":5,\"location\":\"locationValue\",\"limit\":50,\"start_date\":1,\"end_date\":5,\"radius\":20000,\"latitude\":37.7829,\"longitude\":-122.4189," +
             "\"is_free\":true}";
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();
         searchEventsRequest.serialize(generator, mapper);
@@ -97,7 +100,7 @@ class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
         assertThat(searchEventsRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         JsonGenerator generator = generator();
         generator.writeStartObject();
@@ -107,17 +110,17 @@ class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
         assertThat(searchEventsRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
         assertThat("v3/events")
                 .isEqualTo(SearchEventsRequest._ENDPOINT.requestUrl(searchEventsRequest));
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuildWithJson() {
 
     }
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
     }

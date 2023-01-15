@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.stewseo.clients.json.JsonTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +24,7 @@ public class JacksonMapperTest {
 
     final Logger logger = LoggerFactory.getLogger(JacksonMapperTest.class);
 
-    @Test
+    @JsonTest
     public void testCustomDeserializer() {
         // See https://github.com/elastic/elasticsearch-java/issues/120
 

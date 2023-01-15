@@ -1,8 +1,10 @@
 package io.github.stewseo.clients.json.jackson;
 
+import io.github.stewseo.clients.json.JsonTest;
 import io.github.stewseo.clients.json.jackson.JacksonJsonProvider;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
@@ -11,7 +13,7 @@ public class JacksonJsonParserTest extends Assertions {
 
     private static final String json = "{ 'foo': 'fooValue', 'bar': { 'baz': 1}, 'quux': [true] }".replace('\'', '"');
 
-    @Test
+    @JsonTest
     public void testEventStream() {
 
         JacksonJsonProvider provider = new JacksonJsonProvider();
@@ -57,7 +59,7 @@ public class JacksonJsonParserTest extends Assertions {
         assertFalse(parser.hasNext());
     }
 
-    @Test
+    @JsonTest
     public void testForbidValueGettersAfterHasNext() {
 
         JacksonJsonProvider provider = new JacksonJsonProvider();

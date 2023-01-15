@@ -1,28 +1,27 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventRequest;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
-import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCATION;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>
         implements RequestTestCase<FeaturedEventRequest> {
-
-    private final FeaturedEventRequest featuredEventRequest = of();
-
-    private final String location = "locationValue";
 
     @Override
     public Endpoint<FeaturedEventRequest, ?, ?> endpoint() {
         return FeaturedEventRequest._ENDPOINT;
     }
+
+    private final String location = LOCATION.city();
 
     @Override
     public FeaturedEventRequest of() {
@@ -34,7 +33,8 @@ class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>
         );
     }
 
-    @Test
+    private final FeaturedEventRequest featuredEventRequest = of();
+    @YelpFusionTest
     public void testOf() {
         assertThat(featuredEventRequest.latitude()).isEqualTo(LATITUDE);
         assertThat(featuredEventRequest.longitude()).isEqualTo(LONGITUDE);
@@ -43,18 +43,16 @@ class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>
 
     }
 
-    private final String expected =
-            "{\"location\":\"locationValue\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\"}";
-
+    private final String expected = "{\"location\":\"cityValue\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\"}";
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         featuredEventRequest.serialize(generator, mapper);
         assertThat(featuredEventRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         featuredEventRequest.serializeInternal(generator, mapper);
@@ -62,7 +60,7 @@ class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>
         assertThat(featuredEventRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
 
         assertThat(endpoint().id()).isEqualTo("v3/events/featured");

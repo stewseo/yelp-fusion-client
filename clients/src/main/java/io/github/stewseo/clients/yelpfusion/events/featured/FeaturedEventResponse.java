@@ -17,18 +17,14 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class FeaturedEventResponse implements JsonpSerializable {
 
-    //----------------------------- class fields -----------------------------------//
     private final String business_id;
 
-    //----------------------------- constructor -----------------------------------//
     private final Event event;
 
     private FeaturedEventResponse(Builder builder) {
         this.business_id = builder.business_id;
         this.event = builder.event;
     }
-
-    //----------------------------- getters -----------------------------------//
 
     public static FeaturedEventResponse of(Function<Builder, ObjectBuilder<FeaturedEventResponse>> fn) {
         return fn.apply(new Builder()).build();
@@ -42,7 +38,6 @@ public class FeaturedEventResponse implements JsonpSerializable {
         return event;
     }
 
-    //----------------------------- serialize -----------------------------------//
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
         generator.writeStartObject();
         serializeInternal(generator, mapper);
@@ -65,16 +60,14 @@ public class FeaturedEventResponse implements JsonpSerializable {
         return JsonpUtils.toString(this);
     }
 
-    //----------------------------- builder -----------------------------------//
     public static class Builder extends WithJsonObjectBuilderBase<Builder>
             implements
             ObjectBuilder<FeaturedEventResponse> {
-        //----------------------------- builder fields -----------------------------------//
+
         private String business_id;
 
         private Event event;
 
-        //----------------------------- setters -----------------------------------//
         public final Builder business_id(String value) {
             this.business_id = value;
             return this;
@@ -96,8 +89,6 @@ public class FeaturedEventResponse implements JsonpSerializable {
             return new FeaturedEventResponse(this);
         }
     }
-
-    //----------------------------- deserialize -----------------------------------//
 
     public static final JsonpDeserializer<FeaturedEventResponse> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             FeaturedEventResponse::setFeaturedEventsResponseDeserializer);

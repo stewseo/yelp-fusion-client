@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CENTER;
 
 // generates instances of YelpFusionResult and TemporalDataResult
 public abstract class FunctionalTestCase {

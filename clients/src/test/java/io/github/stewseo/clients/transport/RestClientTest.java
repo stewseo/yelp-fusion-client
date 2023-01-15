@@ -58,7 +58,7 @@ package io.github.stewseo.clients.transport;//package io.github.stewseo.clients.
 //    @Test
 //    void uriTest() {
 //        String method = "GET";
-//        String endpoint = "businesses/search";
+//        String endpoint = "businesses/searchBusinesses";
 //        Request request = new Request(method, endpoint);
 //        Map<String, String> params = Map.of("location", "cabo");
 //
@@ -84,7 +84,7 @@ package io.github.stewseo.clients.transport;//package io.github.stewseo.clients.
 //
 //    @Test
 //    void performBusinessSearchRequestTest() {
-//        Request request = new Request("GET", "v3/businesses/search");
+//        Request request = new Request("GET", "v3/businesses/searchBusinesses");
 //        Map<String, String> params = Map.of("location", "nyc", "categories", "pizza");
 //        request.addParameters(params);
 //
@@ -100,7 +100,7 @@ package io.github.stewseo.clients.transport;//package io.github.stewseo.clients.
 //            assertThat(statusLine.getProtocolVersion().toString()).isEqualTo("HTTP/1.1");
 //
 //            RequestLine requestLine = response.getRequestLine();
-//            assertThat(requestLine.toString()).isEqualTo("GET v3/businesses/search?location=nyc&categories=pizza HTTP/1.1");
+//            assertThat(requestLine.toString()).isEqualTo("GET v3/businesses/searchBusinesses?location=nyc&categories=pizza HTTP/1.1");
 //            assertThat(response.getEntity()).isNotNull();
 //
 //        } catch (IOException e) {

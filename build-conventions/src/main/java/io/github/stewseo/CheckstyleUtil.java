@@ -15,7 +15,6 @@ public abstract class CheckstyleUtil {
     public static String getCheckstyleConfig(String resourcePath) throws IOException {
 
         InputStream in = new FileInputStream(resourcePath);
-
         StringBuilder sb = new StringBuilder();
 
         try (Reader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {

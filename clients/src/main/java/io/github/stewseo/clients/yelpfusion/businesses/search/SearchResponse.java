@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
-
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.NamedDeserializer;
@@ -12,50 +11,53 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @JsonpDeserializable
-public class SearchResponse<TDocument> extends ResponseBody<TDocument> {
+public class SearchResponse<ResultT> extends ResponseBody<ResultT> {
 
-    private SearchResponse(Builder<TDocument> builder) {
+    private SearchResponse(Builder<ResultT> builder) {
         super(builder);
 
     }
 
-    public static <TDocument> SearchResponse<TDocument> of(
-            Function<Builder<TDocument>, ObjectBuilder<SearchResponse<TDocument>>> fn) {
+    public static <ResultT> SearchResponse<ResultT> of(
+            Function<Builder<ResultT>, ObjectBuilder<SearchResponse<ResultT>>> fn) {
         return fn.apply(new Builder<>()).build();
     }
 
-    public static class Builder<TDocument> extends AbstractBuilder<TDocument, Builder<TDocument>>
+    public static class Builder<ResultT> extends AbstractBuilder<ResultT, Builder<ResultT>>
             implements
-            ObjectBuilder<SearchResponse<TDocument>> {
+            ObjectBuilder<SearchResponse<ResultT>> {
 
         @Override
-        protected Builder<TDocument> self() {
+        protected Builder<ResultT> self() {
             return this;
         }
 
-        public SearchResponse<TDocument> build() {
+        public SearchResponse<ResultT> build() {
             _checkSingleUse();
 
-            return new SearchResponse<TDocument>(this);
+            return new SearchResponse<ResultT>(this);
         }
     }
 
-    public static <TDocument> JsonpDeserializer<SearchResponse<TDocument>> createSearchResponseDeserializer(
-            JsonpDeserializer<TDocument> tDocumentDeserializer) {
-        return ObjectBuilderDeserializer.createForObject((Supplier<Builder<TDocument>>) Builder::new,
+    public static <ResultT> JsonpDeserializer<SearchResponse<ResultT>> createSearchResponseDeserializer(
+            JsonpDeserializer<ResultT> tDocumentDeserializer) {
+        return ObjectBuilderDeserializer.createForObject(
+                
+                (Supplier<Builder<ResultT>>) Builder::new,
                 op -> SearchResponse.setupSearchResponseDeserializer(op, tDocumentDeserializer));
     }
     ;
 
     public static final JsonpDeserializer<SearchResponse<Object>> _DESERIALIZER = JsonpDeserializer
             .lazy(() -> createSearchResponseDeserializer(
-                    new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.TDocument")));
+                    new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses._types.ResultT")));
 
-    protected static <TDocument> void setupSearchResponseDeserializer(
-            ObjectDeserializer<Builder<TDocument>> op,
-            JsonpDeserializer<TDocument> tDocumentDeserializer) {
+    protected static <ResultT> void setupSearchResponseDeserializer(
+            ObjectDeserializer<Builder<ResultT>> op,
+            JsonpDeserializer<ResultT> tDocumentDeserializer) {
         ResponseBody.setupResponseBodyDeserializer(op, tDocumentDeserializer);
 
     }
+    
 }
 

@@ -13,12 +13,10 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.core.search.SourceFilter;
-import co.elastic.clients.elasticsearch.core.search.TotalHits;
 import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.MappingProperties;
-import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
+import io.github.stewseo.clients.yelpfusion._types.QueryParam;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +24,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import static io.github.stewseo.clients.yelpfusion._types.QueryParameter.TIMESTAMP;
+
+import static io.github.stewseo.clients.yelpfusion._types.QueryParam.TIMESTAMP;
 public class ElasticsearchService {
 
     private final Logger logger = LoggerFactory.getLogger(ElasticsearchService.class);
     int MAX_RESULTS = 10000;
-
-    private long timestamp;
 
     private final ElasticsearchAsyncClient asyncClient;
 
@@ -79,11 +76,6 @@ public class ElasticsearchService {
         }
     }
 
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-
     public SearchResponse<BusinessDetails> occurences(String index, int size,
                                                       MatchQuery matchQuery,
                                                       RangeQuery rangeQuery
@@ -92,8 +84,6 @@ public class ElasticsearchService {
         Query byCategory = matchQuery._toQuery();
 
         Query byTimestamp = rangeQuery._toQuery();
-
-        SearchResponse<JsonData> response = null;
 
         try {
             return asyncClient.search(s -> s
@@ -213,7 +203,6 @@ public class ElasticsearchService {
         }
         return null;
     }
-    private static String timestampField = TIMESTAMP.name();
 
     public int docsCount(String index) {
         try {
@@ -249,7 +238,7 @@ public class ElasticsearchService {
     private RangeQuery rangeQueryGteTimestamp(String timestamp) {
 
         return RangeQuery.of(r -> r
-                .field(timestampField)
+                .field(TIMESTAMP.name())
                 .gte(JsonData.of(timestamp))
         );
     }
@@ -257,7 +246,7 @@ public class ElasticsearchService {
     private RangeQuery rangeQueryLteTimestamp(String timestamp) {
 
         return RangeQuery.of(r -> r
-                .field(timestampField)
+                .field(TIMESTAMP.name())
                 .lte(JsonData.of(timestamp))
         );
     }
@@ -268,14 +257,14 @@ public class ElasticsearchService {
         );
     }
 
-    private SourceFilter buildSourceFilter(QueryParameter type) {
+    private SourceFilter buildSourceFilter(QueryParam type) {
 
         return SourceFilter.of(source -> source
                 .includes(type.name()));
 
     }
 
-    public SortOptions buildSortOptions(QueryParameter type, SortOrder sortOrder) {
+    public SortOptions buildSortOptions(QueryParam type, SortOrder sortOrder) {
 
         return SortOptions.of(options -> options
                 .field(f -> f

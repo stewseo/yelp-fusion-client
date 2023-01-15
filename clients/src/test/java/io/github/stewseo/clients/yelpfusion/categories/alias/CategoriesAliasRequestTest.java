@@ -1,16 +1,17 @@
 package io.github.stewseo.clients.yelpfusion.categories.alias;
 
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.categories.alias.CategoriesAliasRequest;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Tag("categories")
 class CategoriesAliasRequestTest
         extends ModelTestCase<CategoriesAliasRequest>
         implements RequestTestCase<CategoriesAliasRequest> {
@@ -29,7 +30,7 @@ class CategoriesAliasRequestTest
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(categoriesAliasRequest.alias()).isEqualTo(ALIAS);
     }
@@ -38,13 +39,13 @@ class CategoriesAliasRequestTest
 
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         categoriesAliasRequest.serialize(generator, mapper);
         assertThat(categoriesAliasRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         categoriesAliasRequest.serializeInternal(generator, mapper);
@@ -53,7 +54,7 @@ class CategoriesAliasRequestTest
     }
 
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
 
         assertThat(endpoint().id()).isEqualTo("v3/categories");
@@ -70,7 +71,7 @@ class CategoriesAliasRequestTest
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
         CategoriesAliasRequest.Builder builder = new CategoriesAliasRequest.Builder().alias("aliasValue");
 
@@ -83,7 +84,7 @@ class CategoriesAliasRequestTest
         assertThat(categoriesAliasReq.toString()).isEqualTo("{\"alias\":\"aliasValue\"}");
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
 //        JsonParser parser = parser();
@@ -94,7 +95,7 @@ class CategoriesAliasRequestTest
 //        assertThat(deserializedCategoriesAliasResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
 //        assertThat(CategoriesAliasRequest._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");

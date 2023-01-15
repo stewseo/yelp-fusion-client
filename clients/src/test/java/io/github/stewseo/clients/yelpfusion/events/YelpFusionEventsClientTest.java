@@ -1,28 +1,29 @@
 package io.github.stewseo.clients.yelpfusion.events;
 
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
-import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsClient;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.io.IOException;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.LOCATION_MISSING;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.VALIDATION_ERROR_DOES_NOT_MATCH;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.BAD_LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.LOCATION_MISSING_ERROR;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_ERROR_DOES_NOT_MATCH;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.BAD_LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Tag("events")
 class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
 
-    @Test
+    @YelpFusionTest
     public void testClient() {
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testWithTransportOptions() {
 
         try(RestClientTransport restClientTransport = restClientTransport()) {
@@ -40,7 +41,7 @@ class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
     private final YelpFusionEventsClient eventsClient = new YelpFusionEventsClient(restClientTransport());
 
     // if rate limited
-    @Test
+    @YelpFusionTest
     void testSearchEvents() {
         String expectedUri = "URI [v3/events?locale=en_US]";
 
@@ -54,7 +55,7 @@ class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
     }
 
     // if rate limited
-    @Test
+    @YelpFusionTest
     void testFeaturedEvents() {
 
         String expectedUri = "URI [v3/events/featured?locale=en_US]";
@@ -64,6 +65,7 @@ class YelpFusionEventsClientTest extends YelpFusionClientTestCase {
         ResponseException responseException = assertThrows(ResponseException.class,
                 () -> eventsClient.featured(s -> s.locale(LOCALE))
         );
-        assertThat(responseException.getMessage()).contains(LOCATION_MISSING);
+
+        assertThat(responseException.getMessage()).contains(LOCATION_MISSING_ERROR);
     }
 }

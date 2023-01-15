@@ -15,7 +15,6 @@ import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion._types.Center;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
@@ -25,7 +24,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 
-// Build a BusinessSearchRequest for the business search endpoint
+// Build a BusinessSearchRequest for the business searchBusinesses endpoint
 public class SearchBusinessRequest extends RequestBase implements JsonpSerializable {
 
     @Nullable
@@ -369,6 +368,28 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
 
     }
 
+    public static final JsonpDeserializer<SearchBusinessRequest> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new,
+            SearchBusinessRequest::setupSearchBusinessRequestDeserializer);
+
+
+    protected static void setupSearchBusinessRequestDeserializer(ObjectDeserializer<Builder> op) {
+
+        op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
+        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
+
+        op.add(Builder::location, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "location");
+        op.add(Builder::center, Center._DESERIALIZER, "center");
+        op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
+        op.add(Builder::categories, Category._DESERIALIZER, "categories");
+        op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
+        op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
+        op.add(Builder::sort_by, JsonpDeserializer.stringDeserializer(), "sort_by");
+        op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
+        op.add(Builder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
+        op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
+    }
+
     public static final SimpleEndpoint<SearchBusinessRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/search",
             // Request method
             request -> "GET",
@@ -430,28 +451,6 @@ public class SearchBusinessRequest extends RequestBase implements JsonpSerializa
             },
             SimpleEndpoint.emptyMap(),
             false,
-            SearchBusinessResponse._DESERIALIZER);
-
-    public static final JsonpDeserializer<SearchBusinessRequest> _DESERIALIZER =
-            ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchBusinessRequest::setupSearchBusinessRequestDeserializer);
-
-
-    protected static void setupSearchBusinessRequestDeserializer(ObjectDeserializer<Builder> op) {
-
-        op.add(Builder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
-        op.add(Builder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
-
-        op.add(Builder::location, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "location");
-        op.add(Builder::center, Center._DESERIALIZER, "center");
-        op.add(Builder::radius, JsonpDeserializer.integerDeserializer(), "radius");
-        op.add(Builder::categories, Category._DESERIALIZER, "categories");
-        op.add(Builder::limit, JsonpDeserializer.integerDeserializer(), "limit");
-        op.add(Builder::offset, JsonpDeserializer.integerDeserializer(), "offset");
-        op.add(Builder::sort_by, JsonpDeserializer.stringDeserializer(), "sort_by");
-        op.add(Builder::price, JsonpDeserializer.stringDeserializer(), "price");
-        op.add(Builder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
-        op.add(Builder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
-    }
+            SearchResponse._DESERIALIZER);
 
 }

@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
-import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
+import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,16 +18,13 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public class JsonpSerializeTest extends FunctionalTestCase {
 
     int size = 10;
 
-    @Test
-    public void jsonpSerializeTest() throws IOException {
-
-        String state = "CA";
-
-        String country = "USA";
+    @JsonTest
+    public void jsonpSerializeTest() {
 
         final Stream<BusinessDetails> businesses = generateBusinessInstances(size);
 
@@ -82,7 +80,7 @@ public class JsonpSerializeTest extends FunctionalTestCase {
 
         if (!toJson.equals(businessToString)) {
             toJson = toJson.replaceAll("[^a-zA-Z0-9,{}:\"]", "");
-            businessToString = businessToString.toString().replaceAll("[^a-zA-Z0-9,{}:\"]", "");
+            businessToString = businessToString.replaceAll("[^a-zA-Z0-9,{}:\"]", "");
         }
         assertThat(toJson).isEqualTo(businessToString);
 
@@ -97,10 +95,7 @@ public class JsonpSerializeTest extends FunctionalTestCase {
         final InputStream actualJsonToIS = IOUtils.toInputStream(actualJsonString, StandardCharsets.UTF_8);
 
         try (expectedJsonToIS; actualJsonToIS) {
-            assertThat(actualJsonToIS).isEqualTo(expectedJsonString);
-
-            expectedJsonToIS.close();
-            actualJsonToIS.close();
+            assertThat(actualJsonToIS).isEqualTo(expectedJsonToIS);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

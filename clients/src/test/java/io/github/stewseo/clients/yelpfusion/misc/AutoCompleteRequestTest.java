@@ -1,16 +1,17 @@
 package io.github.stewseo.clients.yelpfusion.misc;
 
 import io.github.stewseo.clients.transport.Endpoint;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LOCALE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class AutoCompleteRequestTest
         extends ModelTestCase<AutoCompleteRequest>
@@ -28,7 +29,7 @@ public class AutoCompleteRequestTest
                 .longitude(LONGITUDE));
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         AutoCompleteRequest.Builder builder = new AutoCompleteRequest.Builder().text("textValue");
@@ -42,7 +43,7 @@ public class AutoCompleteRequestTest
         assertThat(searchBusinessReq.toString()).isEqualTo("{\"text\":\"textValue\"}");
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(autoCompleteRequest.text()).isEqualTo(text);
         assertThat(autoCompleteRequest.locale()).isEqualTo(LOCALE);
@@ -52,14 +53,14 @@ public class AutoCompleteRequestTest
 
     private final String expected = "{\"text\":\"text\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\"}";
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();
         autoCompleteRequest.serialize(generator, mapper);
         assertThat(autoCompleteRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         JsonGenerator generator = generator();
         generator.writeStartObject();
@@ -73,7 +74,7 @@ public class AutoCompleteRequestTest
         return AutoCompleteRequest._ENDPOINT;
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
 
         Endpoint<AutoCompleteRequest, ?, ?> autoCompleteEndpoint = endpoint();

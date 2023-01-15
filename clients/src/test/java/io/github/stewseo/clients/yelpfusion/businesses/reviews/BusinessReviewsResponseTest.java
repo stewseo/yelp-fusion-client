@@ -1,18 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReview;
-import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TOTAL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse> {
 
     private final List<BusinessReview> businessReviews = List.of(BusinessReview.of(br -> br.id(ID)));
@@ -32,7 +32,7 @@ class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse>
 
     private final String expected =
             "{\"reviews\":[{\"id\":\"id\"}],\"possible_languages\":[\"possibleLanguages\"],\"total\":1}";
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         BusinessReviewsResponse.Builder builder = new BusinessReviewsResponse.Builder()
@@ -51,20 +51,20 @@ class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse>
 
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessReviewsResponse.reviews()).isEqualTo(businessReviews);
         assertThat(businessReviewsResponse.possible_languages().get(0)).isEqualTo(possibleLanguages);
         assertThat(businessReviewsResponse.total()).isEqualTo(TOTAL);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessReviewsResponse.serialize(generator, mapper);
         AssertionsForClassTypes.assertThat(businessReviewsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessReviewsResponse.serializeInternal(generator, mapper);
@@ -76,13 +76,13 @@ class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse>
         return parser(businessReviewsResponse);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
         assertThat(BusinessReviewsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         JsonParser parser = parser();

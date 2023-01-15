@@ -1,32 +1,33 @@
 package io.github.stewseo.clients.util;
 
+import io.github.stewseo.clients._type.QueryParameter;
+import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.yelpfusion._types.Time;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("utils")
+
 class TaggedUnionUtilsTest {
 
-    @Test
+    @UtilTest
     void get() {
         Time time = Time.of(t -> t.time("value"));
         String str = TaggedUnionUtils.get(time, Time.Kind.Time);
         assertThat(str).isEqualTo("value");
     }
 
-    private final SomeUnion suA = new SomeUnion.Builder()
-            .variantA(a_ -> a_
-                    .name("a-name")
-            ).build();
-
-    @Test
+    @UtilTest
     void ndJsonIterator() {
-
-        Iterator<?> iterator = TaggedUnionUtils.ndJsonIterator(suA);
+        QueryParameter qf = QueryParameter.of(p -> p
+                ._custom("customKindName", JsonData.of("jsonData"))
+        );
+        Iterator<?> iterator = TaggedUnionUtils.ndJsonIterator(qf);
         iterator.forEachRemaining(e -> {
-            assertThat(e).isInstanceOf(SomeUnion.class);
+            assertThat(e).isInstanceOf(QueryParameter.class);
         });
     }
 }

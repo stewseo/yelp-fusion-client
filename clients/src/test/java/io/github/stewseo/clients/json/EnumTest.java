@@ -1,11 +1,11 @@
 package io.github.stewseo.clients.json;
 
-
 import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion._types.Bytes;
 import io.github.stewseo.clients.yelpfusion._types.GeoOrientation;
 import io.github.stewseo.clients.yelpfusion._types.Refresh;
 import io.github.stewseo.clients.yelpfusion._types.Result;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class EnumTest extends TestJson {
 
 
-    @Test
+    @JsonTest
     public void testSimpleEnum() {
 
         assertThat(Bytes.GigaBytes.aliases()).isNull();
@@ -33,7 +33,7 @@ public class EnumTest extends TestJson {
 
     }
 
-    @Test
+    @JsonTest
     public void testEnumWithAliases() {
 
         assertThat("left").isEqualTo(GeoOrientation.Left.jsonValue());
@@ -46,7 +46,7 @@ public class EnumTest extends TestJson {
 
     }
 
-    @Test
+    @JsonTest
     public void testBooleanEnum() {
 
         // Quoted value

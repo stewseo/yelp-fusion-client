@@ -1,13 +1,13 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
-import co.elastic.clients.elasticsearch._types.RequestBase;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
+import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
@@ -344,5 +344,5 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
                 }
                 return params;
 
-            }, SimpleEndpoint.emptyMap(), false, SearchEventsResponse._DESERIALIZER);
+            }, SimpleEndpoint.emptyMap(), false, SearchResponse._DESERIALIZER);
 }

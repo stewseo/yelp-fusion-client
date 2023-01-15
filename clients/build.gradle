@@ -4,25 +4,18 @@
 
 plugins {
     id 'library-conventions'
-    id 'com.avast.gradle.docker-compose' version '0.14.3'
+//    id 'com.avast.gradle.docker-compose' version '0.14.3'
 }
 
 /*****************************************************************************
  *         java                                                             *
  *****************************************************************************/
 
-javadoc {
-    source = sourceSets.main.allJava
-}
-
 /*****************************************************************************
  *         :clients dependencies                                            *
  *****************************************************************************/
 
 dependencies {
-
-//    api files("../lib/lowlevel-restclient.jar")
-//    api files("../lib/temporaldata-service.jar")
 
     api project(":lowlevel-restclient")
     api project(":temporaldata-service")
@@ -49,9 +42,11 @@ dependencies {
  *         :testing                                                         *
  *****************************************************************************/
 
+
 test {
-    filter {
-//        excludeTestsMatching "io.github.stewseo.clients.functional.*"
+
+    useJUnitPlatform {
+        includeTags "util", "json", "_types","transport", "yelpfusion", "elasticsearch"
     }
 }
 
@@ -80,12 +75,12 @@ publishing {
                 setGroupId POM_GROUP_ID
                 packaging = POM_PACKAGING
                 description = POM_DESCRIPTION
-                url = 'https://github.com/stewseo/yelp-fusion-client'
+                url = POM_URL
 
                 licenses {
                     license {
-                        name = LICENSE_NAME
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = POM_LICENSE_NAME
+                        url = POM_LICENSE_URL
                     }
                 }
 

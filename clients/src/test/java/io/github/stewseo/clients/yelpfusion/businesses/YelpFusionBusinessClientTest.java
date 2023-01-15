@@ -1,39 +1,31 @@
 package io.github.stewseo.clients.yelpfusion.businesses;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
-import io.github.stewseo.clients.yelpfusion._types.test_constants.TestData;
-import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessAsyncClient;
+import io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
-import org.junit.jupiter.api.Test;
+import io.github.stewseo.lowlevel.restclient.ResponseException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
-
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.LONGITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.PRICE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.BUSINESS_NOT_FOUND;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.LOCATION_NOT_FOUND;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorCodes.SPECIFY_LOCATION_ERROR;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.CATEGORY;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TRANSACTION_TYPE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.BUSINESS_NOT_FOUND;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.NOT_OF_TYPE_INTEGER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.SPECIFY_LOCATION_ERROR;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTION_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
 
-    @Test
+    @YelpFusionTest
     public void testWithTransportOptions() {
 
         try (RestClientTransport restClientTransport = restClientTransport()) {
@@ -48,129 +40,145 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
         }
     }
 
-    private final YelpFusionBusinessAsyncClient businessAsyncClient =
-            new YelpFusionBusinessAsyncClient(restClientTransport());
+    private final YelpFusionBusinessesClient yelpFusionBusinessClient =
+            new YelpFusionBusinessesClient(restClientTransport());
 
-    @Test
-    void testSearchBusinessesAsyncClient() {
+    @YelpFusionTest
+    void testSearchTransactionsFunctionParam() {
 
-//        String expectedUri = "URI [v3/businesses/id]";
-
-        ExecutionException exception = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.businessDetails(s -> s.id(TestData.ID)
-                        )
-                        .get()
+        ResponseException responseException = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.searchTransactions(s -> s
+                                .latitude(TestVars.LATITUDE)
+                                .price(TestVars.PRICE)
+                                .transaction_type("delivery")
+                        , SearchBusinessResult.class
+                )
         );
 
-        assertThat(exception.getMessage()).contains(BUSINESS_NOT_FOUND);
+        assertThat(responseException.getMessage()).contains(SPECIFY_LOCATION_ERROR);
     }
 
-    @Test
-    void testBusinessDetailsAsyncClient() throws Exception {
+    @YelpFusionTest
+    void testSearchTransactionsPerformRequest() {
 
-//        String expectedUri = "URI [v3/businesses/search?location=locationValue]";
-
-        ExecutionException exception = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.search(s -> s
-                                        .location(List.of("locationValue")
-                                        )
-                                , ObjectNode.class)
-                        .get()
+        SearchTransactionRequest searchTransactionRequest = SearchTransactionRequest.of(s -> s
+                .transaction_type(TRANSACTION_TYPE)
+                .location("sf")
         );
 
-        assertThat(exception.getMessage()).contains(LOCATION_NOT_FOUND);
+        try {
+            SearchResponse<SearchBusinessResult> result =
+                    yelpFusionBusinessClient.searchTransactions(searchTransactionRequest, SearchBusinessResult.class);
+            int size = result.hits().size();
+            assertThat(size).isGreaterThanOrEqualTo(1);
+            assertThat(result.total()).isGreaterThanOrEqualTo(size);
+            assertThat(result.region()).isNull();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Test
-    void testBusinessReviewsAsyncClient() {
+    @YelpFusionTest
+    void testSearchBusinessesFunctionParam() {
 
-//        String expectedUri = "URI [v3/businesses/id/reviews]";
+        ResponseException exception = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.searchBusinesses(s -> s
+                                .location("sf")
+                                .term("restaurants")
+                                .categories(cat -> cat
+                                        .alias("pizza")
+                                )
+                                .price("$")
+                        ,
+                        SearchBusinessResult.class
+                )
+        );
 
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.businessReviews(s -> s
-                                .id(TestData.ID)
-                        )
-                        .get()
+        assertThat(exception.getMessage()).contains(NOT_OF_TYPE_INTEGER);
+    }
+
+    @YelpFusionTest
+    void testSearchBusinessesPerformRequest() {
+
+        SearchBusinessRequest req = SearchBusinessRequest.of(s -> s
+                .location("sf")
+                .term("restaurants")
+                .categories(cat -> cat
+                        .alias("pizza")
+                )
+                .limit(1)
+        );
+
+        try {
+            SearchResponse<SearchBusinessResult> response = yelpFusionBusinessClient.searchBusinesses(req, SearchBusinessResult.class);
+
+            assertThat(response.hits().size()).isGreaterThanOrEqualTo(1);
+            assertThat(response.total()).isGreaterThanOrEqualTo(response.hits().size());
+            assertThat(response.region()).isNotNull();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @YelpFusionTest
+    void testBusinessReviewsFunctionParam() {
+
+
+        ResponseException executionException = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.businessReviews(s -> s
+                        .id(TestVars.ID)
+                )
+
         );
 
         assertThat(executionException.getMessage()).contains(BUSINESS_NOT_FOUND);
 
     }
 
-    @Test
-    void testBusinessTransactionsAsyncClient() {
-
-        String expectedUri = "URI " +
-                "[v3/transactions/delivery/search?transaction_type=delivery&price=3&latitude=37.7829&longitude=-122.4189]";
-
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.searchTransaction(s -> s
-                                .latitude(TestData.LATITUDE)
-                                .price(TestData.PRICE)
-                                .transaction_type("delivery")
-                        )
-                        .get()
-        );
-
-        assertThat(executionException.getMessage()).contains(SPECIFY_LOCATION_ERROR);
-    }
-
-    @Test
-    void testBusinessSearch() {
-        SearchBusinessRequest req = SearchBusinessRequest.of(m -> m.categories(CATEGORY));
-
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.search(req, SearchBusinessResult.class).get()
-        );
-        assertThat(executionException.getMessage()).isNotNull();
-    }
-
-    @Test
-    void testBusinessDetails() {
-        BusinessDetailsRequest req = BusinessDetailsRequest.of(m -> m.id(TestData.ID));
-
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.businessDetails(req).get()
-        );
-        assertThat(executionException.getMessage()).isNotNull();
-    }
-
-    @Test
+    @YelpFusionTest
     void testBusinessReviews() {
-        BusinessReviewsRequest req = BusinessReviewsRequest.of(m -> m.id(TestData.ID));
+        BusinessReviewsRequest req = BusinessReviewsRequest.of(m -> m.id(TestVars.ID));
 
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.businessReviews(req).get()
+        ResponseException executionException = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.businessReviews(req)
         );
         assertThat(executionException.getMessage()).isNotNull();
     }
 
-    @Test
+    @YelpFusionTest
+    void testBusinessDetailsFunctionParam() {
+
+//        String expectedUri = "URI [v3/businesses/id]";
+
+        ResponseException exception = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.businessDetails(s -> s.id(TestVars.ID)
+                )
+        );
+
+        assertThat(exception.getMessage()).contains(BUSINESS_NOT_FOUND);
+    }
+
+    @YelpFusionTest
+    void testBusinessDetails() {
+        BusinessDetailsRequest req = BusinessDetailsRequest.of(m -> m.id(TestVars.ID));
+
+        ResponseException executionException = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.businessDetails(req)
+        );
+        assertThat(executionException.getMessage()).isNotNull();
+    }
+
+    @YelpFusionTest
     void testBusinessMatch() {
-        BusinessMatchRequest req = BusinessMatchRequest.of(m -> m.latitude(TestData.LATITUDE));
+        BusinessMatchRequest req = BusinessMatchRequest.of(m -> m.latitude(TestVars.LATITUDE));
 
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.businessMatch(req).get()
+        ResponseException executionException = assertThrows(ResponseException.class,
+                () -> yelpFusionBusinessClient.matchBusinesses(req)
         );
         assertThat(executionException.getMessage()).isNotNull();
-    }
-
-    @Test
-    void testSearchTransaction() {
-        SearchTransactionRequest req = SearchTransactionRequest.of(s -> s.transaction_type(TRANSACTION_TYPE));
-
-        ExecutionException executionException = assertThrows(ExecutionException.class,
-                () -> businessAsyncClient.searchTransaction(req).get()
-        );
-
-        SearchTransactionRequest searchTransactionRequest = SearchTransactionRequest.of(s -> s.transaction_type(TRANSACTION_TYPE).location("sf"));
-
-        try {
-            SearchBusinessResponse resp = businessAsyncClient.searchTransaction(searchTransactionRequest).get();
-            assertThat(resp.businesses().size()).isGreaterThanOrEqualTo(1);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

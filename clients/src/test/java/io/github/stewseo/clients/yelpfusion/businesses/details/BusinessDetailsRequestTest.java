@@ -1,16 +1,18 @@
 package io.github.stewseo.clients.yelpfusion.businesses.details;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
+
 import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ALIAS;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Tag("businesses")
 class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
         implements RequestTestCase<BusinessDetailsRequest> {
 
@@ -23,7 +25,7 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         BusinessDetailsRequest.Builder builder = new BusinessDetailsRequest.Builder().id("idValue");
@@ -38,7 +40,7 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
 
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(businessDetailsRequest.id()).isEqualTo(ID);
         assertThat(businessDetailsRequest.alias()).isEqualTo(ALIAS);
@@ -47,13 +49,13 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
     private final String expected = "BusinessDetailsRequest: GET v3/businesses/alias {\"id\":\"id\",\"alias\":\"alias\"}";
     private final JsonGenerator generator = generator();
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         businessDetailsRequest.serialize(generator, mapper);
         assertThat(businessDetailsRequest.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         businessDetailsRequest.serializeInternal(generator, mapper);
@@ -66,7 +68,7 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
         return BusinessDetailsRequest._ENDPOINT;
     }
 
-    @Test
+    @YelpFusionTest
     public void testEndpoint() {
 
         Endpoint<BusinessDetailsRequest, ?, ?> endpoint = endpoint();

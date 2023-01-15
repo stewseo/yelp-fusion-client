@@ -8,10 +8,12 @@ import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+import org.junit.jupiter.api.Tag;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+@Tag("elasticsearch")
 class ElasticsearchServiceCtx {
 
     public static ElasticsearchAsyncClient createElasticsearchAsyncClient() {

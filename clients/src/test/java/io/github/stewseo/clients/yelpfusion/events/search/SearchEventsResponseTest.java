@@ -1,23 +1,24 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.events.search.SearchEventsResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.util.List;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.EVENT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.TOTAL;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.EVENT;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Tag("search")
 public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse> {
 
     private final SearchEventsResponse searchEventsResponse = of();
 
-    private final String expected = "{\"events\":[{\"name\":\"nameValue\"}],\"total\":1}";
+    private final String expected = "{\"events\":[{\"name\":\"name\"}],\"total\":1}";
 
     private final JsonGenerator generator = generator();
 
@@ -29,12 +30,12 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(searchEventsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         SearchEventsResponse.Builder builder = new SearchEventsResponse.Builder().events(Event.of(e-> e.name("nameValue")));
@@ -47,12 +48,12 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
 
         assertThat(searchEventsResp.toString()).isEqualTo("{\"events\":[{\"name\":\"nameValue\"}]}");
     }
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         searchEventsResponse.serialize(generator, mapper);
         assertThat(searchEventsResponse.toString()).contains(expected);
     }
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         searchEventsResponse.serializeInternal(generator, mapper);
@@ -64,7 +65,7 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
         return parser(searchEventsResponse);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -75,7 +76,7 @@ public class SearchEventsResponseTest extends ModelTestCase<SearchEventsResponse
         assertThat(deserializedSearchEventsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         assertThat(SearchEventsResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");

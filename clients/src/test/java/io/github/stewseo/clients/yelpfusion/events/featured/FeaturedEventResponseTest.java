@@ -1,22 +1,21 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventResponse;
 import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.Test;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Tag;
 
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestData.ID;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+
+@Tag("events")
+@Tag("search")
 public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventResponse> {
 
     private final FeaturedEventResponse featuredEventsResponse = of();
@@ -34,12 +33,12 @@ public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventRespon
         );
     }
 
-    @Test
+    @YelpFusionTest
     public void testOf() {
         assertThat(featuredEventsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testBuilder() {
 
         FeaturedEventResponse.Builder builder = new FeaturedEventResponse.Builder().event(Event.of(e-> e.name("nameValue")));
@@ -54,13 +53,13 @@ public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventRespon
         assertThat(searchBusinessReq.toString()).isEqualTo("{\"event\":{\"name\":\"nameValue\"}}");
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerialize() {
         featuredEventsResponse.serialize(generator, mapper);
         AssertionsForClassTypes.assertThat(featuredEventsResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
         featuredEventsResponse.serializeInternal(generator, mapper);
@@ -72,7 +71,7 @@ public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventRespon
         return super.parser(featuredEventsResponse);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserialize() {
 
         JsonParser parser = parser();
@@ -83,7 +82,7 @@ public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventRespon
         assertThat(deserializedFeaturedEventResponse.toString()).isEqualTo(expected);
     }
 
-    @Test
+    @YelpFusionTest
     public void testDeserializer() {
 
         assertThat(FeaturedEventResponse._DESERIALIZER.toString()).contains("clients.json.LazyDeserializer@");

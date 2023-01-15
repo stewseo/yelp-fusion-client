@@ -1,27 +1,38 @@
 package io.github.stewseo.clients.json.jackson;
 
+import io.github.stewseo.clients.json.JsonTest;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import jakarta.json.stream.JsonParser;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 
-class JacksonJsonpMapperTest {
+class JacksonJsonpMapperTest extends ModelJsonTestCase {
 
-    @Test
+    @JsonTest
     void withAttribute() {
     }
 
-    @Test
+    @JsonTest
     void objectMapper() {
     }
 
-    @Test
+    @JsonTest
     void jsonProvider() {
     }
 
-    @Test
+    @JsonTest
     void getDefaultDeserializer() {
     }
 
-    @Test
+    @JsonTest
     void serialize() {
     }
+
+    private final String expected = "";
+    @Override
+    public JsonParser parser() {
+        return parser(expected);
+    }
+
 }
