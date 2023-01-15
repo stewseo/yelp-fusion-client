@@ -24,6 +24,7 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
                 .alias(ALIAS)
         );
     }
+    private final String expected = "BusinessDetailsRequest: GET v3/businesses/alias {\"id\":\"id\",\"alias\":\"alias\"}";
 
     @YelpFusionTest
     public void testBuilder() {
@@ -46,7 +47,6 @@ class BusinessDetailsRequestTest extends ModelTestCase<BusinessDetailsRequest>
         assertThat(businessDetailsRequest.alias()).isEqualTo(ALIAS);
     }
 
-    private final String expected = "BusinessDetailsRequest: GET v3/businesses/alias {\"id\":\"id\",\"alias\":\"alias\"}";
     private final JsonGenerator generator = generator();
 
     @YelpFusionTest

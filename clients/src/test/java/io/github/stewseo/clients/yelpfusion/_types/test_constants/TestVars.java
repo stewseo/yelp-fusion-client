@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion._types.test_constants;
 
 import io.github.stewseo.clients._type.QueryParameter;
+import io.github.stewseo.clients._type.Term;
 import io.github.stewseo.clients._type.TermQueryParameter;
 import io.github.stewseo.clients.json.JsonpMapperBase;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
@@ -129,7 +130,7 @@ public class TestVars {
             .region(REGION)
             .total(TOTAL));
 
-    public static final TermQueryParameter TERMS_QUERY_FIELD = TermQueryParameter.of(variant -> variant.term("restaurants"));
+    public static final TermQueryParameter TERMS_QUERY_FIELD = TermQueryParameter.of(variant -> variant.term(Term.Restaurants));
 
     public static final QueryParameter QUERY_FIELD = QueryParameter.of(qf -> qf.term(TERMS_QUERY_FIELD));
 

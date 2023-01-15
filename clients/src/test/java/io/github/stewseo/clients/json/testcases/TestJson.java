@@ -6,16 +6,13 @@ import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-public class TestJson extends Assertions implements ToJson, FromJson {
+public class TestJson extends ModelJsonTestCase implements ToJson, FromJson {
 
     public final JsonpMapper mapper;
 

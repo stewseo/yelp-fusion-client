@@ -10,6 +10,7 @@ import io.github.stewseo.lowlevel.restclient.RequestOptions;
 import io.github.stewseo.lowlevel.restclient.ResponseException;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -53,6 +54,17 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
         assertThat(client.events()).isInstanceOf(YelpFusionEventsClient.class);
     }
 
+    private final String error = "" +
+            "{" +
+                "\"error\": " +
+                    "{" +
+                        "\"code\": \"VALIDATION_ERROR\", " +
+                        "\"description\": \"text is a required parameter.\", " +
+                        "\"field\": \"text\", " +
+                        "\"instance\": null" +
+                    "}" +
+            "}"
+            ;
     @YelpFusionTest
     void testAutocomplete() {
 
@@ -67,14 +79,50 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
         ResponseException responseException = assertThrows(ResponseException.class,
                 () -> client.autocomplete(autoCompleteRequest));
 
-        assertThat(responseException.getMessage()).contains("status line [HTTP/1.1 400 Bad Request]\n" +
-                "{\"error\": {\"code\": \"VALIDATION_ERROR\", \"description\": \"'' is too short\", \"field\": \"text\", \"instance\": \"\"}}");
+        assertThat(responseException.getMessage()).contains(error);
+
 
         responseException = assertThrows(ResponseException.class,  () -> client.autocomplete(a -> a.latitude(LATITUDE)));
 
-        assertThat(responseException.getMessage()).contains("status line [HTTP/1.1 400 Bad Request]\n" +
-                "{\"error\": {\"code\": \"VALIDATION_ERROR\", \"description\": \"'' is too short\", \"field\": \"text\", \"instance\": \"\"}}");
+        assertThat(responseException.getMessage()).contains(error);
+    }
+    @YelpFusionTest
+    void testAutocompletePerformRequest() {
 
+        AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a
+                .latitude(LATITUDE)
+                .longitude(LONGITUDE)
+                .text("pizz")
+        );
 
+        try {
+            assertThat(client.autocomplete(autoCompleteRequest).toString())
+                    .isEqualTo("" +
+                            "{" +
+                                "\"categories\":" +
+                                    "[" +
+                                        "{" +
+                                            "\"alias\":\"pizza\"," +
+                                            "\"title\":\"Pizza\"" +
+                                        "}" +
+                                    "]," +
+                                "\"terms\":" +
+                                    "[" +
+                                        "{" +
+                                            "\"text\":\"Pizza Delivery\"" +
+                                        "}," +
+                                        "{" +
+                                            "\"text\":\"Pizza Hut\"" +
+                                        "}," +
+                                        "{" +
+                                            "\"text\":\"Pizza Near Me\"" +
+                                        "}" +
+                                    "]," +
+                                "\"businesses\":[]" +
+                            "}"
+                    );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

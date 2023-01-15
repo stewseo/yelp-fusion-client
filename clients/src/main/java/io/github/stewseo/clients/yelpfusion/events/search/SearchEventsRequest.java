@@ -1,48 +1,40 @@
 package io.github.stewseo.clients.yelpfusion.events.search;
 
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
+import io.github.stewseo.clients.yelpfusion.YelpFusionRequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
-public class SearchEventsRequest extends RequestBase implements JsonpSerializable {
+public class SearchEventsRequest extends YelpFusionRequestBase {
 
-    private final String locale;
     private final String sort_by;
     private final String sort_on;
-    private final String location;
     private final Integer offset;
     private final Integer limit;
     private final Integer start_date;
     private final Integer end_date;
     private final Integer radius;
-    private final Double latitude;
-    private final Double longitude;
     private final Boolean is_free;
     private final List<String> excluded_events;
     private final List<String> categories;
 
     private SearchEventsRequest(Builder builder) {
-        this.locale = builder.locale;
+        super(builder);
         this.sort_by = builder.sort_by;
         this.sort_on = builder.sort_on;
         this.offset = builder.offset;
         this.limit = builder.limit;
         this.start_date = builder.start_date;
         this.end_date = builder.end_date;
-        this.location = builder.location;
         this.radius = builder.radius;
-        this.latitude = builder.latitude;
-        this.longitude = builder.longitude;
         this.is_free = builder.is_free;
         this.categories = ApiTypeHelper.unmodifiable(builder.categories);
         this.excluded_events = ApiTypeHelper.unmodifiable(builder.excluded_events);
@@ -53,20 +45,12 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
         return fn.apply(new Builder()).build();
     }
 
-    public final String locale() {
-        return locale;
-    }
-
     public final String sort_by() {
         return sort_by;
     }
 
     public final String sort_on() {
         return sort_on;
-    }
-
-    public final String location() {
-        return location;
     }
 
     public final Integer offset() {
@@ -89,14 +73,6 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
         return radius;
     }
 
-    public final Double latitude() {
-        return latitude;
-    }
-
-    public final Double longitude() {
-        return longitude;
-    }
-
     public final Boolean is_free() {
         return is_free;
     }
@@ -109,13 +85,9 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
         return categories;
     }
 
-    public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeStartObject();
-        serializeInternal(generator, mapper);
-        generator.writeEnd();
-    }
-
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
+
+        super.serializeInternal(generator, mapper);
 
         if (ApiTypeHelper.isDefined(this.categories)) {
             generator.writeKey("categories");
@@ -134,10 +106,7 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
             }
             generator.writeEnd();
         }
-        if (this.locale != null) {
-            generator.writeKey("locale");
-            generator.write(this.locale);
-        }
+
         if (this.sort_by != null) {
             generator.writeKey("sort_by");
             generator.write(this.sort_by);
@@ -149,10 +118,6 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
         if (this.offset != null) {
             generator.writeKey("offset");
             generator.write(this.offset);
-        }
-        if (this.location != null) {
-            generator.writeKey("location");
-            generator.write(this.location);
         }
         if (this.limit != null) {
             generator.writeKey("limit");
@@ -170,14 +135,6 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
             generator.writeKey("radius");
             generator.write(this.radius);
         }
-        if (this.latitude != null) {
-            generator.writeKey("latitude");
-            generator.write(this.latitude);
-        }
-        if (this.longitude != null) {
-            generator.writeKey("longitude");
-            generator.write(this.longitude);
-        }
 
         if (this.is_free != null) {
             generator.writeKey("is_free");
@@ -193,25 +150,17 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
     public static class Builder extends AbstractBuilder<Builder>
             implements
             ObjectBuilder<SearchEventsRequest> {
-        private String locale;
         private String sort_by;
         private String sort_on;
-        private String location;
         private Integer offset;
         private Integer limit;
         private Integer start_date;
         private Integer end_date;
         private Integer radius;
-        private Double latitude;
-        private Double longitude;
         private Boolean is_free;
         private List<String> excluded_events;
         private List<String> categories;
 
-        public final Builder locale(String value) {
-            this.locale = value;
-            return this;
-        }
 
         public final Builder sort_by(String value) {
             this.sort_by = value;
@@ -228,10 +177,6 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
             return this;
         }
 
-        public final Builder location(String value) {
-            this.location = value;
-            return this;
-        }
 
         public final Builder limit(Integer value) {
             this.limit = value;
@@ -250,16 +195,6 @@ public class SearchEventsRequest extends RequestBase implements JsonpSerializabl
 
         public final Builder radius(Integer value) {
             this.radius = value;
-            return this;
-        }
-
-        public final Builder latitude(Double value) {
-            this.latitude = value;
-            return this;
-        }
-
-        public final Builder longitude(Double value) {
-            this.longitude = value;
             return this;
         }
 

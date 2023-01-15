@@ -15,12 +15,13 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class QueryFieldTest extends TestJson {
 
-    private final TermQueryParameter termQueryField = TermQueryParameter.of(variant -> variant.term("restaurants"));
+    private final TermQueryParameter termQueryField = TermQueryParameter.of(variant -> variant.term(Term.Restaurants));
 
     private final QueryParameter queryField = QueryParameter.of(qf -> qf.term(termQueryField));
 

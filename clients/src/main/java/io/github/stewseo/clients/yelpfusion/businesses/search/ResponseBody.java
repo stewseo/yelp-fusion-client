@@ -29,8 +29,8 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
 
     protected ResponseBody(AbstractBuilder<ResultT, ?> builder) {
         this.hits = ApiTypeHelper.unmodifiableRequired(builder.hits, this, "businesses");
-        this.tDocumentSerializer = builder.tDocumentSerializer;
         this.total = ApiTypeHelper.requireNonNull(builder.total, this, "total");
+        this.tDocumentSerializer = builder.tDocumentSerializer;
         this.region = builder.region;
     }
     

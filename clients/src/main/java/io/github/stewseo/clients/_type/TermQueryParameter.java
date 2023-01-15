@@ -13,7 +13,7 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class TermQueryParameter extends QueryParameterBase implements QueryParameterVariant {
 
-    private final String term;
+    private final Term term;
 
     private TermQueryParameter(Builder builder) {
         super(builder);
@@ -29,7 +29,7 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
         return QueryParameter.Kind.Term;
     }
 
-	public final String term() {
+	public final Term term() {
 		return this.term;
 	}
 
@@ -39,7 +39,7 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
 
         if(this.term != null) {
             generator.writeKey("term");
-            generator.write(this.term);
+            term.serialize(generator, mapper);
         }
 
     }
@@ -52,12 +52,13 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
             ObjectBuilder<TermQueryParameter> {
 
 
-        private String term;
+        private Term term;
 
-        public final Builder term(String value) {
+        public final Builder term(Term value) {
             this.term = value;
             return this;
         }
+
         @Override
         protected Builder self() {
             return this;
@@ -77,7 +78,7 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
 
     protected static void setupTermVariantDeserializer(ObjectDeserializer<Builder> op) {
         setupQueryFieldBaseDeserializer(op);
-        op.add(Builder::term, JsonpDeserializer.stringDeserializer(), "term");
+        op.add(Builder::term, Term._DESERIALIZER, "term");
     }
 
 }

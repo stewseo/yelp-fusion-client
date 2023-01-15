@@ -29,7 +29,7 @@ slf4j-jclover = { group = "org.slf4j", name = "jcl-over-slf4j", version.ref = "s
 logback-classic = "ch.qos.logback:logback-classic:1.4.1"
 maven-model = "org.apache.maven:maven-model:3.8.4"
 
-elasticsearch-java = "co.elastic.clients:elasticsearch-java:8.5.3"
+elasticsearch-java = "co.elastic.clients:elasticsearch-java:8.6.0"
 
 brein-api-java = "com.breinify:brein-api-library-java:2.2.0"
 brein-time-utilities = "com.breinify:brein-time-utilities:1.8.0"

@@ -2,12 +2,10 @@ package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JsonpMappingExceptionTest extends TestJson {
 

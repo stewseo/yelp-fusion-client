@@ -12,6 +12,11 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public abstract class ModelJsonTestCase extends Assertions implements SerializeToJson, DeserializeFromJson {
 
     private JsonProvider jsonProvider() {
@@ -35,11 +40,4 @@ public abstract class ModelJsonTestCase extends Assertions implements SerializeT
         return parser("test");
     }
 
-    public void testDeserializer() {
-
-    }
-
-    public void testDeserialize() {
-
-    }
 }

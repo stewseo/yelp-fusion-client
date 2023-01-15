@@ -6,6 +6,8 @@ import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
@@ -14,17 +16,15 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
 
     private final BusinessReviewsRequest businessReviewsRequest = of();
 
-    private final String id = "brendas-french-soul-food-san-francisco";
-    private final String alias = "";
-
     public BusinessReviewsRequest of() {
-        return BusinessReviewsRequest.of(a -> a.id(id)
-                .alias(alias));
+        return BusinessReviewsRequest.of(a -> a.id(ID)
+                .alias(ALIAS));
     }
+    private final String expected = "BusinessReviewsRequest: GET v3/businesses/id/reviews {\"id\":\"id\",\"alias\":\"alias\"}";
 
     @YelpFusionTest
     public void testBuilder() {
-        BusinessReviewsRequest.Builder builder = new BusinessReviewsRequest.Builder().alias(alias);
+        BusinessReviewsRequest.Builder builder = new BusinessReviewsRequest.Builder().alias(ALIAS);
 
         BusinessReviewsRequest.Builder self = builder.self();
 
@@ -32,16 +32,14 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
 
         BusinessReviewsRequest businessReviewsReq = builder.build();
 
-        assertThat(businessReviewsReq.toString()).isEqualTo("{\"alias\":\"\"}");
+        assertThat(businessReviewsReq.toString()).isEqualTo("BusinessReviewsRequest: GET v3/businesses/alias/reviews {\"alias\":\"alias\"}");
     }
 
     @YelpFusionTest
     public void testOf() {
-        assertThat(businessReviewsRequest.id()).isEqualTo(id);
-        assertThat(businessReviewsRequest.alias()).isEqualTo(alias);
+        assertThat(businessReviewsRequest.id()).isEqualTo(ID);
+        assertThat(businessReviewsRequest.alias()).isEqualTo(ALIAS);
     }
-
-    private final String expected = "{\"id\":\"brendas-french-soul-food-san-francisco\",\"alias\":\"\"}";
 
     private final JsonGenerator generator = generator();
 
@@ -73,7 +71,8 @@ public class BusinessReviewsRequestTest extends ModelTestCase<BusinessReviewsReq
 
         assertThat(endpoint.id()).isEqualTo(basePath);
 
-        assertThat(endpoint.requestUrl(businessReviewsRequest)).isEqualTo(basePath + "/brendas-french-soul-food-san-francisco/reviews");
+        assertThat(endpoint.requestUrl(businessReviewsRequest))
+                .isEqualTo(basePath + "/id/reviews");
 
         assertThat(endpoint.hasRequestBody()).isFalse();
 

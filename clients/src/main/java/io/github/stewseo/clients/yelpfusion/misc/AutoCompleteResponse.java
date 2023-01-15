@@ -1,8 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.misc;
 
 import co.elastic.clients.util.ApiTypeHelper;
-import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Term;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -12,8 +10,9 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
+import io.github.stewseo.clients.yelpfusion._types.Category;
+import io.github.stewseo.clients.yelpfusion._types.Term;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;

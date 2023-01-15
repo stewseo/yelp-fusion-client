@@ -21,8 +21,6 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class BusinessReviewsResponse implements JsonpSerializable {
 
-
-    // ------------------------------ Fields ------------------------------------ //
     private final List<BusinessReview> reviews;
     private final Integer total;
     private final List<String> possible_languages;

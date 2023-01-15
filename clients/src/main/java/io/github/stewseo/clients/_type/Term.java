@@ -1,14 +1,14 @@
 package io.github.stewseo.clients._type;
 
-import co.elastic.clients.elasticsearch._types.LatLonGeoLocation;
 import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 
 @JsonpDeserializable
 public enum Term implements JsonEnum {
 
-    MICHELIN_STAR("michelin+star"),
-    RESTAURANTS("restaurants")
+    Restaurants("restaurants"),
+    Category("category"),
+    MichelinStar("michelin+star")
     ;
 
     private final String jsonValue;

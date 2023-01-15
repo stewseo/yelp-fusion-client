@@ -1,9 +1,5 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpMappingException;
-import io.github.stewseo.clients.json.JsonpUtils;
 import jakarta.json.JsonNumber;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonParser;
@@ -16,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Base class for {@link JsonpDeserializer} implementations that accept a set of JSON events known at instanciation time.
+ */
 public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
 
     static final JsonpDeserializer<String> STRING =

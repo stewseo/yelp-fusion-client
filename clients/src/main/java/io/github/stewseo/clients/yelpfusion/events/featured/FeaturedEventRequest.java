@@ -1,76 +1,28 @@
 package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
-import io.github.stewseo.clients.yelpfusion.events.featured.FeaturedEventResponse;
+import io.github.stewseo.clients.yelpfusion.YelpFusionRequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
-public class FeaturedEventRequest extends RequestBase implements JsonpSerializable {
-
-    // class fields
-    private final String location;
-    private final Double longitude;
-    private final Double latitude;
-    private final String locale;
+public class FeaturedEventRequest extends YelpFusionRequestBase {
 
     // constructor
     private FeaturedEventRequest(Builder builder) {
-        this.location = builder.location;
-        this.latitude = builder.latitude;
-        this.longitude = builder.longitude;
-        this.locale = builder.locale;
+        super(builder);
     }
 
     public static FeaturedEventRequest of(Function<Builder, ObjectBuilder<FeaturedEventRequest>> fn) {
         return fn.apply(new Builder()).build();
     }
 
-    public final String location() {
-        return location;
-    }
-
-    public final Double longitude() {
-        return longitude;
-    }
-
-    public final Double latitude() {
-        return latitude;
-    }
-
-    public final String locale() {
-        return locale;
-    }
-
-    public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeStartObject();
-        serializeInternal(generator, mapper);
-        generator.writeEnd();
-    }
-
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
-        if (this.location != null) {
-            generator.writeKey("location");
-            generator.write(this.location);
-        }
-        if (this.latitude != null) {
-            generator.writeKey("latitude");
-            generator.write(this.latitude);
-        }
-        if (this.longitude != null) {
-            generator.writeKey("longitude");
-            generator.write(this.longitude);
-        }
-        if (this.locale != null) {
-            generator.writeKey("locale");
-            generator.write(this.locale);
-        }
+        super.serializeInternal(generator, mapper);
     }
 
     @Override
@@ -80,31 +32,7 @@ public class FeaturedEventRequest extends RequestBase implements JsonpSerializab
 
     public static class Builder extends AbstractBuilder<Builder>
             implements
-            ObjectBuilder<FeaturedEventRequest> {
-        private String location;
-        private Double longitude;
-        private Double latitude;
-        private String locale;
-
-        public final Builder location(String value) {
-            this.location = value;
-            return this;
-        }
-
-        public final Builder latitude(Double value) {
-            this.latitude = value;
-            return this;
-        }
-
-        public final Builder longitude(Double value) {
-            this.longitude = value;
-            return this;
-        }
-
-        public final Builder locale(String value) {
-            this.locale = value;
-            return this;
-        }
+                ObjectBuilder<FeaturedEventRequest> {
 
         @Override
         protected Builder self() {

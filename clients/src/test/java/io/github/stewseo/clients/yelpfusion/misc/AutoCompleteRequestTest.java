@@ -51,8 +51,7 @@ public class AutoCompleteRequestTest
         assertThat(autoCompleteRequest.longitude()).isEqualTo(LONGITUDE);
     }
 
-    private final String expected = "{\"text\":\"text\",\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\"}";
-
+    private final String expected = "{\"latitude\":37.7829,\"longitude\":-122.4189,\"locale\":\"en_US\",\"text\":\"text\"}";
     @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();

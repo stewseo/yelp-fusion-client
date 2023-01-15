@@ -87,9 +87,14 @@ class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
     }
 
     private final String expected = "" +
-            "{\"categories\":[\"categories\"]," +
+            "{\"location\":\"locationValue\"," +
+            "\"latitude\":37.7829," +
+            "\"longitude\":-122.4189," +
+            "\"locale\":\"en_US\"," +
+            "\"categories\":[\"categories\"]," +
             "\"excluded_events\":[\"excludedEvent1\",\"excludedEvent2\"]," +
-            "\"locale\":\"en_US\",\"sort_by\":\"sort_by\",\"sort_on\":\"sort_on\",\"offset\":5,\"location\":\"locationValue\",\"limit\":50,\"start_date\":1,\"end_date\":5,\"radius\":20000,\"latitude\":37.7829,\"longitude\":-122.4189," +
+            "\"sort_by\":\"sort_by\",\"sort_on\":\"sort_on\"," +
+            "\"offset\":5,\"limit\":50,\"start_date\":1,\"end_date\":5,\"radius\":20000," +
             "\"is_free\":true}";
 
     @YelpFusionTest
