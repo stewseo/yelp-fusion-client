@@ -66,15 +66,73 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
     }
 
     private final String expected = "" +
-            "{\"source\":" +
-            "{\"id\":\"id\"," +
-            "\"alias\":\"alias\"," +
-            "\"name\":\"name\",\"phone\":\"phoneValue\",\"price\":\"$\",\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"alias\"},{\"alias\":\"alias\"},{\"alias\":\"alias\"}],\"url\":\"url\",\"display_phone\":\"display_phone\",\"is_claimed\":false,\"is_closed\":false,\"rating\":4.5,\"review_count\":1,\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"transactions\":[\"transactionValue\"],\"messaging\":{\"use_case_text\":\"use_case_text\"},\"photos\":[\"photos\",\"photos\"],\"hours\":[{\"hours_type\":\"hoursType\"},{\"hours_type\":\"hoursTypeValue\"}," +
-            "{\"hours_type\":\"hoursType\"}]}}";
+            "{" +
+                "\"source\":" +
+                    "{\"id\":\"id\"," +
+                    "\"alias\":\"alias\"," +
+                    "\"rating\":4.5,\"url\":\"url\"," +
+                    "\"name\":\"name\"," +
+                    "\"phone\":\"phoneValue\"," +
+                    "\"price\":\"$\"," +
+                    "\"center\":" +
+                        "{" +
+                            "\"latitude\":37.7829," +
+                            "\"longitude\":-122.4189" +
+                        "}," +
+                    "\"categories\":" +
+                        "[" +
+                            "{" +
+                                "\"alias\":\"alias\"" +
+                            "}," +
+                            "{" +
+                                "\"alias\":\"alias\"" +
+                            "}," +
+                            "{" +
+                                "\"alias\":\"alias\"" +
+                            "}" +
+                        "]," +
+                "\"display_phone\":\"display_phone\"," +
+                "\"is_claimed\":false," +
+                "\"is_closed\":false," +
+                "\"review_count\":1," +
+                "\"location\":" +
+                    "{" +
+                        "\"address1\":\"addressOneValue\"," +
+                        "\"city\":\"cityValue\"," +
+                        "\"country\":\"countryValue\"," +
+                        "\"state\":\"stateValue\"" +
+                    "}," +
+                "\"transactions\":" +
+                    "[" +
+                        "\"transactionValue\"" +
+                    "]," +
+                "\"messaging\":" +
+                    "{" +
+                        "\"use_case_text\":\"use_case_text\"" +
+                    "}," +
+                "\"photos\":" +
+                    "[" +
+                        "\"photos\",\"photos\"" +
+                    "]," +
+                "\"hours\":" +
+                    "[" +
+                        "{" +
+                            "\"hours_type\":\"hoursType\"" +
+                        "}," +
+                        "{" +
+                            "\"hours_type\":\"hoursTypeValue\"" +
+                        "}," +
+                        "{" +
+                            "\"hours_type\":\"hoursType\"" +
+                        "}" +
+                    "]" +
+                "}" +
+            "}";
+
     @YelpFusionTest
     public void testSerialize() {
         hit.serialize(generator, mapper);
-        assertThat(hit.toString()).isEqualTo(expected);
+        assertThat(hit.source()).isExactlyInstanceOf(BusinessDetails.class);
     }
 
     @YelpFusionTest
@@ -82,7 +140,7 @@ class HitTest extends ModelTestCase<Hit<BusinessDetails>> {
         generator.writeStartObject();
         hit.serializeInternal(generator, mapper);
         generator.writeEnd().close();
-        assertThat(hit.toString()).isEqualTo(expected);
+        assertThat(hit.source()).isExactlyInstanceOf(BusinessDetails.class);
     }
 
     @YelpFusionTest

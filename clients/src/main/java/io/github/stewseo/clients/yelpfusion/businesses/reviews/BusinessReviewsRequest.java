@@ -2,17 +2,16 @@ package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion.businesses.BusinessRequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.BusinessesRequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessReviewsRequest extends BusinessRequestBase {
+public class BusinessReviewsRequest extends BusinessesRequestBase {
 
     private BusinessReviewsRequest(Builder builder) {
         super(builder);

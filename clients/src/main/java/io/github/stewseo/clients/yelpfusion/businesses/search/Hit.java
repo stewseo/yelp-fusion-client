@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 
+import co.elastic.clients.elasticsearch.core.search.ResponseBody;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -20,7 +21,7 @@ import java.util.function.Supplier;
 
 @JsonpDeserializable
 public class Hit<TDocument> implements JsonpSerializable {
-    
+
     @Nullable
     private final JsonpSerializer<TDocument> tDocumentSerializer;
 

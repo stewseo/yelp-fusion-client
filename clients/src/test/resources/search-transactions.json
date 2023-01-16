@@ -1,0 +1,45 @@
+{
+  "businesses": [
+    {
+      "id": "wb17yCMbjgDOqaGwTVLeVQ",
+      "alias": "tara-indian-cuisine-san-francisco",
+      "name": "Tara Indian Cuisine",
+      "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/Fk3d7PAlPyCHEGVAQ4AA_Q/o.jpg",
+      "is_closed": false,
+      "url": "https://www.yelp.com/biz/tara-indian-cuisine-san-francisco?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_transactions_search_delivery&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "review_count": 426,
+      "categories": [
+        {
+          "alias": "indpak",
+          "title": "Indian"
+        }
+      ],
+      "rating": 4.0,
+      "coordinates": {
+        "latitude": 37.7654084,
+        "longitude": -122.4312271
+      },
+      "transactions": [
+        "pickup",
+        "delivery"
+      ],
+      "price": "$$",
+      "location": {
+        "address1": "2217 Market St",
+        "address2": "",
+        "address3": "",
+        "city": "San Francisco",
+        "zip_code": "94114",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "2217 Market St",
+          "San Francisco, CA 94114"
+        ]
+      },
+      "phone": "+14158616655",
+      "display_phone": "(415) 861-6655"
+    }
+  ],
+"total": 1
+}

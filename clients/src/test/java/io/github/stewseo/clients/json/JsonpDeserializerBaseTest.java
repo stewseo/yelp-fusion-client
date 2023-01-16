@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.TestJson;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +17,10 @@ public class JsonpDeserializerBaseTest extends TestJson {
     @JsonTest
     public void testArrayDeserializer() {
 
-        JsonpDeserializer<List<Integer>> deser =
-                JsonpDeserializer.arrayDeserializer(JsonpDeserializer.integerDeserializer());
+
+        JsonpDeserializerBase.ArrayDeserializer<Integer> deser =
+                new JsonpDeserializerBase.ArrayDeserializer<Integer>(JsonpDeserializer.integerDeserializer()
+                );
 
         assertFalse(deser.nativeEvents().contains(JsonParser.Event.VALUE_NUMBER));
         assertTrue(deser.acceptedEvents().contains(JsonParser.Event.VALUE_NUMBER));
@@ -37,7 +39,7 @@ public class JsonpDeserializerBaseTest extends TestJson {
 
     @Test
     void allAcceptedEvents() {
-        JsonpDeserializerBase<SearchBusinessResult> jsonpDeserializerBase;
+        JsonpDeserializerBase<SearchBusinessesResult> jsonpDeserializerBase;
     }
 
     @Test
@@ -89,8 +91,23 @@ public class JsonpDeserializerBaseTest extends TestJson {
         assertThat(value).isEqualTo(expected);
 
     }
-    @Test
+    @JsonTest
     void testEnumMapDeserializer() {
+        JsonpDeserializerBase.EnumMapDeserializer<?, ?> enumMapDeserializer =
+                new JsonpDeserializerBase.EnumMapDeserializer<>(
+                        JsonpDeserializer.stringDeserializer(),
+                        JsonpDeserializer.stringDeserializer());
+        assertThat(enumMapDeserializer.acceptedEvents()).isNotNull();
+        assertThat(enumMapDeserializer.nativeEvents()).isNotNull();
 
+    }
+
+    @Test
+    void testJsonString() {
+
+    }
+
+    @Test
+    void testAllAcceptedEvents() {
     }
 }

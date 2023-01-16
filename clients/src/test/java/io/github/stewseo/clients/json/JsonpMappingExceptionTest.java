@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.json;
 
 import io.github.stewseo.clients.json.testcases.TestJson;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 
 import java.io.StringReader;
 
@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JsonpMappingExceptionTest extends TestJson {
 
-    private final String json = "{" +
+    private final String json = "" +
+            "{" +
                 "\"id\":\"KscSF2Bnwa_wlg1MbdFjvQ\"," +
                 "\"alias\":\"tre-sorelle-new-york\"," +
                 "\"name\":\"Tre Sorelle\"," +
@@ -23,12 +24,30 @@ public class JsonpMappingExceptionTest extends TestJson {
                 "\"rating\":3.5," +
                 "\"review_count\":186," +
                 "\"invalid_field\":\"invalid\"," +
-                "\"transactions\":[\"delivery\",\"pickup\"]," +
+                "\"transactions\":" +
+                    "[" +
+                        "\"delivery\",\"pickup\"" +
+                    "]," +
 
-                "\"location\":{" +
-                "\"address1\":\"61 Reade St\",\"address2\":\"\",\"address3\":\"\",\"city\":\"New York\"," +
-                "\"zip_code\":\"10007\",\"country\":\"US\",\"state\":\"NY\",\"display_address\":[\"61 Reade St\",\"New York, NY 10007\"]}," +
-                "\"coordinates\":{\"latitude\":40.7149022072554,\"longitude\":-74.0064939111471}," +
+                "\"location\":" +
+                    "{" +
+                "\"address1\":\"61 Reade St\"," +
+                "\"address2\":\"\"," +
+                "\"address3\":\"\"," +
+                "\"city\":\"New York\"," +
+                "\"zip_code\":\"10007\"," +
+                "\"country\":\"US\"," +
+                "\"state\":\"NY\"," +
+                "\"display_address\":" +
+                    "[" +
+                        "\"61 Reade St\",\"New York, NY 10007\"" +
+                    "]" +
+                "}," +
+                "\"coordinates\":" +
+                    "{" +
+                        "\"latitude\":40.7149022072554," +
+                        "\"longitude\":-74.0064939111471" +
+                    "}," +
                 "\"categories\":" +
                     "[" +
                         "{\"" +
@@ -39,10 +58,9 @@ public class JsonpMappingExceptionTest extends TestJson {
                         "}" +
                     "]" +
             "}";
-
     private final JsonpMappingException jsonpMappingException = assertThrows(JsonpMappingException.class, () -> {
         // withJson() will read values of the generic parameter type as JsonData
-        SearchBusinessResult.of(b -> b
+        SearchBusinessesResult.of(b -> b
                 .withJson(new StringReader(json))
         );
     });
@@ -63,17 +81,17 @@ public class JsonpMappingExceptionTest extends TestJson {
     public void testObjectPath() {
 
         assertThat(jsonpMappingException.getMessage())
-                .contains("Error deserializing io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult");
+                .contains("Unknown field 'review_count' (JSON path: review_count) (line no=1, column no=496, offset=495)");
 
         // check path
-        assertThat(jsonpMappingException.path()).contains("invalid_field");
+        assertThat(jsonpMappingException.path()).contains("review_count");
     }
     @JsonTest
     public void testArrayPath() {
 
         JsonpMappingException jsonpMappingException = assertThrows(JsonpMappingException.class, () -> {
             // withJson() will read values of the generic parameter type as JsonData
-            SearchBusinessResult.of(b -> b
+            SearchBusinessesResult.of(b -> b
                     .withJson(new StringReader(jsonArray))
             );
         });

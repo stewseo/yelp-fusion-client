@@ -226,10 +226,11 @@ public class ExternallyTaggedUnion {
         @Override
         public Map<String, Union> deserialize(JsonParser parser, JsonpMapper mapper, JsonParser.Event event) {
             Map<String, Union> result = new HashMap<>();
-
-            while ((event = parser.next()) != JsonParser.Event.END_OBJECT) {
-                JsonpUtils.expectEvent(parser, event, JsonParser.Event.KEY_NAME);
-                deserializeEntry(parser.getString(), parser, mapper, result);
+            if(event != null) {
+                while ((event = parser.next()) != JsonParser.Event.END_OBJECT) {
+                    JsonpUtils.expectEvent(parser, event, JsonParser.Event.KEY_NAME);
+                    deserializeEntry(parser.getString(), parser, mapper, result);
+                }
             }
             return result;
         }

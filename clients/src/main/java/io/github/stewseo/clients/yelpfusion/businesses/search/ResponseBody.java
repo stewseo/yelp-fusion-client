@@ -20,8 +20,10 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
 
     private final List<Hit<ResultT>> hits;
 
-    private final JsonpSerializer<ResultT> tDocumentSerializer;
+    @Nullable
+    private final JsonpSerializer<ResultT> resultTSerializer;
 
+    @Nullable
     private final Integer total;
 
     @Nullable
@@ -30,7 +32,7 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
     protected ResponseBody(AbstractBuilder<ResultT, ?> builder) {
         this.hits = ApiTypeHelper.unmodifiableRequired(builder.hits, this, "businesses");
         this.total = ApiTypeHelper.requireNonNull(builder.total, this, "total");
-        this.tDocumentSerializer = builder.tDocumentSerializer;
+        this.resultTSerializer = builder.tDocumentSerializer;
         this.region = builder.region;
     }
     

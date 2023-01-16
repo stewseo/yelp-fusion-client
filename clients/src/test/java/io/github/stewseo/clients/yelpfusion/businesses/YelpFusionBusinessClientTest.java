@@ -1,14 +1,14 @@
 package io.github.stewseo.clients.yelpfusion.businesses;
 
-import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
+import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
@@ -17,8 +17,8 @@ import io.github.stewseo.lowlevel.restclient.ResponseException;
 import java.io.IOException;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.BUSINESS_NOT_FOUND;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.NOT_OF_TYPE_INTEGER;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.SPECIFY_LOCATION_ERROR;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTION_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,9 +49,9 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
         ResponseException responseException = assertThrows(ResponseException.class,
                 () -> yelpFusionBusinessClient.searchTransactions(s -> s
                                 .latitude(TestVars.LATITUDE)
-                                .price(TestVars.PRICE)
+                                .price(PRICE)
                                 .transaction_type("delivery")
-                        , SearchBusinessResult.class
+                        , SearchBusinessesResult.class
                 )
         );
 
@@ -67,8 +67,8 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
         );
 
         try {
-            SearchResponse<SearchBusinessResult> result =
-                    yelpFusionBusinessClient.searchTransactions(searchTransactionRequest, SearchBusinessResult.class);
+            SearchResponse<SearchBusinessesResult> result =
+                    yelpFusionBusinessClient.searchTransactions(searchTransactionRequest, SearchBusinessesResult.class);
             int size = result.hits().size();
             assertThat(size).isGreaterThanOrEqualTo(1);
             assertThat(result.total()).isGreaterThanOrEqualTo(size);
@@ -82,26 +82,27 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
     @YelpFusionTest
     void testSearchBusinessesFunctionParam() {
 
-        ResponseException exception = assertThrows(ResponseException.class,
+        NumberFormatException exception = assertThrows(NumberFormatException.class,
                 () -> yelpFusionBusinessClient.searchBusinesses(s -> s
                                 .location("sf")
                                 .term("restaurants")
                                 .categories(cat -> cat
                                         .alias("pizza")
                                 )
-                                .price("$")
+                                .price(Integer.valueOf("a"))
                         ,
-                        SearchBusinessResult.class
+                        SearchBusinessesResult.class
                 )
         );
 
-        assertThat(exception.getMessage()).contains(NOT_OF_TYPE_INTEGER);
+        assertThat(exception.toString()).contains("java.lang.NumberFormatException: For input string: \"a\"");
+
     }
 
     @YelpFusionTest
     void testSearchBusinessesPerformRequest() {
 
-        SearchBusinessRequest req = SearchBusinessRequest.of(s -> s
+        SearchBusinessesRequest req = SearchBusinessesRequest.of(s -> s
                 .location("sf")
                 .term("restaurants")
                 .categories(cat -> cat
@@ -110,8 +111,9 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
                 .limit(1)
         );
 
+
         try {
-            SearchResponse<SearchBusinessResult> response = yelpFusionBusinessClient.searchBusinesses(req, SearchBusinessResult.class);
+            SearchResponse<SearchBusinessesResult> response = yelpFusionBusinessClient.searchBusinesses(req, SearchBusinessesResult.class);
 
             assertThat(response.hits().size()).isGreaterThanOrEqualTo(1);
             assertThat(response.total()).isGreaterThanOrEqualTo(response.hits().size());
@@ -173,7 +175,7 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
 
     @YelpFusionTest
     void testBusinessMatch() {
-        BusinessMatchRequest req = BusinessMatchRequest.of(m -> m.latitude(TestVars.LATITUDE));
+        MatchBusinessesRequest req = MatchBusinessesRequest.of(m -> m.latitude(TestVars.LATITUDE));
 
         ResponseException executionException = assertThrows(ResponseException.class,
                 () -> yelpFusionBusinessClient.matchBusinesses(req)

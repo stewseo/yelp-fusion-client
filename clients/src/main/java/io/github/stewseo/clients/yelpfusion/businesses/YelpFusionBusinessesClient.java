@@ -9,11 +9,11 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 
@@ -68,21 +68,21 @@ public class YelpFusionBusinessesClient extends ApiClient<YelpFusionTransport, Y
      *
      * @param fn
      *            a function that initializes a builder to create the
-     *            {@link SearchBusinessRequest}
+     *            {@link SearchBusinessesRequest}
      */
     public final <ResultT> SearchResponse<ResultT> searchBusinesses(
-            Function<SearchBusinessRequest.Builder, ObjectBuilder<SearchBusinessRequest>>fn, Class<ResultT> resultTClass)
+            Function<SearchBusinessesRequest.Builder, ObjectBuilder<SearchBusinessesRequest>>fn, Class<ResultT> resultTClass)
             throws IOException {
 
-        return this.searchBusinesses(fn.apply(new SearchBusinessRequest.Builder()).build(), resultTClass);
+        return this.searchBusinesses(fn.apply(new SearchBusinessesRequest.Builder()).build(), resultTClass);
     }
 
-    public final <ResultT> SearchResponse<ResultT> searchBusinesses(SearchBusinessRequest request, Class<ResultT> resultTClass)
+    public final <ResultT> SearchResponse<ResultT> searchBusinesses(SearchBusinessesRequest request, Class<ResultT> resultTClass)
             throws IOException {
 
         @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchBusinessRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
-                (JsonEndpoint<SearchBusinessRequest, SearchResponse<ResultT>, ErrorResponse>) SearchBusinessRequest._ENDPOINT;
+        JsonEndpoint<SearchBusinessesRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchBusinessesRequest, SearchResponse<ResultT>, ErrorResponse>) SearchBusinessesRequest._ENDPOINT;
 
         endpoint = new EndpointWithResponseMapperAttr<>(endpoint,
                 "io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT", getDeserializer(resultTClass));
@@ -104,18 +104,18 @@ public class YelpFusionBusinessesClient extends ApiClient<YelpFusionTransport, Y
         return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
     }
 
-    public MatchBusinessesResponse matchBusinesses(BusinessMatchRequest request) throws Exception {
+    public MatchBusinessesResponse matchBusinesses(MatchBusinessesRequest request) throws Exception {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessMatchRequest, MatchBusinessesResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessMatchRequest, MatchBusinessesResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
+        JsonEndpoint<MatchBusinessesRequest, MatchBusinessesResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<MatchBusinessesRequest, MatchBusinessesResponse, ErrorResponse>) MatchBusinessesRequest._ENDPOINT;
 
         return this.transport.performRequest(request, endpoint, this.transportOptions);
     }
 
     public final MatchBusinessesResponse matchBusinesses(
-            Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn)
+            Function<MatchBusinessesRequest.Builder, ObjectBuilder<MatchBusinessesRequest>> fn)
             throws Exception {
-        return matchBusinesses(fn.apply(new BusinessMatchRequest.Builder()).build());
+        return matchBusinesses(fn.apply(new MatchBusinessesRequest.Builder()).build());
     }
 
     public BusinessDetailsResponse businessDetails(BusinessDetailsRequest request) throws IOException {

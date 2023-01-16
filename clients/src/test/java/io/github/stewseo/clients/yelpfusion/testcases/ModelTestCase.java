@@ -19,8 +19,18 @@ public abstract class ModelTestCase<YelpFusionT>
     }
 
     public JsonParser parser(YelpFusionT yelpFusionT) {
-        InputStream content = IOUtils.toInputStream(yelpFusionT.toString(), StandardCharsets.UTF_8);
+        String yfString = yelpFusionT.toString();
+
+        if (!isValidJsonString(yfString)) {
+
+            yfString = yfString.substring(yfString.indexOf("{"));
+        }
+        InputStream content = IOUtils.toInputStream(yfString, StandardCharsets.UTF_8);
         return mapper.jsonProvider().createParser(content);
+    }
+
+    private boolean isValidJsonString(String yelpFusionToString) {
+        return yelpFusionToString.startsWith("{");
     }
 
     @Override

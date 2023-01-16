@@ -302,21 +302,27 @@ public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
         public Map<String, T> deserialize(JsonParser parser, JsonpMapper mapper, Event event) {
             Map<String, T> result = new HashMap<>();
             String key = null;
-            try {
-                while ((event = parser.next()) != Event.END_OBJECT) {
-                    JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
-                    key = parser.getString();
-                    T value = itemDeserializer.deserialize(parser, mapper);
-                    result.put(key, value);
+
+            if(event != null) {
+
+                try {
+
+                    while ((event = parser.next()) != Event.END_OBJECT) {
+                        JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
+                        key = parser.getString();
+                        T value = itemDeserializer.deserialize(parser, mapper);
+                        result.put(key, value);
+                    }
+                } catch (Exception e) {
+                    throw JsonpMappingException.from(e, null, key, parser);
                 }
-            } catch (Exception e) {
-                throw JsonpMappingException.from(e, null, key, parser);
             }
             return result;
         }
     }
 
     static class EnumMapDeserializer<K, V> extends JsonpDeserializerBase<Map<K, V>> {
+
         private final JsonpDeserializer<K> keyDeserializer;
         private final JsonpDeserializer<V> valueDeserializer;
 
@@ -330,16 +336,18 @@ public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
         public Map<K, V> deserialize(JsonParser parser, JsonpMapper mapper, Event event) {
             Map<K, V> result = new HashMap<>();
             String keyName = null;
-            try {
-                while ((event = parser.next()) != Event.END_OBJECT) {
-                    JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
-                    keyName = parser.getString();
-                    K key = keyDeserializer.deserialize(parser, mapper, event);
-                    V value = valueDeserializer.deserialize(parser, mapper);
-                    result.put(key, value);
+            if(event != null) {
+                try {
+                    while ((event = parser.next()) != Event.END_OBJECT) {
+                        JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
+                        keyName = parser.getString();
+                        K key = keyDeserializer.deserialize(parser, mapper, event);
+                        V value = valueDeserializer.deserialize(parser, mapper);
+                        result.put(key, value);
+                    }
+                } catch (Exception e) {
+                    throw JsonpMappingException.from(e, null, keyName, parser);
                 }
-            } catch (Exception e) {
-                throw JsonpMappingException.from(e, null, keyName, parser);
             }
             return result;
         }

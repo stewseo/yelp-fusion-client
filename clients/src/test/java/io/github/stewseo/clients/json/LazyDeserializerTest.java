@@ -1,12 +1,8 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

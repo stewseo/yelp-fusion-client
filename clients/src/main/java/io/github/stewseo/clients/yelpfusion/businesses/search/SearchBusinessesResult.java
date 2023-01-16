@@ -14,43 +14,29 @@ import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class SearchBusinessResult extends SearchResultBase {
+public class SearchBusinessesResult extends SearchResultBase {
 
-    private final String url;
     private final String display_phone;
-    private final Integer review_count;
     private final Boolean is_closed;
     private final Double distance;
-    private final Double rating;
     private final Location location;
     private final List<String> transactions;
 
-    private SearchBusinessResult(Builder builder) {
+    private SearchBusinessesResult(Builder builder) {
         super(builder);
         this.distance = builder.distance;
         this.display_phone = builder.display_phone;
         this.is_closed = builder.is_closed;
-        this.url = builder.url;
-        this.rating = builder.rating;
-        this.review_count = builder.review_count;
         this.location = builder.location;
         this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
     }
 
-    public static SearchBusinessResult of(Function<Builder, ObjectBuilder<SearchBusinessResult>> fn) {
+    public static SearchBusinessesResult of(Function<Builder, ObjectBuilder<SearchBusinessesResult>> fn) {
         return fn.apply(new Builder()).build();
     }
 
     public final String display_phone() {
         return display_phone;
-    }
-
-    public final String url() {
-        return url;
-    }
-
-    public final Integer review_count() {
-        return review_count;
     }
 
     public final Boolean is_closed() {
@@ -59,10 +45,6 @@ public class SearchBusinessResult extends SearchResultBase {
 
     public final Double distance() {
         return this.distance;
-    }
-
-    public final Double rating() {
-        return rating;
     }
 
     public final Location location() {
@@ -78,11 +60,6 @@ public class SearchBusinessResult extends SearchResultBase {
 //        generator.write("type", "SearchBusinessResult");
         super.serializeInternal(generator, mapper);
 
-        if (this.url != null) {
-            generator.writeKey("url");
-            generator.write(this.url);
-        }
-
         if (this.display_phone != null) {
             generator.writeKey("display_phone");
             generator.write(this.display_phone);
@@ -96,16 +73,6 @@ public class SearchBusinessResult extends SearchResultBase {
         if (this.distance != null) {
             generator.writeKey("distance");
             generator.write(this.distance);
-        }
-
-        if (this.rating != null) {
-            generator.writeKey("rating");
-            generator.write(this.rating);
-        }
-
-        if (this.review_count != null) {
-            generator.writeKey("review_count");
-            generator.write(this.review_count);
         }
 
         if (ApiTypeHelper.isDefined(this.transactions)) {
@@ -125,43 +92,26 @@ public class SearchBusinessResult extends SearchResultBase {
     }
 
     /**
-     * Builder for {@link SearchBusinessResult}.
+     * Builder for {@link SearchBusinessesResult}.
      */
-    public static class Builder extends SearchResultBase.AbstractBuilder<SearchBusinessResult.Builder>
+    public static class Builder extends SearchResultBase.AbstractBuilder<SearchBusinessesResult.Builder>
             implements
-            ObjectBuilder<SearchBusinessResult> {
+            ObjectBuilder<SearchBusinessesResult> {
 
-        private String url;
         private String display_phone;
         private Boolean is_closed;
-        private Double rating;
         private Double distance;
-        private Integer review_count;
         private Location location;
         private List<String> transactions;
 
-        private Builder url(String value) {
-            this.url = value;
-            return this;
-        }
 
         public final Builder display_phone(String value) {
             this.display_phone = value;
             return this;
         }
 
-        public final Builder rating(Double value) {
-            this.rating = value;
-            return this;
-        }
-
         public final Builder distance(Double value) {
             this.distance = value;
-            return this;
-        }
-
-        public final Builder review_count(Integer value) {
-            this.review_count = value;
             return this;
         }
 
@@ -194,25 +144,21 @@ public class SearchBusinessResult extends SearchResultBase {
             return this;
         }
 
-        public SearchBusinessResult build() {
+        public SearchBusinessesResult build() {
             _checkSingleUse();
-            return new SearchBusinessResult(this);
+            return new SearchBusinessesResult(this);
         }
     }
 
-    public static final JsonpDeserializer<SearchBusinessResult> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchBusinessResult::setUpBusinessDeserializer);
+    public static final JsonpDeserializer<SearchBusinessesResult> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            SearchBusinessesResult::setUpBusinessDeserializer);
 
     protected static void setUpBusinessDeserializer(ObjectDeserializer<Builder> op) {
 
         setupSearchResultBaseBaseDeserializer(op);
-
         op.add(Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
-        op.add(Builder::url, JsonpDeserializer.stringDeserializer(), "url");
         op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
-        op.add(Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
         op.add(Builder::distance, JsonpDeserializer.doubleDeserializer(), "distance");
-        op.add(Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
         op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
         op.add(Builder::location, Location._DESERIALIZER, "location");
 

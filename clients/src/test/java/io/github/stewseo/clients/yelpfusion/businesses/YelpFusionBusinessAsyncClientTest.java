@@ -5,10 +5,10 @@ import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
@@ -20,8 +20,12 @@ import java.util.concurrent.ExecutionException;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.BUSINESS_NOT_FOUND;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_SPECIFY_LOCATION_ERROR;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCATION;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTION_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -42,7 +46,8 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
         }
     }
 
-    private final YelpFusionBusinessAsyncClient yelpFusionBusinessesAsyncClient = new YelpFusionBusinessAsyncClient(restClientTransport());
+    private final YelpFusionBusinessAsyncClient yelpFusionBusinessesAsyncClient =
+            new YelpFusionBusinessAsyncClient(restClientTransport());
 
     @YelpFusionTest
     void testBusinessReviewsAsyncClient() {
@@ -66,9 +71,9 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
         ExecutionException executionException = assertThrows(ExecutionException.class,
                 () -> yelpFusionBusinessesAsyncClient.searchTransaction(s -> s
                                         .latitude(LATITUDE)
-                                        .price(TestVars.PRICE)
+                                        .price(PRICE)
                                         .transaction_type("delivery")
-                                , SearchBusinessResult.class)
+                                , SearchBusinessesResult.class)
                         .get()
         );
 
@@ -80,13 +85,14 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
 
         SearchTransactionRequest searchTransactionRequest = SearchTransactionRequest.of(s -> s
                 .transaction_type(TRANSACTION_TYPE)
-                .location("sf")
+                .latitude(LATITUDE)
+                .longitude(LONGITUDE)
         );
 
         try {
             yelpFusionBusinessesAsyncClient
                     .searchTransaction(searchTransactionRequest
-                            , SearchBusinessResult.class)
+                            , SearchBusinessesResult.class)
                     .whenComplete((response, exception) -> {
                         if (exception != null) {
                             System.out.println("SearchTransactionRequest failed. " + exception);
@@ -112,10 +118,10 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
                         .categories(cat -> cat
                                 .alias("pizza")
                         )
-                        .price("1")
+                        .price(PRICE)
                         .limit(1)
                 ,
-                SearchBusinessResult.class
+                SearchBusinessesResult.class
         ).whenComplete((response, exception) -> {
             if (exception != null) {
                 System.out.println("SearchTransactionRequest failed. " + exception);
@@ -132,7 +138,7 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
     @YelpFusionTest
     void testSearchBusinessesPerformRequest() {
 
-        SearchBusinessRequest req = SearchBusinessRequest.of(s -> s
+        SearchBusinessesRequest req = SearchBusinessesRequest.of(s -> s
                 .location("sf")
                 .term("restaurants")
                 .categories(cat -> cat
@@ -141,9 +147,9 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
         );
 
         try {
-            CompletableFuture<SearchResponse<SearchBusinessResult>> cf = yelpFusionBusinessesAsyncClient
+            CompletableFuture<SearchResponse<SearchBusinessesResult>> cf = yelpFusionBusinessesAsyncClient
                     .searchBusinesses(req,
-                            SearchBusinessResult.class)
+                            SearchBusinessesResult.class)
                             .whenComplete((response, exception) -> {
                                 if(exception != null) {
                                     System.out.println("SearchTransactionRequest failed. " + exception);
@@ -152,7 +158,7 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
                                 }
                             });
 
-            SearchResponse<SearchBusinessResult> searchResp = cf.get();
+            SearchResponse<SearchBusinessesResult> searchResp = cf.get();
             assertThat(searchResp.total()).isGreaterThanOrEqualTo(1);
             assertThat(searchResp.hits().size()).isGreaterThanOrEqualTo(1);
             assertThat(searchResp.region()).isNotNull();
@@ -198,7 +204,7 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
 
     @YelpFusionTest
     void testBusinessMatch() {
-        BusinessMatchRequest req = BusinessMatchRequest.of(m -> m.latitude(LATITUDE));
+        MatchBusinessesRequest req = MatchBusinessesRequest.of(m -> m.latitude(LATITUDE));
 
         ExecutionException executionException = assertThrows(ExecutionException.class,
                 () -> yelpFusionBusinessesAsyncClient.businessMatch(req).get()

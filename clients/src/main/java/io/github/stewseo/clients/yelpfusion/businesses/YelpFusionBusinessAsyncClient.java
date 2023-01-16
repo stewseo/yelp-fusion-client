@@ -9,11 +9,11 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.match.BusinessMatchRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.match.MatchBusinessesResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.reviews.BusinessReviewsResponse;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessRequest;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import io.github.stewseo.clients.yelpfusion.businesses.transactions.SearchTransactionRequest;
 
@@ -49,12 +49,12 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         return businessDetails(fn.apply(new BusinessDetailsRequest.Builder()).build());
     }
 
-    public <ResultT> CompletableFuture<SearchResponse<ResultT>> searchBusinesses(SearchBusinessRequest request,
+    public <ResultT> CompletableFuture<SearchResponse<ResultT>> searchBusinesses(SearchBusinessesRequest request,
                                                                                  Class<ResultT> resultTClass) {
 
         @SuppressWarnings("unchecked")
-        JsonEndpoint<SearchBusinessRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
-                (JsonEndpoint<SearchBusinessRequest, SearchResponse<ResultT>, ErrorResponse>) SearchBusinessRequest._ENDPOINT;
+        JsonEndpoint<SearchBusinessesRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
+                (JsonEndpoint<SearchBusinessesRequest, SearchResponse<ResultT>, ErrorResponse>) SearchBusinessesRequest._ENDPOINT;
 
         endpoint = new EndpointWithResponseMapperAttr<>(endpoint,
                 "clients.yelpfusion:Deserializer:_global.searchBusinesses.TDocument", getDeserializer(resultTClass));
@@ -64,9 +64,9 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
 
     public final <ResultT> CompletableFuture<SearchResponse<ResultT>> searchBusinesses(
 
-            Function<SearchBusinessRequest.Builder, ObjectBuilder<SearchBusinessRequest>> fn, Class<ResultT> tDocumentClass) {
+            Function<SearchBusinessesRequest.Builder, ObjectBuilder<SearchBusinessesRequest>> fn, Class<ResultT> tDocumentClass) {
 
-        return searchBusinesses(fn.apply(new SearchBusinessRequest.Builder()).build(), tDocumentClass);
+        return searchBusinesses(fn.apply(new SearchBusinessesRequest.Builder()).build(), tDocumentClass);
     }
 
     public CompletableFuture<BusinessReviewsResponse> businessReviews(BusinessReviewsRequest request) {
@@ -82,17 +82,17 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         return businessReviews(fn.apply(new BusinessReviewsRequest.Builder()).build());
     }
 
-    public CompletableFuture<MatchBusinessesResponse> businessMatch(BusinessMatchRequest request) {
+    public CompletableFuture<MatchBusinessesResponse> businessMatch(MatchBusinessesRequest request) {
         @SuppressWarnings("unchecked")
-        JsonEndpoint<BusinessMatchRequest, MatchBusinessesResponse, ErrorResponse> endpoint =
-                (JsonEndpoint<BusinessMatchRequest, MatchBusinessesResponse, ErrorResponse>) BusinessMatchRequest._ENDPOINT;
+        JsonEndpoint<MatchBusinessesRequest, MatchBusinessesResponse, ErrorResponse> endpoint =
+                (JsonEndpoint<MatchBusinessesRequest, MatchBusinessesResponse, ErrorResponse>) MatchBusinessesRequest._ENDPOINT;
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }
 
     public final CompletableFuture<MatchBusinessesResponse> businessMatch(
-            Function<BusinessMatchRequest.Builder, ObjectBuilder<BusinessMatchRequest>> fn) {
-        return businessMatch(fn.apply(new BusinessMatchRequest.Builder()).build());
+            Function<MatchBusinessesRequest.Builder, ObjectBuilder<MatchBusinessesRequest>> fn) {
+        return businessMatch(fn.apply(new MatchBusinessesRequest.Builder()).build());
     }
 
     public <ResultT> CompletableFuture<SearchResponse<ResultT>> searchTransaction(

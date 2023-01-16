@@ -31,12 +31,8 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
                 .rating(RATING)
         );
     }
-    String expected = "{\"id\":\"id\"," +
-            "\"text\":\"TEXT\"," +
-            "\"url\":\"url\"," +
-            "\"rating\":4.5," +
-            "\"time_created\":\"time_created\"," +
-            "\"user\":{\"id\":\"idValue\",\"name\":\"name\"}}";
+    String expected = "{\"id\":\"id\",\"rating\":4.5,\"url\":\"url\",\"text\":\"TEXT\"," +
+            "\"time_created\":\"time_created\",\"user\":{\"id\":\"idValue\",\"name\":\"name\"}}";
 
     @YelpFusionTest
     public void testOf() {

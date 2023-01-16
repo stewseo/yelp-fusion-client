@@ -7,41 +7,34 @@ import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.apache.commons.io.IOUtils;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ATTRIBUTES;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CATEGORY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CENTER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CITY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LIMIT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OFFSET;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OPEN_AT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OPEN_NOW;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RADIUS;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.SORT_BY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TERM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
-        implements RequestTestCase<SearchBusinessRequest> {
+class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessesRequest>
+        implements RequestTestCase<SearchBusinessesRequest> {
 
-    private final String PRICE = "price";
-
-    public static final List<String> LOCATIONS = List.of("location"), TERMS = List.of("term");
-
-    private final SearchBusinessRequest searchBusinessRequest = of();
+    private final SearchBusinessesRequest searchBusinessRequest = of();
 
     @Override
-    public SearchBusinessRequest of() {
-        return SearchBusinessRequest.of(e -> e
+    public SearchBusinessesRequest of() {
+        return SearchBusinessesRequest.of(e -> e
                 .locale(LOCALE)
                 .sort_by(SORT_BY)
-                .location(LOCATIONS)
+                .location(CITY)
                 .offset(OFFSET)
                 .limit(LIMIT)
                 .open_now(OPEN_NOW)
@@ -49,7 +42,7 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
                 .center(CENTER)
                 .attributes(ATTRIBUTES)
                 .limit(LIMIT)
-                .term(TERMS)
+                .term(TERM)
                 .radius(RADIUS)
                 .open_at(OPEN_AT)
                 .price(PRICE)
@@ -60,7 +53,7 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
     public void testOf() {
         assertThat(searchBusinessRequest.locale()).isEqualTo(LOCALE);
         assertThat(searchBusinessRequest.sort_by()).isEqualTo(SORT_BY);
-        assertThat(searchBusinessRequest.location()).isEqualTo(LOCATIONS);
+        assertThat(searchBusinessRequest.location()).isEqualTo(CITY);
         assertThat(searchBusinessRequest.offset()).isEqualTo(OFFSET);
         assertThat(searchBusinessRequest.limit()).isEqualTo(LIMIT);
         assertThat(searchBusinessRequest.categories()).isEqualTo(CATEGORY);
@@ -76,24 +69,15 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
         assertThat(searchBusinessRequest.attributes()).isEqualTo(ATTRIBUTES);
     }
 
-    private final String expected = "{" +
-            "\"term\":[\"term\"]," +
-            "\"location\":[\"location\"]," +
-            "\"categories\":{\"alias\":\"alias\"}," +
-            "\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189}," +
-            "\"radius\":20000,\"offset\":5," +
-            "\"sort_by\":\"sort_by\",\"limit\":50," +
-            "\"open_at\":1," +
-            "\"price\":\"price\"," +
-            "\"attributes\":[{\"attribute\":\"attribute\"}]}";
-
+    private final String expected = "" +
+            "SearchBusinessesRequest: GET v3/businesses/search?open_now=true&offset=5&price=3&limit=50&term=term&location=sf&attributes=attribute&categories=alias&sort_by=sort_by&radius=20000&locale=en_US&open_at=1 {\"term\":[\"term\"],\"location\":\"sf\",\"categories\":{\"alias\":\"alias\"},\"radius\":20000,\"offset\":5,\"sort_by\":\"sort_by\",\"limit\":50,\"open_at\":1,\"price\":3,\"attributes\":[{\"attribute\":\"attribute\"}]}";
     @YelpFusionTest
     public void testSerialize() {
         JsonGenerator generator = generator();
 
         searchBusinessRequest.serialize(generator, mapper);
 
-        assertThat(searchBusinessRequest.toString()).isEqualTo(expected);
+        assertThat(searchBusinessRequest.toString()).contains(expected);
     }
 
     @YelpFusionTest
@@ -107,27 +91,29 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
     }
 
     @Override
-    public Endpoint<SearchBusinessRequest, ?, ?> endpoint() {
-        return SearchBusinessRequest._ENDPOINT;
+    public Endpoint<SearchBusinessesRequest, ?, ?> endpoint() {
+        return SearchBusinessesRequest._ENDPOINT;
     }
 
     @YelpFusionTest
     public void testEndpoint() {
         assertThat("v3/businesses/search")
-                .isEqualTo(SearchBusinessRequest._ENDPOINT.requestUrl(searchBusinessRequest));
+                .isEqualTo(SearchBusinessesRequest._ENDPOINT.requestUrl(searchBusinessRequest));
     }
 
     @YelpFusionTest
     public void testBuilder() {
-        SearchBusinessRequest.Builder builder = new SearchBusinessRequest.Builder().term("termValue");
+        SearchBusinessesRequest.Builder builder =
+                new SearchBusinessesRequest.Builder().term("termValue");
 
-        SearchBusinessRequest.Builder self = builder.self();
+        SearchBusinessesRequest.Builder self = builder.self();
 
         assertThat(self).isEqualTo(builder);
 
-        SearchBusinessRequest searchBusinessReq = builder.build();
+        SearchBusinessesRequest searchBusinessReq = builder.build();
 
-        assertThat(searchBusinessReq.toString()).isEqualTo("{\"term\":[\"termValue\"]}");
+        assertThat(searchBusinessReq.toString()).isEqualTo("" +
+                "SearchBusinessesRequest: GET v3/businesses/search?term=termValue {\"term\":[\"termValue\"]}");
     }
 
     @YelpFusionTest
@@ -135,19 +121,19 @@ class SearchBusinessRequestTest extends ModelTestCase<SearchBusinessRequest>
 
         JsonParser parser = parser();
 
-        SearchBusinessRequest searchBusinessRequest = SearchBusinessRequest._DESERIALIZER.deserialize(parser, mapper);
+        SearchBusinessesRequest searchBusinessRequest =
+                SearchBusinessesRequest._DESERIALIZER.deserialize(parser, mapper);
 
-        assertThat(searchBusinessRequest.toString()).isEqualTo(expected);
+        assertThat(searchBusinessRequest.toString()).isEqualTo("SearchBusinessesRequest: GET v3/businesses/search?offset=5&price=3&limit=50&term=term&location=sf&attributes=attribute&categories=alias&sort_by=sort_by&radius=20000&open_at=1 {\"term\":[\"term\"],\"location\":\"sf\",\"categories\":{\"alias\":\"alias\"},\"radius\":20000,\"offset\":5,\"sort_by\":\"sort_by\",\"limit\":50,\"open_at\":1,\"price\":3,\"attributes\":[{\"attribute\":\"attribute\"}]}");
     }
 
     @YelpFusionTest
     public void testDeserializer() {
-        assertThat(BusinessReviewsResponse._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
+        assertThat(BusinessReviewsResponse._DESERIALIZER.toString()).contains("" + "io.github.stewseo.clients.json.LazyDeserializer");
     }
 
     public JsonParser parser() {
-        InputStream content = IOUtils.toInputStream(searchBusinessRequest.toString(), StandardCharsets.UTF_8);
-        return mapper.jsonProvider().createParser(content);
+        return parser(searchBusinessRequest);
     }
 
 }

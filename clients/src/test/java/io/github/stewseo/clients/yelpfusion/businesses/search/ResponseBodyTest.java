@@ -19,10 +19,10 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult>> {
+class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessesResult>> {
 
-    private static final JsonpSerializer<SearchBusinessResult> toStringSerializer =
-            (JsonpSerializer<SearchBusinessResult>) (value, generator, mapper) -> {
+    private static final JsonpSerializer<SearchBusinessesResult> toStringSerializer =
+            (JsonpSerializer<SearchBusinessesResult>) (value, generator, mapper) -> {
                 if (value == null) {
                     generator.writeNull();
                 } else {
@@ -30,25 +30,25 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult
                 }
             };
 
-    private final Hit<SearchBusinessResult> HIT = Hit.of(b -> b
+    private final Hit<SearchBusinessesResult> HIT = Hit.of(b -> b
             .source(EXPECTED_SEARCH_BUSINESS_RESULT)
             .tDocumentSerializer(toStringSerializer)
     );
 
     @Override
-    public SearchResponse<SearchBusinessResult> of() {
+    public SearchResponse<SearchBusinessesResult> of() {
         return SearchResponse.of(s -> s
                 .hits(List.of(HIT))
                 .total(TOTAL)
                 .region(REGION));
     }
 
-    private final SearchResponse<SearchBusinessResult> searchResponse = of();
+    private final SearchResponse<SearchBusinessesResult> searchResponse = of();
 
     @YelpFusionTest
     public void testBuilder() {
 
-        SearchResponse.Builder<SearchBusinessResult> builder = new SearchResponse.Builder<SearchBusinessResult>()
+        SearchResponse.Builder<SearchBusinessesResult> builder = new SearchResponse.Builder<SearchBusinessesResult>()
                 .region(REGION)
                 .hits(HIT)
                 .total(TOTAL);
@@ -70,7 +70,7 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult
 
     @YelpFusionTest
     public void testOf() {
-        SearchBusinessResult searchBusinessResult = searchResponse.hits().get(0).source();
+        SearchBusinessesResult searchBusinessResult = searchResponse.hits().get(0).source();
         assertThat(searchBusinessResult).isNotNull();
         assertThat(searchBusinessResult).isEqualTo(EXPECTED_SEARCH_BUSINESS_RESULT);
         assertThat(searchResponse.total()).isEqualTo(1);
@@ -79,7 +79,11 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult
 
     private final JsonParser parser = parser(searchResponse);
 
-    private final String expected = "{\"hits\":[{\"source\":\"{\\\"id\\\":\\\"id\\\",\\\"center\\\":{\\\"latitude\\\":37.7829,\\\"longitude\\\":-122.4189},\\\"rating\\\":4.5}\"}],\"total\":1,\"region\":{\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189}}}";
+    private final String expected = "" +
+            "{\"hits\":" +
+                "[" +
+                    "{" +
+                        "\"source\":\"{\\\"id\\\":\\\"id\\\",\\\"rating\\\":4.5,\\\"center\\\":{\\\"latitude\\\":37.7829,\\\"longitude\\\":-122.4189}}\"}],\"total\":1,\"region\":{\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189}}}";
 
     @YelpFusionTest
     public void testSerialize() {
@@ -99,8 +103,8 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult
         assertThat(searchResponse.toString()).isEqualTo(expected);
     }
 
-    private final JsonpDeserializer<SearchResponse<SearchBusinessResult>> searchRespDeser =
-            ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessResult>>) SearchResponse.Builder::new,
+    private final JsonpDeserializer<SearchResponse<SearchBusinessesResult>> searchRespDeser =
+            ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessesResult>>) SearchResponse.Builder::new,
                     op -> SearchResponse.setupSearchResponseDeserializer(op,
                             new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
 
@@ -113,10 +117,10 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessResult
 
         assertThat(searchRespDeser.toString()).contains("io.github.stewseo.clients.json.ObjectBuilderDeserializer");
 
-        ObjectDeserializer<SearchResponse.Builder<SearchBusinessResult>> res = 
-                new ObjectDeserializer<>(SearchResponse.Builder<SearchBusinessResult>::new);
+        ObjectDeserializer<SearchResponse.Builder<SearchBusinessesResult>> res =
+                new ObjectDeserializer<>(SearchResponse.Builder<SearchBusinessesResult>::new);
 
-        JsonpDeserializer<SearchBusinessResult> deser = SearchBusinessResult._DESERIALIZER;
+        JsonpDeserializer<SearchBusinessesResult> deser = SearchBusinessesResult._DESERIALIZER;
 
         ResponseBody.setupResponseBodyDeserializer(res, deser);
 

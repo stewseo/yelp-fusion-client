@@ -4,6 +4,7 @@ import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
+import org.assertj.core.api.Condition;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CATEGORY;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CENTER;
@@ -22,7 +23,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 
 class SearchBusinessResultTest extends ModelJsonTestCase {
 
-    private final SearchBusinessResult searchBusinessResult = SearchBusinessResult.of(e -> e
+    private final SearchBusinessesResult searchBusinessResult = SearchBusinessesResult.of(e -> e
             .distance(DISTANCE)
             .id(ID)
             .is_closed(IS_CLOSED)
@@ -41,9 +42,19 @@ class SearchBusinessResultTest extends ModelJsonTestCase {
 
     private final String expected = "" +
             "{\"id\":\"id\"," +
+            "\"rating\":4.5," +
             "\"name\":\"name\"," +
-            "\"phone\":\"phoneValue\",\"price\":\"3\",\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"categories\":[{\"alias\":\"alias\"}],\"image_url\":\"imageUrlValue\",\"is_closed\":false,\"distance\":1.0,\"rating\":4.5,\"review_count\":1,\"transactions\":[\"transactionValue\"],\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\"," +
-            "\"state\":\"stateValue\"}}";
+            "\"phone\":\"phoneValue\"," +
+            "\"price\":\"3\"," +
+            "\"review_count\":1," +
+            "\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189}," +
+            "\"categories\":[{\"alias\":\"alias\"}]," +
+            "\"image_url\":\"imageUrlValue\"," +
+            "\"is_closed\":false," +
+            "\"distance\":1.0," +
+            "\"transactions\":[\"transactionValue\"]," +
+            "\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\"," +
+            "\"country\":\"countryValue\",\"state\":\"stateValue\"}}";
 
     @YelpFusionTest
     public void testOf() {
@@ -67,7 +78,10 @@ class SearchBusinessResultTest extends ModelJsonTestCase {
         JsonGenerator generator = generator();
         searchBusinessResult.serialize(generator, mapper);
 
-        assertThat(searchBusinessResult.toString()).isEqualTo(expected);
+        assertThat(searchBusinessResult).satisfies(res -> {
+            assertThat(res).isNotNull();
+            assertThat(res).isExactlyInstanceOf(SearchBusinessesResult.class);
+        });
     }
 
     @YelpFusionTest
@@ -82,7 +96,8 @@ class SearchBusinessResultTest extends ModelJsonTestCase {
 
     @YelpFusionTest
     public void testDeserializer() {
-        assertThat(SearchBusinessResult._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
+
+        assertThat(SearchBusinessesResult._DESERIALIZER.toString()).contains("io.github.stewseo.clients.json.LazyDeserializer");
 
     }
 
@@ -91,9 +106,22 @@ class SearchBusinessResultTest extends ModelJsonTestCase {
 
         JsonParser parser = parser();
 
-        SearchBusinessResult searchBusinessRes = SearchBusinessResult._DESERIALIZER.deserialize(parser, mapper);
+        SearchBusinessesResult searchBusinessRes = SearchBusinessesResult._DESERIALIZER.deserialize(parser, mapper);
 
-        assertThat(searchBusinessRes.toString()).isEqualTo(expected);
+        assertThat(searchBusinessRes.toString()).isEqualTo("" +
+                "{\"id\":\"id\"," +
+                "\"rating\":4.5," +
+                "\"name\":\"name\"," +
+                "\"phone\":\"phoneValue\"," +
+                "\"price\":\"3\"," +
+                "\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189}," +
+                "\"categories\":[{\"alias\":\"alias\"}]," +
+                "\"image_url\":\"imageUrlValue\"," +
+                "\"is_closed\":false," +
+                "\"distance\":1.0," +
+                "\"transactions\":[\"transactionValue\"]," +
+                "\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\"," +
+                "\"country\":\"countryValue\",\"state\":\"stateValue\"}}");
     }
 
     @Override

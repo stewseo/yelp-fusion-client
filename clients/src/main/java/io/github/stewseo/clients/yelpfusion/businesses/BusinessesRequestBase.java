@@ -1,26 +1,26 @@
 package io.github.stewseo.clients.yelpfusion.businesses;
 
-import co.elastic.clients.elasticsearch._types.mapping.CorePropertyBase;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
-import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import jakarta.json.stream.JsonGenerator;
 
+public abstract class BusinessesRequestBase extends RequestBase implements JsonpSerializable {
 
-public abstract class BusinessRequestBase extends RequestBase implements JsonpSerializable {
-
-    private final String id;
+    private final String businessId;
     private final String alias;
 
-    protected BusinessRequestBase(AbstractBuilder<?> builder) {
-        this.id = builder.id;
+    protected BusinessesRequestBase(AbstractBuilder<?> builder) {
+        this.businessId = builder.id;
         this.alias = builder.alias;
 
     }
 
     public final String id() {
-        return id;
+        return businessId;
     }
 
     public final String alias() {
@@ -34,9 +34,9 @@ public abstract class BusinessRequestBase extends RequestBase implements JsonpSe
     }
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
-        if (this.id != null) {
+        if (this.businessId != null) {
             generator.writeKey("id");
-            generator.write(this.id);
+            generator.write(this.businessId);
         }
         if (this.alias != null) {
             generator.writeKey("alias");
@@ -60,4 +60,12 @@ public abstract class BusinessRequestBase extends RequestBase implements JsonpSe
             return self();
         }
     }
+
+      protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupBusinessRequestBaseDeserializer(
+            ObjectDeserializer<BuilderT> op) {
+
+          op.add(AbstractBuilder::id, JsonpDeserializer.stringDeserializer(), "id");
+          op.add(AbstractBuilder::alias, JsonpDeserializer.stringDeserializer(), "alias");
+      }
+
 }

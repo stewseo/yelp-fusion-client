@@ -33,6 +33,8 @@ public class QueryParameter implements OpenTaggedUnion<QueryParameter.Kind, Obje
     public enum Kind implements JsonEnum {
 
         Term("term"),
+        TransactionType("transaction_type"),
+
 //        Terms("terms"),
 
 //        Categories("categories"),

@@ -16,7 +16,7 @@ import io.github.stewseo.clients.yelpfusion._types.SpecialHours;
 import io.github.stewseo.clients.yelpfusion._types.User;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.businesses.search.Hit;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 
 import java.util.List;
@@ -29,12 +29,11 @@ public class TestVars {
 
     public static final String METHOD = "method [GET]";
 
+    public static final String CITY = "sf";
     public static final String SORT_BY = "sort_by";
 
     public static final String ALIAS = "alias";
-
     public static final String LOCALE = "en_US";
-
     public static final String BAD_LOCALE = "en_U";
 
     public static final String ID = "id";
@@ -52,6 +51,8 @@ public class TestVars {
     public static final String DISPLAY_PHONE = "display_phone";
     public static final String EXPECTED_CATEGORIES = "[{\"alias\":\"alias\"}, {\"alias\":\"alias\"}, {\"alias\":\"alias\"}]";
     public static final int TOTAL = 1;
+
+    public static long UNIX_TIMESTAMP_2023 = 1672531200;
     public static final int REVIEW_COUNT = 1;
     public static final int OFFSET = 5;
     public static final int LIMIT = 50;
@@ -61,11 +62,13 @@ public class TestVars {
     public static final int MAX_RESULTS = 10000;
     public static final double DISTANCE = 1;
     public static final double RATING = 4.5;
+
     public static final double LATITUDE = 37.7829;
     public static final double LONGITUDE = -122.4189;
     public static final boolean OPEN_NOW = true;
     public static final boolean IS_CLOSED = false;
     public static final boolean IS_CLAIMED = false;
+
     public static final boolean IS_OVERNIGHT = false;
     public static final String TRANSACTION_TYPE = "delivery";
 
@@ -86,6 +89,7 @@ public class TestVars {
             .end(HOURS_END));
     public static final Event EVENT = Event.of(e -> e.name(NAME));
     public static final Category CATEGORY = Category.of(c -> c.alias(ALIAS));
+
     public static final Location LOCATION = Location.of(l -> l
             .address1("addressOneValue")
             .city("cityValue")
@@ -117,15 +121,15 @@ public class TestVars {
             .photos(PHOTOS)
             .photos(List.of(PHOTOS))
     );
-    public static final SearchBusinessResult EXPECTED_SEARCH_BUSINESS_RESULT = SearchBusinessResult.of(s -> s
+    public static final SearchBusinessesResult EXPECTED_SEARCH_BUSINESS_RESULT = SearchBusinessesResult.of(s -> s
             .id(ID)
             .center(CENTER)
             .rating(RATING));
-    public static final Hit<SearchBusinessResult> HIT = Hit.of(h -> h
+    public static final Hit<SearchBusinessesResult> HIT = Hit.of(h -> h
             .source(EXPECTED_SEARCH_BUSINESS_RESULT)
             .tDocumentSerializer(JsonpMapperBase.findSerializer(EXPECTED_SEARCH_BUSINESS_RESULT)));
 
-    public static final SearchResponse<SearchBusinessResult> EXPECTED_SEARCH_RESPONSE = SearchResponse.of(s -> s
+    public static final SearchResponse<SearchBusinessesResult> EXPECTED_SEARCH_RESPONSE = SearchResponse.of(s -> s
             .hits(HIT)
             .region(REGION)
             .total(TOTAL));

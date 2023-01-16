@@ -1,16 +1,17 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpSerializable;
-import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
+import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesRequestBase;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import jakarta.json.stream.JsonGenerator;
 
@@ -20,26 +21,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class SearchTransactionRequest extends RequestBase implements JsonpSerializable {
+public class SearchTransactionRequest extends SearchBusinessesRequestBase {
 
     private final String transaction_type;
-    private final Double latitude;
-    private final Double longitude;
-    private final String location;
-    private final String term;
-    private final String categories;
-    private final Integer price;
 
     private SearchTransactionRequest(Builder builder) {
-
-        this.transaction_type = builder.transaction_type;
-
-        this.latitude = builder.latitude;
-        this.longitude = builder.longitude;
-        this.location = builder.location;
-        this.term = builder.term;
-        this.categories = builder.categories;
-        this.price = builder.price;
+        super(builder);
+        this.transaction_type = ApiTypeHelper.requireNonNull(builder.transaction_type, this, "transaction_type");
     }
 
     public static SearchTransactionRequest of(Function<Builder, ObjectBuilder<SearchTransactionRequest>> fn) {
@@ -50,113 +38,23 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
         return transaction_type;
     }
 
-    public final Double latitude() {
-        return latitude;
-    }
-
-    public final Double longitude() {
-        return longitude;
-    }
-
-    public final String location() {
-        return location;
-    }
-
-    public final String term() {
-        return term;
-    }
-
-    public final Integer price() {
-        return this.price;
-    }
-
-    public String categories() {
-        return categories;
-    }
-
-    public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        generator.writeStartObject();
-        serializeInternal(generator, mapper);
-        generator.writeEnd();
-    }
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
-        if (this.categories != null) {
-            generator.writeKey("categories");
-            generator.write(this.categories);
-        }
-        if (this.term != null) {
-            generator.writeKey("term");
-            generator.write(this.term);
-        }
+        super.serializeInternal(generator, mapper);
+
         if (this.transaction_type != null) {
             generator.writeKey("transaction_type");
             generator.write(this.transaction_type);
         }
-        if (this.latitude != null) {
-            generator.writeKey("latitude");
-            generator.write(this.latitude);
-        }
-
-        if (this.longitude != null) {
-            generator.writeKey("longitude");
-            generator.write(this.longitude);
-        }
-
-        if (this.price != null) {
-            generator.writeKey("price");
-            generator.write(this.price);
-        }
     }
 
-    @Override
-    public String toString() {
-        return JsonpUtils.toString(this);
-    }
 
     public static class Builder extends AbstractBuilder<Builder> implements ObjectBuilder<SearchTransactionRequest> {
         private String transaction_type;
-        private Double latitude;
-        private Double longitude;
-        private String location;
-        private String term;
-        private String categories;
-        private Integer price;
-
-        // setters
-
-        public final Builder price(@Nullable Integer price) {
-            this.price = price;
-            return this;
-        }
-        public final Builder term(@Nullable String value) {
-            this.term = value;
-            return this;
-        }
-
-        public final Builder categories(@Nullable String categories) {
-            this.categories = categories;
-            return this;
-        }
 
         public final Builder transaction_type(@Nullable String transaction_type) {
             this.transaction_type = transaction_type;
-            return this;
-        }
-
-        public final Builder location(@Nullable String location) {
-            this.location = location;
-            return this;
-        }
-
-        public final Builder latitude(Double latitude) {
-            this.latitude = latitude;
-            return this;
-        }
-
-        public final Builder longitude(Double longitude) {
-            this.longitude = longitude;
             return this;
         }
 
@@ -172,22 +70,17 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
         }
     }
 
+    public static final JsonpDeserializer<SearchTransactionRequest> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(SearchTransactionRequest.Builder::new,
+                    SearchTransactionRequest::setupSearchTransactionRequestDeserializer);
 
-    public static final JsonpDeserializer<SearchTransactionRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            SearchTransactionRequest::setupSearchRequestDeserializer);
 
-    protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
+    protected static void
+    setupSearchTransactionRequestDeserializer(ObjectDeserializer<SearchTransactionRequest.Builder> op) {
+        setupSearchBusinessesRequestBaseDeserializer(op);
         op.add(Builder::transaction_type, JsonpDeserializer.stringDeserializer(), "transaction_type");
-        op.add(Builder::categories, JsonpDeserializer.stringDeserializer(), "categories");
-        op.add(Builder::location, JsonpDeserializer.stringDeserializer(), "location");
-        op.add(Builder::price, JsonpDeserializer.integerDeserializer(), "price");
-        op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
-        op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
     }
 
-//    private final String apiBasePath = "v3/transactions";
-
-    // endpoint
     public static final SimpleEndpoint<SearchTransactionRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/transactions",
             // Request method
             request -> "GET",
@@ -206,30 +99,25 @@ public class SearchTransactionRequest extends RequestBase implements JsonpSerial
                 if (request.transaction_type != null) {
                     parameters.put("transaction_type", request.transaction_type);
                 }
-                if (request.term != null) {
-                    parameters.put("term", request.term);
+                Double latitude = request.latitude();
+                if (latitude != null) {
+                    parameters.put("latitude", String.valueOf(latitude));
                 }
-                if (request.location != null) {
-                    parameters.put("location", request.location);
+                Double longitude = request.longitude();
+                if (longitude != null) {
+                    parameters.put("longitude", String.valueOf(longitude));
                 }
-                if (request.categories != null) {
-                    parameters.put("categories", request.categories);
+                if (request.location() != null) {
+                    parameters.put("location", request.location());
                 }
-                if (request.price != null) {
-                    parameters.put("price", String.valueOf(request.price));
-                }
-                if (request.latitude != null) {
-                    parameters.put("latitude", String.valueOf(request.latitude));
-                }
-                if (request.longitude != null) {
-                    parameters.put("longitude", String.valueOf(request.longitude));
-                }
-
                 return parameters;
-            },
-            SimpleEndpoint.emptyMap(),
-            false,
-            SearchResponse._DESERIALIZER);
+            }, SimpleEndpoint.emptyMap(), false, SearchResponse._DESERIALIZER);
+
+    	public static <ResultT> Endpoint<SearchTransactionRequest, SearchResponse<ResultT>, ErrorResponse> createSearchEndpoint(
+			JsonpDeserializer<ResultT> resultTDeserializer) {
+		return _ENDPOINT
+				.withResponseDeserializer(SearchResponse.createSearchResponseDeserializer(resultTDeserializer));
+	}
 }
 
 

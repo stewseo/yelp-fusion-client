@@ -4,7 +4,6 @@ package io.github.stewseo.clients.yelpfusion.businesses.details;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ApiTypeHelper;
@@ -22,14 +21,10 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class BusinessDetails extends ResultBase {
 
-    private final String url;
     private final String display_phone;
     private final Boolean is_claimed;
     private final Boolean is_closed;
-    private final Integer review_count;
-    private final Double rating;
     private final Location location;
-
     private final List<String> transactions;
     private final List<String> photos;
     private final List<Hours> hours;
@@ -45,9 +40,6 @@ public class BusinessDetails extends ResultBase {
         this.is_closed = builder.is_closed;
         this.messaging = builder.messaging;
         this.photos = ApiTypeHelper.unmodifiable(builder.photos);
-        this.url = builder.url;
-        this.rating = builder.rating;
-        this.review_count = builder.review_count;
         this.special_hours = ApiTypeHelper.unmodifiable(builder.special_hours);
         this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
     }
@@ -65,21 +57,8 @@ public class BusinessDetails extends ResultBase {
         return is_closed;
     }
 
-    public final String url() {
-        return url;
-    }
-
-
     public final String display_phone() {
         return display_phone;
-    }
-
-    public final Integer review_count() {
-        return review_count;
-    }
-
-    public final Double rating() {
-        return rating;
     }
 
     public final Location location() {
@@ -110,11 +89,6 @@ public class BusinessDetails extends ResultBase {
 
         super.serializeInternal(generator, mapper);
 
-        if (this.url != null) {
-            generator.writeKey("url");
-            generator.write(this.url);
-        }
-
         if (this.display_phone != null) {
             generator.writeKey("display_phone");
             generator.write(this.display_phone);
@@ -127,16 +101,6 @@ public class BusinessDetails extends ResultBase {
         if (is_closed != null) {
             generator.writeKey("is_closed");
             generator.write(this.is_closed);
-        }
-
-        if (this.rating != null) {
-            generator.writeKey("rating");
-            generator.write(this.rating);
-        }
-
-        if (this.review_count != null) {
-            generator.writeKey("review_count");
-            generator.write(this.review_count);
         }
 
         if (this.location != null) {
@@ -184,22 +148,11 @@ public class BusinessDetails extends ResultBase {
         }
     }
 
-    @Override
-    public String toString() {
-        return JsonpUtils.toString(this);
-    }
-
     public static class Builder extends ResultBase.AbstractBuilder<BusinessDetails.Builder>
             implements
             ObjectBuilder<BusinessDetails> {
 
         private String display_phone;
-
-        private String url;
-
-        private Double rating;
-
-        private Integer review_count;
 
         private Boolean is_claimed;
 
@@ -217,18 +170,8 @@ public class BusinessDetails extends ResultBase {
 
         private Messaging messaging;
 
-        public final Builder url(String value) {
-            this.url = value;
-            return this;
-        }
-
         public final Builder display_phone(String value) {
             this.display_phone = value;
-            return this;
-        }
-
-        public final Builder review_count(int value) {
-            this.review_count = value;
             return this;
         }
 
@@ -239,11 +182,6 @@ public class BusinessDetails extends ResultBase {
 
         public final Builder is_claimed(Boolean value) {
             this.is_claimed = value;
-            return this;
-        }
-
-        public final Builder rating(Double value) {
-            this.rating = value;
             return this;
         }
 
@@ -324,11 +262,8 @@ public class BusinessDetails extends ResultBase {
     protected static void setUpBusinessDeserializer(ObjectDeserializer<Builder> op) {
         setupResultBaseDeserializer(op);
         op.add(Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
-        op.add(Builder::url, JsonpDeserializer.stringDeserializer(), "url");
-        op.add(Builder::is_claimed, JsonpDeserializer.booleanDeserializer(), "is_claimd");
+        op.add(Builder::is_claimed, JsonpDeserializer.booleanDeserializer(), "is_claimed");
         op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
-        op.add(Builder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
-        op.add(Builder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
         op.add(Builder::location, Location._DESERIALIZER, "location");
         op.add(Builder::messaging, Messaging._DESERIALIZER, "messaging");
         op.add(Builder::photos, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");

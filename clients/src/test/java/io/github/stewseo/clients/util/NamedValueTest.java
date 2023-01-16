@@ -1,11 +1,9 @@
 package io.github.stewseo.clients.util;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.util.NamedValue;
 import io.github.stewseo.clients.yelpfusion._types.SortOrder;
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -38,8 +36,8 @@ class NamedValueTest {
 
         assertThat(jsonpDeserializer).isInstanceOf(JsonpDeserializer.class);
 
-        JsonpDeserializer<NamedValue<SearchBusinessResult>> searchBusinessResultNamedDeser =
-                NamedValue.deserializer(() -> SearchBusinessResult._DESERIALIZER);
+        JsonpDeserializer<NamedValue<SearchBusinessesResult>> searchBusinessResultNamedDeser =
+                NamedValue.deserializer(() -> SearchBusinessesResult._DESERIALIZER);
 
         assertThat(searchBusinessResultNamedDeser).isInstanceOf(JsonpDeserializer.class);
 

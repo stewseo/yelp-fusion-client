@@ -1,0 +1,40 @@
+{
+  "events": [
+    {
+      "attending_count": 1,
+      "category": "performing-arts",
+      "cost": 15.0,
+      "cost_max": null,
+      "description": "Eat, drink mezcal, and laugh with us at Nido's Backyard!\nSee the Bay's best comics and out of town special guests live, Tuesdays & Sundays at one of...",
+      "event_site_url": "https://www.yelp.com/events/oakland-comedy-soup-at-nidos-backyard-3?adjust_creative=ccj3y1UCH-4gsdWSMdEDOw&utm_campaign=yelp_api_v3&utm_medium=api_v3_event_search&utm_source=ccj3y1UCH-4gsdWSMdEDOw",
+      "id": "oakland-comedy-soup-at-nidos-backyard-3",
+      "image_url": "https://s3-media2.fl.yelpcdn.com/ephoto/LZ2uJEv2g0_N1vBr3-lVwA/o.jpg",
+      "interested_count": 11,
+      "is_canceled": false,
+      "is_free": false,
+      "is_official": false,
+      "latitude": 37.7917626,
+      "longitude": -122.2678021,
+      "name": "Comedy Soup at NIDO's Backyard",
+      "tickets_url": "https://www.eventbrite.com/e/comedy-soup-at-nidos-backyard-tickets-499812952997",
+      "time_end": "2023-01-31T21:00:00-08:00",
+      "time_start": "2023-01-01T19:00:00-08:00",
+      "location": {
+        "address1": "104 Oak St",
+        "address2": "",
+        "address3": null,
+        "city": "Oakland",
+        "zip_code": "94607",
+        "country": "US",
+        "state": "CA",
+        "display_address": [
+          "104 Oak St",
+          "Oakland, CA 94607"
+        ],
+        "cross_streets": ""
+      },
+      "business_id": "nidos-backyard-oakland-4"
+    }
+  ],
+  "total": 1
+}

@@ -3,19 +3,18 @@ package io.github.stewseo.clients.yelpfusion.businesses.match;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion._types.RequestBase;
+import io.github.stewseo.clients.yelpfusion.businesses.BusinessesRequestBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessMatchRequest extends RequestBase implements JsonpSerializable {
+public class MatchBusinessesRequest extends BusinessesRequestBase {
 
     private final String name;
     private final String address1;
@@ -31,7 +30,8 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
     private final Integer limit;
     private final String match_threshold;
 
-    private BusinessMatchRequest(Builder builder) {
+    private MatchBusinessesRequest(Builder builder) {
+        super(builder);
         this.name = builder.name;
         this.address1 = builder.address1;
         this.address2 = builder.address2;
@@ -47,7 +47,7 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
         this.match_threshold = builder.match_threshold;
     }
 
-    public static BusinessMatchRequest of(Function<Builder, ObjectBuilder<BusinessMatchRequest>> fn) {
+    public static MatchBusinessesRequest of(Function<Builder, ObjectBuilder<MatchBusinessesRequest>> fn) {
         return fn.apply(new Builder()).build();
     }
 
@@ -167,7 +167,7 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
 
     public static class Builder extends AbstractBuilder<Builder>
             implements
-            ObjectBuilder<BusinessMatchRequest> {
+            ObjectBuilder<MatchBusinessesRequest> {
         private String name;
         private String address1;
         private String address2;
@@ -253,14 +253,14 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
         }
 
         @Override
-        public BusinessMatchRequest build() {
+        public MatchBusinessesRequest build() {
             _checkSingleUse();
-            return new BusinessMatchRequest(this);
+            return new MatchBusinessesRequest(this);
         }
     }
 
-    public static final JsonpDeserializer<BusinessMatchRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            BusinessMatchRequest::setupSearchRequestDeserializer);
+    public static final JsonpDeserializer<MatchBusinessesRequest> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            MatchBusinessesRequest::setupSearchRequestDeserializer);
 
     protected static void setupSearchRequestDeserializer(ObjectDeserializer<Builder> op) {
         op.add(Builder::address1, JsonpDeserializer.stringDeserializer(), "address1");
@@ -275,7 +275,7 @@ public class BusinessMatchRequest extends RequestBase implements JsonpSerializab
         op.add(Builder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
     }
 
-    public static final SimpleEndpoint<BusinessMatchRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/matches",
+    public static final SimpleEndpoint<MatchBusinessesRequest, ?> _ENDPOINT = new SimpleEndpoint<>("v3/businesses/matches",
 
             // Request method
             request -> "GET",

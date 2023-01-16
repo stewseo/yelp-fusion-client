@@ -19,14 +19,15 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TOTAL;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessResult>> {
-    private final JsonpDeserializer<SearchResponse<SearchBusinessResult>> tDocumentDeserializer =
-            ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessResult>>) SearchResponse.Builder::new,
+class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessesResult>> {
+    private final JsonpDeserializer<SearchResponse<SearchBusinessesResult>> tDocumentDeserializer =
+            ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessesResult>>) SearchResponse.Builder::new,
                     op -> SearchResponse.setupSearchResponseDeserializer(op,
                             new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
 
-    private final SearchResponse<SearchBusinessResult> searchResponse = of();
+    private final SearchResponse<SearchBusinessesResult> searchResponse = of();
 
+    // {"hits":[{"source":{"id":"id","rating":4.5,"center":{"latitude":37.7829,"longitude":-122.4189}}}],"total":1,"region":{"center":{"latitude":37.7829,"longitude":-122.4189}}}
     private final String expected = "" +
             "{" +
                 "\"hits\":" +
@@ -35,12 +36,12 @@ class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessResu
                             "\"source\":" +
                                 "{" +
                                     "\"id\":\"id\"," +
+                                    "\"rating\":4.5," +
                                     "\"center\":" +
                                         "{" +
                                             "\"latitude\":37.7829," +
                                             "\"longitude\":-122.4189" +
-                                        "}," +
-                                    "\"rating\":4.5" +
+                                        "}" +
                                 "}" +
                         "}" +
                     "]," +
@@ -71,23 +72,13 @@ class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessResu
         }
     }
 
-    @YelpFusionTest
-    public void testSerialize() {
-
-    }
-
-    @YelpFusionTest
-    public void testSerializeInternal() {
-
-    }
-
-    public SearchResponse<SearchBusinessResult> of() {
+    public SearchResponse<SearchBusinessesResult> of() {
         return EXPECTED_SEARCH_RESPONSE;
     }
 
     @YelpFusionTest
     public void testBuilder() {
-        SearchResponse<SearchBusinessResult> response = SearchResponse.of(s -> s
+        SearchResponse<SearchBusinessesResult> response = SearchResponse.of(s -> s
                 .hits(HIT)
                 .region(REGION)
                 .total(TOTAL)

@@ -21,21 +21,36 @@ import java.util.function.Function;
 @JsonpDeserializable
 public abstract class ResultBase implements JsonpSerializable {
 
+    @Nullable
     private final String id;
+    @Nullable
     private final String name;
+    @Nullable
     private final String alias;
+    @Nullable
     private final String phone;
+    @Nullable
     private final String price;
+    @Nullable
+    private final String url;
+    @Nullable
+    private final Integer review_count;
+    @Nullable
+    private final Double rating;
+    @Nullable
     private final Center center;
+    @Nullable
     private final List<Category> categories;
 
     protected ResultBase(AbstractBuilder<?> builder) {
-
         this.price = builder.price;
         this.id = builder.id;
         this.alias = builder.alias;
         this.name = builder.name;
         this.phone = builder.phone;
+        this.review_count = builder.review_count;
+        this.url = builder.url;
+        this.rating = builder.rating;
         this.center = builder.center;
         this.categories = ApiTypeHelper.unmodifiable(builder.categories);
 
@@ -52,13 +67,27 @@ public abstract class ResultBase implements JsonpSerializable {
     public final String alias() {
         return alias;
     }
-
+    @Nullable
     public final String phone() {
         return phone;
     }
-
+    @Nullable
     public final String price() {
         return price;
+    }
+
+    @Nullable
+    public Integer review_count() {
+        return review_count;
+    }
+
+    public String url() {
+        return url;
+    }
+
+
+    public Double rating() {
+        return rating;
     }
 
     public final Center center() {
@@ -84,6 +113,14 @@ public abstract class ResultBase implements JsonpSerializable {
             generator.writeKey("alias");
             generator.write(this.alias);
         }
+        if (this.rating != null) {
+            generator.writeKey("rating");
+            generator.write(this.rating);
+        }
+        if (this.url != null) {
+            generator.writeKey("url");
+            generator.write(this.url);
+        }
         if (this.name != null) {
             generator.writeKey("name");
             generator.write(this.name);
@@ -95,6 +132,10 @@ public abstract class ResultBase implements JsonpSerializable {
         if (this.price != null) {
             generator.writeKey("price");
             generator.write(this.price);
+        }
+        if (this.review_count != null) {
+            generator.writeKey("review_count");
+            generator.write(this.review_count);
         }
         if (this.center != null) {
             generator.writeKey("center");
@@ -124,7 +165,10 @@ public abstract class ResultBase implements JsonpSerializable {
         private String name;
         private String alias;
         private String phone;
+        private String url;
         private String price;
+        private Double rating;
+        private Integer review_count;
         private Center center;
         private List<Category> categories;
 
@@ -143,16 +187,28 @@ public abstract class ResultBase implements JsonpSerializable {
             return self();
         }
 
-        public final BuilderT phone(String value) {
+        public final BuilderT phone(@Nullable String value) {
             this.phone = value;
             return self();
         }
 
-        public final BuilderT price(String value) {
+        public final BuilderT price(@Nullable String value) {
             this.price = value;
             return self();
         }
+        public final BuilderT url(@Nullable String value) {
+            this.url = value;
+            return self();
+        }
 
+        public final BuilderT rating(@Nullable Double value) {
+            this.rating = value;
+            return self();
+        }
+        public final BuilderT review_count(@Nullable Integer value) {
+            this.review_count = value;
+            return self();
+        }
         public final BuilderT center(Center value) {
             this.center = value;
             return self();
@@ -188,6 +244,8 @@ public abstract class ResultBase implements JsonpSerializable {
         op.add(AbstractBuilder::alias, JsonpDeserializer.stringDeserializer(), "alias");
         op.add(AbstractBuilder::phone, JsonpDeserializer.stringDeserializer(), "phone");
         op.add(AbstractBuilder::price, JsonpDeserializer.stringDeserializer(), "price");
+        op.add(AbstractBuilder::url, JsonpDeserializer.stringDeserializer(), "url");
+        op.add(AbstractBuilder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
         op.add(AbstractBuilder::center, Center._DESERIALIZER, "center");
         op.add(AbstractBuilder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
 

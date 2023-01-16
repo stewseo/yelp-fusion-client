@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.yelpfusion;
 
-import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.IMAGE_URL;
@@ -13,7 +13,7 @@ class ResultBaseTest {
     @YelpFusionTest
     void id() {
 
-        SearchBusinessResult searchBusinessResult = SearchBusinessResult.of(sbr -> sbr
+        SearchBusinessesResult searchBusinessResult = SearchBusinessesResult.of(sbr -> sbr
                 .image_url(IMAGE_URL)
                 .alias(ALIAS)
         );
