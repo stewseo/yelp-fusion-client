@@ -2,16 +2,14 @@ package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class EventTest extends ModelTestCase<Event> {
+public class EventTest extends YelpFusionTestCase<Event> {
 
     private final Integer attending_count = 1, interested_count = 1;
 

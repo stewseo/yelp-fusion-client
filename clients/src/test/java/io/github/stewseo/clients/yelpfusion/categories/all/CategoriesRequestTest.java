@@ -2,19 +2,19 @@ package io.github.stewseo.clients.yelpfusion.categories.all;
 
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Tag;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Tag("categories")
 public class CategoriesRequestTest
-        extends ModelTestCase<CategoriesRequest>
+        extends YelpFusionTestCase<CategoriesRequest>
         implements RequestTestCase<CategoriesRequest> {
 
     private final String text = "text";

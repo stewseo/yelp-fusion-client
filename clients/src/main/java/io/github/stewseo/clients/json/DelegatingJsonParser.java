@@ -14,7 +14,7 @@ public abstract class DelegatingJsonParser implements JsonParser {
 
     private final JsonParser parser;
 
-    public DelegatingJsonParser(JsonParser parser) {
+    protected DelegatingJsonParser(JsonParser parser) {
         this.parser = parser;
     }
 

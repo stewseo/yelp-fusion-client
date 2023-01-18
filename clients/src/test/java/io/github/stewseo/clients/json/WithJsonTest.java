@@ -10,16 +10,14 @@ import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.indices.PutIndicesSettingsRequest;
 import co.elastic.clients.json.JsonData;
-import io.github.stewseo.clients.yelpfusion.testcases.FunctionalTestCase;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import jakarta.json.stream.JsonParser;
 
 import java.io.StringReader;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-
-public class WithJsonTest extends FunctionalTestCase {
+public class WithJsonTest extends ModelJsonTestCase {
 
     @JsonTest
     public void testRequestWithGenericValueBody() {
@@ -156,5 +154,10 @@ public class WithJsonTest extends FunctionalTestCase {
 
         TextProperty tp = p.text();
         assertThat("lowercase").isEqualTo(tp.fields().get("some_field").keyword().normalizer());
+    }
+
+    @Override
+    public JsonParser parser() {
+        return null;
     }
 }

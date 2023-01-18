@@ -6,22 +6,19 @@ import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion._types.Location;
-import io.github.stewseo.clients.yelpfusion.ResultBase;
+import io.github.stewseo.clients.yelpfusion.businesses.BusinessesResultBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessMatch extends ResultBase {
+public class BusinessMatch extends BusinessesResultBase {
 
     private final String display;
-    private final Location location;
 
     private BusinessMatch(Builder builder) {
         super(builder);
         this.display = builder.display;
-        this.location = builder.location;
     }
 
     public static BusinessMatch of(Function<Builder, ObjectBuilder<BusinessMatch>> fn) {
@@ -32,10 +29,6 @@ public class BusinessMatch extends ResultBase {
         return display;
     }
 
-    public Location location() {
-        return location;
-    }
-
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
         super.serializeInternal(generator, mapper);
@@ -44,25 +37,13 @@ public class BusinessMatch extends ResultBase {
             generator.writeKey("display");
             generator.write(this.display);
         }
-
-        if (this.location != null) {
-            generator.writeKey("location");
-            location.serialize(generator, mapper);
-        }
     }
 
-    public static class Builder extends ResultBase.AbstractBuilder<BusinessMatch.Builder>
+    public static class Builder extends AbstractBuilder<Builder>
             implements
             ObjectBuilder<BusinessMatch> {
 
-        private Location location;
         private String display;
-
-
-        public final Builder location(Location location) {
-            this.location = location;
-            return this;
-        }
 
         public final Builder display(String display) {
             this.display = display;
@@ -86,8 +67,7 @@ public class BusinessMatch extends ResultBase {
 
     protected static void setupBusinessMatchDeserializer(ObjectDeserializer<Builder> op) {
 
-        setupResultBaseDeserializer(op);
+        setupBusinessResultBaseDeserializer(op);
         op.add(Builder::display, JsonpDeserializer.stringDeserializer(), "display");
-        op.add(Builder::location, Location._DESERIALIZER, "location");
     }
 }

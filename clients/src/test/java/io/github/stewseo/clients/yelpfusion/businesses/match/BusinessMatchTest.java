@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import org.junit.jupiter.api.Tag;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Tag("businesses")
-public class BusinessMatchTest extends ModelTestCase<BusinessMatch> {
+public class BusinessMatchTest extends YelpFusionTestCase<BusinessMatch> {
 
     private final BusinessMatch businessMatch = of();
 
@@ -32,7 +32,8 @@ public class BusinessMatchTest extends ModelTestCase<BusinessMatch> {
         );
     }
 
-    private final String expected = "{\"id\":\"id\",\"alias\":\"alias\",\"name\":\"name\",\"phone\":\"phoneValue\",\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"display\":\"display\",\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"}}";
+    private final String expected =
+            "{\"id\":\"id\",\"alias\":\"alias\",\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"name\":\"name\",\"phone\":\"phoneValue\",\"center\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"display\":\"display\"}";
 
     @YelpFusionTest
     public void testBuilder() {

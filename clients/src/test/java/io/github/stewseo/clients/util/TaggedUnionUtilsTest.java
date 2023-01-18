@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients._type.QueryParameter;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.yelpfusion._types.Time;
 import org.junit.jupiter.api.Tag;

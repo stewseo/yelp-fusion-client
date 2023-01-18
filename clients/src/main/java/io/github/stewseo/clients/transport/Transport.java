@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.transport;
 
+import co.elastic.clients.transport.ElasticsearchTransport;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
@@ -29,5 +30,4 @@ public interface Transport extends Closeable {
 
     TransportOptions options();
 
-    RestClient restClient();
 }

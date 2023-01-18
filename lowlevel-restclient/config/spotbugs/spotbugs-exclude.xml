@@ -9,6 +9,35 @@
             <Bug pattern="EI_EXPOSE_REP"/>
             <Bug pattern="EI_EXPOSE_REP2"/>
             <Bug pattern="DCN_NULLPOINTER_EXCEPTION"/>
+        </Or>
+    </Match>
+
+    <!--
+    This class is not derived from another exception, but ends with 'Exception'.
+    This will be confusing to users of this class
+        -->
+    <Match>
+        <Class name="io.github.stewseo.lowlevel.restclient.RestClient" />
+        <Class name="io.github.stewseo.lowlevel.restclient.RestClientBuilder" />
+        <Bug pattern="NM_CLASS_NOT_EXCEPTION"/>
+    </Match>
+
+    <!--
+    may expose internal representation by
+    returning RequestOptions$Builder.headers  At RequestOptions.java:[line 218]
+    -->
+    <Match>
+        <Package name="io.github.stewseo.lowlevel.restclient" />
+        <Bug pattern="DCN, EI, EI2"/>
+    </Match>
+
+    <Match>
+        <Class name="io.github.stewseo.lowlevel.restclient.DeadHostState" />
+        <Bug pattern=" EQ_COMPARETO_USE_OBJECT_EQUALS"/>
+    </Match>
+
+<!--    <Match>-->
+<!--        <Or>-->
 <!--            <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>-->
 <!--            <Bug pattern="DLS_DEAD_LOCAL_STORE"/>-->
 <!--            <Bug pattern="MS_EXPOSE_REP"/>-->
@@ -16,26 +45,20 @@
 <!--            <Bug pattern="UUF_UNUSED_FIELD"/>-->
 <!--            <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>-->
 <!--            <Bug pattern="SF_SWITCH_NO_DEFAULT"/>-->
-        </Or>
-    </Match>
+<!--            <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>-->
+<!--            <Bug pattern="SS_SHOULD_BE_STATIC"/>-->
+<!--            <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>-->
+<!--            <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>-->
+<!--            <Bug pattern="MAX_TO_STRING_LENGTH"/>-->
+<!--        </Or>-->
+<!--    </Match>-->
 
-    <!-- <may expose internal representation by
-    returning RequestOptions$Builder.headers  At RequestOptions.java:[line 218]"/>-->
-    <Match>
-        <Package name="io.github.stewseo.lowlevel.restclient" />
-        <Bug pattern="DCN, EI, EI2"/>
-    </Match>
-
-    <!-- Do not catch NullPointerException like in At EsRestClientTest.java:[line 214]:[line 64]"/>-->
+    <!--
+    Do not catch NullPointerException like in At EsRestClientTest.java:[line 214]:[line 64]
+    -->
     <Match>
         <Package name="io.github.stewseo.lowlevel.restclient.EsRestClientTest" />
         <Bug pattern="DCN"/>
     </Match>
-    <!-- <Do not catch NullPointerException like in io.github.stewseo.lowlevel.restclient.EsRestClientTest.testSetNodesWrongArguments()  At EsRestClientTest.java:[line 214]:[line 64]"/>-->
-
-    <!--    <Match>-->
-<!--        <Package name="io.github.stewseo.lowlevel.restclient" />-->
-<!--        <Bug category="BAD_PRACTICE, CORRECTNESS, PERFORMANCE, MALICIOUS_CODE, MT_CORRECTNESS, SECURITY, NOISE, STYLE, EXPERIMENTAL"/>-->
-<!--    </Match>-->
 
 </FindBugsFilter>

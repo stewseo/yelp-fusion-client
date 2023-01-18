@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
-public abstract class ModelTestCase<YelpFusionT>
+public abstract class YelpFusionTestCase<YelpFusionT>
         implements BuilderTestCase<YelpFusionT>, SerializeToJson {
 
 

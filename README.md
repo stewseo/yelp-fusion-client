@@ -1,12 +1,14 @@
 ## Yelp Fusion Java Client
 <br>
 
-[![release](https://badgen.net/badge/version/1.0.7/green?icon=github)](https://github.com/stewseo/yelp-fusion-client/tree/version-1.0.7)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.stewseo/yelp-fusion-client?versionPrefix=1.0.7)](https://search.maven.org/artifact/io.github.stewseo/yelp-fusion-client/1.0.7/jar)
+[![release](https://badgen.net/badge/version/main/green?icon=github)](https://github.com/stewseo/yelp-fusion-client/tree/main)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.stewseo/yelp-fusion-client?versionPrefix=1.8.0)](https://search.maven.org/artifact/io.github.stewseo/yelp-fusion-client/1.8.0/jar)
 [![examples](https://badgen.net/badge/docs/examples/cyan?icon=github)](https://stewseo.github.io/yelp-fusion-client/examples)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
+
 ### Features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
 - Create blocking and asynchronous clients with your Yelp Fusion API key.
 - Strongly typed requests and responses for all Yelp Fusion APIs.
@@ -29,7 +31,7 @@ You can use [Maven's dependency management](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>io.github.stewseo</groupId>
   <artifactId>yelp-fusion-client</artifactId>
-  <version>1.0.75</version>
+  <version>1.8.0</version>
 </dependency>
 </dependencies>
 ```
@@ -39,7 +41,7 @@ You can use [Gradle's dependency management](https://search.maven.org/search?q=g
 **Example - Gradle**
 ```gradle
 dependencies {
-   implementation 'io.github.stewseo:yelp-fusion-client:1.0.75'
+   implementation 'io.github.stewseo:yelp-fusion-client:1.8.0'
 }
 ```
 <br>

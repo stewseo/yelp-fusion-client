@@ -1,21 +1,22 @@
 package io.github.stewseo.clients.yelpfusion._types.test_constants;
 
-import io.github.stewseo.clients._type.QueryParameter;
-import io.github.stewseo.clients._type.Term;
-import io.github.stewseo.clients._type.TermQueryParameter;
 import io.github.stewseo.clients.json.JsonpMapperBase;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Center;
+import io.github.stewseo.clients.yelpfusion._types.Coordinate;
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import io.github.stewseo.clients.yelpfusion._types.Messaging;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import io.github.stewseo.clients.yelpfusion._types.Region;
 import io.github.stewseo.clients.yelpfusion._types.SpecialHours;
+import io.github.stewseo.clients.yelpfusion._types.TermEnum;
+import io.github.stewseo.clients.yelpfusion._types.TermQueryParameter;
 import io.github.stewseo.clients.yelpfusion._types.User;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.businesses.search.Hit;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesRequest;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 
@@ -23,18 +24,44 @@ import java.util.List;
 
 public class TestVars {
 
+    public static final class TestReqVars {
+        public static final String METHOD = "method [GET]";
+        public static final String LOCALE = "en_US";
+        public static final String BAD_LOCALE = "en_U";
+        public static final String SORT_BY = "sort_by";
+
+        public static final SearchBusinessesRequest SEARCH_BUSINESSES_REQUEST = SearchBusinessesRequest.of(sbr -> sbr
+                .categories(CATEGORY)
+                .location(LOCATION)
+                .term(TERM)
+                .id(ID)
+                .categories(CATEGORY)
+                .location(LOCATION)
+                .center(CENTER)
+                .phone(PHONE)
+                .name(NAME)
+                .alias(ALIAS)
+        );
+    }
+
+    public static final class TestTransportVars{
+        public static final String HOST_NAME = "api.yelp.com";
+        public static final int PORT = 443;
+        public static final String SCHEME = "https";
+    }
+
+    public static final class TestBusinessVars{
+        public static final String CITY = "sf";
+        public static final String STATE = "ca";
+    }
+
+
+    static class CategoryVars {
+
+    }
     public static final String INDEX_SF_RESTAURANTS = "yelp-fusion-restaurants-sf";
 
-    public static final String INDEX_SEARCH_SF_RESTAURANTS = "yelp-fusion-businesses-restaurants-sf-s";
-
-    public static final String METHOD = "method [GET]";
-
-    public static final String CITY = "sf";
-    public static final String SORT_BY = "sort_by";
-
     public static final String ALIAS = "alias";
-    public static final String LOCALE = "en_US";
-    public static final String BAD_LOCALE = "en_U";
 
     public static final String ID = "id";
     public static final String COUNTRY_WHITELIST = "country_whitelist";
@@ -69,13 +96,12 @@ public class TestVars {
     public static final boolean IS_CLOSED = false;
     public static final boolean IS_CLAIMED = false;
 
-    public static final boolean IS_OVERNIGHT = false;
     public static final String TRANSACTION_TYPE = "delivery";
 
     public static final String HOURS_START = "0800";
 
     public static final String HOURS_END = "1700";
-    public static final Center CENTER = Center.of(c -> c.latitude(LATITUDE).longitude(LONGITUDE));
+    public static final Coordinate CENTER = Coordinate.of(c -> c.latitude(LATITUDE).longitude(LONGITUDE));
     public static final Region REGION = Region.of(r -> r.center(CENTER));
     public static final List<String> TRANSACTIONS = List.of("transactionValue");
     public static final List<Attribute> ATTRIBUTES = List.of(Attribute.of(a -> a.attribute("attribute")));
@@ -121,23 +147,45 @@ public class TestVars {
             .photos(PHOTOS)
             .photos(List.of(PHOTOS))
     );
+
     public static final SearchBusinessesResult EXPECTED_SEARCH_BUSINESS_RESULT = SearchBusinessesResult.of(s -> s
             .id(ID)
             .center(CENTER)
             .rating(RATING));
+
     public static final Hit<SearchBusinessesResult> HIT = Hit.of(h -> h
             .source(EXPECTED_SEARCH_BUSINESS_RESULT)
-            .tDocumentSerializer(JsonpMapperBase.findSerializer(EXPECTED_SEARCH_BUSINESS_RESULT)));
+            .resultTSerializer(JsonpMapperBase.findSerializer(EXPECTED_SEARCH_BUSINESS_RESULT)));
 
-    public static final SearchResponse<SearchBusinessesResult> EXPECTED_SEARCH_RESPONSE = SearchResponse.of(s -> s
+    public static final SearchResponse<SearchBusinessesResult> SEARCH_RESPONSE = SearchResponse.of(s -> s
             .hits(HIT)
             .region(REGION)
             .total(TOTAL));
 
-    public static final TermQueryParameter TERMS_QUERY_FIELD = TermQueryParameter.of(variant -> variant.term(Term.Restaurants));
+    public static final SearchBusinessesResult SEARCH_BUSINESS_RESULT = SearchBusinessesResult.of(e -> e
+            .distance(DISTANCE)
+            .id(ID)
+            .is_closed(IS_CLOSED)
+            .review_count(REVIEW_COUNT)
+            .categories(CATEGORY)
+            .location(LOCATION)
+            .center(CENTER)
+            .image_url(IMAGE_URL)
+            .phone(PHONE)
+            .name(NAME)
+            .price("$")
+            .rating(RATING)
+            .transactions(TRANSACTIONS)
+            .display_phone(DISPLAY_PHONE)
+            .alias(ALIAS)
+            .url(FIELD_URL)
+    );
 
-    public static final QueryParameter QUERY_FIELD = QueryParameter.of(qf -> qf.term(TERMS_QUERY_FIELD));
+    public static final TermQueryParameter TERM_QUERY_PARAM = TermQueryParameter.of(variant -> variant.term(TermEnum.Restaurants));
+
+    public static final QueryParameter QUERY_PARAMETER = QueryParameter.of(qf -> qf.term(TERM_QUERY_PARAM));
 
     public static final List<Boolean> TRUE_FALSE_LIST = List.of(true, false);
+
 
 }

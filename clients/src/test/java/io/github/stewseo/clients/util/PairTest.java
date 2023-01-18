@@ -1,15 +1,15 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients._type.QueryParameter;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import io.github.stewseo.clients.json.JsonData;
-import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import org.junit.jupiter.api.Tag;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @Tag("utils")
 
-class PairTest extends TestJson {
+class PairTest extends ModelJsonTestCase {
 
     private final QueryParameter queryField = QueryParameter.of(qf -> qf
             ._custom("some-union", JsonData.of("{variantA:value}")));

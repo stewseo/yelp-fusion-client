@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._type;
+package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -23,7 +23,7 @@ public abstract class QueryParameterBase implements JsonpSerializable {
 
     }
 
-    public final Map<String, QueryParameter> queryFields() {
+    public final Map<String, QueryParameter> queryParams() {
         return this.queryParams;
     }
 

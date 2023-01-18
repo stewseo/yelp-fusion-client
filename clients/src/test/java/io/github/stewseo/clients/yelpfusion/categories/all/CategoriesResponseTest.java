@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.yelpfusion.categories.all;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @Tag("categories")
-public class CategoriesResponseTest extends ModelTestCase<CategoriesResponse> {
+public class CategoriesResponseTest extends YelpFusionTestCase<CategoriesResponse> {
 
     private final CategoriesResponse categoriesResponse = of();
 

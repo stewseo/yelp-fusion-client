@@ -5,7 +5,7 @@ import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTranspor
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.FQ_RESPONSE_EXCEPTION_CLASS_NAME;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.HOST_NAME;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.METHOD;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.METHOD;
 
 public abstract class YelpFusionClientTestCase implements ApiClientTestCase {
 

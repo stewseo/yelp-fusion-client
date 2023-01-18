@@ -11,7 +11,6 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Term;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import jakarta.json.stream.JsonGenerator;
 
@@ -23,7 +22,7 @@ import java.util.function.Function;
 public class AutoCompleteResponse implements JsonpSerializable {
 
     private final List<Category> categories;
-    private final List<Term> terms;
+    private final List<String> terms;
     private final List<BusinessDetails> businesses;
 
     protected AutoCompleteResponse(Builder builder) {
@@ -43,7 +42,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
     }
 
     @Nullable
-    public final List<Term> terms() {
+    public final List<String> terms() {
         return this.terms;
     }
 
@@ -72,8 +71,8 @@ public class AutoCompleteResponse implements JsonpSerializable {
         if (ApiTypeHelper.isDefined(this.terms)) {
             generator.writeKey("terms");
             generator.writeStartArray();
-            for (Term item0 : terms) {
-                item0.serialize(generator, mapper);
+            for (String item0 : terms) {
+                generator.write(item0);
             }
             generator.writeEnd();
         }
@@ -100,7 +99,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
         private List<Category> categories;
 
         @Nullable
-        private List<Term> terms;
+        private List<String> terms;
         @Nullable
         private List<BusinessDetails> businesses;
 
@@ -114,12 +113,12 @@ public class AutoCompleteResponse implements JsonpSerializable {
             return self();
         }
 
-        public final Builder terms(List<Term> categories) {
-            this.terms = _listAddAll(this.terms, categories);
+        public final Builder terms(List<String> values) {
+            this.terms = _listAddAll(this.terms, values);
             return self();
         }
 
-        public final Builder terms(Term value, Term... values) {
+        public final Builder terms(String value, String... values) {
             this.terms = _listAdd(this.terms, value, values);
             return self();
         }
@@ -150,7 +149,7 @@ public class AutoCompleteResponse implements JsonpSerializable {
             ObjectBuilderDeserializer.lazy(Builder::new, AutoCompleteResponse::setupAutoCompleteDeserializer);
 
     protected static void setupAutoCompleteDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::terms, JsonpDeserializer.arrayDeserializer(Term._DESERIALIZER), "terms");
+        op.add(Builder::terms, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "terms");
         op.add(Builder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");
         op.add(Builder::businesses, JsonpDeserializer.arrayDeserializer(BusinessDetails._DESERIALIZER), "businesses");
     }

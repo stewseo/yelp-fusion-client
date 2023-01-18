@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients._type.QueryParameter;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import jakarta.json.stream.JsonParser;
 
 import java.io.StringReader;

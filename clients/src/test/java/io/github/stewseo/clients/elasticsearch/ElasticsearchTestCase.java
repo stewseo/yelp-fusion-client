@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Tag;
 
 import java.util.List;
 
-@Tag("elasticsearch")
 public class ElasticsearchTestCase {
 
     public static final String INDEX_NYC = "yelp-fusion-businesses-restaurants-sf";

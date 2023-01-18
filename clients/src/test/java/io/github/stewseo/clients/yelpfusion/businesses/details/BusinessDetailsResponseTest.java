@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.businesses.details;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Tag;
@@ -12,7 +12,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Tag("businesses")
-class BusinessDetailsResponseTest extends ModelTestCase<BusinessDetailsResponse> {
+class BusinessDetailsResponseTest extends YelpFusionTestCase<BusinessDetailsResponse> {
 
     private final BusinessDetailsResponse businessDetailsResponse = of();
 

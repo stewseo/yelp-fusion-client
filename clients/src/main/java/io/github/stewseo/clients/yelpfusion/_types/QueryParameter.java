@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._type;
+package io.github.stewseo.clients.yelpfusion._types;
 
 
 import io.github.stewseo.clients.json.JsonData;
@@ -20,7 +20,7 @@ import jakarta.json.stream.JsonGenerator;
 import javax.annotation.Nullable;
 import java.util.function.Function;
 
-// typedef: _types.QueryField
+// typedef: _types.QueryParameter
 /**
  *
  * @see <a href=
@@ -35,16 +35,7 @@ public class QueryParameter implements OpenTaggedUnion<QueryParameter.Kind, Obje
         Term("term"),
         TransactionType("transaction_type"),
 
-//        Terms("terms"),
-
-//        Categories("categories"),
-//
-//        Location("location"),
-//
-//        Attribute("attribute"),
-//
-//        Center("center"),
-//
+        Location("location"),
 //        Limit("limit"),
         _Custom(null);
 
@@ -109,21 +100,20 @@ public class QueryParameter implements OpenTaggedUnion<QueryParameter.Kind, Obje
 		return fn.apply(new Builder()).build();
 	}
 
-    /**
-     * Is this variant instance of kind {@code term}?
-     */
     public boolean isTerm() {
         return _kind == Kind.Term;
     }
 
-    /**
-     * Get the {@code term} variant value.
-     *
-     * @throws IllegalStateException
-     *             if the current variant is not of the {@code term} kind.
-     */
     public TermQueryParameter term() {
         return TaggedUnionUtils.get(this, Kind.Term);
+    }
+
+    public boolean isLocation() {
+        return _kind == Kind.Location;
+    }
+
+    public LocationQueryParameter location() {
+        return TaggedUnionUtils.get(this, Kind.Location);
     }
 
     /**
@@ -203,6 +193,17 @@ public class QueryParameter implements OpenTaggedUnion<QueryParameter.Kind, Obje
             return this.term(fn.apply(new TermQueryParameter.Builder()).build());
         }
 
+        public ObjectBuilder<QueryParameter> location(LocationQueryParameter v) {
+			this._kind = Kind.Location;
+			this._value = v;
+			return this;
+		}
+
+        public ObjectBuilder<QueryParameter> location(Function<LocationQueryParameter.Builder, ObjectBuilder<LocationQueryParameter>> fn) {
+            return this.location(fn.apply(new LocationQueryParameter.Builder()).build());
+        }
+
+
         public ObjectBuilder<QueryParameter> _custom(String name, Object data) {
             this._kind = Kind._Custom;
             this._customKind = name;
@@ -224,13 +225,13 @@ public class QueryParameter implements OpenTaggedUnion<QueryParameter.Kind, Obje
     protected static void setupQueryFieldDeserializer(ObjectDeserializer<Builder> op) {
 
         op.add(Builder::term, TermQueryParameter._DESERIALIZER, "term");
+        op.add(Builder::location, LocationQueryParameter._DESERIALIZER, "location");
 
         op.setUnknownFieldHandler((builder, name, parser, mapper) -> {
             JsonpUtils.ensureCustomVariantsAllowed(parser, mapper);
             builder._custom(name, JsonData._DESERIALIZER.deserialize(parser, mapper));
         });
 
-        // location, latitude, longitude
         // locale
         // categories, attributes
         // limit, offset

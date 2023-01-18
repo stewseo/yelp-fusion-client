@@ -11,6 +11,7 @@ import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
 import jakarta.json.stream.JsonGenerator;
 
+import javax.annotation.Nullable;
 import java.util.function.Function;
 
 @JsonpDeserializable
@@ -23,17 +24,29 @@ public class Event implements JsonpSerializable {
     private final String name;
     private final String tickets_url;
     private final String image_url;
+    @Nullable
     private final String time_end;
+    @Nullable
     private final String time_start;
+    @Nullable
     private final Integer attending_count;
+    @Nullable
     private final Integer interested_count;
+    @Nullable
     private final Boolean is_canceled;
+    @Nullable
     private final Boolean is_free;
+    @Nullable
     private final Boolean is_official;
+    @Nullable
     private final Double cost;
+    @Nullable
     private final Double cost_max;
+    @Nullable
     private final Double latitude;
+    @Nullable
     private final Double longitude;
+    @Nullable
     private final Location location;
 
     private Event(Builder builder) {
@@ -125,15 +138,15 @@ public class Event implements JsonpSerializable {
     public final Double cost_max() {
         return cost_max;
     }
-
+    @Nullable
     public final Double latitude() {
         return latitude;
     }
-
+    @Nullable
     public final Double longitude() {
         return longitude;
     }
-
+    @Nullable
     public final Location location() {
         return location;
     }
@@ -247,7 +260,9 @@ public class Event implements JsonpSerializable {
         private Boolean is_official;
         private Double cost;
         private Double cost_max;
+        @Nullable
         private Double latitude;
+        @Nullable
         private Double longitude;
         private Location location;
 
@@ -331,12 +346,12 @@ public class Event implements JsonpSerializable {
             return this;
         }
 
-        public final Builder latitude(Double latitude) {
+        public final Builder latitude(@Nullable Double latitude) {
             this.latitude = latitude;
             return this;
         }
 
-        public final Builder longitude(Double longitude) {
+        public final Builder longitude(@Nullable  Double longitude) {
             this.longitude = longitude;
             return this;
         }

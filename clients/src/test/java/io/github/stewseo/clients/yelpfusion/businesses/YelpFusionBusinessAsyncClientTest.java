@@ -24,6 +24,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTION_TYPE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestBusinessVars.CITY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -113,7 +114,8 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
     void testSearchBusinessesFunctionParam() {
 
         yelpFusionBusinessesAsyncClient.searchBusinesses(s -> s
-                        .location("sf")
+                        .location(l -> l
+                                .city(CITY))
                         .term("restaurants")
                         .categories(cat -> cat
                                 .alias("pizza")
@@ -139,7 +141,8 @@ public class YelpFusionBusinessAsyncClientTest extends YelpFusionClientTestCase 
     void testSearchBusinessesPerformRequest() {
 
         SearchBusinessesRequest req = SearchBusinessesRequest.of(s -> s
-                .location("sf")
+                .location(l -> l
+                        .city(CITY))
                 .term("restaurants")
                 .categories(cat -> cat
                         .alias("pizza")

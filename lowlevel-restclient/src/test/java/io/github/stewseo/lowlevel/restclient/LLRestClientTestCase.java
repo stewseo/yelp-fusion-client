@@ -26,7 +26,6 @@ public abstract class LLRestClientTestCase {
         Header[] defaultHeaders = {new BasicHeader("Authorization", "Bearer " + System.getenv("YELP_API_KEY"))};
 
         restClient = RestClient.builder(httpHost)
-                .setMetaHeaderEnabled(false)
                 .setDefaultHeaders(defaultHeaders)
                 .build();
 

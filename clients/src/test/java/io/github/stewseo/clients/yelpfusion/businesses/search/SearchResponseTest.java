@@ -4,7 +4,7 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.NamedDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonParser;
 import org.apache.commons.io.IOUtils;
 
@@ -13,17 +13,17 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Supplier;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.EXPECTED_SEARCH_RESPONSE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.SEARCH_RESPONSE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.HIT;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.REGION;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TOTAL;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessesResult>> {
+class SearchResponseTest extends YelpFusionTestCase<SearchResponse<SearchBusinessesResult>> {
     private final JsonpDeserializer<SearchResponse<SearchBusinessesResult>> tDocumentDeserializer =
             ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessesResult>>) SearchResponse.Builder::new,
                     op -> SearchResponse.setupSearchResponseDeserializer(op,
-                            new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
+                            new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.ResultT")));
 
     private final SearchResponse<SearchBusinessesResult> searchResponse = of();
 
@@ -73,7 +73,7 @@ class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessesRe
     }
 
     public SearchResponse<SearchBusinessesResult> of() {
-        return EXPECTED_SEARCH_RESPONSE;
+        return SEARCH_RESPONSE;
     }
 
     @YelpFusionTest
@@ -95,6 +95,22 @@ class SearchResponseTest extends ModelTestCase<SearchResponse<SearchBusinessesRe
     @YelpFusionTest
     public void testOf() {
         assertThat(searchResponse.toString()).isEqualTo(expected);
+    }
+
+    @YelpFusionTest
+    public void testNamedDeser() {
+
+        JsonpDeserializer<SearchBusinessesResult> resultTDeserializer = new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.ResultT");
+
+
+        JsonpDeserializer<SearchResponse<SearchBusinessesResult>> searchBusinessResult =
+                JsonpDeserializer.lazy(() ->
+                        ObjectBuilderDeserializer.createForObject(
+                                (Supplier<SearchResponse.Builder<SearchBusinessesResult>>) SearchResponse.Builder::new,
+                                op -> SearchResponse.setupSearchResponseDeserializer(op, resultTDeserializer)
+                )
+        );
+
     }
 
 }

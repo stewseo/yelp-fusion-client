@@ -4,7 +4,7 @@ import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
 import io.github.stewseo.clients.yelpfusion._types.Event;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Tag;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @Tag("businesses")
-public class BusinessDetailsTest extends ModelTestCase<BusinessDetails> {
+public class BusinessDetailsTest extends YelpFusionTestCase<BusinessDetails> {
 
     private final BusinessDetails business = of();
 

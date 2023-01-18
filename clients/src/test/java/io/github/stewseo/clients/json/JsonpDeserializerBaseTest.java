@@ -1,17 +1,18 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.QUERY_PARAMETER;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class JsonpDeserializerBaseTest extends TestJson {
+public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
 
 
     @JsonTest
@@ -42,23 +43,6 @@ public class JsonpDeserializerBaseTest extends TestJson {
         JsonpDeserializerBase<SearchBusinessesResult> jsonpDeserializerBase;
     }
 
-    @Test
-    void nativeEvents() {
-
-    }
-
-    @Test
-    void acceptedEvents() {
-    }
-
-    @Test
-    void accepts() {
-    }
-
-    @Test
-    void testStringMapDeserializer() {
-
-    }
 
     @JsonTest
     void testDoubleOrNullDeserializer() {
@@ -91,6 +75,7 @@ public class JsonpDeserializerBaseTest extends TestJson {
         assertThat(value).isEqualTo(expected);
 
     }
+
     @JsonTest
     void testEnumMapDeserializer() {
         JsonpDeserializerBase.EnumMapDeserializer<?, ?> enumMapDeserializer =
@@ -102,12 +87,28 @@ public class JsonpDeserializerBaseTest extends TestJson {
 
     }
 
-    @Test
-    void testJsonString() {
+    @JsonTest
+    void testStringMapDeserializer() {
+        JsonpDeserializer<QueryParameter> deserializer = QueryParameter._DESERIALIZER;
 
+        JsonpDeserializerBase.StringMapDeserializer<QueryParameter> jsonpDeserializerBase =
+                new JsonpDeserializerBase.StringMapDeserializer<QueryParameter>(deserializer);
+
+        JsonpMappingException unexpectedJsonEventException = assertThrows(JsonpMappingException.class, () ->
+                jsonpDeserializerBase.deserialize(parser(), mapper));
+
+        assertThat(unexpectedJsonEventException.getMessage()).startsWith("");
+
+        JsonpMappingException jsonMappingException =
+                assertThrows(JsonpMappingException.class, () ->
+                        jsonpDeserializerBase.deserialize(parser(), mapper, JsonParser.Event.START_ARRAY));
+
+        assertThat(jsonpDeserializerBase.acceptedEvents()).isEqualTo(EnumSet.of(JsonParser.Event.START_OBJECT));
+        assertThat(jsonpDeserializerBase.nativeEvents()).isEqualTo(EnumSet.of(JsonParser.Event.START_OBJECT));
     }
 
-    @Test
-    void testAllAcceptedEvents() {
+    @Override
+    public JsonParser parser() {
+        return parser(QUERY_PARAMETER);
     }
 }

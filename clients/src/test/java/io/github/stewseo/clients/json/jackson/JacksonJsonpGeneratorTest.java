@@ -1,7 +1,7 @@
 package io.github.stewseo.clients.json.jackson;
 
 import io.github.stewseo.clients.json.JsonTest;
-import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import io.github.stewseo.clients.json.testcases.AbstractJsonTestCase;
 import jakarta.json.Json;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonGenerationException;
@@ -10,11 +10,12 @@ import jakarta.json.stream.JsonParser;
 
 import java.io.StringWriter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class JacksonJsonpGeneratorTest extends ModelJsonTestCase {
+public class JacksonJsonpGeneratorTest extends AbstractJsonTestCase {
 
     StringWriter sw = new StringWriter();
 

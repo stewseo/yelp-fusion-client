@@ -1,4 +1,4 @@
-package io.github.stewseo.clients._type;
+package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonpSerializable;
 

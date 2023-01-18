@@ -9,6 +9,7 @@ import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonLocation;
 import jakarta.json.stream.JsonParser;
+import jakarta.json.stream.JsonParsingException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -24,14 +25,28 @@ import java.util.stream.Collectors;
  */
 public class JsonpUtils {
 
-    @AllowForbiddenApis("Implementation of the JsonProvider lookup")
+    private static JsonProvider systemJsonProvider = null;
+
+    /**
+     * Get a <code>JsonProvider</code> instance. This method first calls the standard `JsonProvider.provider()` that is based on
+     * the current thread's context classloader, and in case of failure tries to find a provider in other classloaders. The
+     * value is cached for subsequent calls.
+     */
     public static JsonProvider provider() {
+        JsonProvider result = systemJsonProvider;
+        if (result == null) {
+            result = findProvider();
+            systemJsonProvider = result;
+        }
+        return result;
+    }
 
+    @AllowForbiddenApis("Implementation of the JsonProvider lookup")
+    static JsonProvider findProvider() {
         RuntimeException exception;
-
         try {
             return JsonProvider.provider();
-        } catch (RuntimeException re) {
+        } catch(RuntimeException re) {
             exception = re;
         }
 
@@ -40,19 +55,30 @@ public class JsonpUtils {
 
         try {
             return ServiceLoader.load(JsonProvider.class, JsonpUtils.class.getClassLoader()).iterator().next();
-        } catch (Exception e) {
+        } catch(Exception e) {
             // ignore
         }
 
         try {
             return ServiceLoader.load(JsonProvider.class, JsonProvider.class.getClassLoader()).iterator().next();
-        } catch (Exception e) {
+        } catch(Exception e) {
             // ignore
         }
 
         throw new JsonException("Unable to get a JsonProvider. Check your classpath or thread context classloader.", exception);
     }
 
+
+    /**
+     * Advances the parser to the next event and checks that this even is the expected one.
+     *
+     * @return the expected event
+     *
+     * @throws jakarta.json.JsonException if an i/o error occurs (IOException would be cause of JsonException)
+     * @throws JsonParsingException if the event is not the expected one, or if the parser encounters invalid
+     *         JSON when advancing to next state.
+     * @throws java.util.NoSuchElementException if there are no more parsing states.
+     */
     public static JsonParser.Event expectNextEvent(JsonParser parser, JsonParser.Event expected) {
         JsonParser.Event event = parser.next();
         expectEvent(parser, expected, event);
@@ -97,9 +123,12 @@ public class JsonpUtils {
     }
 
     public static <T> void serialize(T value, JsonGenerator generator, JsonpSerializer<T> serializer, JsonpMapper mapper) {
+
         if (serializer != null) {
+
             serializer.serialize(value, generator, mapper);
         } else if (value instanceof JsonpSerializable) {
+
             ((JsonpSerializable) value).serialize(generator, mapper);
         } else {
             mapper.serialize(value, generator);
@@ -150,6 +179,7 @@ public class JsonpUtils {
      * Create a parser that traverses a JSON object
      */
     public static JsonParser objectParser(JsonObject object, JsonpMapper mapper) {
+
         // FIXME: we should have used createParser(object), but this doesn't work as it creates a
         // org.glassfish.json.JsonStructureParser that doesn't implement the JsonP 1.0.1 features, in particular
         // parser.getObject(). So deserializing recursive internally-tagged union would fail with UnsupportedOperationException
@@ -189,16 +219,26 @@ public class JsonpUtils {
         }
     }
 
+
     public static String toString(JsonpSerializable value) {
         StringBuilder sb = new StringBuilder();
         return toString(value, ToStringMapper.INSTANCE, sb).toString();
     }
 
+
+    /**
+     * Renders a <code>JsonpSerializable</code> as a string by serializing it to JSON, prefixed by the class name. Any object of an
+     * application-specific class in the object graph is rendered using that object's <code>toString()</code> representation as a JSON
+     * string value.
+     * <p>
+     * The size of the string is limited to {@link #maxToStringLength()}.
+     *
+     * @see #maxToStringLength()
+     */
     public static String typedKeysToString(JsonpSerializable value) {
         StringBuilder sb = new StringBuilder(value.getClass().getSimpleName()).append(": ");
         return toString(value, ToStringMapper.INSTANCE, sb).toString();
     }
-
 
     public static void maxToStringLength(int length) {
         MAX_TO_STRING_LENGTH = length;
@@ -212,45 +252,54 @@ public class JsonpUtils {
 
     private static class ToStringTooLongException extends RuntimeException {}
 
-    public static StringBuilder toString(JsonpSerializable value, JsonpMapper mapper, StringBuilder dest) {
+    /**
+     * Renders a <code>JsonpSerializable</code> as a string in a destination <code>StringBuilder</code>by serializing it to JSON.
+     * <p>
+     * The size of the string is limited to {@link #maxToStringLength()}.
+     *
+     * @return the <code>dest</code> parameter, for chaining.
+     * @see #toString(JsonpSerializable)
+     * @see #maxToStringLength()
+     */
+       public static StringBuilder toString(JsonpSerializable value, JsonpMapper mapper, StringBuilder dest) {
 
-        final int[] length = {0};
+           // flush
+           // close
 
-        try (Writer wr = new Writer() {
-            @SuppressWarnings("NullableProblems")
-            @Override
-            public void write(char[] cbuf, int off, int len) {
-                int max = maxToStringLength();
-                length[0] += len;
-                if (length[0] > max) {
-                    dest.append(cbuf, off, len - (length[0] - max));
-                    dest.append("...");
-                    throw new ToStringTooLongException();
-                } else {
-                    dest.append(cbuf, off, len);
-                }
-            }
+           try (Writer writer = new Writer() {
+               int length = 0;
 
-            @Override
-            public void flush() throws IOException {
-                // flush
-            }
+               @Override
+               public void write(char[] cbuf, int off, int len) {
+                   int max = maxToStringLength();
+                   length += len;
+                   if (length > max) {
+                       dest.append(cbuf, off, len - (length - max));
+                       dest.append("...");
+                       throw new ToStringTooLongException();
+                   } else {
+                       dest.append(cbuf, off, len);
+                   }
+               }
 
-            @Override
-            public void close() throws IOException {
-                // close
-            }
-        }) {
-            try (JsonGenerator generator = mapper.jsonProvider().createGenerator(wr)) {
-                value.serialize(generator, mapper);
-            } catch (ToStringTooLongException e) {
-                // Ignore
-            }
-            return dest;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+               @Override
+               public void flush() {
+                   // flush
+               }
+
+               @Override
+               public void close() {
+                   // close
+               }
+
+           }; JsonGenerator generator = mapper.jsonProvider().createGenerator(writer)) {
+               value.serialize(generator, mapper);
+           } catch (ToStringTooLongException | IOException e) {
+               // Ignore
+           }
+           return dest;
     }
+
 
     public static String toJsonString(JsonpSerializable value, JsonpMapper mapper) {
         StringWriter writer = new StringWriter();

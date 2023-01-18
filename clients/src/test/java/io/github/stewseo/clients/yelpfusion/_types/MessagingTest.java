@@ -4,19 +4,16 @@ import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
 
 import io.github.stewseo.clients.json.DeserializeFromJson;
-import io.github.stewseo.clients.json.testcases.JsonTestCase;
+import io.github.stewseo.clients.json.testcases.TestJsonp;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class MessagingTest extends ModelTestCase<Messaging>
+class MessagingTest extends YelpFusionTestCase<Messaging>
         implements DeserializeFromJson {
 
     private final Messaging messaging = of();
@@ -57,14 +54,14 @@ class MessagingTest extends ModelTestCase<Messaging>
     @YelpFusionTest
     public void testSerialize() {
 
-        messaging.serialize(generator, JsonTestCase.mapper);
+        messaging.serialize(generator, TestJsonp.mapper);
         assertThat(messaging.toString()).isEqualTo(expected);
     }
 
     @YelpFusionTest
     public void testSerializeInternal() {
         generator.writeStartObject();
-        messaging.serializeInternal(generator, JsonTestCase.mapper);
+        messaging.serializeInternal(generator, TestJsonp.mapper);
         generator.writeEnd().close();
         assertThat(messaging.toString()).isNotNull();
     }
@@ -78,7 +75,7 @@ class MessagingTest extends ModelTestCase<Messaging>
     @YelpFusionTest
     public void testDeserialize() {
 
-        Messaging messaging = Messaging._DESERIALIZER.deserialize(parser(), JsonTestCase.mapper);
+        Messaging messaging = Messaging._DESERIALIZER.deserialize(parser(), TestJsonp.mapper);
 
         assertThat(messaging.toString()).isEqualTo(expected);
     }

@@ -1,23 +1,24 @@
 package io.github.stewseo.clients.yelpfusion;
 
 
-import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessAsyncClient;
-import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesAsyncClient;
-import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsAsyncClient;
-import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
-import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.clients.ApiClient;
-import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.transport.TransportOptions;
 import io.github.stewseo.clients.transport.YelpFusionTransport;
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.util.ObjectBuilder;
+import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
+import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessAsyncClient;
+import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesAsyncClient;
+import io.github.stewseo.clients.yelpfusion.events.YelpFusionEventsAsyncClient;
+import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteRequest;
+import io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse;
 import io.github.stewseo.lowlevel.restclient.RestClient;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
+
 
 import javax.annotation.Nullable;
 import java.io.IOException;

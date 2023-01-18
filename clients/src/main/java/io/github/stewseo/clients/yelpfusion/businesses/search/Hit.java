@@ -1,7 +1,6 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 
-import co.elastic.clients.elasticsearch.core.search.ResponseBody;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -20,31 +19,30 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @JsonpDeserializable
-public class Hit<TDocument> implements JsonpSerializable {
+public class Hit<ResultT> implements JsonpSerializable {
+    @Nullable
+    private final ResultT source;
 
     @Nullable
-    private final JsonpSerializer<TDocument> tDocumentSerializer;
+    private final JsonpSerializer<ResultT> resultTSerializer;
 
-    @Nullable
-    private final TDocument source;
-
-    private Hit(Builder<TDocument> builder) {
+    private Hit(Builder<ResultT> builder) {
         
         this.source = builder.source;
-        this.tDocumentSerializer = builder.tDocumentSerializer;
+        this.resultTSerializer = builder.resultTSerializer;
     }
 
-    public static <TDocument> Hit<TDocument> of(Function<Builder<TDocument>, ObjectBuilder<Hit<TDocument>>> fn) {
+    public static <ResultT> Hit<ResultT> of(Function<Builder<ResultT>, ObjectBuilder<Hit<ResultT>>> fn) {
         return fn.apply(new Builder<>()).build();
     }
 
     @Nullable
-    public final JsonpSerializer<TDocument> tDocumentSerializer() {
-        return tDocumentSerializer;
+    public final JsonpSerializer<ResultT> resultTSerializer() {
+        return resultTSerializer;
     }
 
     @Nullable
-    public final TDocument source() {
+    public final ResultT source() {
         return source;
     }
 
@@ -58,41 +56,41 @@ public class Hit<TDocument> implements JsonpSerializable {
         
         if (this.source != null) {
             generator.writeKey("source");
-            JsonpUtils.serialize(this.source, generator, tDocumentSerializer, mapper);
+            JsonpUtils.serialize(this.source, generator, resultTSerializer, mapper);
         }
     }
 
     @Override
     public String toString() {
+
         return JsonpUtils.toString(this);
     }
 
-    public static class Builder<TDocument> extends WithJsonObjectBuilderBase<Builder<TDocument>>
+    public static class Builder<ResultT> extends WithJsonObjectBuilderBase<Builder<ResultT>>
             implements
-            ObjectBuilder<Hit<TDocument>> {
+            ObjectBuilder<Hit<ResultT>> {
 
-        private JsonpSerializer<TDocument> tDocumentSerializer;
+        private JsonpSerializer<ResultT> resultTSerializer;
         
-        private TDocument source;
+        private ResultT source;
         
-        public final Builder<TDocument> tDocumentSerializer(JsonpSerializer<TDocument> value) {
-            this.tDocumentSerializer = value;
+        public final Builder<ResultT> resultTSerializer(JsonpSerializer<ResultT> value) {
+            this.resultTSerializer = value;
             return this;
         }
 
-        public final Builder<TDocument> source(TDocument value) {
+        public final Builder<ResultT> source(ResultT value) {
             this.source = value;
             return this;
         }
 
         @Override
-        protected Builder<TDocument> self() {
+        protected Builder<ResultT> self() {
             return this;
         }
         
-        public Hit<TDocument> build() {
+        public Hit<ResultT> build() {
             _checkSingleUse();
-
             return new Hit<>(this);
         }
     }
@@ -105,11 +103,11 @@ public class Hit<TDocument> implements JsonpSerializable {
 
     public static final JsonpDeserializer<Hit<Object>> _DESERIALIZER = JsonpDeserializer
             .lazy(() -> createHitDeserializer(
-                    new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses._types.ResultT")));
+                    new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search._types.ResultT")));
 
-    protected static <TDocument> void setupHitDeserializer(ObjectDeserializer<Builder<TDocument>> op,
-                                                           JsonpDeserializer<TDocument> tDocumentDeserializer) {
+    protected static <ResultT> void setupHitDeserializer(ObjectDeserializer<Builder<ResultT>> op,
+                                                         JsonpDeserializer<ResultT> resultTDeserializer) {
 
-        op.add(Builder::source, tDocumentDeserializer, "source");
+        op.add(Builder::source, resultTDeserializer, "source");
     }
 }

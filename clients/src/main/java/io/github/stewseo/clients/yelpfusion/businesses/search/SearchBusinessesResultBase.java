@@ -4,15 +4,17 @@ import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.yelpfusion.ResultBase;
+import io.github.stewseo.clients.yelpfusion.businesses.BusinessesResultBase;
 import jakarta.json.stream.JsonGenerator;
 
 import javax.annotation.Nullable;
 
-public abstract class SearchResultBase extends ResultBase {
+public abstract class SearchBusinessesResultBase extends BusinessesResultBase {
+
     @Nullable 
     private final String image_url;
     
-    protected SearchResultBase(AbstractBuilder<?> builder) {
+    protected SearchBusinessesResultBase(AbstractBuilder<?> builder) {
         super(builder);
         this.image_url = builder.image_url;
     }
@@ -32,7 +34,7 @@ public abstract class SearchResultBase extends ResultBase {
 
     protected abstract static class AbstractBuilder<BuilderT extends AbstractBuilder<BuilderT>>
             extends
-            ResultBase.AbstractBuilder<BuilderT> {
+            BusinessesResultBase.AbstractBuilder<BuilderT> {
 
         @Nullable
         private String image_url;
@@ -49,9 +51,9 @@ public abstract class SearchResultBase extends ResultBase {
     protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupSearchResultBaseBaseDeserializer(
             ObjectDeserializer<BuilderT> op) {
 
-        ResultBase.setupResultBaseDeserializer(op);
+        BusinessesResultBase.setupResultBaseDeserializer(op);
 
-        op.add(SearchResultBase.AbstractBuilder::image_url, JsonpDeserializer.stringDeserializer(), "image_url");
+        op.add(SearchBusinessesResultBase.AbstractBuilder::image_url, JsonpDeserializer.stringDeserializer(), "image_url");
 
     }
 }

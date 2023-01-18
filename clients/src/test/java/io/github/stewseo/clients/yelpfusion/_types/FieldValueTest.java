@@ -1,47 +1,59 @@
 package io.github.stewseo.clients.yelpfusion._types;
 
-import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-
 import io.github.stewseo.clients.json.JsonData;
-import io.github.stewseo.clients.yelpfusion._types.FieldValue;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import org.assertj.core.api.Assertions;
 
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.SEARCH_BUSINESSES_REQUEST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-class FieldValueTest {
+class FieldValueTest extends ModelJsonTestCase {
 
-    @YelpFusionTest
+    @TypeTest
     void testFieldValueLong() {
-        FieldValue fieldValueLong = FieldValue.of(1L);
-        assertThat(fieldValueLong.longValue()).isInstanceOf(Long.class);
+        FieldValue fieldValue = FieldValue.of(1L);
+        assertThat(fieldValue).hasNoNullFieldsOrProperties();
+        fieldValue = FieldValue.of(f -> f.longValue(Long.parseLong("111")));
+        assertThat(fieldValue.longValue()).isExactlyInstanceOf(Long.class);
+        fieldValue = checkJsonRoundtrip(fieldValue, "111");
     }
 
-    @YelpFusionTest
+    @TypeTest
     void testFieldValueDouble() {
-        FieldValue fieldValueDouble = FieldValue.of(1.0);
-        assertThat(fieldValueDouble.doubleValue()).isInstanceOf(Double.class);
+        FieldValue fieldValue = FieldValue.of(1.0);
+        fieldValue = FieldValue.of(f -> f.doubleValue(1.0));
+        Assertions.assertThat(fieldValue).hasNoNullFieldsOrProperties();
+        Assertions.assertThat(fieldValue.doubleValue()).isExactlyInstanceOf(Double.class);
+        fieldValue = checkJsonRoundtrip(fieldValue, "1.0");
     }
 
-    @YelpFusionTest
+    @TypeTest
     void testFieldValueBoolean() {
-        FieldValue fieldValueBoolean = FieldValue.of(false);
-        assertThat(fieldValueBoolean.booleanValue()).isInstanceOf(Boolean.class);
+        FieldValue fieldValue = FieldValue.of(f -> f.booleanValue(true));
+        Assertions.assertThat(fieldValue).hasNoNullFieldsOrProperties();
+        Assertions.assertThat(fieldValue.booleanValue()).isExactlyInstanceOf(Boolean.class);
+        fieldValue = checkJsonRoundtrip(fieldValue, "true");
     }
 
-    @YelpFusionTest
+    @TypeTest
     void testFieldValueString() {
-        FieldValue fieldValueBoolean = FieldValue.of(false);
-        assertThat(fieldValueBoolean.booleanValue()).isInstanceOf(Boolean.class);
+        FieldValue fieldValue = FieldValue.of("stringValue");
+        assertThat(fieldValue).hasNoNullFieldsOrProperties();
+        fieldValue = checkJsonRoundtrip(fieldValue, "\"stringValue\"");
+        assertThat(fieldValue.stringValue()).isNotNull();
+
     }
 
-    @YelpFusionTest
+    @TypeTest
     void testFieldValueJsonData() {
 
-        JsonData data = JsonData.of("test");
-        FieldValue fieldValueJsonData = FieldValue.of(data);
-        assertThat(fieldValueJsonData.anyValue()).isInstanceOf(JsonData.class);
+        FieldValue fieldValue = FieldValue.of(f -> f.anyValue(JsonData.of(SEARCH_BUSINESSES_REQUEST)));
+        assertThat(fieldValue).hasNoNullFieldsOrProperties();
+        assertThat(fieldValue.anyValue()).isInstanceOf(JsonData.class);
+        fieldValue = checkJsonRoundtrip(fieldValue, "{\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"id\":\"id\",\"alias\":\"alias\",\"name\":\"name\",\"phone\":\"phoneValue\"," +
+                "\"term\":[\"term\"],\"categories\":{\"alias\":\"alias\"}}");
     }
+
 
 }

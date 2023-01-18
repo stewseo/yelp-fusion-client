@@ -31,8 +31,8 @@ import io.github.stewseo.clients.yelpfusion.YelpFusionTest;//package io.github.s
 //    @YelpFusionTest
 //    public void testSearchBusinessEndpoint() {
 //
-//        SearchBusinessRequest searchBusinessRequest = SearchBusinessRequest.of(s -> s.location("SF"));
-//
+//        SearchBusinessRequest searchBusinessRequest = SearchBusinessRequest.of(s -> s.location(l -> l
+
 //        assertThat("v3/businesses/searchBusinesses")
 //                .isEqualTo(SearchBusinessRequest._ENDPOINT.requestUrl(searchBusinessRequest));
 //    }

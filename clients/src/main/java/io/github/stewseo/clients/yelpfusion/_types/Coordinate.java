@@ -15,16 +15,16 @@ import jakarta.json.stream.JsonGenerator;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class Center implements JsonpSerializable {
+public class Coordinate implements JsonpSerializable {
     private final Double latitude;
     private final Double longitude;
     
-    private Center(Builder builder) {
+    private Coordinate(Builder builder) {
         this.latitude = ApiTypeHelper.requireNonNull(builder.latitude, this, "latitude");
         this.longitude = ApiTypeHelper.requireNonNull(builder.longitude, this, "longitude");
     }
 
-    public static Center of(Function<Builder, ObjectBuilder<Center>> fn) {
+    public static Coordinate of(Function<Builder, ObjectBuilder<Coordinate>> fn) {
         return fn.apply(new Builder()).build();
     }
     
@@ -55,7 +55,7 @@ public class Center implements JsonpSerializable {
         return JsonpUtils.toString(this);
     }
 
-    public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Center> {
+    public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Coordinate> {
         private Double latitude;
         private Double longitude;
 
@@ -75,15 +75,15 @@ public class Center implements JsonpSerializable {
             return this;
         }
 
-        public Center build() {
+        public Coordinate build() {
             _checkSingleUse();
 
-            return new Center(this);
+            return new Coordinate(this);
         }
     }
 
-    public static final JsonpDeserializer<Center> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-            Center::setupCenterDeserializer);
+    public static final JsonpDeserializer<Coordinate> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
+            Coordinate::setupCenterDeserializer);
 
     protected static void setupCenterDeserializer(ObjectDeserializer<Builder> op) {
         op.add(Builder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");

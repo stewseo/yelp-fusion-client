@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class JsonpSerializeTest extends FunctionalTestCase {
 
     int size = 10;

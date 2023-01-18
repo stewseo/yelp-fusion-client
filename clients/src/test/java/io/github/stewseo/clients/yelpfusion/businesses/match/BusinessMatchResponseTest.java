@@ -1,12 +1,11 @@
 package io.github.stewseo.clients.yelpfusion.businesses.match;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
 @Tag("businesses")
-class BusinessMatchResponseTest extends ModelTestCase<MatchBusinessesResponse> {
+class BusinessMatchResponseTest extends YelpFusionTestCase<MatchBusinessesResponse> {
 
     private final MatchBusinessesResponse businessMatchResponse = of();
 

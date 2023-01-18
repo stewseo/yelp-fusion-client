@@ -18,8 +18,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.clients.yelpfusion._types.MappingProperties;
 import io.github.stewseo.clients.yelpfusion._types.QueryParam;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 import static io.github.stewseo.clients.yelpfusion._types.QueryParam.TIMESTAMP;
 public class ElasticsearchService {
 
-    private final Logger logger = LoggerFactory.getLogger(ElasticsearchService.class);
     int MAX_RESULTS = 10000;
 
     private final ElasticsearchAsyncClient asyncClient;
@@ -131,10 +128,11 @@ public class ElasticsearchService {
                     .whenComplete((response, exception) -> {
 
                         if (exception != null) {
-                            logger.error("Search failed. Exception: " + exception);
+                            // stub
+                            System.out.println("Search failed. Exception: " + exception);
                         }
                         else {
-                            logger.info("Search successful.");
+                            System.out.println("Search successful. ");
                         }
                     })
                     .get()

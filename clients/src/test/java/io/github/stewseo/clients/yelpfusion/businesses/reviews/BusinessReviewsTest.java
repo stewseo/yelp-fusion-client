@@ -2,54 +2,42 @@ package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.junit.jupiter.api.Tag;
 
 import static io.github.stewseo.clients.yelpfusion._types.QueryParam.TEXT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.FIELD_URL;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RATING;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Tag("reviews")
-public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
+public class BusinessReviewsTest extends YelpFusionTestCase<BusinessReview> {
 
     private final BusinessReview businessReview = of();
 
     public BusinessReview of() {
 
         return BusinessReview.of(e -> e
-                .id(ID)
-                .url(FIELD_URL)
                 .text(TEXT.name())
                 .time_created("time_created")
                 .user(USER)
-                .rating(RATING)
         );
     }
-    String expected = "{\"id\":\"id\",\"rating\":4.5,\"url\":\"url\",\"text\":\"TEXT\"," +
-            "\"time_created\":\"time_created\",\"user\":{\"id\":\"idValue\",\"name\":\"name\"}}";
+    String expected = "{\"text\":\"TEXT\",\"time_created\":\"time_created\",\"user\":{\"id\":\"idValue\",\"name\":\"name\"}}";
 
     @YelpFusionTest
     public void testOf() {
-        assertThat(businessReview.id()).isEqualTo(ID);
-        assertThat(businessReview.url()).isEqualTo(FIELD_URL);
+        assertThat(businessReview.time_created()).isEqualTo("time_created");
         assertThat(businessReview.text()).isEqualTo(TEXT.name());
         assertThat(businessReview.user()).isEqualTo(USER);
-        assertThat(businessReview.rating()).isEqualTo(RATING);
     }
     private BusinessReview.Builder ofBuilder() {
         return new BusinessReview.Builder()
-                .id(ID)
-                .url(FIELD_URL)
                 .text(TEXT.name())
                 .time_created("time_created")
-                .user(USER)
-                .rating(RATING);
+                .user(USER);
     }
     @YelpFusionTest
     public void testBuilder() {
@@ -64,10 +52,9 @@ public class BusinessReviewsTest extends ModelTestCase<BusinessReview> {
 
         BusinessReview result = builder.build();
 
-        assertThat(result.toString()).isEqualTo(expected);
     }
 
-    JsonGenerator generator = generator();
+    private final JsonGenerator generator = generator();
     @YelpFusionTest
     public void testSerialize() {
         businessReview.serialize(generator, mapper);

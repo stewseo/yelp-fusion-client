@@ -77,7 +77,8 @@ public class RestClientTransport implements YelpFusionTransport {
             TransportOptions transportOptions) throws IOException {
 
         Request clientRequest = prepareLowLevelRequest(request, endpoint, transportOptions);
-
+        System.out.println(clientRequest.getEndpoint());
+        System.out.println(clientRequest.getParameters());
         Response clientResponse = restClient.performRequest(clientRequest);
 
         return getHighLevelResponse(clientResponse, endpoint);

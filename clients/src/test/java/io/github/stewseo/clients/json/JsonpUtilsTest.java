@@ -1,8 +1,10 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import io.github.stewseo.clients.util.AllowForbiddenApis;
+import io.github.stewseo.clients.yelpfusion._types.Category;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
+import io.github.stewseo.clients.yelpfusion.businesses.search.Hit;
 import jakarta.json.Json;
 import jakarta.json.JsonException;
 import jakarta.json.JsonObject;
@@ -11,24 +13,21 @@ import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.function.Consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.COUNTRY_BLACKLIST;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.COUNTRY_WHITELIST;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PARENT_ALIAS;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TITLE;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
-public class JsonpUtilsTest implements SerializeToJson, DeserializeFromJson {
-
-    private final JsonProvider jsonProvider = new JacksonJsonpMapper().jsonProvider();
+public class JsonpUtilsTest extends ModelJsonTestCase {
 
     @JsonTest
     @AllowForbiddenApis("Testing JsonpUtil.provider()")
@@ -48,7 +47,8 @@ public class JsonpUtilsTest implements SerializeToJson, DeserializeFromJson {
         try {
             Thread.currentThread().setContextClassLoader(emptyLoader);
 
-            assertThrows(JsonException.class, () -> assertNotNull(JsonProvider.provider()));
+            assertThrows(JsonException.class,
+                    () -> assertNotNull(JsonProvider.provider()));
 
             assertNotNull(JsonpUtils.provider());
 
@@ -57,83 +57,229 @@ public class JsonpUtilsTest implements SerializeToJson, DeserializeFromJson {
         }
     }
 
-    private final JsonGenerator generator = generator();
+    @JsonTest
+    public void testObjectToString() {
 
-    private final JsonParser parser = parser();
+        // Test that we call toString() on application classes.
+        Hit<SomeUserData> hit = Hit.of(h -> h.source(new SomeUserData()));
 
+        assertThat(hit.toString())
+                .isEqualTo("{\"source\":\"Some user data\"}");
+    }
+
+    private static class SomeUserData {
+        @Override
+        public String toString() {
+            return "Some user data";
+        }
+    }
 
     @JsonTest
-    void expectNextEvent() {
+    @AllowForbiddenApis("Testing JsonpUtil.provider()")
+    public void testProviderCache() {
+        // A new provider at each call
+        assertNotSame(JsonpUtils.findProvider(), JsonpUtils.findProvider());
 
+        // Result is cached
+        assertSame(JsonpUtils.provider(), JsonpUtils.provider());
+    }
+    
+    @JsonTest
+    public void testLargeObjectToString() {
+        // Build a large string
+        StringBuilder sb = new StringBuilder();
+        sb.append("0123456789".repeat(1001));
+
+        String text = sb.toString();
+        assertThat(text.length()).isEqualTo(10010);
+
+        Hit<String> hit = Hit.of(hi -> hi
+                .source(text)
+        );
+
+        String toString = hit.toString();
+
+        assertThat(toString.length())
+                .isEqualTo(10000 + "...".length());
+
+        assertThat(toString).startsWith("{\"source\":\"");
+        assertThat(toString).endsWith("...");
+    }
+
+    @JsonTest
+    public void testSerializeDoubleOrNull() {
+        // ---- Double values
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, Double.NaN, Double.NaN))).isEqualTo(
+                "{\"a\":null}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, 1.0, Double.NaN)))
+                .isEqualTo("{\"a\":1.0}");
+
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)))
+                .isEqualTo("{\"a\":null}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, 1.0, Double.POSITIVE_INFINITY)))
+                .isEqualTo("{\"a\":1.0}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)))
+                .isEqualTo("{\"a\":null}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, 1.0, Double.NEGATIVE_INFINITY)))
+                .isEqualTo("{\"a\":1.0}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, Double.NaN, 0.0)))
+                .isEqualTo("{\"a\":null}");
+
+        // Serialize defined default values
+        assertThat(orNullHelper(g -> JsonpUtils.serializeDoubleOrNull(g, 0.0, 0.0)))
+                .isEqualTo("{\"a\":0.0}");
+    }
+
+    @JsonTest
+    public void testSerializeIntOrNull() {
+        assertThat(orNullHelper(g -> JsonpUtils.serializeIntOrNull(g, Integer.MAX_VALUE, Integer.MAX_VALUE)))
+                .isEqualTo("{\"a\":null}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeIntOrNull(g, 1, Integer.MAX_VALUE)))
+                .isEqualTo("{\"a\":1}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeIntOrNull(g, 1, 0)))
+                .isEqualTo("{\"a\":1}");
+
+
+        // Integer.MAX_VALUE is valid if not the default value
+        assertThat(orNullHelper(g -> JsonpUtils.serializeIntOrNull(g, Integer.MAX_VALUE, 0)))
+                .isEqualTo("{\"a\":2147483647}");
+
+        assertThat(orNullHelper(g -> JsonpUtils.serializeIntOrNull(g, Integer.MAX_VALUE, Integer.MIN_VALUE)))
+                .isEqualTo("{\"a\":2147483647}");
+
+
+        // Serialize non infinite default values
+        assertThat("{\"a\":0}").isEqualTo(orNullHelper(g -> JsonpUtils.serializeIntOrNull(g, 0, 0)));
+    }
+
+    @JsonTest
+    public void testJsonString() {
+
+        {
+            Category category = Category.of(i -> i
+                    .title(TITLE)
+                    .alias(ALIAS)
+                    .parent_aliases(PARENT_ALIAS)
+                    .country_whitelist(COUNTRY_WHITELIST)
+                    .country_blacklist(COUNTRY_BLACKLIST)
+            );
+
+            String json = "" +
+                    "{" +
+                        "\"alias\":\"alias\"," +
+                        "\"title\":\"title\"," +
+                        "\"parent_aliases\":" +
+                            "[" +
+                                "\"parents\"" +
+                            "]," +
+                        "\"country_whitelist\":" +
+                            "[" +
+                                "\"country_whitelist\"" +
+                            "]," +
+                        "\"country_blacklist\":" +
+                            "[" +
+                                "\"country_blacklist\"" +
+                            "]" +
+                    "}";
+
+            assertThat(toJson(category)).isEqualTo(json);
+
+            category = fromJson(json, Category.class);
+
+            assertThat(category.parent_aliases()).isNotNull();
+
+            assertThat(category.parent_aliases().stream()
+                    .findAny().orElse(null)
+            )
+                    .isEqualTo(PARENT_ALIAS);
+        }
+    }
+
+    @JsonTest
+    void testExpectNextEvent() {
+        JsonParser parser = parser();
         JsonParser.Event expectedEvent = JsonpUtils.expectNextEvent(parser, JsonParser.Event.START_OBJECT);
 
         assertThat(expectedEvent).isEqualTo(JsonParser.Event.START_OBJECT);
     }
 
     @JsonTest
-    void expectEvent() {
+    void testExpectEvent() {
+        try(JsonParser parser = parser()) {
 
-        UnexpectedJsonEventException unexpectedJsonEventException = assertThrows(UnexpectedJsonEventException.class,
-                () -> JsonpUtils.expectEvent(parser, JsonParser.Event.KEY_NAME, JsonParser.Event.START_OBJECT));
+            UnexpectedJsonEventException unexpectedJsonEventException = assertThrows(UnexpectedJsonEventException.class,
+                    () -> JsonpUtils.expectEvent(parser, JsonParser.Event.KEY_NAME, JsonParser.Event.START_OBJECT));
 
-        assertThat(unexpectedJsonEventException.getMessage()).isEqualTo("Unexpected JSON event 'START_OBJECT' instead of 'KEY_NAME'");
+            assertThat(unexpectedJsonEventException.getMessage()).isEqualTo("Unexpected JSON event 'START_OBJECT' instead of 'KEY_NAME'");
+        }
     }
 
     @JsonTest
-    void expectKeyName() {
+    void testExpectKeyName() {
+        try(JsonParser parser = parser()) {
+            JsonParser.Event expectedEvent = JsonParser.Event.START_ARRAY;
 
-        JsonParser.Event expectedEvent = JsonParser.Event.START_ARRAY;
+            UnexpectedJsonEventException unexpectedJsonEventException = assertThrows(UnexpectedJsonEventException.class,
+                    () -> JsonpUtils.expectKeyName(parser, expectedEvent));
 
-        UnexpectedJsonEventException unexpectedJsonEventException = assertThrows(UnexpectedJsonEventException.class,
-                () -> JsonpUtils.expectKeyName(parser, expectedEvent));
+            assertThat(unexpectedJsonEventException.getMessage())
+                    .isEqualTo("Unexpected JSON event 'START_ARRAY' instead of 'KEY_NAME'");
 
-        assertThat(unexpectedJsonEventException.getMessage())
-                .isEqualTo("Unexpected JSON event 'START_ARRAY' instead of 'KEY_NAME'");
-
-        assertThat(JsonpUtils.expectKeyName(parser, JsonParser.Event.KEY_NAME)).isNull();
-
+            assertThat(JsonpUtils.expectKeyName(parser, JsonParser.Event.KEY_NAME)).isNull();
+        }
     }
 
     @JsonTest
-    void ensureAccepts() {
+    void testEnsureAccepts() {
+        try(JsonParser parser = parser()) {
+            UnexpectedJsonEventException unexpectedJsonEventException = assertThrows(UnexpectedJsonEventException.class,
+                    () -> JsonpUtils.ensureAccepts(JsonpDeserializer.stringDeserializer(), parser, JsonParser.Event.START_ARRAY));
 
-        UnexpectedJsonEventException unexpectedJsonEventException = assertThrows(UnexpectedJsonEventException.class,
-                () -> JsonpUtils.ensureAccepts(JsonpDeserializer.stringDeserializer(), parser, JsonParser.Event.START_ARRAY));
+            assertThat(unexpectedJsonEventException.getMessage())
+                    .isEqualTo("Unexpected JSON event 'START_ARRAY' instead of '[KEY_NAME, VALUE_STRING, VALUE_NUMBER, VALUE_TRUE, VALUE_FALSE]'");
 
-        assertThat(unexpectedJsonEventException.getMessage())
-                .isEqualTo("Unexpected JSON event 'START_ARRAY' instead of '[KEY_NAME, VALUE_STRING, VALUE_NUMBER, VALUE_TRUE, VALUE_FALSE]'");
-
+        }
     }
 
     @JsonTest
     void ensureCustomVariantsAllowed() {
+        try(JsonParser parser = parser()) {
+            JsonpUtils.ensureCustomVariantsAllowed(parser, mapper);
 
-        JsonpUtils.ensureCustomVariantsAllowed(parser, mapper);
-
-        String mapperAttribute = mapper.attribute(JsonpMapperFeatures.FORBID_CUSTOM_VARIANTS);
-        assertThat(mapperAttribute).isNull();
+            String mapperAttribute = mapper.attribute(JsonpMapperFeatures.FORBID_CUSTOM_VARIANTS);
+            assertThat(mapperAttribute).isNull();
+        }
 
     }
 
     @JsonTest
     void testSkipValue() {
+        try(JsonParser parser = parser()) {
+            JsonpUtils.skipValue(parser());
 
-      JsonpUtils.skipValue(parser);
-
-      assertThat(parser.hasNext()).isFalse();
-    }
-
-
-    @JsonTest
-    void lookAheadFieldValue() {
-
-        assertThrows(IllegalStateException.class,
-                () -> JsonpUtils.lookAheadFieldValue("name", "defaultValue", parser, mapper));
-
+            assertThat(parser.next()).isEqualTo(JsonParser.Event.START_OBJECT);
+        }
     }
 
     @JsonTest
-    void objectParser() {
+    void testLookAheadFieldValue() {
+        try(JsonParser parser = parser()) {
+            assertThrows(IllegalStateException.class,
+                    () -> JsonpUtils.lookAheadFieldValue("name", "defaultValue", parser, mapper));
+        }
+
+    }
+
+    @JsonTest
+    void testObjectParser() {
 
         JsonObject jsonObject = Json.createObjectBuilder().add("name", 1).build();
 
@@ -144,92 +290,40 @@ public class JsonpUtilsTest implements SerializeToJson, DeserializeFromJson {
     }
 
     @JsonTest
-    void serializeDoubleOrNull() {
+    void testTypedKeysToString() {
 
-        double doubleValue = 5.0;
-
-        JsonpUtils.serializeDoubleOrNull(generator, doubleValue, 0);
-
-        assertThat(doubleValue).isEqualTo(5.0);
-    }
-
-    @JsonTest
-    void serializeIntOrNull() {
-
-        int value = 1;
-
-        JsonpUtils.serializeIntOrNull(generator, value, 0);
-
-        assertThat(value).isEqualTo(1);
-    }
-
-
-    @JsonTest
-    void typedKeysToString() {
-        assertThat(JsonpUtils.typedKeysToString(BusinessDetails.of(b -> b.id("id")))).isEqualTo("BusinessDetails: {...");
-    }
-
-    @JsonTest
-    void maxToStringLength() {
-        assertThat(JsonpUtils.maxToStringLength()).isEqualTo(JsonpUtils.MAX_TO_STRING_LENGTH);
+        assertThat(JsonpUtils.typedKeysToString(BusinessDetails.of(b -> b.id("id")))
+        )
+                .isEqualTo("BusinessDetails: {\"id\":\"id\"}"
+                );
     }
 
     @JsonTest
     void testMaxToStringLength() {
-        JsonpUtils.maxToStringLength(1);
-        assertThat(JsonpUtils.maxToStringLength()).isEqualTo(1);
+        assertThat(JsonpUtils.maxToStringLength()).isEqualTo(JsonpUtils.MAX_TO_STRING_LENGTH);
     }
-
-    @JsonTest
-    void testToString1() {
-        assertThat(JsonpUtils.toString(BusinessDetails.of(b -> b.id("id")))).isEqualTo("{...");
-
-    }
-
 
     @JsonTest
     void testToString3() {
         assertThat(JsonpUtils.toString(JsonValue.TRUE)).isEqualTo("true");
-
-    }
-
-    @JsonTest
-    public void testSerialize() {
-
-    }
-
-    @JsonTest
-    public void testSerializeInternal() {
-
-    }
-
-    @JsonTest
-    public void testDeserializer() {
-
-    }
-
-    @JsonTest
-    public void testDeserialize() {
-
-    }
-
-    public JsonpMapper mapper() {
-        return new JacksonJsonpMapper();
-    }
-
-    public JsonGenerator generator() {
-        return jsonProvider.createGenerator(new StringWriter());
     }
 
     @Override
     public JsonParser parser()   {
+        Hit<String> hitString = Hit.of(h -> h.source("stringValue"));
+        return parser(hitString);
+    }
 
-        try(InputStream content = IOUtils.toInputStream("{\"date\":\"1/6/2023\"}", StandardCharsets.UTF_8)) {
+    private static String orNullHelper(Consumer<JsonGenerator> c) {
+        StringWriter sw = new StringWriter();
+        JsonGenerator generator = JsonpUtils.provider().createGenerator(sw);
 
-            return jsonProvider.createParser(content);
+        generator.writeStartObject();
+        generator.writeKey("a");
+        c.accept(generator);
+        generator.writeEnd();
+        generator.close();
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return sw.toString();
     }
 }

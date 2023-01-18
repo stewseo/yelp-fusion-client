@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_ERROR_DOES_NOT_MATCH;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.BAD_LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.BAD_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

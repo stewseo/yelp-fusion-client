@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
@@ -13,7 +13,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.Request
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class SpecialHoursTest extends ModelTestCase<SpecialHours> {
+class SpecialHoursTest extends YelpFusionTestCase<SpecialHours> {
 
     private final String date = "1/6/2023";
 

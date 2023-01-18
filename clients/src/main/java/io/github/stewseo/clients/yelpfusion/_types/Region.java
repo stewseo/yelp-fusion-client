@@ -9,7 +9,6 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.util.WithJsonObjectBuilderBase;
-import io.github.stewseo.clients.yelpfusion._types.Center;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;
@@ -17,7 +16,7 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class Region implements JsonpSerializable {
 
-    private final Center center;
+    private final Coordinate center;
 
     private Region(Builder builder) {
         this.center = builder.center;
@@ -28,10 +27,10 @@ public class Region implements JsonpSerializable {
     }
 
     protected static void setupRegionDeserializer(ObjectDeserializer<Builder> op) {
-        op.add(Builder::center, Center._DESERIALIZER, "center");
+        op.add(Builder::center, Coordinate._DESERIALIZER, "center");
     }
 
-    public final Center center() {
+    public final Coordinate center() {
         return center;
     }
 
@@ -54,9 +53,9 @@ public class Region implements JsonpSerializable {
     }
 
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Region> {
-         private Center center;
+         private Coordinate center;
 
-        public final Builder center(Center value) {
+        public final Builder center(Coordinate value) {
             this.center = value;
             return this;
         }

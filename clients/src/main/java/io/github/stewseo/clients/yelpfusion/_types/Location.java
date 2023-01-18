@@ -26,14 +26,10 @@ public class Location implements JsonpSerializable {
     @Nullable
     private final String address3;
 
-    private final String city;
-
     private final String zip_code;
-
-    private final String country;
-
+    private final String city;
     private final String state;
-
+    private final String country;
     private final List<String> display_address;
 
     private Location(Builder builder) {
@@ -144,22 +140,46 @@ public class Location implements JsonpSerializable {
 
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Location> {
 
-        private String address1, address2, address3, city, county, cross_streets, state, zip_code, country;
-
+        private String address1;
+        private String address2;
+        private String address3;
+        private String city;
+        private String state;
+        private String zip_code;
+        private String country;
+        private String county;
+        private String cross_streets;
         private List<String> display_address;
 
+        public final Builder address1(String value) {
+            this.address1 = value;
+            return this;
+        }
+
+        public final Builder address2(@Nullable String value) {
+            this.address2 = value;
+            return this;
+        }
+        public final Builder address3(@Nullable String value) {
+            this.address3 = value;
+            return this;
+        }
+        public final Builder zip_code(String value) {
+            this.zip_code = value;
+            return this;
+        }
+
+        public final Builder city(String value) {
+            this.city = value;
+            return this;
+        }
+
+        public final Builder county(String value) {
+            this.county = value;
+            return this;
+        }
         public final Builder country(String value) {
             this.country = value;
-            return this;
-        }
-
-        public final Builder display_address(List<String> value) {
-            this.display_address = _listAddAll(this.display_address, value);
-            return this;
-        }
-
-        public final Builder display_address(String value, String... values) {
-            this.display_address = _listAdd(this.display_address, value, values);
             return this;
         }
 
@@ -173,33 +193,13 @@ public class Location implements JsonpSerializable {
             return this;
         }
 
-        public final Builder address3(String value) {
-            this.address3 = value;
+        public final Builder display_address(List<String> value) {
+            this.display_address = _listAddAll(this.display_address, value);
             return this;
         }
 
-        public final Builder address1(String value) {
-            this.address1 = value;
-            return this;
-        }
-
-        public final Builder address2(String value) {
-            this.address2 = value;
-            return this;
-        }
-
-        public final Builder zip_code(String value) {
-            this.zip_code = value;
-            return this;
-        }
-
-        public final Builder city(String value) {
-            this.city = value;
-            return this;
-        }
-
-        public final Builder county(String value) {
-            this.county = value;
+        public final Builder display_address(String value, String... values) {
+            this.display_address = _listAdd(this.display_address, value, values);
             return this;
         }
 

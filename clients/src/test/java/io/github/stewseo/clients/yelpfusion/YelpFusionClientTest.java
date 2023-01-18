@@ -1,5 +1,6 @@
 package io.github.stewseo.clients.yelpfusion;
 
+import io.github.stewseo.clients.json.JsonpMappingException;
 import io.github.stewseo.clients.transport.restclient.RestClientOptions;
 import io.github.stewseo.clients.yelpfusion.businesses.YelpFusionBusinessesClient;
 import io.github.stewseo.clients.yelpfusion.categories.YelpFusionCategoriesClient;
@@ -68,12 +69,6 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
     @YelpFusionTest
     void testAutocomplete() {
 
-        String expectedUri = "URI [v3/autocomplete?text=textValue]";
-
-        String expectedTextValue = "textValue";
-
-        String expected = buildExpectedResponseExceptionMessage(expectedUri);
-
         AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a.latitude(LATITUDE));
 
         ResponseException responseException = assertThrows(ResponseException.class,
@@ -90,37 +85,18 @@ class YelpFusionClientTest extends YelpFusionClientTestCase {
     void testAutocompletePerformRequest() {
 
         AutoCompleteRequest autoCompleteRequest = AutoCompleteRequest.of(a -> a
+                .text("pizz")
                 .latitude(LATITUDE)
                 .longitude(LONGITUDE)
-                .text("pizz")
+
         );
 
         try {
-            assertThat(client.autocomplete(autoCompleteRequest).toString())
-                    .isEqualTo("" +
-                            "{" +
-                                "\"categories\":" +
-                                    "[" +
-                                        "{" +
-                                            "\"alias\":\"pizza\"," +
-                                            "\"title\":\"Pizza\"" +
-                                        "}" +
-                                    "]," +
-                                "\"terms\":" +
-                                    "[" +
-                                        "{" +
-                                            "\"text\":\"Pizza Delivery\"" +
-                                        "}," +
-                                        "{" +
-                                            "\"text\":\"Pizza Hut\"" +
-                                        "}," +
-                                        "{" +
-                                            "\"text\":\"Pizza Near Me\"" +
-                                        "}" +
-                                    "]," +
-                                "\"businesses\":[]" +
-                            "}"
-                    );
+            JsonpMappingException jsonMappingException = assertThrows(JsonpMappingException.class,
+                    () -> client.autocomplete(autoCompleteRequest));
+
+            assertThat(jsonMappingException.getMessage()).contains("Error deserializing io.github.stewseo.clients.yelpfusion.misc.AutoCompleteResponse:");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

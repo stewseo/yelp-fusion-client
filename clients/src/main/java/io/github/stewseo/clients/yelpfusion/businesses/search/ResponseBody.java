@@ -23,7 +23,6 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
     @Nullable
     private final JsonpSerializer<ResultT> resultTSerializer;
 
-    @Nullable
     private final Integer total;
 
     @Nullable
@@ -32,7 +31,7 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
     protected ResponseBody(AbstractBuilder<ResultT, ?> builder) {
         this.hits = ApiTypeHelper.unmodifiableRequired(builder.hits, this, "businesses");
         this.total = ApiTypeHelper.requireNonNull(builder.total, this, "total");
-        this.resultTSerializer = builder.tDocumentSerializer;
+        this.resultTSerializer = builder.resultTSerializer;
         this.region = builder.region;
     }
     
@@ -87,18 +86,18 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
 
         private List<Hit<ResultT>> hits;
 
-        private JsonpSerializer<ResultT> tDocumentSerializer;
+        private JsonpSerializer<ResultT> resultTSerializer;
 
         private Integer total;
         @Nullable
         private Region region;
 
 
+
         public final BuilderT hits(List<Hit<ResultT>> list) {
             this.hits = _listAddAll(this.hits, list);
             return self();
         }
-
         @SafeVarargs
         public final BuilderT hits(Hit<ResultT> value, Hit<ResultT>... values) {
             this.hits = _listAdd(this.hits, value, values);
@@ -110,8 +109,8 @@ public abstract class ResponseBody<ResultT> implements JsonpSerializable {
             return this.hits(fn.apply(new Hit.Builder<ResultT>()).build());
         }
 
-        public final BuilderT tDocumentSerializer(JsonpSerializer<ResultT> value) {
-            this.tDocumentSerializer = value;
+        public final BuilderT resultTSerializer(JsonpSerializer<ResultT> value) {
+            this.resultTSerializer = value;
             return self();
         }
 

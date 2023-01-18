@@ -303,20 +303,22 @@ public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
             Map<String, T> result = new HashMap<>();
             String key = null;
 
-            if(event != null) {
-
-                try {
-
-                    while ((event = parser.next()) != Event.END_OBJECT) {
-                        JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
-                        key = parser.getString();
-                        T value = itemDeserializer.deserialize(parser, mapper);
-                        result.put(key, value);
-                    }
-                } catch (Exception e) {
-                    throw JsonpMappingException.from(e, null, key, parser);
-                }
+            if (event == null) {
+                System.out.println("Event null: ");
             }
+
+            try {
+
+                while ((event = parser.next()) != Event.END_OBJECT) {
+                    JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
+                    key = parser.getString();
+                    T value = itemDeserializer.deserialize(parser, mapper);
+                    result.put(key, value);
+                }
+            } catch (Exception e) {
+                throw JsonpMappingException.from(e, null, key, parser);
+            }
+
             return result;
         }
     }
@@ -336,19 +338,23 @@ public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
         public Map<K, V> deserialize(JsonParser parser, JsonpMapper mapper, Event event) {
             Map<K, V> result = new HashMap<>();
             String keyName = null;
-            if(event != null) {
-                try {
-                    while ((event = parser.next()) != Event.END_OBJECT) {
-                        JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
-                        keyName = parser.getString();
-                        K key = keyDeserializer.deserialize(parser, mapper, event);
-                        V value = valueDeserializer.deserialize(parser, mapper);
-                        result.put(key, value);
-                    }
-                } catch (Exception e) {
-                    throw JsonpMappingException.from(e, null, keyName, parser);
-                }
+
+            if (event == null) {
+                System.out.println("Event null: ");
             }
+
+            try {
+                while ((event = parser.next()) != Event.END_OBJECT) {
+                    JsonpUtils.expectEvent(parser, Event.KEY_NAME, event);
+                    keyName = parser.getString();
+                    K key = keyDeserializer.deserialize(parser, mapper, event);
+                    V value = valueDeserializer.deserialize(parser, mapper);
+                    result.put(key, value);
+                }
+            } catch (Exception e) {
+                throw JsonpMappingException.from(e, null, keyName, parser);
+            }
+
             return result;
         }
     }

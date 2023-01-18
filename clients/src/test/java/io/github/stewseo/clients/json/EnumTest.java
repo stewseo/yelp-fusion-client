@@ -1,19 +1,17 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import io.github.stewseo.clients.yelpfusion._types.Bytes;
 import io.github.stewseo.clients.yelpfusion._types.GeoOrientation;
 import io.github.stewseo.clients.yelpfusion._types.Refresh;
 import io.github.stewseo.clients.yelpfusion._types.Result;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import jakarta.json.stream.JsonParser;
 
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class EnumTest extends TestJson {
-
+public class EnumTest extends ModelJsonTestCase {
 
     @JsonTest
     public void testSimpleEnum() {
@@ -61,5 +59,10 @@ public class EnumTest extends TestJson {
         assertThat(Refresh.True).isEqualTo(fromJson("true", Refresh.class));
 
         assertThat(Refresh.False).isEqualTo(fromJson("false", Refresh.class));
+    }
+
+    @Override
+    public JsonParser parser() {
+        return null;
     }
 }

@@ -1,10 +1,10 @@
-package io.github.stewseo.clients._type;
+package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonEnum;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 
 @JsonpDeserializable
-public enum Term implements JsonEnum {
+public enum TermEnum implements JsonEnum {
 
     Restaurants("restaurants"),
     Category("category"),
@@ -13,7 +13,7 @@ public enum Term implements JsonEnum {
 
     private final String jsonValue;
 
-    Term(String jsonValue) {
+    TermEnum(String jsonValue) {
         this.jsonValue = jsonValue;
     }
 
@@ -21,5 +21,5 @@ public enum Term implements JsonEnum {
         return this.jsonValue;
     }
 
-    public static final Deserializer<Term> _DESERIALIZER = new Deserializer<>(Term.values());
+    public static final Deserializer<TermEnum> _DESERIALIZER = new Deserializer<>(TermEnum.values());
 }

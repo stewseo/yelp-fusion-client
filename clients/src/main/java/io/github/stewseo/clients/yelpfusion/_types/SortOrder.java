@@ -9,6 +9,7 @@ import io.github.stewseo.clients.json.JsonpDeserializable;
  */
 @JsonpDeserializable
 public enum SortOrder implements JsonEnum {
+
     Asc("asc"),
 
     Desc("desc"),

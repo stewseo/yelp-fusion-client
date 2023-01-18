@@ -1,10 +1,10 @@
-package io.github.stewseo.clients._type;
+package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpUtils;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
-import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import io.github.stewseo.clients.util.MissingRequiredPropertyException;
 import io.github.stewseo.clients.util.Pair;
 import jakarta.json.spi.JsonProvider;
@@ -15,13 +15,12 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class QueryFieldTest extends TestJson {
+public class QueryParameterTest extends ModelJsonTestCase {
 
-    private final TermQueryParameter termQueryField = TermQueryParameter.of(variant -> variant.term(Term.Restaurants));
+    private final TermQueryParameter termQueryField = TermQueryParameter.of(variant -> variant.term(TermEnum.Restaurants));
 
     private final QueryParameter queryField = QueryParameter.of(qf -> qf.term(termQueryField));
 
@@ -34,7 +33,7 @@ public class QueryFieldTest extends TestJson {
 
     @TypeTest
     void test_get() {
-        assertThat(queryField._get().toString()).isEqualTo("TermsQueryField: {\"term\":\"restaurants\"}");
+        assertThat(queryField._get().toString()).isEqualTo("{\"term\":\"restaurants\"}");
     }
 
     @TypeTest

@@ -102,7 +102,7 @@ public class YelpFusionBusinessAsyncClient extends ApiClient<YelpFusionTransport
         JsonEndpoint<SearchTransactionRequest, SearchResponse<ResultT>, ErrorResponse> endpoint =
                 (JsonEndpoint<SearchTransactionRequest, SearchResponse<ResultT>, ErrorResponse>) SearchTransactionRequest._ENDPOINT;
         endpoint = new EndpointWithResponseMapperAttr<>(endpoint,
-                "clients.yelpfusion:Deserializer:_global.search.ResultT", getDeserializer(resultTClass));
+                "io.github.stewseo.clients:Deserializer:_global.search.ResultT", getDeserializer(resultTClass));
 
         return this.transport.performRequestAsync(request, endpoint, this.transportOptions);
     }

@@ -50,7 +50,7 @@ public class SearchResponse<ResultT> extends ResponseBody<ResultT> {
 
     public static final JsonpDeserializer<SearchResponse<Object>> _DESERIALIZER = JsonpDeserializer
             .lazy(() -> createSearchResponseDeserializer(
-                    new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses._types.ResultT")));
+                    new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search._types.ResultT")));
 
     protected static <ResultT> void setupSearchResponseDeserializer(
             ObjectDeserializer<Builder<ResultT>> op,

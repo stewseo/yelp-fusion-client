@@ -2,10 +2,9 @@ package io.github.stewseo.clients.yelpfusion.testcases;
 
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
-import io.github.stewseo.clients.json.testcases.TestJson;
 import io.github.stewseo.clients.yelpfusion.YelpFusionClient;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Center;
+import io.github.stewseo.clients.yelpfusion._types.Coordinate;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.testcases.context.YelpFusionTestService;
@@ -27,8 +26,6 @@ public abstract class FunctionalTestCase {
 
     public final YelpFusionTestService yelpFusionService;
 
-    public final TestJson testJson;
-
     private static int numCities;
 
     private static List<BreinTemporalDataResult> list;
@@ -37,7 +34,6 @@ public abstract class FunctionalTestCase {
 
     protected FunctionalTestCase() {
         yelpFusionService = new YelpFusionTestService();
-        testJson = new TestJson();
         temporalDataService = new TemporalDataService();
         list = loadCaliforniaCities().toList();
         numCities = list.size();
@@ -80,7 +76,7 @@ public abstract class FunctionalTestCase {
                 .country(country)
         );
 
-        Center center = Center.of(c -> c
+        Coordinate center = Coordinate.of(c -> c
                 .latitude(latitude)
                 .longitude(longitude)
         );

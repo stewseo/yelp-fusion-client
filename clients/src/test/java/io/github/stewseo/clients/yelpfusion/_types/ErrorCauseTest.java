@@ -4,7 +4,7 @@ import io.github.stewseo.clients.json.JsonData;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-class ErrorCauseTest extends ModelTestCase<ErrorCause> {
+class ErrorCauseTest extends YelpFusionTestCase<ErrorCause> {
 
    private final ErrorCause errorCause = of();
 

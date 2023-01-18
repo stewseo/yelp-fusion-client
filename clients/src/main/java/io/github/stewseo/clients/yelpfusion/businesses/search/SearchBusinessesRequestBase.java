@@ -7,7 +7,7 @@ import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion._types.Attribute;
 import io.github.stewseo.clients.yelpfusion._types.Category;
-import io.github.stewseo.clients.yelpfusion._types.Center;
+import io.github.stewseo.clients.yelpfusion._types.Coordinate;
 import io.github.stewseo.clients.yelpfusion.businesses.BusinessesRequestBase;
 import jakarta.json.stream.JsonGenerator;
 
@@ -18,13 +18,7 @@ import java.util.function.Function;
 public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase {
 
     @Nullable
-    private final Double latitude;
-    @Nullable
-    private final Double longitude;
-    @Nullable
     private final String sort_by;
-    @Nullable
-    private final String location;
     @Nullable
     private final String locale;
     @Nullable
@@ -40,7 +34,7 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
     @Nullable
     private final List<String> term;
     @Nullable
-    private final Center center;
+    private final Coordinate center;
     @Nullable
     private final Boolean open_now;
     @Nullable
@@ -51,10 +45,7 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
     protected SearchBusinessesRequestBase(AbstractBuilder<?> builder) {
 
         super(builder);
-        this.latitude = builder.latitude;
-        this.longitude = builder.longitude;
         this.term = ApiTypeHelper.unmodifiable(builder.term);
-        this.location = builder.location;
         this.center = builder.center;
         this.radius = builder.radius;
         this.categories = builder.categories;
@@ -67,17 +58,6 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
         this.open_at = builder.open_at;
         this.attributes = ApiTypeHelper.unmodifiable(builder.attributes);
     }
-
-    @Nullable
-    public final Double latitude() {
-        return this.latitude;
-    }
-
-    @Nullable
-    public final Double longitude() {
-        return this.longitude;
-    }
-
 
     public final String locale() {
         return this.locale;
@@ -108,20 +88,15 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
         return this.radius;
     }
 
-
     public final List<String> term() {
         return this.term;
-    }
-
-    public final String location() {
-        return this.location;
     }
 
     public final Category categories() {
         return this.categories;
     }
 
-    public final Center center() {
+    public final Coordinate center() {
         return this.center;
     }
 
@@ -140,21 +115,6 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
                 generator.write(item0);
             }
             generator.writeEnd();
-        }
-
-        if (this.location != null) {
-            generator.writeKey("location");
-            generator.write(this.location);
-        }
-
-        if (this.latitude != null) {
-            generator.writeKey("latitude");
-            generator.write(this.latitude);
-        }
-
-        if (this.longitude != null) {
-            generator.writeKey("longitude");
-            generator.write(this.longitude);
         }
 
         if (this.categories != null) {
@@ -211,16 +171,7 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
        private List<String> term;
 
        @Nullable
-       private String location;
-
-       @Nullable
-       private Center center;
-
-       @Nullable
-       private Double latitude;
-
-       @Nullable
-       private Double longitude;
+       private Coordinate center;
 
        @Nullable
        private Integer radius;
@@ -251,16 +202,6 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
 
        @Nullable
        private List<Attribute> attributes;
-
-       public final BuilderT latitude(Double value) {
-           this.latitude = value;
-           return self();
-       }
-
-       public final BuilderT longitude(Double value) {
-           this.longitude = value;
-           return self();
-       }
 
        public final BuilderT price(Integer price) {
            this.price = price;
@@ -319,18 +260,13 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
            return this.categories(fn.apply(new Category.Builder()).build());
        }
 
-       public final BuilderT center(Center value) {
+       public final BuilderT center(Coordinate value) {
            this.center = value;
            return self();
        }
 
-       public final BuilderT center(Function<Center.Builder, ObjectBuilder<Center>> fn) {
-           return this.center(fn.apply(new Center.Builder()).build());
-       }
-
-       public final BuilderT location(@Nullable String value) {
-           this.location = value;
-           return self();
+       public final BuilderT center(Function<Coordinate.Builder, ObjectBuilder<Coordinate>> fn) {
+           return this.center(fn.apply(new Coordinate.Builder()).build());
        }
 
        public final BuilderT attributes(@Nullable List<Attribute> list) {
@@ -358,9 +294,6 @@ public abstract class SearchBusinessesRequestBase extends BusinessesRequestBase 
         op.add(AbstractBuilder::offset, JsonpDeserializer.integerDeserializer(), "offset");
         op.add(AbstractBuilder::open_at, JsonpDeserializer.integerDeserializer(), "open_at");
         op.add(AbstractBuilder::open_now, JsonpDeserializer.booleanDeserializer(), "open_now");
-
-        op.add(AbstractBuilder::term, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "term");
-        op.add(AbstractBuilder::location, JsonpDeserializer.stringDeserializer(), "location");
         op.add(AbstractBuilder::categories, Category._DESERIALIZER, "categories");
         op.add(AbstractBuilder::attributes, JsonpDeserializer.arrayDeserializer(Attribute._DESERIALIZER), "attributes");
     }

@@ -20,17 +20,16 @@ plugins {
  *****************************************************************************/
 
 group = 'io.github.stewseo'
-version = '1.7.6'
+version = '1.8.0'
 
 /*****************************************************************************
- *         packaging                                                         *
+ *         java                                                              *
  *****************************************************************************/
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-        vendor.set(JvmVendorSpec.ADOPTIUM)
-    }
+
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
 
     withSourcesJar()
     withJavadocJar()
@@ -38,13 +37,13 @@ java {
 
 
 jar {
-    archiveFileName.set(project.name)
-    archiveFileName.set(project.version)
+//    archiveBaseName.set(project.name)
+//    archiveVersion.set(project.version)
 
-    manifest {
-        attributes("Implementation-Title": archiveFileName,
-                "Implementation-Version": archiveVersion)
-    }
+//    manifest {
+//        attributes("Implementation-Title": archiveBaseName,
+//                "Implementation-Version": archiveVersion)
+//    }
 
     from {
         configurations.compileClasspath.filter { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
@@ -56,10 +55,11 @@ jar {
 javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
 tasks.withType(JavaCompile) {
-    javaCompiler.set(javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(17)
-    })
-    options.deprecation = true
+
+//    javaCompiler.set(javaToolchains.compilerFor {
+//        languageVersion = JavaLanguageVersion.of(17)
+//    })
+    options.deprecation = false
     options.encoding = StandardCharsets.UTF_8
 }
 
@@ -71,7 +71,7 @@ tasks.withType(JavaCompile) {
 // No Warnings
 checkstyle {
     config = resources.text.fromString(io.github.stewseo.CheckstyleUtil.getCheckstyleConfig("$rootDir/config/checkstyle/checkstyle.xml"))
-//    maxWarnings = 0
+    maxWarnings = 0
 }
 
 /*****************************************************************************
@@ -157,4 +157,10 @@ tasks.register('printPaths') {
                 "\nprojectDir: " + projectDir +
                 "\nbuildDir path: " + buildDir.path
     }
+}
+
+tasks.withType(GenerateMavenPom).all {
+    def matcher = name =~ /generatePomFileFor(\w+)Publication/
+    def publicationName = matcher[0][1]
+    destination = layout.buildDirectory.file("poms/${publicationName}-pom.xml").get().asFile
 }

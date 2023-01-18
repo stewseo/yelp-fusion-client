@@ -1,10 +1,10 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients._type.QueryParameter;
-import io.github.stewseo.clients._type.QueryParameterVariant;
-import io.github.stewseo.clients._type.TermQueryParameter;
 import io.github.stewseo.clients.json.jsonb.JsonbJsonpMapper;
-import io.github.stewseo.clients.json.testcases.JsonTestCase;
+import io.github.stewseo.clients.json.testcases.TestJsonp;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameterVariant;
+import io.github.stewseo.clients.yelpfusion._types.TermQueryParameter;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.stream.JsonParsingException;
@@ -18,17 +18,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.QUERY_FIELD;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TERMS_QUERY_FIELD;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.QUERY_PARAMETER;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TERM_QUERY_PARAM;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRUE_FALSE_LIST;
 import static org.assertj.core.api.Assertions.setMaxStackTraceElementsDisplayed;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class ExternallyTaggedUnionTest implements JsonTestCase {
+public class ExternallyTaggedUnionTest implements TestJsonp {
 
-    private final QueryParameter expectedQueryField = QUERY_FIELD;
+    private final QueryParameter expectedQueryField = QUERY_PARAMETER;
 
     final Map<String, List<QueryParameter>> typedKeysArray = Map.of("key", List.of(expectedQueryField));
 
@@ -51,6 +51,7 @@ public class ExternallyTaggedUnionTest implements JsonTestCase {
         generator.writeStartObject();
         TRUE_FALSE_LIST.forEach(this::serializeTypedKeysInner);
         generator.writeEnd();
+        assertThat(typedKeys).isNotNull();
     }
 
 
@@ -98,11 +99,11 @@ public class ExternallyTaggedUnionTest implements JsonTestCase {
                         deserializers, QueryParameter::new).typedKeys();
 
         JsonpDeserializer<Map<String, List<QueryParameter>>> arrayMapDeserializer =
-                ExternallyTaggedUnion.<QueryParameter>arrayMapDeserializer(typedKeysDeserializer);
+                ExternallyTaggedUnion.arrayMapDeserializer(typedKeysDeserializer);
 
         assertThat(arrayMapDeserializer).isNotNull();
 
-        Map<String, List<TermQueryParameter>> map = Map.of("typedKey", List.of(TERMS_QUERY_FIELD));
+        Map<String, List<TermQueryParameter>> map = Map.of("typedKey", List.of(TERM_QUERY_PARAM));
 
         try(JsonParser parser = parser(map)) {
             JsonParsingException jsonParsingException = assertThrows(JsonParsingException.class,

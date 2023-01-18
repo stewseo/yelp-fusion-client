@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.businesses.reviews;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -13,7 +13,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TOTAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class BusinessReviewsResponseTest extends ModelTestCase<BusinessReviewsResponse> {
+class BusinessReviewsResponseTest extends YelpFusionTestCase<BusinessReviewsResponse> {
 
     private final List<BusinessReview> businessReviews = List.of(BusinessReview.of(br -> br.id(ID)));
 

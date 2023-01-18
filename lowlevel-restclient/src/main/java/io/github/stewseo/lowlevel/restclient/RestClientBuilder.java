@@ -18,18 +18,17 @@ public final class RestClientBuilder {
     public static final int DEFAULT_MAX_CONN_PER_ROUTE = 10;
     public static final int DEFAULT_MAX_CONN_TOTAL = 30;
     private static final Header[] EMPTY_HEADERS = new Header[0];
-
-    public static boolean userAgentEnable = true;
     private final HttpHost host;
     private Header[] defaultHeaders = EMPTY_HEADERS;
+
+//    private final List<Node> nodes;
+//    private NodeSelector nodeSelector = NodeSelector.ANY;
+
     private HttpClientConfigCallback httpClientConfigCallback;
     private RequestConfigCallback requestConfigCallback;
     private String pathPrefix;
     private boolean strictDeprecationMode = false;
-
     private boolean compressionEnabled = false;
-
-    private boolean metaHeaderEnabled = true;
 
     RestClientBuilder(String apiKey) {
         if (apiKey == null) {
@@ -48,29 +47,6 @@ public final class RestClientBuilder {
             throw new IllegalArgumentException("host must not be null");
         }
         this.host = host;
-    }
-
-    public static String cleanPathPrefix(String pathPrefix) {
-        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
-
-        if (pathPrefix.isEmpty()) {
-            throw new IllegalArgumentException("pathPrefix must not be empty");
-        }
-
-        String cleanPathPrefix = pathPrefix;
-        if (!cleanPathPrefix.startsWith("/")) {
-            cleanPathPrefix = "/" + cleanPathPrefix;
-        }
-
-        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
-        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
-            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
-
-            if (cleanPathPrefix.endsWith("/")) {
-                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
-            }
-        }
-        return cleanPathPrefix;
     }
 
     public RestClientBuilder setDefaultHeaders(Header[] defaultHeaders) {
@@ -99,6 +75,29 @@ public final class RestClientBuilder {
         return this;
     }
 
+    public static String cleanPathPrefix(String pathPrefix) {
+        Objects.requireNonNull(pathPrefix, "pathPrefix must not be null");
+
+        if (pathPrefix.isEmpty()) {
+            throw new IllegalArgumentException("pathPrefix must not be empty");
+        }
+
+        String cleanPathPrefix = pathPrefix;
+        if (!cleanPathPrefix.startsWith("/")) {
+            cleanPathPrefix = "/" + cleanPathPrefix;
+        }
+
+        // best effort to ensure that it looks like "/base/path" rather than "/base/path/"
+        if (cleanPathPrefix.endsWith("/") && cleanPathPrefix.length() > 1) {
+            cleanPathPrefix = cleanPathPrefix.substring(0, cleanPathPrefix.length() - 1);
+
+            if (cleanPathPrefix.endsWith("/")) {
+                throw new IllegalArgumentException("pathPrefix is malformed. too many trailing slashes: [" + pathPrefix + "]");
+            }
+        }
+        return cleanPathPrefix;
+    }
+
     public RestClientBuilder setStrictDeprecationMode(boolean strictDeprecationMode) {
         this.strictDeprecationMode = strictDeprecationMode;
         return this;
@@ -108,12 +107,6 @@ public final class RestClientBuilder {
         this.compressionEnabled = compressionEnabled;
         return this;
     }
-
-    public RestClientBuilder setMetaHeaderEnabled(boolean metadataEnabled) {
-        this.metaHeaderEnabled = metadataEnabled;
-        return this;
-    }
-
 
     public RestClient build() {
 

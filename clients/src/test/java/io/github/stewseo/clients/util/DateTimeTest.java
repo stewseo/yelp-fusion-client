@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.util;
 
-import io.github.stewseo.clients.json.testcases.TestJson;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Tag;
 
@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Tag("utils")
 
-public class DateTimeTest extends TestJson {
+public class DateTimeTest extends ModelJsonTestCase {
 
     long millis = 1643822172348L;
     String millisJson = "1643822172348";
@@ -175,4 +176,5 @@ public class DateTimeTest extends TestJson {
         assertThat(dateTime.toEpochMilli(DateTimeFormatter.ISO_DATE_TIME)).isEqualTo(expectedEpochMilli);
 
     }
+
 }

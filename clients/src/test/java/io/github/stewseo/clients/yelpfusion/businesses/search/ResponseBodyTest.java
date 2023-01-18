@@ -6,7 +6,7 @@ import io.github.stewseo.clients.json.NamedDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
@@ -19,7 +19,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessesResult>> {
+class ResponseBodyTest extends YelpFusionTestCase<SearchResponse<SearchBusinessesResult>> {
 
     private static final JsonpSerializer<SearchBusinessesResult> toStringSerializer =
             (JsonpSerializer<SearchBusinessesResult>) (value, generator, mapper) -> {
@@ -32,7 +32,7 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessesResu
 
     private final Hit<SearchBusinessesResult> HIT = Hit.of(b -> b
             .source(EXPECTED_SEARCH_BUSINESS_RESULT)
-            .tDocumentSerializer(toStringSerializer)
+            .resultTSerializer(toStringSerializer)
     );
 
     @Override
@@ -106,7 +106,7 @@ class ResponseBodyTest extends ModelTestCase<SearchResponse<SearchBusinessesResu
     private final JsonpDeserializer<SearchResponse<SearchBusinessesResult>> searchRespDeser =
             ObjectBuilderDeserializer.createForObject((Supplier<SearchResponse.Builder<SearchBusinessesResult>>) SearchResponse.Builder::new,
                     op -> SearchResponse.setupSearchResponseDeserializer(op,
-                            new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
+                            new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.ResultT")));
 
     public JsonParser parser() {
         return parser(searchResponse);

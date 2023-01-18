@@ -18,7 +18,6 @@ import java.util.function.Function;
 
 @JsonpDeserializable
 public class Attribute implements JsonpSerializable {
-
     @Nullable
     private final String attribute;
 

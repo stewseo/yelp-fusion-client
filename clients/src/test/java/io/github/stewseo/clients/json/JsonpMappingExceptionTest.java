@@ -1,13 +1,17 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.testcases.TestJson;
+import co.elastic.clients.elasticsearch._types.mapping.TypeMapping;
+import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
 import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
+import jakarta.json.JsonException;
+import jakarta.json.stream.JsonParser;
+import org.opentest4j.AssertionFailedError;
 
 import java.io.StringReader;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class JsonpMappingExceptionTest extends TestJson {
+public class JsonpMappingExceptionTest extends ModelJsonTestCase {
 
     private final String json = "" +
             "{" +
@@ -81,10 +85,10 @@ public class JsonpMappingExceptionTest extends TestJson {
     public void testObjectPath() {
 
         assertThat(jsonpMappingException.getMessage())
-                .contains("Unknown field 'review_count' (JSON path: review_count) (line no=1, column no=496, offset=495)");
+                .contains("Unknown field 'name' (JSON path: name)");
 
         // check path
-        assertThat(jsonpMappingException.path()).contains("review_count");
+        assertThat(jsonpMappingException.path()).contains("name");
     }
     @JsonTest
     public void testArrayPath() {
@@ -96,29 +100,61 @@ public class JsonpMappingExceptionTest extends TestJson {
             );
         });
         assertThat(jsonpMappingException.getMessage())
-                .contains("Error deserializing io.github.stewseo.clients.yelpfusion._types.Category");
+                .contains("Error deserializing io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult");
 
         // check path
-        assertThat(jsonpMappingException.path()).contains("invalid_field");
+        assertThat(jsonpMappingException.path()).contains("categories");
     }
 
+    @JsonTest
+    public void testLookAhead() {
 
+        String json =
+                "{" +
+                        "  \"properties\": { " +
+                        "    \"foo-bar\": {" +
+                        "        \"type\": \"text\"," +
+                        "        \"baz\": false" +
+                        "    }" +
+                        "  }" +
+                        "}";
+
+        // Error deserializing co.elastic.clients.elasticsearch._types.mapping.TextProperty:
+        // Unknown field 'baz' (JSON path: properties['foo-bar'].baz) (...line no=1, column no=36, offset=35)
+
+
+        JsonException e = assertThrows(JsonException.class, () -> {
+            fromJson(json, TypeMapping.class);
+        });
+
+        // Check escaping of non identifier path elements and path from map elements
+        assertThat(e.getMessage()).isEqualTo("Jackson exception");
+
+    }
     @JsonTest
     void testPrepend() {
-    }
-    @JsonTest
-    void testPrepend1() {
-    }
-
-    @JsonTest
-    void testPrepend2() {
+        jsonpMappingException.prepend("ref", "name");
     }
 
     @JsonTest
     void testFrom() {
+
+        JsonParser parser = parser();
+
+        AssertionFailedError ex = assertThrows(AssertionFailedError.class, () -> assertThat(1).isEqualTo(2));
+
+        JsonpMappingException jsonMappingException = JsonpMappingException.from(ex, 1, parser);
+
+        assertThat(jsonpMappingException).isExactlyInstanceOf(JsonpMappingException.class);
     }
 
     @JsonTest
     void testPath() {
+        assertThat(jsonpMappingException.path()).isOfAnyClassIn(String.class);
     }
+    @JsonTest
+    void testPathWhereExceptionHappened() {
+        jsonpMappingException.path();
+    }
+
 }

@@ -4,7 +4,7 @@ import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.jackson.JacksonJsonpMapper;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Tag;
@@ -13,17 +13,17 @@ import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LIMIT;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.OFFSET;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.RADIUS;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.SORT_BY;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.SORT_BY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @Tag("events")
 @Tag("search")
-class SearchEventsRequestTest extends ModelTestCase<SearchEventsRequest>
+class SearchEventsRequestTest extends YelpFusionTestCase<SearchEventsRequest>
         implements RequestTestCase<SearchEventsRequest> {
 
     private final String sort_on = "sort_on";

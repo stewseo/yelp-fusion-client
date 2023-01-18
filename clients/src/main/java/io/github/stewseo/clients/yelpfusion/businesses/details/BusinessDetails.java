@@ -8,24 +8,22 @@ import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
-import io.github.stewseo.clients.yelpfusion.ResultBase;
 import io.github.stewseo.clients.yelpfusion._types.Hours;
 import io.github.stewseo.clients.yelpfusion._types.Location;
 import io.github.stewseo.clients.yelpfusion._types.Messaging;
 import io.github.stewseo.clients.yelpfusion._types.SpecialHours;
+import io.github.stewseo.clients.yelpfusion.businesses.BusinessesResultBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.List;
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessDetails extends ResultBase {
+public class BusinessDetails extends BusinessesResultBase {
 
     private final String display_phone;
     private final Boolean is_claimed;
     private final Boolean is_closed;
-    private final Location location;
-    private final List<String> transactions;
     private final List<String> photos;
     private final List<Hours> hours;
     private final List<SpecialHours> special_hours;
@@ -33,7 +31,6 @@ public class BusinessDetails extends ResultBase {
 
     private BusinessDetails(Builder builder) {
         super(builder);
-        this.location = builder.location;
         this.display_phone = builder.display_phone;
         this.hours = builder.hours;
         this.is_claimed = builder.is_claimed;
@@ -41,7 +38,6 @@ public class BusinessDetails extends ResultBase {
         this.messaging = builder.messaging;
         this.photos = ApiTypeHelper.unmodifiable(builder.photos);
         this.special_hours = ApiTypeHelper.unmodifiable(builder.special_hours);
-        this.transactions = ApiTypeHelper.unmodifiable(builder.transactions);
     }
 
     public static BusinessDetails of(Function<Builder, ObjectBuilder<BusinessDetails>> fn) {
@@ -61,20 +57,12 @@ public class BusinessDetails extends ResultBase {
         return display_phone;
     }
 
-    public final Location location() {
-        return location;
-    }
-
     public final List<String> photos() {
         return photos;
     }
 
     public final List<Hours> hours() {
         return hours;
-    }
-
-    public final List<String> transactions() {
-        return transactions;
     }
 
     public final List<SpecialHours> special_hours() {
@@ -101,20 +89,6 @@ public class BusinessDetails extends ResultBase {
         if (is_closed != null) {
             generator.writeKey("is_closed");
             generator.write(this.is_closed);
-        }
-
-        if (this.location != null) {
-            generator.writeKey("location");
-            this.location.serialize(generator, mapper);
-        }
-
-        if (ApiTypeHelper.isDefined(this.transactions)) {
-            generator.writeKey("transactions");
-            generator.writeStartArray();
-            for (String item0 : this.transactions) {
-                generator.write(item0);
-            }
-            generator.writeEnd();
         }
 
         if (this.messaging != null) {
@@ -148,7 +122,7 @@ public class BusinessDetails extends ResultBase {
         }
     }
 
-    public static class Builder extends ResultBase.AbstractBuilder<BusinessDetails.Builder>
+    public static class Builder extends BusinessesResultBase.AbstractBuilder<BusinessDetails.Builder>
             implements
             ObjectBuilder<BusinessDetails> {
 
@@ -215,26 +189,6 @@ public class BusinessDetails extends ResultBase {
             return this;
         }
 
-        public final Builder location(Location value) {
-            this.location = value;
-            return this;
-        }
-
-        public final Builder location(Function<Location.Builder, ObjectBuilder<Location>> fn) {
-            return this.location(fn.apply(new Location.Builder()).build());
-        }
-
-
-        public final Builder transactions(List<String> value) {
-            this.transactions = _listAddAll(this.transactions, value);
-            return this;
-        }
-
-        public final Builder transactions(String value, String... values) {
-            this.transactions = _listAdd(this.transactions, value, values);
-            return this;
-        }
-
         public final Builder special_hours(List<SpecialHours> value) {
             this.special_hours = _listAddAll(this.special_hours, value);
             return this;
@@ -260,14 +214,12 @@ public class BusinessDetails extends ResultBase {
             BusinessDetails::setUpBusinessDeserializer);
 
     protected static void setUpBusinessDeserializer(ObjectDeserializer<Builder> op) {
-        setupResultBaseDeserializer(op);
+        setupBusinessResultBaseDeserializer(op);
         op.add(Builder::display_phone, JsonpDeserializer.stringDeserializer(), "display_phone");
         op.add(Builder::is_claimed, JsonpDeserializer.booleanDeserializer(), "is_claimed");
         op.add(Builder::is_closed, JsonpDeserializer.booleanDeserializer(), "is_closed");
-        op.add(Builder::location, Location._DESERIALIZER, "location");
         op.add(Builder::messaging, Messaging._DESERIALIZER, "messaging");
         op.add(Builder::photos, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "photos");
-        op.add(Builder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
         op.add(Builder::hours, JsonpDeserializer.arrayDeserializer(Hours._DESERIALIZER), "hours");
     }
 }

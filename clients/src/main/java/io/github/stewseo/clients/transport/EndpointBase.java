@@ -5,6 +5,7 @@ import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.yelpfusion._types.ErrorResponse;
 import org.apache.http.client.utils.URLEncodedUtils;
 
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;

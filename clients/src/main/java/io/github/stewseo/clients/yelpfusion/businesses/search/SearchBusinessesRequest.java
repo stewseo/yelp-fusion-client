@@ -1,6 +1,8 @@
 package io.github.stewseo.clients.yelpfusion.businesses.search;
 
 
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
@@ -9,11 +11,12 @@ import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
 
+import javax.sound.sampled.FloatControl;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-
+@JsonpDeserializable
 public class SearchBusinessesRequest extends SearchBusinessesRequestBase {
 
     private SearchBusinessesRequest(Builder builder) {
@@ -21,9 +24,9 @@ public class SearchBusinessesRequest extends SearchBusinessesRequestBase {
     }
 
     public static SearchBusinessesRequest of(Function<Builder, ObjectBuilder<SearchBusinessesRequest>> fn) {
+
         return fn.apply(new Builder()).build();
     }
-
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
@@ -77,8 +80,9 @@ public class SearchBusinessesRequest extends SearchBusinessesRequestBase {
                 if (request.term() != null) {
                     request.term().forEach(term -> parameters.put("term", term));
                 }
+
                 if (request.location() != null) {
-                    parameters.put("location", request.location());
+                    parameters.put("location", request.location().city());
                 }
                 if (request.categories() != null) {
                     parameters.put("categories", request.categories().alias());

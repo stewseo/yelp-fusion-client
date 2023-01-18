@@ -3,19 +3,16 @@ package io.github.stewseo.clients.yelpfusion._types;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
 import io.github.stewseo.clients.json.JsonData;
-import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class ErrorResponseTest extends ModelTestCase<ErrorResponse> {
+public class ErrorResponseTest extends YelpFusionTestCase<ErrorResponse> {
     
     private final ErrorCause errorCause = ErrorCause.of(e -> e
             .metadata(Map.of("string", JsonData.of("jsonData")))

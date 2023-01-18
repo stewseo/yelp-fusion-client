@@ -11,9 +11,9 @@ import java.io.IOException;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.LOCATION_MISSING_ERROR;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.VALIDATION_ERROR_DOES_NOT_MATCH;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.BAD_LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.BAD_LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

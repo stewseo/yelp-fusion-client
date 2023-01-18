@@ -1,13 +1,11 @@
 package io.github.stewseo.clients.json.jackson;
 
 import io.github.stewseo.clients.json.JsonTest;
-import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import io.github.stewseo.clients.json.testcases.AbstractJsonTestCase;
 import jakarta.json.stream.JsonParser;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 
-class JacksonJsonpMapperTest extends ModelJsonTestCase {
+class JacksonJsonpMapperTest extends AbstractJsonTestCase {
 
     @JsonTest
     void withAttribute() {

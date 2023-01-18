@@ -2,7 +2,10 @@ package io.github.stewseo.clients.yelpfusion.misc;
 
 
 import io.github.stewseo.clients.json.JsonpDeserializable;
+import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
+import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.transport.endpoints.SimpleEndpoint;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion.YelpFusionRequestBase;
@@ -42,9 +45,10 @@ public class AutoCompleteRequest extends YelpFusionRequestBase {
     }
 
 
-    public static class Builder extends AbstractBuilder<Builder>
+    public static class Builder extends YelpFusionRequestBase.AbstractBuilder<Builder>
             implements
             ObjectBuilder<AutoCompleteRequest> {
+
         private String text;
 
         public final Builder text(String value) {
@@ -76,6 +80,7 @@ public class AutoCompleteRequest extends YelpFusionRequestBase {
             // Request parameters
             request -> {
                 Map<String, String> params = new HashMap<>();
+                System.out.println(request.text);
                 if (request.text() != null) {
                     params.put("text", request.text());
                 }
@@ -92,4 +97,15 @@ public class AutoCompleteRequest extends YelpFusionRequestBase {
             },
 
             SimpleEndpoint.emptyMap(), false, AutoCompleteResponse._DESERIALIZER);
+
+
+    public static final JsonpDeserializer<AutoCompleteRequest> _DESERIALIZER =
+            ObjectBuilderDeserializer.lazy(Builder::new,
+                    AutoCompleteRequest::setupAutocompleteRequestDeserializer);
+
+
+    protected static void setupAutocompleteRequestDeserializer(ObjectDeserializer<Builder> op) {
+        YelpFusionRequestBase.setupYelpFusionRequestDeserializer(op);
+        op.add(Builder::text, JsonpDeserializer.stringDeserializer(), "text");
+    }
 }

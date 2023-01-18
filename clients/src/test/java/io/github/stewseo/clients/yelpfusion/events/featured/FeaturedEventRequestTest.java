@@ -2,18 +2,18 @@ package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCATION;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-class FeaturedEventRequestTest extends ModelTestCase<FeaturedEventRequest>
+class FeaturedEventRequestTest extends YelpFusionTestCase<FeaturedEventRequest>
         implements RequestTestCase<FeaturedEventRequest> {
 
     @Override

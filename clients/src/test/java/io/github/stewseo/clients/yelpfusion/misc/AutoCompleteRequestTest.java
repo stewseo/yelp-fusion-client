@@ -2,19 +2,19 @@ package io.github.stewseo.clients.yelpfusion.misc;
 
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.LOCALE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AutoCompleteRequestTest
-        extends ModelTestCase<AutoCompleteRequest>
+        extends YelpFusionTestCase<AutoCompleteRequest>
         implements RequestTestCase<AutoCompleteRequest> {
 
     private final String text = "text";

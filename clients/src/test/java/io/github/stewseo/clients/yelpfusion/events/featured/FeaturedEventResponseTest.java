@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion.events.featured;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.Event;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Tag("events")
 @Tag("search")
-public class FeaturedEventResponseTest extends ModelTestCase<FeaturedEventResponse> {
+public class FeaturedEventResponseTest extends YelpFusionTestCase<FeaturedEventResponse> {
 
     private final FeaturedEventResponse featuredEventsResponse = of();
 

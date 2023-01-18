@@ -1,6 +1,6 @@
 package io.github.stewseo.clients.json;
 
-import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import io.github.stewseo.clients.json.testcases.AbstractJsonTestCase;
 import io.github.stewseo.clients.transport.JsonEndpoint;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetailsRequest;
@@ -13,9 +13,10 @@ import java.nio.charset.StandardCharsets;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ALIAS;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class ResponseDeserializerTest extends ModelJsonTestCase {
+public class ResponseDeserializerTest extends AbstractJsonTestCase {
 
     final String json = "" +
             "{" +
@@ -45,5 +46,10 @@ public class ResponseDeserializerTest extends ModelJsonTestCase {
 
         assertThat(business.alias()).isEqualTo(ALIAS);
 
+    }
+
+    @Override
+    public JsonParser parser() {
+        return null;
     }
 }

@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
-import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
@@ -108,7 +107,7 @@ public class SearchTransactionRequest extends SearchBusinessesRequestBase {
                     parameters.put("longitude", String.valueOf(longitude));
                 }
                 if (request.location() != null) {
-                    parameters.put("location", request.location());
+                    parameters.put("location", request.location().city());
                 }
                 return parameters;
             }, SimpleEndpoint.emptyMap(), false, SearchResponse._DESERIALIZER);

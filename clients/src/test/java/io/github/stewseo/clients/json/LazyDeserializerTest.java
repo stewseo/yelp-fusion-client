@@ -39,6 +39,8 @@ public class LazyDeserializerTest {
     @JsonTest
     public void testConcurInit() throws Exception {
 
+        // See https://github.com/elastic/elasticsearch-java/issues/58
+
         final LazyDeserializer<String> ld = new LazyDeserializer<>(JsonpDeserializer::stringDeserializer);
 
         CompletableFuture<JsonpDeserializer<String>> fut1;
@@ -54,10 +56,25 @@ public class LazyDeserializerTest {
         assertNotNull(fut1.get());
         assertNotNull(fut2.get());
 
-        final JsonpDeserializer<String> unwrapped = ld.unwrap();
+        final JsonpDeserializer<String> unwrapped = ld.unsafeUnwrap();
         assertEquals(unwrapped, fut1.get());
         assertEquals(unwrapped, fut2.get());
 
+    }
+
+    private CompletableFuture<JsonpDeserializer<String>> unsafeFutureUnwrap(LazyDeserializer<String> d) {
+
+        final CompletableFuture<JsonpDeserializer<String>> result = new CompletableFuture<>();
+
+        new Thread(() -> {
+            try {
+                result.complete(d.unsafeUnwrap());
+            } catch (Throwable e) {
+                result.completeExceptionally(e);
+            }
+        }).start();
+
+        return result;
     }
 
     private CompletableFuture<JsonpDeserializer<String>> futureUnwrap(LazyDeserializer<String> d) {
@@ -75,6 +92,10 @@ public class LazyDeserializerTest {
         return result;
     }
 
+    //  reduce the overhead of acquiring a lock by first testing the locking criterion without actually acquiring the lock.
+    //  Double-checked locking improves performance by limiting synchronization to the rare case of computing the field's value or constructing
+    //  a new instance for the field to reference and by foregoing synchronization during the common case of retrieving an already-created instance or value.
+    
     @JsonTest
     public void testRaceCondition() {
         // Fix race condition in LazyDeserializer initialization #59
@@ -82,25 +103,8 @@ public class LazyDeserializerTest {
 
         JsonpDeserializer<SearchResponse<Object>> searchResponseDeser =
                 JsonpDeserializer.lazy(() -> SearchResponse.createSearchResponseDeserializer(
-                                new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.searchBusinesses.ResultT")));
+                                new NamedDeserializer<>("io.github.stewseo.clients:Deserializer:_global.search.ResultT")));
 
     }
-
-
-//    private JsonpDeserializer<String> deserializer = JsonpDeserializer.stringDeserializer();
-//    protected JsonpDeserializer<String> unwrap() {
-//
-//        JsonpDeserializer<String> d = deserializer;
-//        if (d == null) {
-//            synchronized (this) {
-//                if (deserializer == null) {
-//                    d = ctor.get();
-//                    deserializer = d;
-//                }
-//            }
-//        }
-//        return d;
-//    }
-
 
 }

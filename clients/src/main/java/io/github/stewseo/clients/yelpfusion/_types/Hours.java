@@ -26,6 +26,7 @@ public class Hours implements JsonpSerializable {
         this.hours_type = builder.hours_type;
         this.is_open_now = builder.is_open_now;
     }
+
     public static Hours of(Function<Builder, ObjectBuilder<Hours>> fn) {
         return fn.apply(new Builder()).build();
     }
@@ -77,19 +78,9 @@ public class Hours implements JsonpSerializable {
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Hours> {
         private List<Open> open;
-
-        //        private List<String> open;
         private String hours_type;
         private Boolean is_open_now;
 
-        //        public final Builder open(List<String> value) {
-//            this.open = _listAddAll(this.open, value);
-//            return this;
-//        }
-//        public final Builder open(String value, String... values) {
-//            this.open = _listAdd(this.open, value, values);
-//            return this;
-//        }
         public final Builder open(List<Open> value) {
             this.open = _listAddAll(this.open, value);
             return this;
@@ -99,6 +90,7 @@ public class Hours implements JsonpSerializable {
             this.open = _listAdd(this.open, value, values);
             return this;
         }
+
 
         public final Builder hours_type(String value) {
             this.hours_type = value;
@@ -121,118 +113,6 @@ public class Hours implements JsonpSerializable {
         }
     }
 
-    @JsonpDeserializable
-    static class Open implements JsonpSerializable {
-
-        private final Boolean is_overnight;
-        private final String start;
-        private final String end;
-        private final Integer day;
-
-        private Open(Builder builder) {
-            this.is_overnight = builder.is_overnight;
-            this.start = builder.start;
-            this.end = builder.end;
-            this.day = builder.day;
-        }
-
-        protected static void setupOpenDeserializer(ObjectDeserializer<Builder> op) {
-            op.add(Builder::is_overnight, JsonpDeserializer.booleanDeserializer(), "is_overnight");
-            op.add(Builder::day, JsonpDeserializer.integerDeserializer(), "day");
-            op.add(Builder::start, JsonpDeserializer.stringDeserializer(), "start");
-            op.add(Builder::end, JsonpDeserializer.stringDeserializer(), "end");
-        }
-
-        public Boolean is_overnight() {
-            return is_overnight;
-        }
-
-        public String start() {
-            return start;
-        }
-
-        public String end() {
-            return end;
-        }
-
-        public Integer day() {
-            return day;
-        }
-
-        public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-            generator.writeStartObject();
-            serializeInternal(generator, mapper);
-            generator.writeEnd();
-        }
-
-        protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
-            if (this.is_overnight != null) {
-                generator.writeKey("is_overnight");
-                generator.write(this.is_overnight);
-            }
-            if (this.day != null) {
-                generator.writeKey("day");
-                generator.write(this.day);
-            }
-            if (this.start != null) {
-                generator.writeKey("start");
-                generator.write(this.start);
-            }
-            if (this.end != null) {
-                generator.writeKey("end");
-                generator.write(this.end);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return JsonpUtils.toString(this);
-        }
-
-        public static class Builder extends WithJsonObjectBuilderBase<Builder> implements ObjectBuilder<Open> {
-            private Boolean is_overnight;
-
-            private String start;
-
-            private String end;
-
-            private Integer day;
-
-            public final Builder is_overnight(Boolean value) {
-                this.is_overnight = value;
-                return this;
-            }
-
-            public final Builder start(String value) {
-                this.start = value;
-                return this;
-            }
-
-            public final Builder end(String value) {
-                this.end = value;
-                return this;
-            }
-
-            public final Builder day(Integer value) {
-                this.day = value;
-                return this;
-            }
-
-            @Override
-            protected Builder self() {
-                return this;
-            }
-
-            public Open build() {
-                _checkSingleUse();
-                return new Open(this);
-            }
-        }
-
-        public static final JsonpDeserializer<Open> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
-                Open::setupOpenDeserializer);
-
-    }
 
     public static final JsonpDeserializer<Hours> _DESERIALIZER = ObjectBuilderDeserializer.lazy(Builder::new,
             Hours::setupHoursDeserializer);

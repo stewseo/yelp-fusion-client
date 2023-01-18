@@ -1,10 +1,11 @@
-package io.github.stewseo.clients._type;
+package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.json.JsonpDeserializable;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.json.ObjectDeserializer;
+import io.github.stewseo.clients.util.ApiTypeHelper;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
 
@@ -13,11 +14,12 @@ import java.util.function.Function;
 @JsonpDeserializable
 public class TermQueryParameter extends QueryParameterBase implements QueryParameterVariant {
 
-    private final Term term;
+    private final TermEnum term;
 
     private TermQueryParameter(Builder builder) {
         super(builder);
-        this.term = builder.term;
+        System.out.println(builder.term);
+        this.term = ApiTypeHelper.requireNonNull(builder.term, this, "term");
     }
 
     public static TermQueryParameter of(Function<Builder, ObjectBuilder<TermQueryParameter>> fn) {
@@ -29,7 +31,7 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
         return QueryParameter.Kind.Term;
     }
 
-	public final Term term() {
+	public final TermEnum term() {
 		return this.term;
 	}
 
@@ -51,10 +53,9 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
             implements
             ObjectBuilder<TermQueryParameter> {
 
+        private TermEnum term;
 
-        private Term term;
-
-        public final Builder term(Term value) {
+        public final Builder term(TermEnum value) {
             this.term = value;
             return this;
         }
@@ -78,7 +79,7 @@ public class TermQueryParameter extends QueryParameterBase implements QueryParam
 
     protected static void setupTermVariantDeserializer(ObjectDeserializer<Builder> op) {
         setupQueryFieldBaseDeserializer(op);
-        op.add(Builder::term, Term._DESERIALIZER, "term");
+        op.add(Builder::term, TermEnum._DESERIALIZER, "term");
     }
 
 }

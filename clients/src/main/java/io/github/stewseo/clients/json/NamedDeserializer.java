@@ -7,6 +7,9 @@ import jakarta.json.stream.JsonParser;
 
 import java.util.EnumSet;
 
+/**
+ * A deserializer that delegates to another deserializer provided as a JSON mapper attribute.
+ */
 public class NamedDeserializer<T> implements JsonpDeserializer<T> {
 
     private static final EnumSet<JsonParser.Event> events = EnumSet.of(

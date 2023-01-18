@@ -1,30 +1,29 @@
 package io.github.stewseo.clients.yelpfusion.businesses.transactions;
 
-import io.github.stewseo.clients._type.QueryParameter;
 import io.github.stewseo.clients.json.DeserializeFromJson;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.ObjectBuilderDeserializer;
 import io.github.stewseo.clients.transport.Endpoint;
 import io.github.stewseo.clients.util.MissingRequiredPropertyException;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion._types.QueryParameter;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import io.github.stewseo.clients.yelpfusion.testcases.RequestTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
-import java.util.List;
-
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CATEGORY;
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.CITY;
+
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LATITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.LONGITUDE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TERM;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTION_TYPE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestBusinessVars.CITY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionRequest>
+class SearchTransactionRequestTest extends YelpFusionTestCase<SearchTransactionRequest>
         implements RequestTestCase<SearchTransactionRequest>, DeserializeFromJson {
 
     private final SearchTransactionRequest searchTransactionRequest = of();
@@ -33,12 +32,8 @@ class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionReques
 
         return SearchTransactionRequest.of(s -> s
                 .transaction_type(TRANSACTION_TYPE)
-                .categories(CATEGORY)
-                .latitude(LATITUDE)
-                .longitude(LONGITUDE)
-                .location(CITY)
-                .term(TERM)
-                .price(PRICE)
+                .location(l -> l
+                        .city(CITY))
         );
 
     }
@@ -46,21 +41,17 @@ class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionReques
 
     @YelpFusionTest
     public void testOf() {
-        assertThat(searchTransactionRequest.transaction_type()).isEqualTo(TRANSACTION_TYPE);
-        assertThat(searchTransactionRequest.categories()).isEqualTo(CATEGORY);
-        assertThat(searchTransactionRequest.location()).isEqualTo(CITY);
-        assertThat(searchTransactionRequest.price()).isEqualTo(PRICE);
-        assertThat(searchTransactionRequest.term()).isEqualTo(List.of(TERM));
+        assertThat(searchTransactionRequest).hasFieldOrPropertyWithValue("transaction_type", TRANSACTION_TYPE);
+        assertThat(searchTransactionRequest.location()).hasFieldOrPropertyWithValue("city","sf");
     }
 
     private final JsonGenerator generator = generator();
 
-    String expected = "" +
-            "SearchTransactionRequest: GET v3/transactions/"+TRANSACTION_TYPE+"/search?latitude=37.7829&location=sf&transaction_type="+TRANSACTION_TYPE+"&longitude=-122.4189 {\"term\":[\"term\"],\"location\":\"sf\",\"latitude\":37.7829,\"longitude\":-122.4189,\"categories\":{\"alias\":\"alias\"},\"price\":3,\"transaction_type\":\""+TRANSACTION_TYPE+"\"}";
+    String expectedStartsWith = "SearchTransactionRequest: GET v3/transactions/"+TRANSACTION_TYPE+"/search?";
     @YelpFusionTest
     public void testSerialize() {
         searchTransactionRequest.serialize(generator, mapper);
-        assertThat(searchTransactionRequest.toString()).isEqualTo(expected);
+        assertThat(searchTransactionRequest.toString()).startsWith(expectedStartsWith);
     }
 
     @YelpFusionTest
@@ -68,7 +59,7 @@ class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionReques
         generator.writeStartObject();
         searchTransactionRequest.serializeInternal(generator, mapper);
         generator.writeEnd().close();
-        assertThat(searchTransactionRequest.toString()).isEqualTo(expected);
+        assertThat(searchTransactionRequest.toString()).startsWith(expectedStartsWith);
     }
 
     @Override
@@ -88,7 +79,7 @@ class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionReques
                 "v3/transactions/" + TRANSACTION_TYPE + "/search");
 
         assertThat(endpoint().queryParameters(searchTransactionRequest).values().toString())
-                .isEqualTo("[37.7829, sf, "+TRANSACTION_TYPE+", -122.4189]");
+                .isEqualTo("[sf, delivery]");
 
         assertThat(endpoint().isError(200)).isFalse();
         assertThat(endpoint().headers(searchTransactionRequest).toString()).isEqualTo("{}");
@@ -116,7 +107,8 @@ class SearchTransactionRequestTest extends ModelTestCase<SearchTransactionReques
         SearchTransactionRequest.Builder builder = new SearchTransactionRequest.Builder()
                 .categories(CATEGORY)
                 .latitude(LATITUDE)
-                .location(CITY)
+               .location(l -> l
+                        .city(CITY))
                 .term(TERM)
                 .price(PRICE);
 

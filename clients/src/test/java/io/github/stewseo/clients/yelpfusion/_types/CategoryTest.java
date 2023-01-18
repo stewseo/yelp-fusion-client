@@ -2,7 +2,7 @@ package io.github.stewseo.clients.yelpfusion._types;
 
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 
-import io.github.stewseo.clients.yelpfusion.testcases.ModelTestCase;
+import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionTestCase;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 
@@ -16,7 +16,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVar
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class CategoryTest extends ModelTestCase<Category> {
+public class CategoryTest extends YelpFusionTestCase<Category> {
 
     public Category of() {
 

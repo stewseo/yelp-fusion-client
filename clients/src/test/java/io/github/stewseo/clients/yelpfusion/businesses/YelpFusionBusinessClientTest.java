@@ -1,6 +1,5 @@
 package io.github.stewseo.clients.yelpfusion.businesses;
 
-import co.elastic.clients.elasticsearch.core.SearchRequest;
 import io.github.stewseo.clients.transport.restclient.RestClientTransport;
 import io.github.stewseo.clients.yelpfusion.YelpFusionTest;
 import io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars;
@@ -20,6 +19,7 @@ import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMe
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.ErrorMessages.SPECIFY_LOCATION_ERROR;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.PRICE;
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TRANSACTION_TYPE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestBusinessVars.CITY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -63,7 +63,8 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
 
         SearchTransactionRequest searchTransactionRequest = SearchTransactionRequest.of(s -> s
                 .transaction_type(TRANSACTION_TYPE)
-                .location("sf")
+                .location(l -> l
+                        .city(CITY))
         );
 
         try {
@@ -84,7 +85,8 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
 
         NumberFormatException exception = assertThrows(NumberFormatException.class,
                 () -> yelpFusionBusinessClient.searchBusinesses(s -> s
-                                .location("sf")
+                                .location(l -> l
+                        .city(CITY))
                                 .term("restaurants")
                                 .categories(cat -> cat
                                         .alias("pizza")
@@ -103,7 +105,8 @@ public class YelpFusionBusinessClientTest extends YelpFusionClientTestCase {
     void testSearchBusinessesPerformRequest() {
 
         SearchBusinessesRequest req = SearchBusinessesRequest.of(s -> s
-                .location("sf")
+                .location(l -> l
+                        .city(CITY))
                 .term("restaurants")
                 .categories(cat -> cat
                         .alias("pizza")

@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.stewseo.clients.json.JsonTest;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +35,6 @@ public class JacksonMapperTest {
         jakarta.json.stream.JsonParser parser = mapper.jsonProvider().createParser(new StringReader(json));
 
         Hit<TestData> testDataHit = deserializer.deserialize(parser, mapper);
-
         TestData data = testDataHit.source();
         assertThat("Foo").isEqualTo(data.theModel);
         assertThat(42).isEqualTo(data.theAge);

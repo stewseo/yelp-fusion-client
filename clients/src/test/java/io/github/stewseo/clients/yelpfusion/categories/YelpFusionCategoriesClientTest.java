@@ -6,7 +6,7 @@ import io.github.stewseo.clients.yelpfusion.testcases.YelpFusionClientTestCase;
 
 import java.io.IOException;
 
-import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.BAD_LOCALE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.BAD_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

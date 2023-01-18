@@ -9,12 +9,13 @@ import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.util.ObjectBuilder;
 import io.github.stewseo.clients.yelpfusion.ResultBase;
 import io.github.stewseo.clients.yelpfusion._types.User;
+import io.github.stewseo.clients.yelpfusion.businesses.BusinessesResultBase;
 import jakarta.json.stream.JsonGenerator;
 
 import java.util.function.Function;
 
 @JsonpDeserializable
-public class BusinessReview extends ResultBase {
+public class BusinessReview extends BusinessesResultBase {
 
     private final String text;
 
@@ -112,10 +113,9 @@ public class BusinessReview extends ResultBase {
 
     public static final JsonpDeserializer<BusinessReview> _DESERIALIZER =
             ObjectBuilderDeserializer.lazy(Builder::new, BusinessReview::setupBusinessReviewDeserializer);
-    // deserializer
 
     protected static void setupBusinessReviewDeserializer(ObjectDeserializer<Builder> op) {
-        setupResultBaseDeserializer(op);
+        setupBusinessResultBaseDeserializer(op);
         op.add(Builder::text, JsonpDeserializer.stringDeserializer(), "text");
         op.add(Builder::time_created, JsonpDeserializer.stringDeserializer(), "time_created");
         op.add(Builder::user, User._DESERIALIZER, "user");

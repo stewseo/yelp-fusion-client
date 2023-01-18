@@ -3,7 +3,7 @@ package io.github.stewseo.clients.json.testcases;
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 
-public interface FromJson extends JsonTestCase {
+public interface FromJson extends TestJsonp {
 
     <T> T fromJson(String json, Class<T> clazz, JsonpMapper mapper);
 

@@ -1,11 +1,15 @@
 package io.github.stewseo.clients.yelpfusion;
 
+import io.github.stewseo.clients.json.JsonpDeserializable;
+import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
 import io.github.stewseo.clients.json.JsonpSerializable;
 import io.github.stewseo.clients.json.JsonpUtils;
+import io.github.stewseo.clients.json.ObjectDeserializer;
 import io.github.stewseo.clients.yelpfusion._types.RequestBase;
 import jakarta.json.stream.JsonGenerator;
 
+@JsonpDeserializable
 public abstract class YelpFusionRequestBase extends RequestBase implements JsonpSerializable {
 
     private final String location;
@@ -66,6 +70,17 @@ public abstract class YelpFusionRequestBase extends RequestBase implements Jsonp
         return JsonpUtils.toString(this);
     }
 
+
+
+	protected static <BuilderT extends AbstractBuilder<BuilderT>> void setupYelpFusionRequestDeserializer(
+			ObjectDeserializer<BuilderT> op) {
+
+		op.add(AbstractBuilder::locale, JsonpDeserializer.stringDeserializer(), "locale");
+		op.add(AbstractBuilder::location, JsonpDeserializer.stringDeserializer(), "location");
+		op.add(AbstractBuilder::latitude, JsonpDeserializer.doubleDeserializer(), "latitude");
+        op.add(AbstractBuilder::longitude, JsonpDeserializer.doubleDeserializer(), "longitude");
+
+	}
     protected abstract static class AbstractBuilder<BuilderT extends AbstractBuilder<BuilderT>>
             extends
                 RequestBase.AbstractBuilder<BuilderT> {
