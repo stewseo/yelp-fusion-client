@@ -35,8 +35,6 @@ class EndpointWithResponseMapperAttrTest implements RequestTestCase<SearchBusine
 
     }
 
-
-
     @Override
     public JsonGenerator generator() {
         return null;

@@ -7,6 +7,7 @@ import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonGenerationException;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 
@@ -207,5 +208,105 @@ public class JacksonJsonpGeneratorTest extends AbstractJsonTestCase {
     @Override
     public JsonParser parser() {
         return parser(expected);
+    }
+
+    @Test
+    void jacksonGenerator() {
+    }
+
+    @Test
+    void writeStartObject() {
+    }
+
+    @Test
+    void testWriteStartObject() {
+    }
+
+    @Test
+    void writeStartArray() {
+    }
+
+    @Test
+    void testWriteStartArray1() {
+    }
+
+    @Test
+    void writeKey() {
+    }
+
+    @Test
+    void write() {
+    }
+
+    @Test
+    void testWrite1() {
+    }
+
+    @Test
+    void testWrite2() {
+    }
+
+    @Test
+    void testWrite3() {
+    }
+
+    @Test
+    void testWrite4() {
+    }
+
+    @Test
+    void testWrite5() {
+    }
+
+    @Test
+    void testWrite6() {
+    }
+
+    @Test
+    void testWrite7() {
+    }
+
+    @Test
+    void writeNull() {
+    }
+
+    @Test
+    void writeEnd() {
+    }
+
+    @Test
+    void testWrite8() {
+    }
+
+    @Test
+    void testWrite9() {
+    }
+
+    @Test
+    void testWrite10() {
+    }
+
+    @Test
+    void testWrite11() {
+    }
+
+    @Test
+    void testWrite12() {
+    }
+
+    @Test
+    void testWrite13() {
+    }
+
+    @Test
+    void testWrite14() {
+    }
+
+    @Test
+    void testWrite15() {
+    }
+
+    @Test
+    void testWriteNull() {
     }
 }

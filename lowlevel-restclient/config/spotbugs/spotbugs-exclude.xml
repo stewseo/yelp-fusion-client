@@ -8,7 +8,6 @@
         <Or>
             <Bug pattern="EI_EXPOSE_REP"/>
             <Bug pattern="EI_EXPOSE_REP2"/>
-            <Bug pattern="DCN_NULLPOINTER_EXCEPTION"/>
         </Or>
     </Match>
 
@@ -36,22 +35,6 @@
         <Bug pattern=" EQ_COMPARETO_USE_OBJECT_EQUALS"/>
     </Match>
 
-<!--    <Match>-->
-<!--        <Or>-->
-<!--            <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>-->
-<!--            <Bug pattern="DLS_DEAD_LOCAL_STORE"/>-->
-<!--            <Bug pattern="MS_EXPOSE_REP"/>-->
-<!--            <Bug pattern="URF_UNREAD_FIELD"/>-->
-<!--            <Bug pattern="UUF_UNUSED_FIELD"/>-->
-<!--            <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>-->
-<!--            <Bug pattern="SF_SWITCH_NO_DEFAULT"/>-->
-<!--            <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>-->
-<!--            <Bug pattern="SS_SHOULD_BE_STATIC"/>-->
-<!--            <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>-->
-<!--            <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>-->
-<!--            <Bug pattern="MAX_TO_STRING_LENGTH"/>-->
-<!--        </Or>-->
-<!--    </Match>-->
 
     <!--
     Do not catch NullPointerException like in At EsRestClientTest.java:[line 214]:[line 64]

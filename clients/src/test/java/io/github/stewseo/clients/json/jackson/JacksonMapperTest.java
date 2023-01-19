@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.stewseo.clients.json.JsonTest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,8 +17,6 @@ import java.io.StringReader;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class JacksonMapperTest {
-
-    final Logger logger = LoggerFactory.getLogger(JacksonMapperTest.class);
 
     @JsonTest
     public void testCustomDeserializer() {

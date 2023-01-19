@@ -47,5 +47,4 @@ public abstract class AbstractTransportTestCase extends Assertions {
         return this.transport;
     }
 
-
 }

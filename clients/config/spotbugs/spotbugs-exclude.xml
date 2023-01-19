@@ -6,7 +6,7 @@
 
     <Match>
         <Or>
-            <Bug pattern="EI_EXPOSE_REP"/>
+<!--            <Bug pattern="EI_EXPOSE_REP"/>-->
             <Bug pattern="EI_EXPOSE_REP2"/>
             <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
             <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
@@ -44,7 +44,7 @@
 <!--        <Bug pattern="EI_EXPOSE_REP2"/>-->
 <!--    </Match>-->
 
-<!--    &lt;!&ndash; getter-->
+<!--    getter-->
 <!--    may expose internal representation by returning/>&ndash;&gt;-->
 <!--    <Match>-->
 <!--        <Or>-->

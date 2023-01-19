@@ -105,8 +105,6 @@ public class ClassStructureTest extends ModelJsonTestCase {
             QueryParameter qp = QueryParameter.of(b -> b
                     .location(locationQueryParameter));
 
-//            assertEquals(Arrays.asList("a", "b", "c"), search.docvalueFields().stream()
-//                    .map(FieldAndFormat::field).collect(Collectors.toList()));
         }
     }
 

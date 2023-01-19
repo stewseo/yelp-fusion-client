@@ -9,18 +9,11 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 
-### Features based on the [Elasticsearch Java Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html)
-- Create blocking and asynchronous clients with your Yelp Fusion API key.
-- Strongly typed requests and responses for all Yelp Fusion APIs.
-- Module to handle Http transport including failed request/response logging using Apache Http Components.
-- Automatically serializes from and deserializes to application classes using the Jakarta Json Stream API.
-- Service interface for Breinify APIs and libraries
-[geo json](https://github.com/Breinify/brein-geojson), [time utilities](https://github.com/Breinify/brein-time-utilities), [temporal data](https://docs.breinify.com/?java--native#temporal-data-response)
+#### Create a [Yelp Fusion API Key](https://docs.developer.yelp.com/docs/fusion-intro)
 
 <br>
 
-### Use cases
-- [restaurant recommender](https://github.com/stewseo/restaurant-recommendation-system)
+#### [Add the yelp-fusion-client as a dependency]() 
 
 #### As a Maven Dependency
 You can use [Maven's dependency management](https://search.maven.org/search?q=g:io.github.stewseo) to obtain the driver by adding the following configuration in the application's Project Object Model (POM) file:
@@ -46,4 +39,16 @@ dependencies {
 ```
 <br>
 
+### Use case
+- [search for all restaurants by category in San Francisco]()
+- [Store each business result as a Json Document in Elasticsearch]()
+- [Restaurant Recommendation Engine](https://github.com/stewseo/restaurant-recommendation-system/blob/main/YelpRecommendation.ipynb)
+
+
+### Features based on [Elasticsearch Java Client](https://github.com/elastic/elasticsearch-java/blob/main/docs/design/0001-model-classes-structure.md)
+- Create blocking and asynchronous clients with your Yelp Fusion API key.
+- [Strongly typed requests and responses for all Yelp Fusion APIs](https://github.com/elastic/elasticsearch-java/blob/main/docs/design/0001-model-classes-structure.md)
+- Http transport is handled by a low level rest client.
+- Encodes to JSON and decodes from JSON.
+  <br>
 

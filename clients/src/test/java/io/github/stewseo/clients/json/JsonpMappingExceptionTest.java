@@ -90,6 +90,7 @@ public class JsonpMappingExceptionTest extends ModelJsonTestCase {
         // check path
         assertThat(jsonpMappingException.path()).contains("name");
     }
+
     @JsonTest
     public void testArrayPath() {
 
@@ -152,6 +153,7 @@ public class JsonpMappingExceptionTest extends ModelJsonTestCase {
     void testPath() {
         assertThat(jsonpMappingException.path()).isOfAnyClassIn(String.class);
     }
+
     @JsonTest
     void testPathWhereExceptionHappened() {
         jsonpMappingException.path();
