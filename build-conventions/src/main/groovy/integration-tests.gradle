@@ -34,3 +34,16 @@ tasks.named('check') {
 dependencies {
     integrationTestImplementation project
 }
+
+repositories {
+    mavenCentral()
+}
+
+
+tasks.named('check') {
+    dependsOn(integrationTestTask)
+}
+
+dependencies {
+    integrationTestImplementation project
+}

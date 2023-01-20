@@ -46,7 +46,7 @@ public class ElasticsearchService {
 
         Query byTimestamp = rangeQueryGteTimestamp(timestamp)._toQuery();
 
-        SortOptions sortOptions = buildSortOptions(TIMESTAMP, sortOrder);
+        SortOptions sortOptions = buildSortOptions(TIMESTAMP.name(), sortOrder);
 
         try {
             return asyncClient.search(s -> s
@@ -262,11 +262,11 @@ public class ElasticsearchService {
 
     }
 
-    public SortOptions buildSortOptions(QueryParam type, SortOrder sortOrder) {
+    public SortOptions buildSortOptions(String type, SortOrder sortOrder) {
 
         return SortOptions.of(options -> options
                 .field(f -> f
-                        .field(type.name())
+                        .field(type)
                         .order(sortOrder))
         );
     }
