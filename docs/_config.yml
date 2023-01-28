@@ -27,7 +27,7 @@ twitter_username: none
 github_username:  stewseo
 
 # Build settings
-theme: minima
+theme: jekyll-clean-dark
 plugins:
   - jekyll-feed
   - jekyll-sitemap
