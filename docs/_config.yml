@@ -28,7 +28,6 @@ github_username:  stewseo
 
 # Build settings
 theme: jekyll-clean-dark
-remote-theme: jekyll-clean-dark
 plugins:
   - jekyll-feed
   - jekyll-sitemap
