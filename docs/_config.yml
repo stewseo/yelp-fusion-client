@@ -26,12 +26,11 @@ url: "https://stewseo.github.io" # the base hostname & protocol for your site, e
 github_username:  stewseo
 
 # Build settings
-remote_theme: jekyll/minima
+theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-archives
-  - jekyll-remote-theme
 
 # Exclude from processing.
 # The following items will not be processed, by default.
