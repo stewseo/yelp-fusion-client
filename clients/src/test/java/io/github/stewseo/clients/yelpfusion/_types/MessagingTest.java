@@ -28,6 +28,7 @@ class MessagingTest extends YelpFusionTestCase<Messaging>
         );
     }
     private final String expected = "{\"use_case_text\":\"useCaseTextValue\",\"url\":\"urlValue\"}";
+
     @YelpFusionTest
     public void testBuilder() {
 

@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 public abstract class YelpFusionTestCase<YelpFusionT>
         implements BuilderTestCase<YelpFusionT>, SerializeToJson {
 
-
     private JsonProvider jsonProvider() {
         return mapper.jsonProvider();
     }
@@ -22,7 +21,6 @@ public abstract class YelpFusionTestCase<YelpFusionT>
         String yfString = yelpFusionT.toString();
 
         if (!isValidJsonString(yfString)) {
-
             yfString = yfString.substring(yfString.indexOf("{"));
         }
         InputStream content = IOUtils.toInputStream(yfString, StandardCharsets.UTF_8);

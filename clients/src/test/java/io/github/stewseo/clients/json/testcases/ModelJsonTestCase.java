@@ -73,7 +73,11 @@ public abstract class ModelJsonTestCase extends AbstractJsonTestCase implements 
     }
 
     public JsonParser parser() {
-        return parser("test");
+        return super.parser("test");
+    }
+
+    public JsonParser parser(String json) {
+        return super.parser(json);
     }
 
 }

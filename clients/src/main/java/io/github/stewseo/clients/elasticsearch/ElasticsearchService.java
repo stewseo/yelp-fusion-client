@@ -48,29 +48,21 @@ public class ElasticsearchService {
 
         SortOptions sortOptions = buildSortOptions(TIMESTAMP, sortOrder);
 
-        try {
-            return asyncClient.search(s -> s
-                                    .index(index)
-                                    .query(q -> q
-                                            .bool(b -> b
-                                                    .must(byTimestamp)
-                                            )
-                                    ).source(src -> src
-                                            .filter(sourceFilter)
 
-                                    ).sort(sortOptions)
-                                    .size(1)
-                            , ObjectNode.class
-                    ).get()
-                    .hits();
+        return asyncClient.search(s -> s
+                                .index(index)
+                                .query(q -> q
+                                        .bool(b -> b
+                                                .must(byTimestamp)
+                                        )
+                                ).source(src -> src
+                                        .filter(sourceFilter)
 
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        }
+                                ).sort(sortOptions)
+                                .size(1)
+                        , ObjectNode.class
+                ).join()
+                .hits();
     }
 
     public SearchResponse<BusinessDetails> occurences(String index, int size,
@@ -125,16 +117,6 @@ public class ElasticsearchService {
                                     )
                             , Void.class // Using Void will ignore any document in the response.
                     )
-                    .whenComplete((response, exception) -> {
-
-                        if (exception != null) {
-                            // stub
-                            System.out.println("Search failed. Exception: " + exception);
-                        }
-                        else {
-                            System.out.println("Search successful. ");
-                        }
-                    })
                     .get()
                     .aggregations()
                     .get(buildTermsAggs)

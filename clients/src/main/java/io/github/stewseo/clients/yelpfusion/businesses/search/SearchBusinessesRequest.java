@@ -53,7 +53,6 @@ public class SearchBusinessesRequest extends SearchBusinessesRequestBase {
             ObjectBuilderDeserializer.lazy(Builder::new,
             SearchBusinessesRequest::setupSearchBusinessesRequestDeserializer);
 
-
     protected static void setupSearchBusinessesRequestDeserializer(ObjectDeserializer<Builder> op) {
         setupSearchBusinessesRequestBaseDeserializer(op);
     }

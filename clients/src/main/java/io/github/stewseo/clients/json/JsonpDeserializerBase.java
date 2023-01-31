@@ -304,7 +304,7 @@ public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
             String key = null;
 
             if (event == null) {
-                System.out.println("Event null: ");
+                return result;
             }
 
             try {
@@ -340,7 +340,7 @@ public abstract class JsonpDeserializerBase<V> implements JsonpDeserializer<V> {
             String keyName = null;
 
             if (event == null) {
-                System.out.println("Event null: ");
+                return result;
             }
 
             try {

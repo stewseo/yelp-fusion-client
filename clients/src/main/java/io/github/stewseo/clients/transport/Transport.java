@@ -1,10 +1,6 @@
 package io.github.stewseo.clients.transport;
 
-import co.elastic.clients.transport.ElasticsearchTransport;
 import io.github.stewseo.clients.json.JsonpMapper;
-import io.github.stewseo.clients.transport.Endpoint;
-import io.github.stewseo.clients.transport.TransportOptions;
-import io.github.stewseo.lowlevel.restclient.RestClient;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -34,6 +34,7 @@ public class LocationQueryParameter extends QueryParameterBase implements QueryP
 		return this.locationEnum;
 	}
 
+    @Override
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
         super.serializeInternal(generator, mapper);

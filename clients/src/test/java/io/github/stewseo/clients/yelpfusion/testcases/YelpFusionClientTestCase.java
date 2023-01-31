@@ -38,6 +38,7 @@ public abstract class YelpFusionClientTestCase implements ApiClientTestCase {
                 expectedUri + ", " +
                 expectedStatusLineErrorDescription;
     }
+
     public String buildExpectedResponseExceptionMessage(String expectedUri) {
         return METHOD + ", " + HOST_NAME + ", " + expectedUri + ", " + expectedStatusLineErrorDescription;
     }

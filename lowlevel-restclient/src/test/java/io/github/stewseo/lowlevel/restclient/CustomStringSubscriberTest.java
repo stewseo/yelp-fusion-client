@@ -58,7 +58,9 @@ public class CustomStringSubscriberTest {
     static class StringSubscriber implements Flow.Subscriber<List<ByteBuffer>> {
 
         final List<ByteBuffer> responseData = new ArrayList<>();
+
         Flow.Subscription subscription;
+
         private String body;
 
         @Override

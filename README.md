@@ -1,5 +1,4 @@
 ## Yelp Fusion Java Client
-<br>
 
 [![release](https://badgen.net/badge/version/main/green?icon=github)](https://github.com/stewseo/yelp-fusion-client/tree/main)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.stewseo/yelp-fusion-client?versionPrefix=1.8.0)](https://search.maven.org/artifact/io.github.stewseo/yelp-fusion-client/1.8.0/jar)
@@ -8,12 +7,14 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stewseo_yelp-fusion-client&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stewseo_yelp-fusion-client)
-
-#### Create a [Yelp Fusion API Key](https://docs.developer.yelp.com/docs/fusion-intro)
-
 <br>
 
-#### [Add the yelp-fusion-client as a dependency]() 
+### Connecting to the Yelp Fusion API
+
+- [Create a Yelp Fusion API Key](https://docs.developer.yelp.com/docs/fusion-intro) 
+- [Create a YelpFusionClient](https://stewseo.github.io/yelp-fusion-client/examples/clients)
+
+<br>
 
 #### As a Maven Dependency
 You can use [Maven's dependency management](https://search.maven.org/search?q=g:io.github.stewseo) to obtain the driver by adding the following configuration in the application's Project Object Model (POM) file:
@@ -46,7 +47,6 @@ dependencies {
 
 
 ### Features based on [Elasticsearch Java Client](https://github.com/elastic/elasticsearch-java/blob/main/docs/design/0001-model-classes-structure.md)
-- Create blocking and asynchronous clients with your Yelp Fusion API key.
 - [Strongly typed requests and responses for all Yelp Fusion APIs](https://github.com/elastic/elasticsearch-java/blob/main/docs/design/0001-model-classes-structure.md)
 - Http transport is handled by a low level rest client.
 - Encodes to JSON and decodes from JSON.

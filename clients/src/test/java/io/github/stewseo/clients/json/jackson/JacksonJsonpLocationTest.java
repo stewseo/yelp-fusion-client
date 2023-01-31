@@ -13,10 +13,9 @@ import java.nio.charset.StandardCharsets;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.TestReqVars.SEARCH_BUSINESSES_REQUEST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class JacksonJsonpLocationTest extends ModelJsonTestCase {
-
 
     @JsonTest
     void testJacksonJsonpLocation() {
