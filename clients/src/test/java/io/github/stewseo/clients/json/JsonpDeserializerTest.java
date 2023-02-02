@@ -88,18 +88,6 @@ public class JsonpDeserializerTest extends ModelJsonTestCase {
     }
 
 
-
-    void testLazy() {
-    }
-
-
-    void testFixedValue() {
-    }
-
-    @Test
-    void testEmptyObject() {
-    }
-
     @JsonTest
     void testStringDeserializer() {
         String json = "\"abc\"";
@@ -109,7 +97,7 @@ public class JsonpDeserializerTest extends ModelJsonTestCase {
     }
 
     @JsonTest
-    void integerDeserializer() {
+    void testIntegerDeserializer() {
         String json = "123";
         JsonParser parser = mapper.jsonProvider().createParser(new StringReader(json));
         int res = JsonpDeserializer.integerDeserializer().deserialize(parser, mapper);
@@ -117,7 +105,7 @@ public class JsonpDeserializerTest extends ModelJsonTestCase {
     }
 
     @JsonTest
-    void booleanDeserializer() {
+    void testBooleanDeserializer() {
         String json = "true";
         JsonParser parser = mapper.jsonProvider().createParser(new StringReader(json));
         boolean res = JsonpDeserializer.booleanDeserializer().deserialize(parser, mapper);
@@ -125,7 +113,7 @@ public class JsonpDeserializerTest extends ModelJsonTestCase {
     }
 
     @JsonTest
-    void longDeserializer() {
+    void testLongDeserializer() {
         String json = "123456789";
 
         JsonParser parser = mapper.jsonProvider().createParser(new StringReader(json));
@@ -133,8 +121,12 @@ public class JsonpDeserializerTest extends ModelJsonTestCase {
         assertThat(res).isEqualTo(123456789L);
     }
 
-    @Test
-    void floatDeserializer() {
+    @JsonTest
+    void testFloatDeserializer() {
+        String json = "1.12";
+        JsonParser parser = mapper.jsonProvider().createParser(new StringReader(json));
+        float res = JsonpDeserializer.floatDeserializer().deserialize(parser, mapper);
+        assertThat(res).isEqualTo(1.12f);
     }
 
     @JsonTest

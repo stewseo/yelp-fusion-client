@@ -214,6 +214,7 @@ public abstract class BusinessesResultBase extends ResultBase {
         op.add(AbstractBuilder::phone, JsonpDeserializer.stringDeserializer(), "phone");
         op.add(AbstractBuilder::price, JsonpDeserializer.stringDeserializer(), "price");
         op.add(AbstractBuilder::rating, JsonpDeserializer.doubleDeserializer(), "rating");
+        op.add(AbstractBuilder::review_count, JsonpDeserializer.integerDeserializer(), "review_count");
         op.add(AbstractBuilder::center, Coordinate._DESERIALIZER, "center");
         op.add(AbstractBuilder::transactions, JsonpDeserializer.arrayDeserializer(JsonpDeserializer.stringDeserializer()), "transactions");
         op.add(AbstractBuilder::categories, JsonpDeserializer.arrayDeserializer(Category._DESERIALIZER), "categories");

@@ -42,7 +42,6 @@ public class SearchBusinessesResult extends SearchBusinessesResultBase {
 
     protected void serializeInternal(JsonGenerator generator, JsonpMapper mapper) {
 
-//        generator.write("type", "SearchBusinessResult");
         super.serializeInternal(generator, mapper);
 
         if (this.display_phone != null) {

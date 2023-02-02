@@ -55,10 +55,10 @@ public class TestVars {
         public static final String STATE = "ca";
     }
 
-
     static class CategoryVars {
 
     }
+
     public static final String INDEX_SF_RESTAURANTS = "yelp-fusion-restaurants-sf";
 
     public static final String ALIAS = "alias";

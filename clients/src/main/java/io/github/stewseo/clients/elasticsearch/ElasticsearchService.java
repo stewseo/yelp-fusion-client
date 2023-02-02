@@ -6,23 +6,18 @@ import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch.cat.IndicesResponse;
 import co.elastic.clients.elasticsearch.cat.indices.IndicesRecord;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.core.search.SourceFilter;
 import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.stewseo.clients.yelpfusion._types.MappingProperties;
-import io.github.stewseo.clients.yelpfusion._types.QueryParam;
-import io.github.stewseo.clients.yelpfusion.businesses.details.BusinessDetails;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static io.github.stewseo.clients.yelpfusion._types.QueryParam.TIMESTAMP;
@@ -46,7 +41,6 @@ public class ElasticsearchService {
         Query byTimestamp = rangeQueryGteTimestamp(timestamp)._toQuery();
 
         SortOptions sortOptions = sortOptions(TIMESTAMP.name(), sortOrder);
-
 
         return asyncClient.search(s -> s
                                 .index(index)
@@ -76,9 +70,9 @@ public class ElasticsearchService {
         }
 
         // Dynamically build each unique bucket by field: all alias
-        TermsAggregation termsAggregation = buildTermsAggregation(MappingProperties.ALIAS.jsonValue(), size);
+        TermsAggregation termsAggregation = termsAggregation(MappingProperties.ALIAS.jsonValue(), size);
 
-        final String buildTermsAggs = "buildTermsAggregation";
+        final String buildTermsAggs = "termsAggregation";
 
         try {
             return asyncClient.search(b -> b
@@ -106,7 +100,7 @@ public class ElasticsearchService {
     }
 
     // return all business ids up to 10k, starting at specified timestamp.
-    public List<Hit<ObjectNode>> searchWithRangeQuery(String timestampRange) {
+    public List<Hit<ObjectNode>> searchWithRangeQuery(String timestampRange, String index) {
 
         Query byTimestamp = RangeQuery.of(r -> r
                 .field("timestamp")
@@ -126,7 +120,7 @@ public class ElasticsearchService {
 
         try {
             return asyncClient.search(s -> s
-                            .index("yelp-businesses-restaurants-nyc")
+                            .index(index)
                             .query(q -> q
                                     .bool(b -> b
                                             .must(byTimestamp)
@@ -163,7 +157,7 @@ public class ElasticsearchService {
         return 0;
     }
 
-    private TermsAggregation buildTermsAggregation(String field, int size) {
+    private TermsAggregation termsAggregation(String field, int size) {
         return TermsAggregation.of(t -> t
                 .field(field)
                 .size(size)
@@ -184,7 +178,6 @@ public class ElasticsearchService {
                 .gte(JsonData.of(timestamp))
         );
     }
-
 
     public MatchAllQuery matchAllQuery(String queryName) {
         return MatchAllQuery.of(m -> m

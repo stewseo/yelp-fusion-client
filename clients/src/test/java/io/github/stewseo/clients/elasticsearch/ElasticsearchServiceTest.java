@@ -16,9 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ElasticsearchServiceTest {
 
-    ElasticsearchService esService = new ElasticsearchService(ElasticsearchServiceCtx.createElasticsearchAsyncClient());
+    private final ElasticsearchService esService = new ElasticsearchService(ElasticsearchServiceCtx.createElasticsearchAsyncClient());
 
-    
 
     @ElasticsearchTest
     void testDocsCount() {
