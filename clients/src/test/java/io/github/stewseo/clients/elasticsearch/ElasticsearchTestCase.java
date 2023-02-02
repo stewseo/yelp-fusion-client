@@ -32,6 +32,6 @@ public class ElasticsearchTestCase {
 
         int numCategoriesWithParentRestaurant = 320;
 
-        return elasticsearchService.termsAggregationByCategory(numCategoriesWithParentRestaurant);
+        return elasticsearchService.termsAggregationByCategory(numCategoriesWithParentRestaurant, INDEX_NYC);
     }
 }

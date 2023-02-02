@@ -9,6 +9,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
+import co.elastic.clients.elasticsearch.cat.IndicesResponse;
+import co.elastic.clients.elasticsearch.cat.indices.IndicesRecord;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
@@ -34,19 +36,16 @@ public class ElasticsearchService {
         this.asyncClient = client;
     }
 
-    public ElasticsearchAsyncClient getAsyncClient() {
-        return asyncClient;
-    }
 
     // accepts a timestamp, an index name or alias, sortOrder
     // returns HitsMetaData
     public HitsMetadata<ObjectNode> searchWithRangeQuery(String timestamp, String index, SortOrder sortOrder) {
 
-        SourceFilter sourceFilter = buildSourceFilter(TIMESTAMP);
+        SourceFilter sourceFilter = sourceFilter(TIMESTAMP.name());
 
         Query byTimestamp = rangeQueryGteTimestamp(timestamp)._toQuery();
 
-        SortOptions sortOptions = buildSortOptions(TIMESTAMP, sortOrder);
+        SortOptions sortOptions = sortOptions(TIMESTAMP.name(), sortOrder);
 
 
         return asyncClient.search(s -> s
@@ -63,33 +62,6 @@ public class ElasticsearchService {
                         , ObjectNode.class
                 ).join()
                 .hits();
-    }
-
-    public SearchResponse<BusinessDetails> occurences(String index, int size,
-                                                      MatchQuery matchQuery,
-                                                      RangeQuery rangeQuery
-    ) {
-
-        Query byCategory = matchQuery._toQuery();
-
-        Query byTimestamp = rangeQuery._toQuery();
-
-        try {
-            return asyncClient.search(s -> s
-                            .index(index)
-                            .query(q -> q
-                                    .bool(b -> b
-                                            .must(byCategory)
-                                            .must(byTimestamp)
-                                    )
-                            )
-                            .size(size),
-                    BusinessDetails.class // Using Void will ignore any document in the response.
-            ).get();
-        } catch (ExecutionException | InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -132,15 +104,6 @@ public class ElasticsearchService {
             throw new RuntimeException(e);
         }
     }
-
-    public List<StringTermsBucket> termsAggregationByCategory(Integer size) {
-
-        if (size == null) {
-            size = MAX_RESULTS;
-        }
-        return termsAggregationByCategory(size, null);
-    }
-
 
     // return all business ids up to 10k, starting at specified timestamp.
     public List<Hit<ObjectNode>> searchWithRangeQuery(String timestampRange) {
@@ -185,20 +148,19 @@ public class ElasticsearchService {
     }
 
     public int docsCount(String index) {
-        try {
 
-            return Integer.parseInt(Objects.requireNonNull(asyncClient.cat().count(c -> c
-                            .index(index)
-                    ).get()
-                    .valueBody()
-                    .get(0)
-                    .count()));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
+        IndicesRecord indicesRecord = asyncClient.cat().indices(indicesReq -> indicesReq
+                        .index(index)
+                )
+                .thenApply(IndicesResponse::valueBody)
+                .join()
+                .get(0);
+
+        String docsCount = indicesRecord.docsCount();
+        if (docsCount != null) {
+            return Integer.parseInt(docsCount);
         }
-        return -1;
+        return 0;
     }
 
     private TermsAggregation buildTermsAggregation(String field, int size) {
@@ -208,7 +170,7 @@ public class ElasticsearchService {
         );
     }
 
-    public RangeQuery buildRangeQuery(String field, long timestamp) {
+    public RangeQuery rangeQuery(String field, long timestamp) {
         return RangeQuery.of(r -> r
                 .field(field)
                 .gte(JsonData.of(timestamp))
@@ -223,32 +185,25 @@ public class ElasticsearchService {
         );
     }
 
-    private RangeQuery rangeQueryLteTimestamp(String timestamp) {
 
-        return RangeQuery.of(r -> r
-                .field(TIMESTAMP.name())
-                .lte(JsonData.of(timestamp))
-        );
-    }
-
-    public MatchAllQuery buildMatchAllQuery(String queryName) {
+    public MatchAllQuery matchAllQuery(String queryName) {
         return MatchAllQuery.of(m -> m
                 .queryName(queryName)
         );
     }
 
-    private SourceFilter buildSourceFilter(QueryParam type) {
+    private SourceFilter sourceFilter(String type) {
 
         return SourceFilter.of(source -> source
-                .includes(type.name()));
-
+                .includes(type)
+        );
     }
 
-    public SortOptions buildSortOptions(QueryParam type, SortOrder sortOrder) {
+    public SortOptions sortOptions(String type, SortOrder sortOrder) {
 
         return SortOptions.of(options -> options
                 .field(f -> f
-                        .field(type.name())
+                        .field(type)
                         .order(sortOrder))
         );
     }
