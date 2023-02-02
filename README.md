@@ -41,7 +41,7 @@ dependencies {
 <br>
 
 ### Use case
-- [search for all restaurants by category in San Francisco](https://github.com/stewseo/yelp-fusion-client/blob/integration-tests/clients/src/integrationTest/java/io/github/stewseo/clients/yelpfusion/SearchBusinessesAndStoreTest.java)
+- [Search for all restaurants by category in San Francisco](https://github.com/stewseo/yelp-fusion-client/blob/integration-tests/clients/src/integrationTest/java/io/github/stewseo/clients/yelpfusion/SearchBusinessesAndStoreTest.java)
 - [Store each business result as a Json Document in Elasticsearch](https://github.com/stewseo/yelp-fusion-client/blob/integration-tests/clients/src/integrationTest/java/io/github/stewseo/clients/yelpfusion/RequestBusinessDetailsAndStoreTest.java)
 - [Restaurant Recommendation Engine](https://github.com/stewseo/restaurant-recommendation-system/blob/main/YelpRecommendation.ipynb)
 
