@@ -1,8 +1,6 @@
 package io.github.stewseo.clients.json;
 
 
-import io.github.stewseo.clients.json.JsonpDeserializer;
-import io.github.stewseo.clients.json.JsonpMapper;
 import jakarta.json.stream.JsonParser;
 
 import java.util.EnumSet;
@@ -11,13 +9,6 @@ import java.util.EnumSet;
  * DelegatingDeserializer
  */
 public abstract class DelegatingDeserializer<T, U> implements JsonpDeserializer<T> {
-
-    public static JsonpDeserializer<?> unwrap(JsonpDeserializer<?> deserializer) {
-        while (deserializer instanceof DelegatingDeserializer) {
-            deserializer = ((DelegatingDeserializer<?, ?>) deserializer).unwrap();
-        }
-        return deserializer;
-    }
 
     protected abstract JsonpDeserializer<U> unwrap();
 
@@ -41,5 +32,12 @@ public abstract class DelegatingDeserializer<T, U> implements JsonpDeserializer<
         public T deserialize(JsonParser parser, JsonpMapper mapper, JsonParser.Event event) {
             return unwrap().deserialize(parser, mapper, event);
         }
+    }
+
+    public static JsonpDeserializer<?> unwrap(JsonpDeserializer<?> deserializer) {
+        while (deserializer instanceof DelegatingDeserializer) {
+            deserializer = ((DelegatingDeserializer<?, ?>) deserializer).unwrap();
+        }
+        return deserializer;
     }
 }

@@ -229,12 +229,11 @@ public class JacksonJsonpParser implements JsonParser {
             do {
                 token = parser.nextToken();
                 switch (token) {
-                    case START_OBJECT:
-                        depth++;
-                        break;
-                    case END_OBJECT:
-                        depth--;
-                        break;
+                    case START_OBJECT -> depth++;
+                    case END_OBJECT -> depth--;
+                    default -> {
+                        // no need for any other cases
+                    }
                 }
             } while(!(token == JsonToken.END_OBJECT && depth == 0));
         } catch (IOException e) {
@@ -257,6 +256,9 @@ public class JacksonJsonpParser implements JsonParser {
                 switch (token) {
                     case START_ARRAY -> depth++;
                     case END_ARRAY -> depth--;
+                    default -> {
+                        // no need for any other cases
+                    }
                 }
             } while(!(token == JsonToken.END_ARRAY && depth == 0));
         } catch (IOException e) {

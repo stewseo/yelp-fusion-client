@@ -22,7 +22,7 @@ public class QueryParameterTest extends ModelJsonTestCase {
 
     private final TermQueryParameter termQueryField = TermQueryParameter.of(variant -> variant.term(TermEnum.Restaurants));
 
-    private final QueryParameter queryField = QueryParameter.of(qf -> qf.term(termQueryField));
+    private final QueryParameter queryParameter = QueryParameter.of(qf -> qf.term(termQueryField));
 
     private final String json = "{\"term\":{\"term\":\"restaurants\"}}";
 
@@ -33,7 +33,7 @@ public class QueryParameterTest extends ModelJsonTestCase {
 
     @TypeTest
     void test_get() {
-        assertThat(queryField._get().toString()).isEqualTo("{\"term\":\"restaurants\"}");
+        assertThat(queryParameter._get().toString()).isEqualTo("{\"term\":\"restaurants\"}");
     }
 
     @TypeTest
@@ -43,18 +43,18 @@ public class QueryParameterTest extends ModelJsonTestCase {
 
     @TypeTest
     void test_isCustom() {
-        assertThat(queryField._isCustom()).isFalse();
+        assertThat(queryParameter._isCustom()).isFalse();
     }
 
     @TypeTest
     void testIsTerm() {
-        assertThat(queryField.isTerm()).isTrue();
+        assertThat(queryParameter.isTerm()).isTrue();
     }
 
 
     @TypeTest
     void testTerm() {
-        assertThat(queryField.term()).isExactlyInstanceOf(TermQueryParameter.class);
+        assertThat(queryParameter.term()).isExactlyInstanceOf(TermQueryParameter.class);
     }
 
     @TypeTest
@@ -66,7 +66,7 @@ public class QueryParameterTest extends ModelJsonTestCase {
 
         JsonGenerator generator = provider.createGenerator(baos);
 
-        queryField.serialize(generator, new JsonbJsonpMapper());
+        queryParameter.serialize(generator, new JsonbJsonpMapper());
 
         generator.close();
 
@@ -105,47 +105,7 @@ public class QueryParameterTest extends ModelJsonTestCase {
     @TypeTest
     public void testDeserialization() {
         QueryParameter qf = fromJson(json, QueryParameter.class);
-        assertThat(qf.toString()).isEqualTo(queryField.toString());
+        assertThat(qf.toString()).isEqualTo(queryParameter.toString());
     }
 
-
-    @Test
-    void _kind() {
-    }
-
-    @Test
-    void _get() {
-    }
-
-    @Test
-    void of() {
-    }
-
-    @Test
-    void _customKind() {
-    }
-
-    @Test
-    void _isCustom() {
-    }
-
-    @Test
-    void isTerm() {
-    }
-
-    @Test
-    void term() {
-    }
-
-    @Test
-    void serialize() {
-    }
-
-    @Test
-    void testToString() {
-    }
-
-    @Test
-    void setupQueryFieldDeserializer() {
-    }
 }

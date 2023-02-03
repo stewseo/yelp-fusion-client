@@ -10,6 +10,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.QUERY_PARAMETER;
+import static jakarta.json.stream.JsonParser.Event.START_ARRAY;
+import static jakarta.json.stream.JsonParser.Event.VALUE_NUMBER;
+import static jakarta.json.stream.JsonParser.Event.VALUE_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
@@ -23,8 +26,8 @@ public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
                 new JsonpDeserializerBase.ArrayDeserializer<Integer>(JsonpDeserializer.integerDeserializer()
                 );
 
-        assertFalse(deser.nativeEvents().contains(JsonParser.Event.VALUE_NUMBER));
-        assertTrue(deser.acceptedEvents().contains(JsonParser.Event.VALUE_NUMBER));
+        assertFalse(deser.nativeEvents().contains(VALUE_NUMBER));
+        assertTrue(deser.acceptedEvents().contains(VALUE_NUMBER));
 
         List<Integer> values = fromJson("[ 42, 43 ]", deser);
         assertEquals(2, values.size());
@@ -38,9 +41,16 @@ public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
 
     }
 
-    @Test
-    void allAcceptedEvents() {
-        JsonpDeserializerBase<SearchBusinessesResult> jsonpDeserializerBase;
+    @JsonTest
+    void testAllAcceptedEvents() {
+
+        JsonpDeserializerBase.ArrayDeserializer<Integer> deser =
+                new JsonpDeserializerBase.ArrayDeserializer<Integer>(JsonpDeserializer.integerDeserializer()
+                );
+
+        EnumSet<JsonParser.Event> events = JsonpDeserializerBase.allAcceptedEvents(deser);
+
+        assertThat(events).isEqualTo(EnumSet.of(START_ARRAY, VALUE_STRING, VALUE_NUMBER));
     }
 
 
@@ -52,8 +62,8 @@ public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
         JsonpDeserializerBase.DoubleOrNullDeserializer doubleOrNullDeserializer =
                 new JsonpDeserializerBase.DoubleOrNullDeserializer(0);
 
-        assertThat(doubleOrNullDeserializer.nativeEvents()).contains(JsonParser.Event.VALUE_NUMBER);
-        assertThat(doubleOrNullDeserializer.acceptedEvents()).contains(JsonParser.Event.VALUE_NUMBER);
+        assertThat(doubleOrNullDeserializer.nativeEvents()).contains(VALUE_NUMBER);
+        assertThat(doubleOrNullDeserializer.acceptedEvents()).contains(VALUE_NUMBER);
 
         double value = fromJson("72.10", doubleOrNullDeserializer);
 
@@ -67,8 +77,8 @@ public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
         JsonpDeserializerBase.IntOrNullDeserializer intOrNullDeserializer =
                 new JsonpDeserializerBase.IntOrNullDeserializer(0);
 
-        assertThat(intOrNullDeserializer.nativeEvents()).contains(JsonParser.Event.VALUE_NUMBER);
-        assertThat(intOrNullDeserializer.acceptedEvents()).contains(JsonParser.Event.VALUE_NUMBER);
+        assertThat(intOrNullDeserializer.nativeEvents()).contains(VALUE_NUMBER);
+        assertThat(intOrNullDeserializer.acceptedEvents()).contains(VALUE_NUMBER);
 
         double value = fromJson("72", intOrNullDeserializer);
 
@@ -101,7 +111,7 @@ public class JsonpDeserializerBaseTest extends ModelJsonTestCase {
 
         JsonpMappingException jsonMappingException =
                 assertThrows(JsonpMappingException.class, () ->
-                        jsonpDeserializerBase.deserialize(parser(), mapper, JsonParser.Event.START_ARRAY));
+                        jsonpDeserializerBase.deserialize(parser(), mapper, START_ARRAY));
 
         assertThat(jsonpDeserializerBase.acceptedEvents()).isEqualTo(EnumSet.of(JsonParser.Event.START_OBJECT));
         assertThat(jsonpDeserializerBase.nativeEvents()).isEqualTo(EnumSet.of(JsonParser.Event.START_OBJECT));

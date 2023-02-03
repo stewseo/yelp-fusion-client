@@ -2,6 +2,8 @@ package io.github.stewseo.clients.json.testcases;
 
 import io.github.stewseo.clients.json.JsonpDeserializer;
 import io.github.stewseo.clients.json.JsonpMapper;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchBusinessesResult;
+import io.github.stewseo.clients.yelpfusion.businesses.search.SearchResponse;
 import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
@@ -11,6 +13,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.DISTANCE;
+import static io.github.stewseo.clients.yelpfusion._types.test_constants.TestVars.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class ModelJsonTestCase extends AbstractJsonTestCase implements ToJson, FromJson {
@@ -73,7 +77,16 @@ public abstract class ModelJsonTestCase extends AbstractJsonTestCase implements 
     }
 
     public JsonParser parser() {
-        return super.parser("test");
+
+        return super.parser("" +
+                "{" +
+                    "\"businesses\":" +
+                        "{" +
+                            "\"name\":\"value1\", " +
+                            "\"distance\":1.0" +
+                        "}," +
+                        "\"total\":1" +
+                "}");
     }
 
     public JsonParser parser(String json) {

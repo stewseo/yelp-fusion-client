@@ -29,8 +29,8 @@ class JsonDataImpl implements JsonData {
 
     @Override
     public JsonValue toJson(JsonpMapper mapper) {
-        if (value instanceof JsonValue) {
-            return (JsonValue) value;
+        if (value instanceof JsonValue jsonValue) {
+            return jsonValue;
         }
 
         // Provided mapper has precedence over the one that was optionally set at creation time
@@ -87,8 +87,8 @@ class JsonDataImpl implements JsonData {
 
     @Override
     public void serialize(JsonGenerator generator, JsonpMapper mapper) {
-        if (value instanceof JsonValue) {
-            generator.write((JsonValue) value);
+        if (value instanceof JsonValue jsonValue) {
+            generator.write(jsonValue);
         } else if (this.mapper == null) {
             mapper.serialize(value, generator);
         } else if (this.mapper.getClass() != mapper.getClass()) {
@@ -116,8 +116,8 @@ class JsonDataImpl implements JsonData {
         StringWriter sw = new StringWriter();
         JsonGenerator generator = mapper.jsonProvider().createGenerator(sw);
 
-        if (value instanceof JsonValue) {
-            generator.write((JsonValue) value);
+        if (value instanceof JsonValue jsonValue) {
+            generator.write(jsonValue);
         } else {
             mapper.serialize(value, generator);
         }

@@ -56,7 +56,7 @@
 
 //    void termsAggregationTest() {
 //
-//        List<StringTermsBucket> buckets = elasticsearchService.termsAggregationByCategory(MAX_RESULTS, INDEX_SF_RESTAURANTS);
+//        List<StringTermsBucket> buckets = elasticsearchService.termsAggregation(MAX_RESULTS, INDEX_SF_RESTAURANTS);
 //        assertThat(buckets.size()).isEqualTo(249);
 //    }
 //

@@ -65,12 +65,24 @@ public class BusinessDetailsTest extends YelpFusionTestCase<BusinessDetails> {
     }
 
     private final String expected = "" +
-            "{\"id\":\"id\",\"alias\":\"alias\"," +
+            "{\"id\":\"id\"," +
+            "\"alias\":\"alias\"," +
             "\"name\":\"name\"," +
             "\"image_url\":\"imageUrlValue\"," +
-            "\"url\":\"url\",\"phone\":\"phoneValue\",\"price\":\"$\"," +
-            "\"display_phone\":\"display_phone\",\"is_closed\":false,\"rating\":4.5," +
-            "\"review_count\":1,\"location\":{\"address1\":\"addressOneValue\",\"city\":\"cityValue\",\"country\":\"countryValue\",\"state\":\"stateValue\"},\"coordinates\":{\"latitude\":37.7829,\"longitude\":-122.4189},\"transactions\":[\"transactionValue\"],\"messaging\":{\"use_case_text\":\"use_case_text\"},\"photos\":[\"photos\",\"photos\"],\"hours\":[{\"hours_type\":\"hoursType\"},{\"hours_type\":\"hoursTypeValue\"},{\"hours_type\":\"hoursType\"}],\"categories\":[{\"alias\":\"catAlias\"}," +
+            "\"url\":\"url\"," +
+            "\"phone\":\"phoneValue\"," +
+            "\"price\":\"$\"," +
+            "\"display_phone\":\"display_phone\"," +
+            "\"is_closed\":false," +
+            "\"rating\":4.5," +
+            "\"review_count\":1," +
+            "\"location\":{\"address1\":\"addressOneValue\"," +
+            "\"city\":\"cityValue\"," +
+            "\"country\":\"countryValue\"," +
+            "\"state\":\"stateValue\"}," +
+            "\"coordinates\":{\"latitude\":37.7829,\"longitude\":-122.4189}," +
+            "\"transactions\":[\"transactionValue\"]," +
+            "\"messaging\":{\"use_case_text\":\"use_case_text\"},\"photos\":[\"photos\",\"photos\"],\"hours\":[{\"hours_type\":\"hoursType\"},{\"hours_type\":\"hoursTypeValue\"},{\"hours_type\":\"hoursType\"}],\"categories\":[{\"alias\":\"catAlias\"}," +
             "{\"alias\":\"catAlias\"},{\"alias\":\"alias\"}]}";
 
     @YelpFusionTest

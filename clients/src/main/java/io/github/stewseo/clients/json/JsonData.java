@@ -31,8 +31,8 @@ public interface JsonData extends JsonpSerializable {
      * Creates a raw JSON value from an existing object. A mapper will be needed to convert the result.
      */
     static <T> JsonData of(T value) {
-        if (value instanceof JsonData) {
-            return (JsonData) value;
+        if (value instanceof JsonData jsonData) {
+            return jsonData;
         } else {
             return new JsonDataImpl(value, null);
         }

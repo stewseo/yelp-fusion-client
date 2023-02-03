@@ -1,6 +1,7 @@
 package io.github.stewseo.clients.util;
 
 import io.github.stewseo.clients.json.testcases.ModelJsonTestCase;
+import io.github.stewseo.clients.yelpfusion._types.Time;
 import jakarta.json.stream.JsonGenerator;
 import org.junit.jupiter.api.Tag;
 
@@ -25,6 +26,8 @@ public class DateTimeTest extends ModelJsonTestCase {
 
     String text = "2022-02-02T17:16:12.348Z";
     String textJson = "\"" + text + "\"";
+
+    private final Time time = new Time.Builder().time("time").build();
 
     @UtilTest
     public void testMillis() {

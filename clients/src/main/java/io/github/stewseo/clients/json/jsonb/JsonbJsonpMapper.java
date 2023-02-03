@@ -85,6 +85,9 @@ public class JsonbJsonpMapper extends JsonpMapperBase {
                     switch (event) {
                         case START_OBJECT -> depth++;
                         case END_OBJECT -> depth--;
+                        default -> {
+                            // no need for other cases
+                        }
                     }
                 } while (!(event == Event.END_OBJECT && depth == 0));
             }
@@ -96,6 +99,9 @@ public class JsonbJsonpMapper extends JsonpMapperBase {
                     switch (event) {
                         case START_ARRAY -> depth++;
                         case END_ARRAY -> depth--;
+                        default -> {
+                            // no need for other cases
+                        }
                     }
                 } while (!(event == Event.END_ARRAY && depth == 0));
             }

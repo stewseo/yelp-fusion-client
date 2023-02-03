@@ -97,7 +97,9 @@ public class ExternallyTaggedUnion {
     ) {
         generator.writeStartObject();
 
-        if (mapper.attribute(JsonpMapperFeatures.SERIALIZE_TYPED_KEYS, true)) {
+        Boolean b = mapper.attribute(JsonpMapperFeatures.SERIALIZE_TYPED_KEYS, true);
+
+        if (Boolean.TRUE.equals(b)) {
             for (Map.Entry<String, List<T>> entry : map.entrySet()) {
                 List<T> list = entry.getValue();
                 if (list.isEmpty()) {
@@ -134,7 +136,9 @@ public class ExternallyTaggedUnion {
     public static <T extends JsonpSerializable & TaggedUnion<? extends JsonEnum, ?>> void serializeTypedKeysInner(
             Map<String, T> map, JsonGenerator generator, JsonpMapper mapper
     ) {
-        if (mapper.attribute(JsonpMapperFeatures.SERIALIZE_TYPED_KEYS, true)) {
+        Boolean b = mapper.attribute(JsonpMapperFeatures.SERIALIZE_TYPED_KEYS, true);
+
+        if (Boolean.TRUE.equals(b)) {
             for (Map.Entry<String, T> entry : map.entrySet()) {
                 T value = entry.getValue();
                 generator.writeKey(getKind(value) + "#" + entry.getKey());
@@ -226,12 +230,13 @@ public class ExternallyTaggedUnion {
         @Override
         public Map<String, Union> deserialize(JsonParser parser, JsonpMapper mapper, JsonParser.Event event) {
             Map<String, Union> result = new HashMap<>();
-            if(event == null) {
 
-            }
-            while ((event = parser.next()) != JsonParser.Event.END_OBJECT) {
-                JsonpUtils.expectEvent(parser, event, JsonParser.Event.KEY_NAME);
-                deserializeEntry(parser.getString(), parser, mapper, result);
+            if(event != null) {
+                
+                while ((event = parser.next()) != JsonParser.Event.END_OBJECT) {
+                    JsonpUtils.expectEvent(parser, event, JsonParser.Event.KEY_NAME);
+                    deserializeEntry(parser.getString(), parser, mapper, result);
+                }
             }
             return result;
 
